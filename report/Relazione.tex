@@ -282,35 +282,35 @@ Riportiamo in Tabella \ref{table:operazioni} le principali operazioni che sarann
 \textbf{\#} & \textbf{Operazione} & \textbf{Op / 7gg} & \textbf{Tipo Utente} \\
 \hline
 \endhead
-1*  & \hyperref[op1]{Visualizzazione di tutte le linee attive} & 4.000 & Tutti \\
+1*  & \hyperref[op1]{Visualizzazione di tutte le linee attive} & 4.000 & Tutti **** \\
 \hline
-2 & \hyperref[op2]{Visualizzazione fermate e orari di una linea} & 3.500 & Tutti \\
+2 & \hyperref[op2]{Visualizzazione fermate e orari di una linea} & 3.500 & Tutti **** \\
 \hline
 3 & \hyperref[op3]{Visualizzazione degli hub mobilità} & 500 & Tutti \\
 \hline
-4* & \hyperref[op4]{Visualizzazione orario e mezzo assegnato} & 150 & Autista \\
+4* & \hyperref[op4]{Visualizzazione orario e mezzo assegnato} & 150 & Autista ***** \\
 \hline
-5* & \hyperref[op5]{Visualizzazione orario e linee assegnate} & 100 & Controllore \\
+5* & \hyperref[op5]{Visualizzazione orario e linee assegnate} & 100 & Controllore ***** \\
 \hline
-6 & \hyperref[op6]{Estrazione delle linee con più convalide nell'ultimo mese} & 3 & Amministratore  \\
+6 & \hyperref[op6]{Estrazione delle linee con più convalide nell'ultimo mese} & 3 & Amministratore *****  \\
 \hline
 7 & \hyperref[op7]{Estrazione delle manuntenzioni che coinvolgono un determinato mezzo} & 5 & Amministratore \\
 \hline
-8 & \hyperref[op8]{Estrazione delle manuntenzioni ed eventuali linee sostitutive che coinvolgono una linea} & 5 & Amministratore \\
+8 & \hyperref[op8]{Estrazione delle manuntenzioni ed eventuali linee sostitutive che coinvolgono una linea} & 5 & Amministratore ***** \\
 \hline
-9 & \hyperref[op9]{Visualizzazione incassi dati dalle convalide per una linea} & 10 & Amministratore \\
+9 & \hyperref[op9]{Visualizzazione incassi dati dalle convalide per una linea} & 10 & Amministratore **** \\
 \hline
 10 & \hyperref[op10]{Estrazione degli incassi per tipo di titolo in periodo definito} & 5 & Amministratore \\
 \hline
-11 & \hyperref[op11]{Estrazione delle linee con più multe negli ultimi 3 mesi} & 2 & Amministratore \\
+11 & \hyperref[op11]{Estrazione delle linee con più multe negli ultimi 3 mesi} & 2 & Amministratore ***** \\
 \hline
-12 & \hyperref[op12]{Estrazione delle 5 linee con manutenzioni più gravose (in termini linee sostitutive e durata)} & 2 & Amministratore  \\
+12 & \hyperref[op12]{Estrazione delle 5 linee con manutenzioni più gravose (in termini linee sostitutive e durata)} & 2 & Amministratore *****  \\
 \hline
 13 & \hyperref[op13]{Estrazione delle linee con \textgreater 5 controlli/giorno e \textless = 10 multe/giorno} & 3 & Amministratore  \\
 \hline
-14* & \hyperref[op14]{Visualizzazione delle linee con il maggior tempo di percorrenza} & 2 & Amministratore  \\
+14* & \hyperref[op14]{Visualizzazione delle linee con il maggior tempo di percorrenza} & 2 & Amministratore ***** \\
 \hline
-15 & \hyperref[op15]{Estrazione delle linee con più hub mobilità lungo il percorso} & 3 & Amministratore \\
+15 & \hyperref[op15]{Estrazione delle linee con più hub mobilità lungo il percorso} & 3 & Amministratore ***** \\
 \hline
 16 & \hyperref[op16]{Media di soldi spesi in multe per persona} & 2 & Amministratore \\
 \hline
@@ -318,11 +318,11 @@ Riportiamo in Tabella \ref{table:operazioni} le principali operazioni che sarann
 \hline
 18 & \hyperref[op18]{Visualizzazione delle fermate in cui è presente un hub mobilità contenente tutti i tipi di servizi green} & 1 & Amministratore \\
 \hline
-19* & \hyperref[op19]{Inserimento di una variazione di servizio} & 1 & Amministratore \\
+19* & \hyperref[op19]{Inserimento di una variazione di servizio} & 1 & Amministratore ***** \\
 \hline
-20* & \hyperref[op20]{Aggiunta di una tratta a una linea esistente} & 1 & Amministratore \\
+20* & \hyperref[op20]{Aggiunta di una tratta a una linea esistente} & 1 & Amministratore ***** \\
 \hline
-21* & \hyperref[op21]{Creazione di una nuova linea} & 1 & Amministratore \\
+21* & \hyperref[op21]{Creazione di una nuova linea} & 1 & Amministratore ***** \\
 \hline
 \end{longtable}
 
@@ -1307,16 +1307,199 @@ Indichiamo con:
 	    \begin{center}
 	    ${C_{tot} = {O_{settimana}}\cdot{2A_{scritttura}}= 41}$
 	    \end{center}
-	
 	\end{itemize}
 \end{enumerate}
 
 \section{Analisi delle ridondanze}
+In questa sezione andremo ad analizzare le due ridondanze presenti nel modello, ovvero:
+\begin{itemize}
+  \item \texttt{tempo percorrenza} su \texttt{LINEA}
+  \item \texttt{attiva} su \texttt{LINEA}
+\end{itemize}
 
-\subsection{Analisi attributo 1}
-\subsection{Analisi attributo 2}
+\subsection{Analisi attributo \texttt{tempo percorrenza}}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|c|c|c|}
+	\hline
+	\textbf{Num Op.} & \textbf{Con ridondanza} & \textbf{Senza ridondanza} \\
+	\hline
+	4 & 1.153.950 & 12.691.950 \\
+  \hline
+	5 & 252.200 & 280.200 \\
+  \hline
+  14 & 150 & 6.150 \\
+  \hline
+  20 & 28 & 4 \\
+  \hline
+  21 & 61 & 41 \\
+  \hline
+  \textbf{TOTALE} & \textbf{1.406.389} & \textbf{12.978.345} \\
+  \hline
+  \end{tabular}
+\end{table}
+
+A fronte di questa analisi, decidiamo di mantenere l'attributo \texttt{tempo percorrenza}.
+
+\subsection{Analisi attributo \texttt{attiva}}
+
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{|l|c|c|c|}
+  \hline
+  \textbf{Num Op.} & \textbf{Con ridondanza} & \textbf{Senza ridondanza} \\
+  \hline
+  1 & 1.950 & 7.800.000 \\
+  \hline
+  19 & 7 & 4 \\
+  \hline
+  \textbf{TOTALE} & \textbf{1.957} & \textbf{7.800.004} \\
+  \hline
+  \end{tabular}
+\end{table}
+
+A fronte di questa analisi, decidiamo di mantenere l'attributo \texttt{attiva}.
 
 \section{Riepilogo operazioni}
+Nella seguente tabella proponiamo un riepilogo delle operazioni analizzate, con il costo totale per ogni operazione.
 
+\begin{longtable}{|c|p{8cm}|c|l|l|}
+\caption{Costo totale delle operazioni stimato per 7 giorni}
+\label{table:operazioni_tot}\\
+\hline
+\textbf{\#} & \textbf{Operazione} & \textbf{Costo tot. / 7gg} & \textbf{Tipo Utente} \\
+\hline
+\endhead
+1  & \hyperref[op1]{Visualizzazione di tutte le linee attive} & 7.800.000 & Tutti \\
+\hline
+2 & \hyperref[op2]{Visualizzazione fermate e orari di una linea} & 248.500 & Tutti \\
+\hline
+3 & \hyperref[op3]{Visualizzazione degli hub mobilità} & 645.000 & Tutti \\
+\hline
+4* & \hyperref[op4]{Visualizzazione orario e mezzo assegnato} & 1.153.950 & Autista \\
+\hline
+5* & \hyperref[op5]{Visualizzazione orario e linee assegnate} & 252.200 & Controllore \\
+\hline
+6 & \hyperref[op6]{Estrazione delle linee con più convalide nell'ultimo mese} & 850.005 & Amministratore  \\
+\hline
+7 & \hyperref[op7]{Estrazione delle manuntenzioni che coinvolgono un determinato mezzo} & 35 & Amministratore \\
+\hline
+8 & \hyperref[op8]{Estrazione delle manuntenzioni ed eventuali linee sostitutive che coinvolgono una linea} & 205 & Amministratore \\
+\hline
+9 & \hyperref[op9]{Visualizzazione incassi dati dalle convalide per una linea} & 8.150 & Amministratore \\
+\hline
+10 & \hyperref[op10]{Estrazione degli incassi per tipo di titolo in periodo definito} & 250.005 & Amministratore \\
+\hline
+11 & \hyperref[op11]{Estrazione delle linee con più multe negli ultimi 3 mesi} & 503.700 & Amministratore \\
+\hline
+12 & \hyperref[op12]{Estrazione delle 5 linee con manutenzioni più gravose (in termini linee sostitutive e durata)} & 100 & Amministratore  \\
+\hline
+13 & \hyperref[op13]{Estrazione delle linee con \textgreater 5 controlli/giorno e \textless = 10 multe/giorno} & 755.100 & Amministratore  \\
+\hline
+14* & \hyperref[op14]{Visualizzazione delle linee con il maggior tempo di percorrenza} & 150 & Amministratore  \\
+\hline
+15 & \hyperref[op15]{Estrazione delle linee con più hub mobilità lungo il percorso} & 9.570 & Amministratore \\
+\hline
+16 & \hyperref[op16]{Media di soldi spesi in multe per persona} & 20.000 & Amministratore \\
+\hline
+17 & \hyperref[op17]{Visualizzazione delle aziende che non hanno effettuato nessuna manutenzione nell'ultimo mese} & 4XXX & Amministratore \\
+\hline
+18 & \hyperref[op18]{Visualizzazione delle fermate in cui è presente un hub mobilità contenente tutti i tipi di servizi green} & 1.129 & Amministratore \\
+\hline
+19* & \hyperref[op19]{Inserimento di una variazione di servizio} & 7 & Amministratore \\
+\hline
+20* & \hyperref[op20]{Aggiunta di una tratta a una linea esistente} & 28 & Amministratore \\
+\hline
+21* & \hyperref[op21]{Creazione di una nuova linea} & 61 & Amministratore \\
+\hline
+\end{longtable}
+
+\section{Raffinamento dello schema}
+Ora che abbiamo deciso quali attributi dovranno rimanere nella base di dati, non ci resta che apportare dei raffinamenti allo schema ER in modo da rielaborare i concetti non direttamente rappresentabili tramite il modello relazionale.
+Procediamo quindi per step successivi fino ad arrivare a uno schema logico equivalente allo schema ER.
+
+\subsection{Rimozione attributi multivalore}
+L'unico attributo multivalore nel nostro schema è presente nell'entità \texttt{AZIENDA}, nello specifico l'\texttt{indirizzo}.
+Aggiungiamo quindi il prefisso \texttt{indirizzo\textunderscore} a ogni suo componente per poi decomporlo in attributi singoli.
+
+\subsection{Rimozione gerarchie}
+
+\subsubsection{Biglietto}
+La gerarchia su biglietto è di tipo Totale ed Esclusiva.
+Poiché non ci sono attributi diversi nelle due entità figlie e \texttt{BIGLIETTO DIGITALE} ha l'associazione \texttt{acquisto} di cardinalità (1,1), scegliamo di effettuare un \textbf{collasso vero l'alto}. 
+L'associazione \texttt{aquisto} diventa quindi a cardinalità (0, 1). \\
+Sarà possibile riconoscere i biglietti digitali dai fisici perché questi ultimi non avranno l'associazione \texttt{acquisto} con l'entità \texttt{UTENTE}.
+
+\subsubsection{Titolo di Viaggio}
+Anche in questo caso la gerarchia è di tipo Totale ed Esclusiva.
+Dal momento che le entità figlie hanno associazioni e attributi diversi, scegliamo di effettuare un \textbf{collasso vero il basso} che ci permette di mantenere questi vincoli inalterati.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{GerarchiaTitoloViaggio}
+ 	\caption{Entità Biglietto e Abbonamento dopo la rimozione delle gerarchie}
+\end{figure}
+
+\subsubsection{Persona - Utente}
+Abbiamo che \texttt{UTENTE} è un subset di \texttt{PERSONA}.
+Se venisse effettuato un collasso avremmo vari attributi opzionali da gestire: scegliamo quindi di sostituire la gerarchia con un'\textbf{associazione}.
+Così facendo a una persona fisica può essere connessa un'utenza, e a un'utenza deve per forza essere connessa una persona.
+
+\subsubsection{Utente - Dipendente}
+Come per Persona e Utente il subset è stato sostituito dall'associazione \texttt{dipendenza}, visto che le entità \texttt{UTENTE} e \texttt{DIPENDENTE} hanno associazioni diverse.
+
+\subsubsection{Dipendente}
+La gerarchia sui vari tipi di dipendente (\texttt{AMMINISTRATIVO}, \texttt{AUTISTA}, \texttt{CONTROLLORE}) è di tipo Totale ed Esclusiva.
+Visto che le sottoentità non hanno attributi diversificati, scegliamo di fare un \textbf{collasso verso l'alto}.
+Introduciamo un selettore di tipo chiamato \texttt{ruolo} che potrà assumere solo i valori di Amministrativo, Autista o Controllore. 
+Visto che le associazioni specifiche per ogni ruolo ora fanno riferimento al generico dipendente sarà necessario porre attenzione ad eseguire dei controlli per verificare che si possano aggiungere delle associazioni solo se coerenti con il ruolo del dipendente coinvolto.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{GerarchiaPersona}
+ 	\caption{Entità Persona, Utente e Dipendente dopo la rimozione delle gerarchie}
+\end{figure}
+
+\subsubsection{Manutenzione}
+La gerarchia su \texttt{MANUTENZIONE} è di tipo Totale ed Esclusiva.
+Poiché le due entità figlie si riferiscono a due concetti differenti, quindi hanno anche associazioni diverse, scegliamo di effettuare un \textbf{collasso verso il basso} per mantenere i vincoli sulle associazioni. 
+Importiamo quindi sui due figli gli attributi comuni e l'associazione comune \texttt{incarico}.
+
+\subsubsection{Linea}
+Le linee di tipo ordinario e straordinario compongono una gerarchia Totale ed Esclusiva.
+Scegliamo di eseguire un \textbf{collasso verso l'alto}, così da avere tutte le linee in un'unica entità visto che sono oggetto di molte richieste comuni.
+Dal momento che hanno alcuni attributi diversi, questi diventeranno degli opzionali e ci serviranno per capire di che tipo è la linea.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{GerarchiaLineaManutenzione}
+ 	\caption{Entità Manutenzione e Linea dopo la rimozione delle gerarchie}
+\end{figure}
+
+\subsection{Reificazione associazioni molti a molti}
+Le associazioni \texttt{N-N} non sono direttamente rappresentabili nei database relazionali, quindi per ovviare a questo problema, le associazioni subiscono un processo di \textbf{reificazione} che comporta la trasformazione dell'associazione \texttt{N-N} in un'entità che sarà connessa con due associazioni \texttt{1-1} alle entità che prima collegava.\\ \\
+Qui elencate troviamo le associazioni che sono state reificate:
+\begin{itemize}
+    \item Contenuto
+    \item Tragitto
+    \item Sostituzione
+    \item Controllo
+\end{itemize}
+
+\subsection{Scelta degli identificatori principali}
+Tutte le entità del nostro dominio sono già dotate dei loro identificatori principali naturali.
+Per comodità ne sostituiamo alcuni con un semplice codice (lasciando comunque il vincolo di unicità su quelli esistenti) per rendere più semplici le query.\\
+Riportiamo l'elenco delle entità in cui è stata effettuata quest'aggiunta:
+\begin{itemize}
+    \item Fermata
+    \item Hub mobilità
+    \item Orario linea
+    \item Causale multa
+    \item Attuazione Corsa
+\end{itemize}
+
+\section{Schema relazionale finale}
+A questo punto tutti i problemi sono stati risolti, e il nostro schema ristrutturato è direttamente traducibile in delle relazioni.
 \chapter{Progettazione dell'Applicazione}
 \end{document}
