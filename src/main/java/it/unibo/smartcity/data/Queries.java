@@ -45,6 +45,40 @@ public final class Queries {
         SELECT *
         FROM TARIFFE_ABBONAMENTI;
         """;
+    //OPERAZIONE 12
+    public static final String CINQUE_MANUT_PIU_GRAVOSE =
+    """
+
+    """;
+    //OPERAZIONE 14
+    public static final String LINEA_MAGGIOR_TEMP_PERCORR =
+    // ho scelto di utilizzare in ORDER BY seguita da una LIMIT
+    // per motivi di efficienza.
+    """
+        SELECT codice_linea, tempo_percorrenza
+        FROM LINEE
+        ORDER BY tempo_percorrenza DESC
+        LIMIT 1
+    """;
+    //OPERAZIONE 17
+    public static final String AZIENDE_NO_MANUT_ULTIMO_MESE =
+        //ho scelto di utilizzare il NOT IN in quanto ignora i valori
+        //a NULL, che possono essere presenti quando selezioniamo le
+        //p_iva nelle query innestate.
+        """
+        SELECT a.p_iva, a.ragione_sociale
+        FROM AZIENDE a
+        WHERE a.p_iva NOT IN (
+            SELECT DISTINCT mm.p_iva
+            FROM MANUTENZIONI_MEZZI mm
+            WHERE mm.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
+            )
+        AND a.p_iva NOT IN (
+            SELECT DISTINCT ml.p_iva
+            FROM MANUTENZIONI_LINEE ml
+            WHERE ml.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
+            );
+    """;
     /*
      * ALTRE QUERY
      */
