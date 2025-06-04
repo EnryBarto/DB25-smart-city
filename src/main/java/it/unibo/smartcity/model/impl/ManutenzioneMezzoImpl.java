@@ -22,13 +22,13 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
     private Optional<String> pIva;
 
     public ManutenzioneMezzoImpl(String nImmatricolazione, Date dataInzio, Date dataFine, String nome,
-            String descrizione, Optional<String> pIva) {
+            String descrizione, String pIva) {
         this.nImmatricolazione = nImmatricolazione;
         this.dataInzio = dataInzio;
         this.dataFine = dataFine;
         this.nome = nome;
         this.descrizione = descrizione;
-        this.pIva = pIva;
+        this.pIva = Optional.of(pIva);
     }
 
     @Override
@@ -146,7 +146,7 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
                         rs.getDate("data_fine"),
                         rs.getString("nome"),
                         rs.getString("descrizione"),
-                        Optional.of(rs.getString("p_iva"))
+                        rs.getString("p_iva")
                         );
                     manutenzioniMezzi.add(manutenzioneMezzo);
                 }

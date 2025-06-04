@@ -4,18 +4,24 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.google.common.base.Preconditions;
+
 import it.unibo.smartcity.data.*;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 
 public class AttuazioneCorsaImpl implements AttuazioneCorsa {
 
-    private int codiceCorsa;
-    private Date data;
-    private int codiceOrario;
-    private String nImmatricolazione;
-    private String username;
+    private final int codiceCorsa;
+    private final Date data;
+    private final int codiceOrario;
+    private final String nImmatricolazione;
+    private final String username;
 
     public AttuazioneCorsaImpl(int codiceCorsa, Date data, int codiceOrario, String nImmatricolazione, String username) {
+        Preconditions.checkNotNull(codiceCorsa);
+        Preconditions.checkNotNull(data);
+
         this.codiceCorsa = codiceCorsa;
         this.data = data;
         this.codiceOrario = codiceOrario;

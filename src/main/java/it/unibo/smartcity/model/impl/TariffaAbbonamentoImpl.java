@@ -1,9 +1,11 @@
 package it.unibo.smartcity.model.impl;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.common.base.Preconditions;
+
 import it.unibo.smartcity.data.*;
 import it.unibo.smartcity.model.api.TariffaAbbonamento;
 
@@ -11,9 +13,13 @@ public class TariffaAbbonamentoImpl implements TariffaAbbonamento {
 
     private final String nome;
     private final int num_giorni;
-    private final BigDecimal prezzo;
+    private final Double prezzo;
 
-    public TariffaAbbonamentoImpl(String nome, int num_giorni, BigDecimal prezzo) {
+    public TariffaAbbonamentoImpl(String nome, int num_giorni, Double prezzo) {
+        Preconditions.checkArgument(!nome.isBlank());
+        Preconditions.checkNotNull(num_giorni);
+        Preconditions.checkNotNull(prezzo);
+
         this.nome = nome;
         this.num_giorni = num_giorni;
         this.prezzo = prezzo;
@@ -76,7 +82,7 @@ public class TariffaAbbonamentoImpl implements TariffaAbbonamento {
     }
 
     @Override
-    public BigDecimal getPrezzo() {
+    public Double getPrezzo() {
         return prezzo;
     }
 
@@ -92,7 +98,7 @@ public class TariffaAbbonamentoImpl implements TariffaAbbonamento {
                     var tariffa = new TariffaAbbonamentoImpl(
                         rs.getString("nome"),
                         rs.getInt("num_giorni"),
-                        rs.getBigDecimal("prezzo")
+                        rs.getDouble("prezzo")
                         );
                     tariffe.add(tariffa);
                 }

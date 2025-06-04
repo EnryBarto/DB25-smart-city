@@ -2,6 +2,9 @@ package it.unibo.smartcity.data;
 
 public final class Queries {
 
+    /*
+     * QUERY DI SVITOL <3
+     */
     public static final String LIST_ABBONAMENTI =
         """
         SELECT *
@@ -42,4 +45,7 @@ public final class Queries {
         SELECT *
         FROM TARIFFE_ABBONAMENTI;
         """;
+    /*
+     * ALTRE QUERY
+     */
 }

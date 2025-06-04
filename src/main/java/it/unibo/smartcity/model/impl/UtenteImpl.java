@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Preconditions;
+
 import it.unibo.smartcity.data.*;
 import it.unibo.smartcity.model.api.Utente;
 
@@ -16,6 +18,12 @@ public class UtenteImpl extends PersonaImpl implements Utente {
 
     public UtenteImpl(String cognome, String nome, String documento, String codiceFiscale, String username,String email, String telefono, String password) {
         super(cognome, nome, documento, codiceFiscale);
+
+        Preconditions.checkArgument(!username.isBlank());
+        Preconditions.checkArgument(!email.isBlank());
+        Preconditions.checkArgument(!telefono.isBlank());
+        Preconditions.checkArgument(!password.isBlank());
+
         this.username = username;
         this.email = email;
         this.telefono = telefono;

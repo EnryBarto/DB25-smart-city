@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Preconditions;
+
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.Printer;
@@ -17,6 +19,10 @@ public class TariffaBigliettoImpl implements TariffaBiglietto {
     private double prezzo;
 
     public TariffaBigliettoImpl(String nome, int durata, double prezzo) {
+        Preconditions.checkArgument(!nome.isBlank());
+        Preconditions.checkNotNull(durata);
+        Preconditions.checkNotNull(prezzo);
+
         this.nome = nome;
         this.durata = durata;
         this.prezzo = prezzo;

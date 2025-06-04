@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.google.common.base.Preconditions;
+
 import it.unibo.smartcity.data.*;
 import it.unibo.smartcity.model.api.Abbonamento;
 
@@ -16,6 +19,9 @@ public final class AbbonamentoImpl implements Abbonamento {
     private final String username;
 
     public AbbonamentoImpl(Date dataInizio, int codiceAbbonamento, Date dataAcquisto, int numGiorni, String username) {
+        Preconditions.checkNotNull(dataInizio);
+        Preconditions.checkNotNull(codiceAbbonamento);
+        Preconditions.checkNotNull(dataAcquisto);
 
         this.dataInizio = dataInizio;
         this.codiceAbbonamento = codiceAbbonamento;

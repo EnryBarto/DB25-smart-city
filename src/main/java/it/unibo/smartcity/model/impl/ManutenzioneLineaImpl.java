@@ -22,13 +22,13 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
     private Optional<String> pIva;
 
     public ManutenzioneLineaImpl(String codiceLinea, Date dataInizio, Date dataFine, String nome, String descrizione,
-            Optional<String> pIva) {
+            String pIva) {
         this.codiceLinea = codiceLinea;
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
         this.nome = nome;
         this.descrizione = descrizione;
-        this.pIva = pIva;
+        this.pIva = Optional.of(pIva);
     }
 
     @Override
@@ -145,7 +145,7 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
                         rs.getDate("data_fine"),
                         rs.getString("nome"),
                         rs.getString("descrizione"),
-                        Optional.of(rs.getString("p_iva"))
+                        rs.getString("p_iva")
                         );
                     manutenzioniLinee.add(manutenzioneLinea);
                 }
