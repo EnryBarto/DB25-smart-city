@@ -1,19 +1,23 @@
 package it.unibo.smartcity.model.impl;
 
-public class TipologiaMezzo {
+import it.unibo.smartcity.model.api.TipologiaMezzo;
+
+public class TipologiaMezzoImpl implements TipologiaMezzo  {
 
     private final int codiceTipoMezzo;
     private final String nome;
 
-    public TipologiaMezzo(int codiceTipoMezzo, String nome) {
+    public TipologiaMezzoImpl(int codiceTipoMezzo, String nome) {
         this.codiceTipoMezzo = codiceTipoMezzo;
         this.nome = nome;
     }
 
+    @Override
     public int getCodiceTipoMezzo() {
         return codiceTipoMezzo;
     }
 
+    @Override
     public String getNome() {
         return nome;
     }
