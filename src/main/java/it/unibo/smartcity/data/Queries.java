@@ -14,9 +14,32 @@ public final class Queries {
         FROM ATTUAZIONI_CORSE;
         """;
 
-    public static final String LIST_UTENTI =
+    public static final String SELECT_UTENTE =
         """
-        SELECT u.username, u.documento, u.email, u.telefono
+        SELECT *
         FROM UTENTI u
+        JOIN PERSONE p on u.documento = p.documento
+        WHERE u.username = ?;
+        """;
+
+    public static final String LIST_MEZZI =
+        """
+        SELECT *
+        FROM MEZZI;
+        """;
+    public static final String LIST_MANUTENZIONI_LINEE =
+        """
+        SELECT *
+        FROM MANUTENZIONI_LINEE;
+        """;
+    public static final String LIST_MANUTENZIONI_MEZZI =
+        """
+        SELECT *
+        FROM MANUTENZIONI_MEZZI ;
+        """;
+    public static final String LIST_TARIFFE_ABBONAMENTI =
+        """
+        SELECT *
+        FROM TARIFFE_ABBONAMENTI;
         """;
 }
