@@ -115,7 +115,7 @@ create table LINEE (
      tempo_percorrenza int not null,
      inizio_validita date,
      fine_validita date,
-     attiva char,
+     attiva boolean,
      codice_tipo_mezzo int not null,
      constraint ID_LINEA_ID primary key (codice_linea));
 
