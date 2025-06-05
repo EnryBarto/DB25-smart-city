@@ -47,12 +47,17 @@ public final class Queries {
         """;
     //OPERAZIONE 12
     public static final String CINQUE_MANUT_PIU_GRAVOSE =
+    //il controllo dei punteggi si farà a livello applicativo
     """
-
+    SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_inizio, ml.data_fine) AS durata_lavoro,
+        COUNT(*) AS num_linee_sostitutive
+    FROM MANUTENZIONI_LINEE ml
+    JOIN SOSTITUZIONI s ON ml.codice_linea = s.sost_manut_codice_linea
+    GROUP BY ml.codice_linea, ml.data_inizio, ml.nome
     """;
     //OPERAZIONE 14
     public static final String LINEA_MAGGIOR_TEMP_PERCORR =
-    // ho scelto di utilizzare in ORDER BY seguita da una LIMIT
+    // ho scelto di utilizzare un ORDER BY seguita da una LIMIT
     // per motivi di efficienza.
     """
         SELECT codice_linea, tempo_percorrenza

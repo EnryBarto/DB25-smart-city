@@ -12,7 +12,10 @@ import it.unibo.smartcity.data.Printer;
 import it.unibo.smartcity.data.Queries;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 
+
 public class ManutenzioneLineaImpl implements ManutenzioneLinea {
+
+    public record ManutenzioneGravosa(String codiceLinea, String nome, int durata_lavoro, int numLineeSostitutive, int punteggio) {}
 
     private String codiceLinea;
     private Date dataInizio;
@@ -155,5 +158,28 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
             }
             return manutenzioniLinee;
         }
+
+        public static ArrayList<ManutenzioneGravosa> estrazManutPiuGravose(Connection connection) {
+            var manutenzioni = new ArrayList<ManutenzioneGravosa>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.CINQUE_MANUT_PIU_GRAVOSE);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var durLav= rs.getInt("durata_lavoro");
+                    var numLinSost = rs.getInt("num_linee_sostitutive");
+                    var punteggio = durLav % 3 + numLinSost * 5;
+                    manutenzioni.add(new ManutenzioneGravosa(
+                        rs.getString("codice_linea"),
+                        rs.getString("nome"),
+                        durLav,numLinSost, punteggio
+                    ));
+                }
+            } catch (Exception e) {
+                throw new DAOException("Failed to extract manutenzioni più gravose", e);
+            }
+            return manutenzioni;
+        }
     }
+
 }
