@@ -98,6 +98,30 @@ public class UtenteImpl extends PersonaImpl implements Utente {
             }
             return utenti;
         }
+
+        public static void insert(Connection connection, UtenteImpl utente) {
+            Preconditions.checkNotNull(connection);
+            Preconditions.checkNotNull(utente);
+
+            try (
+                var statement = DAOUtils.prepare(
+                    connection,
+                    Queries.INSERT_USE,
+                    utente.getNome(),
+                    utente.getCognome(),
+                    utente.getDocumento(),
+                    utente.getCodiceFiscale(),
+                    utente.getTelefono(),
+                    utente.getEmail(),
+                    utente.getUsername(),
+                    utente.getPassword()
+                );
+            ) {
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Failed to insert Utente", e);
+            }
+        }
     }
 
 }

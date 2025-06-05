@@ -24,7 +24,11 @@ public final class Queries {
         JOIN PERSONE p on u.documento = p.documento
         WHERE u.username = ?;
         """;
-
+    public static final String INSERT_USE =
+    """
+        INSERT INTO UTENTI (nome, cognome, documento, codice_fiscale, telefono, email, username, password)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+    """;
     public static final String LIST_MEZZI =
         """
         SELECT *
@@ -41,20 +45,22 @@ public final class Queries {
         FROM MANUTENZIONI_MEZZI ;
         """;
     public static final String LIST_TARIFFE_ABBONAMENTI =
-        """
+    """
         SELECT *
         FROM TARIFFE_ABBONAMENTI;
-        """;
+    """;
+
     //OPERAZIONE 12
     public static final String CINQUE_MANUT_PIU_GRAVOSE =
     //il controllo dei punteggi si farà a livello applicativo
     """
-    SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_inizio, ml.data_fine) AS durata_lavoro,
-        COUNT(*) AS num_linee_sostitutive
-    FROM MANUTENZIONI_LINEE ml
-    JOIN SOSTITUZIONI s ON ml.codice_linea = s.sost_manut_codice_linea
-    GROUP BY ml.codice_linea, ml.data_inizio, ml.nome
+        SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_inizio, ml.data_fine) AS durata_lavoro,
+            COUNT(*) AS num_linee_sostitutive
+        FROM MANUTENZIONI_LINEE ml
+        JOIN SOSTITUZIONI s ON ml.codice_linea = s.sost_manut_codice_linea
+        GROUP BY ml.codice_linea, ml.data_inizio, ml.nome
     """;
+
     //OPERAZIONE 14
     public static final String LINEA_MAGGIOR_TEMP_PERCORR =
     // ho scelto di utilizzare un ORDER BY seguita da una LIMIT
@@ -65,6 +71,7 @@ public final class Queries {
         ORDER BY tempo_percorrenza DESC
         LIMIT 1
     """;
+
     //OPERAZIONE 17
     public static final String AZIENDE_NO_MANUT_ULTIMO_MESE =
         //ho scelto di utilizzare il NOT IN in quanto ignora i valori
@@ -84,6 +91,7 @@ public final class Queries {
             WHERE ml.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
             );
     """;
+
     /*
      * ALTRE QUERY
      */

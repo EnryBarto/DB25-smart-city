@@ -49,7 +49,7 @@ public class SwingView implements View {
     private void createTabs() {
         this.tabs.put("Linee", new JPanel());
         this.tabs.put("Login", new LoginPanel());
-        this.tabs.put("Registrati", new SignupPanel());
+        this.tabs.put("Registrati", new SignupPanel(controller));
         this.tabs.entrySet().forEach(e -> tabPane.addTab(e.getKey(), e.getValue()));
         this.frame.add(tabPane);
     }
@@ -67,6 +67,5 @@ public class SwingView implements View {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 
 }
