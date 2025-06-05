@@ -1,5 +1,11 @@
 package it.unibo.smartcity.model.impl;
 
+import java.sql.Connection;
+import java.util.HashSet;
+import java.util.Set;
+
+import it.unibo.smartcity.data.DAOException;
+import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.model.api.OrarioLinea;
 
 public class OrarioLineaImpl implements OrarioLinea {
@@ -36,4 +42,26 @@ public class OrarioLineaImpl implements OrarioLinea {
         return codiceLinea;
     }
 
+    public static final class DAO {
+        public static Set<OrarioLinea> list(Connection connection) {
+            var query = "SELECT * FROM orari_linea";
+            var orari = new HashSet<OrarioLinea>();
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var codiceOrario = rs.getInt("codice_orario");
+                    var oraPartenza = rs.getString("ora_partenza");
+                    var giornoSettimanale = rs.getString("giorno_settimanale");
+                    var codiceLinea = rs.getString("codice_linea");
+
+                    orari.add(new OrarioLineaImpl(codiceOrario, oraPartenza, giornoSettimanale, codiceLinea));
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione degli orari delle linee.", e);
+            }
+            return orari;
+        }
+    }
 }

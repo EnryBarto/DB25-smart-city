@@ -2,9 +2,14 @@ package it.unibo.smartcity.model.impl;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import java.sql.Connection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
+import it.unibo.smartcity.data.DAOException;
+import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.model.api.Linea;
 
 public class LineaImpl implements Linea {
@@ -67,5 +72,31 @@ public class LineaImpl implements Linea {
         this.fineValidita.ifPresent(date -> checkArgument(date.before(fineValidita),
                 "La data di fine validità deve essere successiva alla data attuale"));
         this.fineValidita = Optional.of(fineValidita);
+    }
+
+    public static final class DAO {
+        public static Set<Linea> list(Connection connection) {
+            var query = "SELECT * FROM linee";
+            var lines = new HashSet<Linea>();
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var linea = new LineaImpl(
+                        rs.getString("codice_linea"),
+                        rs.getInt("tempo_percorrenza"),
+                        rs.getDate("inizio_validita"),
+                        rs.getDate("fine_validita"),
+                        rs.getBoolean("attiva"),
+                        rs.getInt("codice_tipo_mezzo")
+                    );
+                    lines.add(linea);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione delle linee.", e);
+            }
+            return lines;
+        }
     }
 }

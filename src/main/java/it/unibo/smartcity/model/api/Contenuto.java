@@ -10,4 +10,10 @@ public interface Contenuto {
 
     int getPostiDisponibili();
 
+    void setPostiDisponibili(int postiDisponibili);
+
+    void addPosto();
+
+    void removePosto();
+
 }
