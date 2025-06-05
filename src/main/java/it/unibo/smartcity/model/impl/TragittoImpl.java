@@ -1,5 +1,11 @@
 package it.unibo.smartcity.model.impl;
 
+import java.sql.Connection;
+import java.util.HashSet;
+import java.util.Set;
+
+import it.unibo.smartcity.data.DAOException;
+import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.model.api.Tragitto;
 
 public class TragittoImpl implements Tragitto {
@@ -34,5 +40,29 @@ public class TragittoImpl implements Tragitto {
     @Override
     public int getOrdine() {
         return ordine;
+    }
+
+    public static final class DAO {
+
+        public static Set<Tragitto> list(Connection connection) {
+            var query = "SELECT * FROM tragitti";
+            var tragitti = new HashSet<Tragitto>();
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var partenzaCodiceFermata = rs.getInt("partenza_codice_fermata");
+                    var arrivoCodiceFermata = rs.getInt("arrivo_codice_fermata");
+                    var codiceLinea = rs.getString("codice_linea");
+                    var ordine = rs.getInt("ordine");
+
+                    tragitti.add(new TragittoImpl(partenzaCodiceFermata, arrivoCodiceFermata, codiceLinea, ordine));
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione dei tragitti.", e);
+            }
+            return tragitti;
+        }
     }
 }
