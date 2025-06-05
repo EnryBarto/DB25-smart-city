@@ -1,6 +1,13 @@
 package it.unibo.smartcity.model.impl;
 
+import java.sql.Connection;
+import java.util.HashSet;
+import java.util.Set;
+
+import it.unibo.smartcity.data.DAOException;
+import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.model.api.Fermata;
+
 
 public class FermataImpl implements Fermata {
 
@@ -44,4 +51,29 @@ public class FermataImpl implements Fermata {
         return latitudine;
     }
 
+    public static final class DAO {
+        public static Set<Fermata> list(Connection connection) {
+            var query = "SELECT * FROM fermate";
+            var fermate = new HashSet<Fermata>();
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var fermata = new FermataImpl(
+                        rs.getInt("codice_fermata"),
+                        rs.getString("nome"),
+                        rs.getString("via"),
+                        rs.getInt("CAP"),
+                        rs.getString("longitudine"),
+                        rs.getString("latitudine")
+                    );
+                    fermate.add(fermata);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione delle fermate.", e);
+            }
+            return fermate;
+        }
+    }
 }
