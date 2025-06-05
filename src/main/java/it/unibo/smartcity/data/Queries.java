@@ -49,6 +49,39 @@ public final class Queries {
         SELECT *
         FROM TARIFFE_ABBONAMENTI;
     """;
+    //OPERAZIONE 4
+    public static final String LIST_ORARIO_LINEE_ASSEGN =
+    """
+        SELECT ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale
+        FROM ORARIO_LINEE ol
+        JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
+        WHERE ac.username = ?
+        ORDER BY ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale;
+    """;
+    //OPERAZIONE 6
+    public static final String ESTRAZ_LINEE_PIU_CONVALIDE =
+    """
+        SELECT codice_linea, COUNT()
+        FROM LINEE l
+        JOIN ORARI_LINEE ol ON l.codice_linea = ol.codice_linea
+        JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
+        JOIN CONVALIDE c ON ac.codice_corsa = c.codice_corsa
+        GROUP BY codice_linea
+        ORDER BY COUNT(*) DESC
+        );
+    """;
+
+    //OPERAZIONE 9
+    public static final String LIST_INCASSI =
+    """
+        SELECT sum(tb.prezzo) AS incassi
+        FROM ORARI_LINEE ol
+        JOIN ATTUAZIONI_CORSE ac ON ol.codice_linea = ac.codice_linea
+        JOIN CONVALIDE c ON ac.codice_corsa = c.codice_corsa
+        JOIN BIGLIETTI b ON c.codice_biglietto = b.codice_biglietto
+        JOIN TARIFFE_BIGLIETTI tb ON b.durata = tb.durata
+        WHERE ol.codice_linea = ?
+    """;
 
     //OPERAZIONE 12
     public static final String CINQUE_MANUT_PIU_GRAVOSE =

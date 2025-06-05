@@ -32,6 +32,7 @@ public class ControllerImpl implements Controller {
                 Preconditions.checkArgument(data.get() instanceof SignupData, "Data must be of type SignupData");
                 final SignupData signupData = (SignupData) data.orElseThrow();
                 // call the model to save user data
+                //TODO: get the connection to the database
                 UtenteImpl.DAO.insert(null, new UtenteImpl(
                     signupData.name(),
                     signupData.surname(),
