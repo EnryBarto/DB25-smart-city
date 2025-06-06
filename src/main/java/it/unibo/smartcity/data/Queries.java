@@ -49,6 +49,14 @@ public final class Queries {
         SELECT *
         FROM TARIFFE_ABBONAMENTI;
     """;
+    // OPERAZIONE 3
+    public static final String LIST_HUB_MOBILITA = 
+    """
+        SSELECT h.nome nome_hub, h.indirizzo, h.longitudine, h.latitudine, f.nome nome_fermata, ch.descrizione tipo_contenuto, c.posti_disponibili
+        FROM hub_mobilita h RIGHT JOIN fermate f on (h.codice_fermata = f.codice_fermata) 
+        JOIN contenuti c ON (c.codice_hub = h.codice_hub)
+        JOIN contenuti_hub ch ON (c.codice_contenuto = ch.codice_contenuto);
+    """;
     //OPERAZIONE 4
     public static final String LIST_ORARIO_LINEE_ASSEGN =
     """
@@ -71,6 +79,17 @@ public final class Queries {
         );
     """;
 
+    // OPERAZIONE 8
+    public static final String VARIAZIONE_SERVIZIO_LINEA =
+    """
+        SELECT l.codice_linea codice_linea_in_manutenzione, m.data_inizio, m.data_fine, m.nome, m.descrizione, a.p_iva, a.email, a.telefono, a.ragione_sociale, ls.codice_linea codice_linea_sostituta
+        FROM linee l JOIN manutenzioni_linee m ON (m.codice_linea = l.codice_linea)
+        RIGHT JOIN aziende a ON (m.p_iva = a.p_iva)
+        JOIN sostituzioni s ON (m.codice_linea = s.sost_manut_codice_linea AND m.data_inizio = s.sost_manut_data_inizio)
+        JOIN linee ls ON (ls.codice_linea = s.codice_linea)
+        WHERE l.codice_linea = ?;
+    """;
+
     //OPERAZIONE 9
     public static final String LIST_INCASSI =
     """
@@ -81,6 +100,19 @@ public final class Queries {
         JOIN BIGLIETTI b ON c.codice_biglietto = b.codice_biglietto
         JOIN TARIFFE_BIGLIETTI tb ON b.durata = tb.durata
         WHERE ol.codice_linea = ?
+    """;
+
+    // OPERAZIONE 11
+    public static final String LINEE_PIU_MULTE =
+    """
+        SELECT l.codice_linea, COUNT(*) numero_multe
+        FROM linee l, orari_linee ol, attuazioni_corse ac, multe m
+        WHERE l.codice_linea = ol.codice_linea
+        AND ol.codice_orario = ac.codice_orario
+        AND ac.codice_corsa = m.codice_corsa
+        AND ac.data BETWEEN ? AND ?
+        GROUP BY l.codice_linea
+        ORDER BY numero_multe DESC;
     """;
 
     //OPERAZIONE 12
@@ -94,6 +126,25 @@ public final class Queries {
         GROUP BY ml.codice_linea, ml.data_inizio, ml.nome
     """;
 
+    // OPERAZIONE 13
+    public static final String LINEE_CINQUE_CONTROL_DIECI_MULT =
+    """
+            SELECT l.codice_linea
+            FROM linee l JOIN orari_linee ol ON (l.codice_linea = ol.codice_linea)
+            JOIN attuazioni_corse ac ON (ol.codice_orario = ac.codice_orario)
+            GROUP BY l.codice_linea
+            HAVING COUNT(*) = (SELECT COUNT(DISTINCT ac1.codice_corsa)									# conto attuazioni corsa
+                                FROM linee l1 JOIN orari_linee ol1 ON (l1.codice_linea = ol1.codice_linea)
+                                JOIN attuazioni_corse ac1 ON (ol1.codice_orario = ac1.codice_orario)
+                                WHERE l1.codice_linea = l.codice_linea
+                                AND ac1.codice_corsa IN (SELECT ac2.codice_corsa							# seleziono i giorni in cui ho quelle condizioni
+                                            FROM attuazioni_corse ac2
+                                            RIGHT JOIN controlli c ON (c.codice_corsa = ac2.codice_corsa)
+                                            RIGHT JOIN multe m ON (m.codice_corsa = ac2.codice_corsa)
+                                            GROUP BY ac2.data
+                                            HAVING COUNT(m.codice_multa) <= 10 AND COUNT(c.codice_corsa) > 5));
+            """;
+
     //OPERAZIONE 14
     public static final String LINEA_MAGGIOR_TEMP_PERCORR =
     // ho scelto di utilizzare un ORDER BY seguita da una LIMIT
@@ -103,6 +154,15 @@ public final class Queries {
         FROM LINEE
         ORDER BY tempo_percorrenza DESC
         LIMIT 1
+    """;
+
+    // OPERAZIONE 16
+    public static final String MEDIA_SOLDI_MULTE = 
+    """
+        SELECT AVG(m.importo)
+        FROM multe m, persone p
+        WHERE p.documento = m.codice_multa
+        GROUP BY p.documento;
     """;
 
     //OPERAZIONE 17
@@ -123,6 +183,40 @@ public final class Queries {
             FROM MANUTENZIONI_LINEE ml
             WHERE ml.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
             );
+        """;
+
+    // OPERAZIONE 19 - Da trattare come transaction
+    public static final String AGGIUNGI_VARIAZIONE =
+        """
+            INSERT INTO manutenzioni_linee (codice_linea, data_inizio, data_fine, nome, descrizione, p_iva)
+            VALUES ('A', '2025-06-06', '2025-06-10', 'Aggiornamento', 'Aggiornamento di qualcosa', NULL);
+
+            INSERT INTO sostituzioni (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea)
+            VALUES ('2025-06-06', 'A', 'A-1');
+
+            # to do if data_inizio corresponds with today
+            UPDATE linee
+            SET attiva = False
+            WHERE codice_linea = 'A';
+        """;
+
+    // OPERAZIONE 21
+    public static final String AGGIUNGI_LINEA =
+    """
+        INSERT INTO linee (codice_linea, inizio_validita, fine_validita, attiva, codice_tipo_mezzo)
+        VALUES('L101', '2025-01-01', '2026-12-31', 1, '1');
+
+        INSERT INTO tragitti (partenza_codice_fermata, arrivo_codice_fermata, codice_linea, ordine)
+        VALUES ('F101', 'F202', 'L101', 1); # And so on
+
+        UPDATE linee
+        SET tempo_percorrenza = (SELECT *
+                                FROM tratte trt, tragitti trg, linee l
+                                WHERE l.codice_linea = trg.codice_linea
+                                AND trg.partenza_codice_fermata = trt.partenza_codice_fermata
+                                AND trg.arrivo_codice_fermata = trt.arrivo_codice_fermata
+                                AND l.codice_linea = 'L101')
+        WHERE codice_linea = 'L101';
     """;
 
     /*
