@@ -83,7 +83,7 @@ class SignupPanel extends JPanel {
         this.add(centerPanel, BorderLayout.CENTER);
 
         var signupButton = new JButton("Registrati");
-        //this thing should probably vecome a function dio lupo
+        //this thing should probably vecome a function
         signupButton.addActionListener(e -> {
             // gather input data
             String name = Preconditions.checkNotNull(nameField.getText());

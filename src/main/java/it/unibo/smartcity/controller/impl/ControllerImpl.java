@@ -18,7 +18,6 @@ import it.unibo.smartcity.view.api.View.SignupData;
 public class ControllerImpl implements Controller {
 
     private final Set<View> views = new HashSet<>();
-    //private Set<SmartCityEvent> nextEvents = Set.of(SmartCityEvent.MAIN_MENU);
     private final Connection connection = DAOUtils.localMySQLConnection(ConnectionInfo.DB_NAME, ConnectionInfo.USER, ConnectionInfo.PASSWORD);
 
     @Override
@@ -29,7 +28,6 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void handleEvent(final SmartCityEvent e, final Optional<?> data) {
-        //Preconditions.checkState(this.nextEvents.contains(e), "Invalid event received: " + e.toString());
         switch (e) {
             case MAIN_MENU -> views.forEach(View::showMainMenu);
             case SHOW_LINES -> {
@@ -54,7 +52,6 @@ public class ControllerImpl implements Controller {
             }
             default -> throw new IllegalStateException("Invalid Event received");
         }
-        //this.nextEvents = e.getNextPossibleEvents();
     }
 
 }

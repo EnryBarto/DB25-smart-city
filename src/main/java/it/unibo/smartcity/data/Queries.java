@@ -49,6 +49,25 @@ public final class Queries {
         SELECT *
         FROM TARIFFE_ABBONAMENTI;
     """;
+
+    // OPERAZIONE 1
+    public static final String LIST_LINEE_ATTIVE =
+    """
+        SELECT L.codice_linea, L.tempo_percorrenza, M.nome AS \"tipo_mezzo\", F1.nome as \"fermata_partenza\", F2.nome as \"fermata_arrivo\"
+        FROM linee L
+        JOIN tipologie_mezzi M ON L.codice_tipo_mezzo = M.codice_tipo_mezzo
+        JOIN tragitti TRA1 on TRA1.codice_linea = L.codice_linea
+        JOIN tratte TR1 ON TRA1.partenza_codice_fermata = TR1.partenza_codice_fermata AND TRA1.arrivo_codice_fermata = TR1.arrivo_codice_fermata
+        JOIN fermate F1 ON F1.codice_fermata = TR1.partenza_codice_fermata
+        JOIN tragitti TRA2 on TRA2.codice_linea = L.codice_linea
+        JOIN tratte TR2 ON TRA2.partenza_codice_fermata = TR2.partenza_codice_fermata AND TRA2.arrivo_codice_fermata = TR2.arrivo_codice_fermata
+        JOIN fermate F2 ON F2.codice_fermata = TR2.arrivo_codice_fermata
+        WHERE TRA1.ordine = 1 AND TRA2.ordine =	(SELECT MAX(T1.ordine)
+                                                FROM linee L1 JOIN tragitti T1 ON L1.codice_linea = T1.codice_linea
+                                                WHERE L1.codice_linea = L.codice_linea)
+            AND L.attiva IS TRUE OR (CURDATE() BETWEEN L.inizio_validita AND L.fine_validita)
+    ;""";
+
     // OPERAZIONE 3
     public static final String LIST_HUB_MOBILITA = 
     """

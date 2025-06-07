@@ -22,6 +22,7 @@ class LinesPanel extends JPanel {
         updateButton.addActionListener(e -> {
             controller.handleEvent(SmartCityEvent.SHOW_LINES, null);
         });
+        this.textArea.setEditable(false);
         this.add(updateButton, BorderLayout.NORTH);
         this.add(textArea, BorderLayout.CENTER);
     }

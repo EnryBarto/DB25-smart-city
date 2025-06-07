@@ -1,6 +1,8 @@
 build/
 .gradle/
 
+src/main/java/it/unibo/smartcity/controller/impl/ConnectionInfo.java
+
 # Ignore VSCode settings
 .vscode
 
