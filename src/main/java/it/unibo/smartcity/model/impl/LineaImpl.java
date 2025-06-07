@@ -25,8 +25,8 @@ public class LineaImpl implements Linea {
             int codiceTipoMezzo) {
         this.codiceLinea = codiceLinea;
         this.tempoPercorrenza = tempoPercorrenza;
-        this.inizioValidita = Optional.of(inizioValidita);
-        this.fineValidita = Optional.of(fineValidita);
+        this.inizioValidita = inizioValidita == null ? Optional.empty() : Optional.of(inizioValidita);
+        this.fineValidita = fineValidita == null ? Optional.empty() : Optional.of(fineValidita);
         this.attiva = attiva;
         this.codiceTipoMezzo = codiceTipoMezzo;
     }

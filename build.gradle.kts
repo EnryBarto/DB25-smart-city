@@ -23,6 +23,7 @@ dependencies {
     compileOnly("com.github.spotbugs:spotbugs-annotations:4.8.6")
 
     implementation("com.google.guava:guava:33.4.0-jre")
+    implementation("com.mysql:mysql-connector-j:9.3.0")
 }
 
 application {

@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -15,6 +16,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.view.api.View;
 
 public class SwingView implements View {
@@ -47,7 +49,7 @@ public class SwingView implements View {
     }
 
     private void createTabs() {
-        this.tabs.put("Linee", new JPanel());
+        this.tabs.put("Linee", new LinesPanel(controller));
         this.tabs.put("Login", new LoginPanel());
         this.tabs.put("Registrati", new SignupPanel(controller));
         this.tabs.entrySet().forEach(e -> tabPane.addTab(e.getKey(), e.getValue()));
@@ -66,6 +68,11 @@ public class SwingView implements View {
             ) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    @Override
+    public void showLines(Set<Linea> linee) {
+        linee.forEach(l -> ((LinesPanel)tabs.get("Linee")).updateLines(linee));
     }
 
 }

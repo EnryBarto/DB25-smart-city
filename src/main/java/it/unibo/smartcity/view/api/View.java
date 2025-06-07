@@ -1,5 +1,9 @@
 package it.unibo.smartcity.view.api;
 
+import java.util.Set;
+
+import it.unibo.smartcity.model.api.Linea;
+
 public interface View {
 
     public record  SignupData(
@@ -13,5 +17,6 @@ public interface View {
         String password
     ) {}
     void showMainMenu();
+    void showLines(Set<Linea> linee);
 
 }
