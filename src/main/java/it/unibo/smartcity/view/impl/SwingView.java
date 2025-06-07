@@ -16,7 +16,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import it.unibo.smartcity.controller.api.Controller;
-import it.unibo.smartcity.model.api.Linea;
+import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.view.api.View;
 
 public class SwingView implements View {
@@ -71,7 +71,7 @@ public class SwingView implements View {
     }
 
     @Override
-    public void showLines(Set<Linea> linee) {
+    public void showLines(Set<InfoLinea> linee) {
         linee.forEach(l -> ((LinesPanel)tabs.get("Linee")).updateLines(linee));
     }
 

@@ -10,7 +10,7 @@ import com.google.common.base.Preconditions;
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.controller.api.SmartCityEvent;
 import it.unibo.smartcity.data.DAOUtils;
-import it.unibo.smartcity.model.impl.LineaImpl;
+import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.model.impl.UtenteImpl;
 import it.unibo.smartcity.view.api.View;
 import it.unibo.smartcity.view.api.View.SignupData;
@@ -30,10 +30,7 @@ public class ControllerImpl implements Controller {
     public void handleEvent(final SmartCityEvent e, final Optional<?> data) {
         switch (e) {
             case MAIN_MENU -> views.forEach(View::showMainMenu);
-            case SHOW_LINES -> {
-                var linee = LineaImpl.DAO.list(connection);
-                views.forEach(v -> v.showLines(linee));
-            }
+            case SHOW_LINES -> views.forEach(v -> v.showLines(InfoLinea.DAO.list(connection)));
             case SIGNUP -> {
                 Preconditions.checkArgument(data.get() instanceof SignupData, "Data must be of type SignupData");
                 final SignupData signupData = (SignupData) data.orElseThrow();

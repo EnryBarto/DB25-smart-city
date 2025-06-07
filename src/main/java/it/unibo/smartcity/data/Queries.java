@@ -53,7 +53,7 @@ public final class Queries {
     // OPERAZIONE 1
     public static final String LIST_LINEE_ATTIVE =
     """
-        SELECT L.codice_linea, L.tempo_percorrenza, M.nome AS \"tipo_mezzo\", F1.nome as \"fermata_partenza\", F2.nome as \"fermata_arrivo\"
+        SELECT *
         FROM linee L
         JOIN tipologie_mezzi M ON L.codice_tipo_mezzo = M.codice_tipo_mezzo
         JOIN tragitti TRA1 on TRA1.codice_linea = L.codice_linea
@@ -69,10 +69,10 @@ public final class Queries {
     ;""";
 
     // OPERAZIONE 3
-    public static final String LIST_HUB_MOBILITA = 
+    public static final String LIST_HUB_MOBILITA =
     """
         SSELECT h.nome nome_hub, h.indirizzo, h.longitudine, h.latitudine, f.nome nome_fermata, ch.descrizione tipo_contenuto, c.posti_disponibili
-        FROM hub_mobilita h RIGHT JOIN fermate f on (h.codice_fermata = f.codice_fermata) 
+        FROM hub_mobilita h RIGHT JOIN fermate f on (h.codice_fermata = f.codice_fermata)
         JOIN contenuti c ON (c.codice_hub = h.codice_hub)
         JOIN contenuti_hub ch ON (c.codice_contenuto = ch.codice_contenuto);
     """;
@@ -176,7 +176,7 @@ public final class Queries {
     """;
 
     // OPERAZIONE 16
-    public static final String MEDIA_SOLDI_MULTE = 
+    public static final String MEDIA_SOLDI_MULTE =
     """
         SELECT AVG(m.importo)
         FROM multe m, persone p

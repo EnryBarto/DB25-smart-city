@@ -2,7 +2,7 @@ package it.unibo.smartcity.view.api;
 
 import java.util.Set;
 
-import it.unibo.smartcity.model.api.Linea;
+import it.unibo.smartcity.data.InfoLinea;
 
 public interface View {
 
@@ -17,6 +17,6 @@ public interface View {
         String password
     ) {}
     void showMainMenu();
-    void showLines(Set<Linea> linee);
+    void showLines(Set<InfoLinea> linee);
 
 }
