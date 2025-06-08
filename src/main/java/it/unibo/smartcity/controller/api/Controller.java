@@ -17,4 +17,6 @@ public interface Controller {
 
     void showTimetable(String linea);
 
+    void updateHubsList();
+
 }
