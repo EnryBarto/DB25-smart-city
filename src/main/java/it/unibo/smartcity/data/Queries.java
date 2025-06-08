@@ -71,7 +71,7 @@ public final class Queries {
     // OPERAZIONE 3
     public static final String LIST_HUB_MOBILITA =
     """
-        SSELECT h.nome nome_hub, h.indirizzo, h.longitudine, h.latitudine, f.nome nome_fermata, ch.descrizione tipo_contenuto, c.posti_disponibili
+        SELECT h.codice_hub, h.nome nome_hub, h.indirizzo, h.longitudine, h.latitudine, h.codice_fermata, f.nome nome_fermata, ch.descrizione tipo_contenuto, c.posti_disponibili
         FROM hub_mobilita h RIGHT JOIN fermate f on (h.codice_fermata = f.codice_fermata)
         JOIN contenuti c ON (c.codice_hub = h.codice_hub)
         JOIN contenuti_hub ch ON (c.codice_contenuto = ch.codice_contenuto);
