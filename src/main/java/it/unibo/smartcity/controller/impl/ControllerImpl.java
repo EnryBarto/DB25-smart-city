@@ -13,6 +13,7 @@ import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.InfoLinea;
+import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.impl.LineaImpl;
 import it.unibo.smartcity.model.impl.UtenteImpl;
 import it.unibo.smartcity.view.api.View;
@@ -102,6 +103,11 @@ public class ControllerImpl implements Controller {
     @Override
     public void showTimetable(String linea) {
         views.forEach(v -> v.showLineTimetable(linea));
+    }
+
+    @Override
+    public void updateHubsList() {
+        views.forEach(v -> v.updateHubsList(ListHubMobilita.DAO.get(connection)));
     }
 
 }
