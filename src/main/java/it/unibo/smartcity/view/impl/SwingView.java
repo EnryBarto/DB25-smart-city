@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -19,6 +20,7 @@ import javax.swing.event.ChangeListener;
 
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.data.InfoLinea;
+import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.view.api.View;
 
@@ -56,6 +58,7 @@ public class SwingView implements View {
     private void createTabs() {
         this.tabs.put("Linee", new LinesPanel(controller));
         this.tabs.put("Orari", new TimetablePanel(controller));
+        this.tabs.put("Hub", new HubMobilityPanel());
         this.tabs.put("Login", new LoginPanel());
         this.tabs.put("Registrati", new SignupPanel(controller));
         this.tabs.entrySet().forEach(e -> tabPane.addTab(e.getKey(), e.getValue()));
@@ -71,6 +74,8 @@ public class SwingView implements View {
                     case "Linee":
                         controller.updateLinesList();
                         break;
+                    case "Hub":
+                        controller.updateHubsList();
                 }
             }
         });
@@ -106,6 +111,11 @@ public class SwingView implements View {
         this.tabPane.setSelectedComponent(this.tabs.get("Orari"));
         ((TimetablePanel)this.tabs.get("Orari")).showLineTimetable(codLinea);
         // TODO: Mostra l'orario della linea scelta
+    }
+
+    @Override
+    public void updateHubsList(Set<ListHubMobilita> set) {
+        ((HubMobilityPanel)this.tabs.get("Hub")).updateHubs(set);
     }
 
 }

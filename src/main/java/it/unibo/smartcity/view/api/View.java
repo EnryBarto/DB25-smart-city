@@ -1,8 +1,10 @@
 package it.unibo.smartcity.view.api;
 
 import java.util.List;
+import java.util.Set;
 
 import it.unibo.smartcity.data.InfoLinea;
+import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 
 public interface View {
@@ -21,5 +23,6 @@ public interface View {
     void updateLinesList(List<InfoLinea> linee);
     void updateTimetableLinesList(List<Linea> list);
     void showLineTimetable(String codLinea);
+    void updateHubsList(Set<ListHubMobilita> set);
 
 }
