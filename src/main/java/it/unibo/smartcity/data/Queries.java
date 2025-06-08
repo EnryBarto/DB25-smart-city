@@ -66,6 +66,7 @@ public final class Queries {
                                                 FROM linee L1 JOIN tragitti T1 ON L1.codice_linea = T1.codice_linea
                                                 WHERE L1.codice_linea = L.codice_linea)
             AND L.attiva IS TRUE OR (CURDATE() BETWEEN L.inizio_validita AND L.fine_validita)
+        ORDER BY L.codice_linea
     ;""";
 
     // OPERAZIONE 3

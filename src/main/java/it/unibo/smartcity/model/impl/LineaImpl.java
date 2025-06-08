@@ -4,9 +4,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.sql.Connection;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
@@ -75,9 +75,9 @@ public class LineaImpl implements Linea {
     }
 
     public static final class DAO {
-        public static Set<Linea> list(Connection connection) {
-            var query = "SELECT * FROM linee";
-            var lines = new HashSet<Linea>();
+        public static List<Linea> list(Connection connection) {
+            var query = "SELECT * FROM linee ORDER BY codice_linea";
+            var lines = new LinkedList<Linea>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
                 var rs = statement.executeQuery();

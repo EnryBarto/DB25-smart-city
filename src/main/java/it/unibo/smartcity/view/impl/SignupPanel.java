@@ -1,7 +1,6 @@
 package it.unibo.smartcity.view.impl;
 
 import java.awt.BorderLayout;
-import java.util.Optional;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -13,7 +12,6 @@ import javax.swing.JTextField;
 import com.google.common.base.Preconditions;
 
 import it.unibo.smartcity.controller.api.Controller;
-import it.unibo.smartcity.controller.api.SmartCityEvent;
 import it.unibo.smartcity.view.api.View.SignupData;
 
 class SignupPanel extends JPanel {
@@ -126,7 +124,7 @@ class SignupPanel extends JPanel {
             SignupData data = new SignupData(
                 name, surname, documento, cf, tel, email, username, password
             );
-            this.controller.handleEvent(SmartCityEvent.SIGNUP, Optional.of(data));
+            this.controller.signup(data);
         });
         this.add(signupButton, BorderLayout.SOUTH);
     }

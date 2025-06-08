@@ -10,8 +10,8 @@ import it.unibo.smartcity.model.impl.TipologiaMezzoImpl;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 public record InfoLinea(Linea linea, TipologiaMezzo mezzo, Fermata partenza, Fermata arrivo) {
 
@@ -23,9 +23,9 @@ public record InfoLinea(Linea linea, TipologiaMezzo mezzo, Fermata partenza, Fer
     }
 
     public static final class DAO {
-        public static Set<InfoLinea> list(Connection connection) {
+        public static List<InfoLinea> list(Connection connection) {
             var query = Queries.LIST_LINEE_ATTIVE;
-            var lines = new HashSet<InfoLinea>();
+            var lines = new LinkedList<InfoLinea>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
                 var rs = statement.executeQuery();

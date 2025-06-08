@@ -1,10 +1,12 @@
 package it.unibo.smartcity.view.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -12,11 +14,12 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.data.InfoLinea;
+import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.view.api.View;
 
 public class SwingView implements View {
@@ -46,14 +49,32 @@ public class SwingView implements View {
     @Override
     public void showMainMenu() {
         this.frame.setVisible(true);
+        controller.updateLinesList();
+        controller.updateTimetableLinesList();
     }
 
     private void createTabs() {
         this.tabs.put("Linee", new LinesPanel(controller));
+        this.tabs.put("Orari", new TimetablePanel(controller));
         this.tabs.put("Login", new LoginPanel());
         this.tabs.put("Registrati", new SignupPanel(controller));
         this.tabs.entrySet().forEach(e -> tabPane.addTab(e.getKey(), e.getValue()));
         this.frame.add(tabPane);
+
+        tabPane.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                int selectedIndex = tabPane.getSelectedIndex();
+                switch (tabPane.getTitleAt(selectedIndex)) {
+                    case "Orari":
+                        controller.updateTimetableLinesList();
+                        break;
+                    case "Linee":
+                        controller.updateLinesList();
+                        break;
+                }
+            }
+        });
+
     }
 
     private void setLookAndFeel() {
@@ -71,8 +92,20 @@ public class SwingView implements View {
     }
 
     @Override
-    public void showLines(Set<InfoLinea> linee) {
+    public void updateLinesList(List<InfoLinea> linee) {
         linee.forEach(l -> ((LinesPanel)tabs.get("Linee")).updateLines(linee));
+    }
+
+    @Override
+    public void updateTimetableLinesList(List<Linea> list) {
+        ((TimetablePanel)this.tabs.get("Orari")).updateLinesList(list);
+    }
+
+    @Override
+    public void showLineTimetable(String codLinea) {
+        this.tabPane.setSelectedComponent(this.tabs.get("Orari"));
+        ((TimetablePanel)this.tabs.get("Orari")).showLineTimetable(codLinea);
+        // TODO: Mostra l'orario della linea scelta
     }
 
 }

@@ -1,6 +1,5 @@
 package it.unibo.smartcity;
 
-import it.unibo.smartcity.controller.api.SmartCityEvent;
 import it.unibo.smartcity.controller.impl.ControllerImpl;
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.view.impl.SwingView;
@@ -22,6 +21,6 @@ final class LaunchApp {
         final Controller controller = new ControllerImpl();
         final View view = new SwingView(controller);
         controller.attachView(view);
-        controller.handleEvent(SmartCityEvent.MAIN_MENU, null);
+        controller.showMainMenu();
     }
 }

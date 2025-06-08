@@ -1,8 +1,9 @@
 package it.unibo.smartcity.view.api;
 
-import java.util.Set;
+import java.util.List;
 
 import it.unibo.smartcity.data.InfoLinea;
+import it.unibo.smartcity.model.api.Linea;
 
 public interface View {
 
@@ -17,6 +18,8 @@ public interface View {
         String password
     ) {}
     void showMainMenu();
-    void showLines(Set<InfoLinea> linee);
+    void updateLinesList(List<InfoLinea> linee);
+    void updateTimetableLinesList(List<Linea> list);
+    void showLineTimetable(String codLinea);
 
 }

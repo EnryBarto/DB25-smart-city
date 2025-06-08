@@ -1,5 +1,6 @@
 build/
 .gradle/
+bin/
 
 src/main/java/it/unibo/smartcity/controller/impl/ConnectionInfo.java
 

@@ -1,13 +1,20 @@
 package it.unibo.smartcity.controller.api;
 
-import java.util.Optional;
-
 import it.unibo.smartcity.view.api.View;
+import it.unibo.smartcity.view.api.View.SignupData;
 
 public interface Controller {
 
     void attachView(View v);
 
-    void handleEvent(SmartCityEvent e, Optional<?> data);
+    void showMainMenu();
+
+    void updateLinesList();
+
+    void signup(SignupData data);
+
+    void updateTimetableLinesList();
+
+    void showTimetable(String linea);
 
 }
