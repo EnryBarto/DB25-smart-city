@@ -69,10 +69,29 @@ public final class Queries {
         ORDER BY L.codice_linea
     ;""";
 
+    // OPERAZIONE 2
+    public static final String LIST_FERMATE_UNA_LINEA =
+    """
+        SELECT t.codice_linea, t.arrivo_codice_fermata, t.partenza_codice_fermata,
+            t.ordine, f.nome, f.via, tr.tempo_percorrenza
+        FROM TRAGITTI t
+        JOIN TRATTE tr ON t.partenza_codice_fermata = tr.partenza_codice_fermata AND t.arrivo_codice_fermata = tr.arrivo_codice_fermata
+        JOIN FERMATE f ON t.arrivo_codice_fermata = f.codice_fermata
+        WHERE t.codice_linea = ?
+    """;
+    // OPERAZIONE 2 BIS
+    public static final String LIST_ORARI_UNA_LINEA =
+    """
+        SELECT ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale, ac.data
+        FROM ORARI_LINEE ol
+        JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
+        WHERE ol.codice_linea = ?
+    """;
+
     // OPERAZIONE 3
     public static final String LIST_HUB_MOBILITA =
     """
-        SSELECT h.nome nome_hub, h.indirizzo, h.longitudine, h.latitudine, f.nome nome_fermata, ch.descrizione tipo_contenuto, c.posti_disponibili
+        SELECT h.nome nome_hub, h.indirizzo, h.longitudine, h.latitudine, f.nome nome_fermata, ch.descrizione tipo_contenuto, c.posti_disponibili
         FROM hub_mobilita h RIGHT JOIN fermate f on (h.codice_fermata = f.codice_fermata)
         JOIN contenuti c ON (c.codice_hub = h.codice_hub)
         JOIN contenuti_hub ch ON (c.codice_contenuto = ch.codice_contenuto);

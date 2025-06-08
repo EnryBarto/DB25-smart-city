@@ -82,8 +82,7 @@ public class ControllerImpl implements Controller {
     public void signup(SignupData signupData) {
         Preconditions.checkNotNull(signupData);
         // call the model to save user data
-        //TODO: get the connection to the database
-        UtenteImpl.DAO.insert(null, new UtenteImpl(
+        UtenteImpl.DAO.insert(this.connection, new UtenteImpl(
             signupData.name(),
             signupData.surname(),
             signupData.document(),
