@@ -3,13 +3,17 @@ package it.unibo.smartcity.model.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
+import it.unibo.smartcity.data.Queries;
 import it.unibo.smartcity.model.api.Linea;
 
 public class LineaImpl implements Linea {
@@ -97,6 +101,83 @@ public class LineaImpl implements Linea {
                 throw new DAOException("Errore nell'estrazione delle linee.", e);
             }
             return lines;
+        }
+
+        public static Map<Date, OrarioLineaImpl> listOrari(Connection connection, String codiceLinea) {
+            var orari = new HashMap<Date, OrarioLineaImpl>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_ORARI_UNA_LINEA, codiceLinea);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var orarioLinea = new OrarioLineaImpl(
+                        rs.getInt("codice_orario"),
+                        rs.getString("ora_partenza"),
+                        rs.getString("giorno_settimanale"),
+                        rs.getString("codice_linea")
+                    );
+                    var data = rs.getDate("data");
+                    orari.put(data, orarioLinea);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione degli orari delle linee.", e);
+            }
+            return orari;
+        }
+
+        public static List<FermataLinea> listFermate(Connection connection, String codiceLinea) {
+            var fermateLinea = new ArrayList<FermataLinea>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_FERMATE_UNA_LINEA, codiceLinea);
+                var rs = statement.executeQuery();
+            ) {
+                if (rs.next()) {
+                    var fermataLinea = new FermataLinea(
+                        rs.getString("codice_linea"),
+                        rs.getInt("codice_fermata_arrivo"),
+                        rs.getInt("codice_fermata_partenza"),
+                        rs.getInt("ordine"),
+                        rs.getString("nome"),
+                        rs.getString("via"),
+                        rs.getInt("tempo_percorrenza")
+                    );
+                    fermateLinea.add(fermataLinea);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione delle fermate della linea.", e);
+            }
+            return fermateLinea;
+        }
+
+        public static Map<String, Integer> getPiuConvalide(Connection connection, String codiceLinea) {
+            var linee = new HashMap<String, Integer>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.ESTRAZ_LINEE_PIU_CONVALIDE, codiceLinea);
+                var rs = statement.executeQuery();
+            ) {
+                if (rs.next()) {
+                    var numConvalide = rs.getInt("numero_convalide");
+                    linee.put(codiceLinea, numConvalide);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione delle linee con più convalide.", e);
+            }
+            return linee;
+        }
+
+        public static int getIncassi(Connection connection, String codiceLinea) {
+            var incassi = 0;
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_INCASSI, codiceLinea);
+                var rs = statement.executeQuery();
+            ) {
+                if (rs.next()) {
+                    incassi = rs.getInt("incassi");
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione degli incassi relativi alla linea.", e);
+            }
+            return incassi;
         }
     }
 }

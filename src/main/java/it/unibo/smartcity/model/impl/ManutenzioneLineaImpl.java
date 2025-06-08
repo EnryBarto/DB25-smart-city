@@ -176,7 +176,7 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
                     ));
                 }
             } catch (Exception e) {
-                throw new DAOException("Failed to extract manutenzioni più gravose", e);
+                throw new DAOException("Errore nell'estrazione delle manutenzioni più gravose", e);
             }
             return manutenzioni;
         }

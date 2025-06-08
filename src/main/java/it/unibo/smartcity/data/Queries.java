@@ -82,7 +82,7 @@ public final class Queries {
     // OPERAZIONE 2 BIS
     public static final String LIST_ORARI_UNA_LINEA =
     """
-        SELECT ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale, ac.data
+        SELECT ol.codice_orario, ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale, ac.data
         FROM ORARI_LINEE ol
         JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
         WHERE ol.codice_linea = ?
@@ -99,7 +99,7 @@ public final class Queries {
     //OPERAZIONE 4
     public static final String LIST_ORARIO_LINEE_ASSEGN =
     """
-        SELECT ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale
+        SELECT ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale, ol.codice_orario, ac.data
         FROM ORARIO_LINEE ol
         JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
         WHERE ac.username = ?
@@ -108,7 +108,7 @@ public final class Queries {
     //OPERAZIONE 6
     public static final String ESTRAZ_LINEE_PIU_CONVALIDE =
     """
-        SELECT codice_linea, COUNT()
+        SELECT COUNT(*) AS numero_convalide
         FROM LINEE l
         JOIN ORARI_LINEE ol ON l.codice_linea = ol.codice_linea
         JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario

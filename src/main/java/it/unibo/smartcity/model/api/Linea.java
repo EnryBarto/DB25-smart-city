@@ -5,6 +5,9 @@ import java.util.Optional;
 
 public interface Linea {
 
+    record FermataLinea(String codiceLinea, int codiceFermataArrivo, int codiceFermataPartenza,
+        int ordine, String nomeFermata, String via, int tempo_percorrenza) {}
+
     String getCodiceLinea();
 
     int getTempoPercorrenza();
