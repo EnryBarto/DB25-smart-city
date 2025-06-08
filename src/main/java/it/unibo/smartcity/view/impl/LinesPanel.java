@@ -62,7 +62,7 @@ class LinesPanel extends JPanel {
                 return (JButton) value;
             }
         }
-        tabella.getColumnModel().getColumn(5).setCellEditor(new MyCellEditor());;
+        tabella.getColumnModel().getColumn(5).setCellEditor(new MyCellEditor());
 
         this.tableArea = new JScrollPane(tabella);
         this.add(tableArea, BorderLayout.CENTER);

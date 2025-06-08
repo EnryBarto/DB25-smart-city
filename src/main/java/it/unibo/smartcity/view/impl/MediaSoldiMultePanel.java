@@ -7,7 +7,7 @@ import javax.swing.JTable;
 
 import it.unibo.smartcity.data.MediaSoldiMulte;
 
-public class MediaSoldiMultePanel extends JPanel {
+class MediaSoldiMultePanel extends JPanel {
     private final static String[] columnNames = {
         "Media di soldi speri in multe",
     };
@@ -17,7 +17,7 @@ public class MediaSoldiMultePanel extends JPanel {
         this.setLayout(new BorderLayout());
     }
 
-    public void updateHubs(final MediaSoldiMulte mediaSoldiMulte) {
+    public void update(final MediaSoldiMulte mediaSoldiMulte) {
         if (this.tableArea != null) this.remove(tableArea);
         Object[][] righe = new Object[][] {
             { mediaSoldiMulte.mediaSoldi() }

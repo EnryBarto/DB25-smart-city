@@ -5,6 +5,14 @@ import it.unibo.smartcity.view.api.View.SignupData;
 
 public interface Controller {
 
+    public enum UserLevel {
+        NOT_LOGGED,
+        USER,
+        ADMIN,
+        DRIVER,
+        CONTROLLER;
+    }
+
     void attachView(View v);
 
     void showMainMenu();
@@ -18,5 +26,9 @@ public interface Controller {
     void showTimetable(String linea);
 
     void updateHubsList();
+
+    void login(String username, String password);
+
+    void logout();
 
 }

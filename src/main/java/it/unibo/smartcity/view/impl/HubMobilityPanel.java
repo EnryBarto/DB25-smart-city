@@ -8,7 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import it.unibo.smartcity.data.ListHubMobilita;
 
-public class HubMobilityPanel extends JPanel {
+class HubMobilityPanel extends JPanel {
     private final static String[] columnNames = {
         "Codice Hub", "Nome Hub", "Indirizzo", "Longitudine", "Latitudine", "Nome Fermata", "Tipo Contenuto", "Posti Disponibili"
     };
