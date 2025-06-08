@@ -19,6 +19,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 import it.unibo.smartcity.data.InfoLinea;
@@ -138,14 +140,8 @@ public class SwingView implements View {
 
     private void setLookAndFeel() {
         try {
-            UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName()
-            );
-        } catch (ClassNotFoundException
-                | InstantiationException
-                | IllegalAccessException
-                | UnsupportedLookAndFeelException e
-            ) {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (UnsupportedLookAndFeelException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
