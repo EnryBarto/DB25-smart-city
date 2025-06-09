@@ -6,6 +6,7 @@ import java.util.Set;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Linea;
+import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 
 public interface View {
@@ -34,5 +35,7 @@ public interface View {
     void showLoginError();
 
     void userLevelChanged(UserLevel newLevel);
+
+    void updateUserInfo(Utente user, UserLevel userLevel);
 
 }

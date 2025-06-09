@@ -6,11 +6,22 @@ import it.unibo.smartcity.view.api.View.SignupData;
 public interface Controller {
 
     public enum UserLevel {
-        NOT_LOGGED,
-        USER,
-        ADMIN,
-        DRIVER,
-        CONTROLLER;
+        NOT_LOGGED("Non autenticato"),
+        USER("Utente base"),
+        ADMIN("Amministrativo"),
+        DRIVER("Autista"),
+        CONTROLLER("Controllore");
+
+        private final String toString;
+
+        private UserLevel(final String nome) {
+            this.toString = nome;
+        }
+
+        @Override
+        public String toString() {
+            return this.toString;
+        }
     }
 
     void attachView(View v);
@@ -31,4 +42,5 @@ public interface Controller {
 
     void logout();
 
+    void updateUserInfo();
 }

@@ -15,6 +15,7 @@ import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Dipendente;
+import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.LineaImpl;
 import it.unibo.smartcity.model.impl.UtenteImpl;
@@ -27,6 +28,7 @@ public class ControllerImpl implements Controller {
     private final Set<View> views = new HashSet<>();
     private Connection connection;
     private UserLevel currentUserLevel = UserLevel.NOT_LOGGED;
+    private Utente user;
 
     public ControllerImpl () {
         var fake = new JFrame();
@@ -129,8 +131,10 @@ public class ControllerImpl implements Controller {
                     case Dipendente.Ruolo.CONTROLLORE -> UserLevel.CONTROLLER;
                 };
             }
+            this.user = utente;
             views.forEach(v -> v.userLevelChanged(this.currentUserLevel));
         } else {
+            this.user = null;
             views.forEach(View::showLoginError);
         }
     }
@@ -139,7 +143,12 @@ public class ControllerImpl implements Controller {
     public void logout() {
         Preconditions.checkState(this.currentUserLevel != UserLevel.NOT_LOGGED, "Non sei loggato");
         this.currentUserLevel = UserLevel.NOT_LOGGED;
+        this.user = null;
         views.forEach(v -> v.userLevelChanged(this.currentUserLevel));
     }
 
+    @Override
+    public void updateUserInfo() {
+        views.forEach(v -> v.updateUserInfo(this.user, this.currentUserLevel));
+    }
 }

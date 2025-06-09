@@ -1,5 +1,8 @@
 package it.unibo.smartcity.view.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.awt.BorderLayout;
 
 import javax.swing.Box;
@@ -8,12 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import it.unibo.smartcity.controller.api.Controller;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 class LoginPanel extends JPanel {
 
@@ -28,7 +29,8 @@ class LoginPanel extends JPanel {
         userNamePanel.add(userField);
 
         var passwordPanel = new JPanel();
-        var passwordField = new JTextField(TEXT_WIDTH);
+        var passwordField = new JPasswordField(TEXT_WIDTH);
+        passwordField.setEchoChar('*');
         passwordPanel.add(new JLabel("Password: "));
         passwordPanel.add(passwordField);
 
@@ -47,12 +49,12 @@ class LoginPanel extends JPanel {
             try {
                 checkNotNull(userField.getText());
                 checkArgument(!userField.getText().isBlank());
-                checkNotNull(passwordField.getText());
-                checkArgument(!passwordField.getText().isBlank());
-                controller.login(userField.getText(), passwordField.getText());
+                checkNotNull(passwordField.getPassword());
+                var psw = new String(passwordField.getPassword());
+                checkArgument(!psw.isBlank());
+                controller.login(userField.getText(), psw);
             } catch (IllegalArgumentException | NullPointerException ec) {
                 JOptionPane.showMessageDialog(this, "Inserire tutti i dati", "Errore", JOptionPane.ERROR_MESSAGE);
-                ec.printStackTrace();
             } finally {
                 passwordField.setText("");
             }

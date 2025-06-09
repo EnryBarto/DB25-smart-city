@@ -26,6 +26,7 @@ import it.unibo.smartcity.controller.api.Controller.UserLevel;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Linea;
+import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.view.api.View;
 
 public class SwingView implements View {
@@ -37,8 +38,8 @@ public class SwingView implements View {
     private final Map<String, JPanel> tabs = new LinkedHashMap<>();
 
     private static final float RIDIM = 1.5f;
-    private static final int MIN_WIDTH = 800;
-    private static final int MIN_HEIGHT = 400;
+    private static final int MIN_WIDTH = 900;
+    private static final int MIN_HEIGHT = 550;
 
     public SwingView(final Controller controller) {
         checkNotNull(controller);
@@ -133,6 +134,8 @@ public class SwingView implements View {
                         break;
                     case "Hub":
                         controller.updateHubsList();
+                    case "Profilo":
+                        controller.updateUserInfo();
                 }
             }
         });
@@ -144,6 +147,11 @@ public class SwingView implements View {
         } catch (UnsupportedLookAndFeelException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    @Override
+    public void updateUserInfo(Utente user, UserLevel userLevel) {
+        ((UserPanel)this.tabs.get("Profilo")).updateUserInfo(user, userLevel);
     }
 
 }
