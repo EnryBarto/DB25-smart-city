@@ -1,5 +1,7 @@
 package it.unibo.smartcity.controller.impl;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import java.sql.Connection;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +19,7 @@ import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Dipendente;
+import it.unibo.smartcity.model.api.Dipendente.Ruolo;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.LineaImpl;
@@ -29,6 +32,7 @@ public class ControllerImpl implements Controller {
     private final Set<View> views = new HashSet<>();
     private Connection connection;
     private UserLevel currentUserLevel = UserLevel.NOT_LOGGED;
+    private Utente user;
 
     public ControllerImpl () {
         var fake = new JFrame();
@@ -121,6 +125,7 @@ public class ControllerImpl implements Controller {
                     case Dipendente.Ruolo.CONTROLLORE -> UserLevel.CONTROLLER;
                 };
             }
+            this.user = utente;
             views.forEach(v -> v.userLevelChanged(this.currentUserLevel));
         } else {
             this.showError("Errore Login", "Username o Password errati");
@@ -131,6 +136,7 @@ public class ControllerImpl implements Controller {
     public void logout() {
         Preconditions.checkState(this.currentUserLevel != UserLevel.NOT_LOGGED, "Non sei loggato");
         this.currentUserLevel = UserLevel.NOT_LOGGED;
+        this.user = null;
         views.forEach(v -> v.userLevelChanged(this.currentUserLevel));
     }
 
@@ -144,4 +150,27 @@ public class ControllerImpl implements Controller {
         views.forEach(v -> v.showError(title, message));
     }
 
+    @Override
+    public void updateUserInfo() {
+        views.forEach(v -> v.updateUserInfo(this.user, this.currentUserLevel));
+    }
+
+    @Override
+    public void updateEmployeesList() {
+        views.forEach(v -> v.updateEmployeesList(DipendenteImpl.DAO.list(connection), UtenteImpl.DAO.listNotEmployeed(connection)));
+    }
+
+    @Override
+    public void addEmployee(Utente utente, Ruolo ruolo) {
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        DipendenteImpl.DAO.insert(connection, utente, ruolo);
+        this.updateEmployeesList();
+    }
+
+    @Override
+    public void removeEmployee(Dipendente dipendente) {
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        DipendenteImpl.DAO.remove(connection, dipendente);
+        this.updateEmployeesList();
+    }
 }

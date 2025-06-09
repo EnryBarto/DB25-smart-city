@@ -124,7 +124,7 @@ class SignupPanel extends JPanel {
                 String password = new String(passwordField.getPassword());
                 checkArgument(!password.isEmpty(), "Password cannot be empty");
 
-                Utente newUser = new UtenteImpl(name, surname, documento, cf, tel, email, username, BCrypt.hashpw(password, BCrypt.gensalt()));
+                Utente newUser = new UtenteImpl(surname, name, documento, cf,username, email, tel, BCrypt.hashpw(password, BCrypt.gensalt()));
                 this.controller.signup(newUser);
 
                 nameField.setText("");

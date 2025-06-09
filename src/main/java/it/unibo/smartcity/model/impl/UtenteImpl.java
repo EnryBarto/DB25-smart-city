@@ -1,6 +1,7 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
@@ -128,6 +129,31 @@ public class UtenteImpl extends PersonaImpl implements Utente {
                 throw new DAOException("Failed to insert Utente", e);
             }
         }
-    }
 
+        public static List<Utente> listNotEmployeed(Connection connection) {
+            List<Utente> utenti = new LinkedList<>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_UTENTI_NON_DIPENDENTI);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var u = new UtenteImpl(
+                        rs.getString("p.cognome"),
+                        rs.getString("p.nome"),
+                        rs.getString("p.documento"),
+                        rs.getString("p.codice_fiscale"),
+                        rs.getString("u.username"),
+                        rs.getString("u.email"),
+                        rs.getString("u.telefono"),
+                        rs.getString("u.password")
+                    );
+                    utenti.add(u);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                throw new DAOException("Failed to list Utenti", e);
+            }
+            return utenti;
+        }
+    }
 }
