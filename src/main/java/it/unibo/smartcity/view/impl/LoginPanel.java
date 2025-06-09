@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import it.unibo.smartcity.controller.api.Controller;
-import it.unibo.smartcity.view.api.View;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -54,8 +53,7 @@ class LoginPanel extends JPanel {
                 // for security reasons, the controller will hash it.
                 controller.login(userField.getText(), passwordField.getText());
             } catch (IllegalArgumentException | NullPointerException ec) {
-                View.showErrorDialog(ec.getMessage());
-                ec.printStackTrace();
+                controller.showError("Errore Login", ec.getMessage());
             } finally {
                 passwordField.setText("");
             }

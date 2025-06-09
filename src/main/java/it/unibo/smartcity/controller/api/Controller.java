@@ -33,4 +33,6 @@ public interface Controller {
 
     void showLoginUser(String username);
 
+    void showError(String title, String message);
+
 }

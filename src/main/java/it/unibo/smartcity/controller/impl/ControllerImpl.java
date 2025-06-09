@@ -123,7 +123,7 @@ public class ControllerImpl implements Controller {
             }
             views.forEach(v -> v.userLevelChanged(this.currentUserLevel));
         } else {
-            views.forEach(v -> v.showError("Username o password errati"));
+            this.showError("Errore Login", "Username o Password errati");
         }
     }
 
@@ -137,6 +137,11 @@ public class ControllerImpl implements Controller {
     @Override
     public void showLoginUser(String username) {
         views.forEach(v -> v.showLoginUser(username));
+    }
+
+    @Override
+    public void showError(String title, String message) {
+        views.forEach(v -> v.showError(title, message));
     }
 
 }

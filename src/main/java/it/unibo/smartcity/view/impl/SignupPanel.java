@@ -18,7 +18,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.UtenteImpl;
-import it.unibo.smartcity.view.api.View;
 
 class SignupPanel extends JPanel {
 
@@ -140,7 +139,7 @@ class SignupPanel extends JPanel {
                 controller.showLoginUser(username);
 
             } catch (IllegalArgumentException | NullPointerException ex) {
-                View.showErrorDialog(ex.getMessage());
+                controller.showError("Errore Registrazione", ex.getMessage());
             }
         });
         this.add(signupButton, BorderLayout.SOUTH);
