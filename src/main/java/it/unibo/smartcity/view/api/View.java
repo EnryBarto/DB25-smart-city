@@ -9,8 +9,10 @@ import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Fermata;
+import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.OrarioLinea;
+import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 
@@ -39,4 +41,8 @@ public interface View {
     void updateEmployeesList(List<Dipendente> employees, List<Utente> notEmployeed);
 
     void updateFermateList(List<Fermata> fermate);
+
+    void updateHubs(List<HubMobilita> hubs);
+
+    void updateTratte(Set<Tratta> list);
 }

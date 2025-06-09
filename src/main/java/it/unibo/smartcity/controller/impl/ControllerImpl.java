@@ -21,10 +21,14 @@ import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
 import it.unibo.smartcity.model.api.Fermata;
+import it.unibo.smartcity.model.api.HubMobilita;
+import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.FermataImpl;
+import it.unibo.smartcity.model.impl.HubMobilitaImpl;
 import it.unibo.smartcity.model.impl.LineaImpl;
+import it.unibo.smartcity.model.impl.TrattaImpl;
 import it.unibo.smartcity.model.impl.UtenteImpl;
 import it.unibo.smartcity.view.api.View;
 
@@ -116,6 +120,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void updateHubsList() {
         views.forEach(v -> v.updateHubsList(ListHubMobilita.DAO.get(connection)));
+        views.forEach(v -> v.updateHubs(HubMobilitaImpl.DAO.list(connection).stream().toList()));
     }
 
     @Override
@@ -198,5 +203,39 @@ public class ControllerImpl implements Controller {
         checkState(this.currentUserLevel == UserLevel.ADMIN);
         FermataImpl.DAO.delete(connection, f.getCodiceFermata());
         this.updateFermateList();
+    }
+
+    @Override
+    public void removeHub(HubMobilita h) {
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        HubMobilitaImpl.DAO.delete(connection, h);
+        this.updateHubsList();
+    }
+
+    @Override
+    public void addHub(HubMobilitaImpl hub) {
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        HubMobilitaImpl.DAO.insert(connection, hub);
+        this.updateHubsList();
+    }
+
+    @Override
+    public void addTratta(TrattaImpl tratta) {
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        TrattaImpl.DAO.insert(connection, tratta);
+        this.updateFermateList();
+        this.updateTratte();
+    }
+
+    @Override
+    public void removeTratta(Tratta tratta) {
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        TrattaImpl.DAO.delete(connection, tratta);
+        this.updateTratte();
+    }
+
+    @Override
+    public void updateTratte() {
+        views.forEach(v -> v.updateTratte(TrattaImpl.DAO.list(connection)));
     }
 }

@@ -3,7 +3,11 @@ package it.unibo.smartcity.controller.api;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
 import it.unibo.smartcity.model.api.Fermata;
+import it.unibo.smartcity.model.api.HubMobilita;
+import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.HubMobilitaImpl;
+import it.unibo.smartcity.model.impl.TrattaImpl;
 import it.unibo.smartcity.view.api.View;
 
 public interface Controller {
@@ -64,4 +68,14 @@ public interface Controller {
     void removeFermata(Fermata f);
 
     void updateFermateList();
+
+    void removeHub(HubMobilita h);
+
+    void addHub(HubMobilitaImpl hub);
+
+    void addTratta(TrattaImpl tratta);
+
+    void removeTratta(Tratta t);
+
+    void updateTratte();
 }
