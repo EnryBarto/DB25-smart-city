@@ -23,6 +23,7 @@ import it.unibo.smartcity.model.api.Dipendente.Ruolo;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.LineaImpl;
+import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.UtenteImpl;
 import it.unibo.smartcity.view.api.View;
 
@@ -41,7 +42,8 @@ public class ControllerImpl implements Controller {
         javax.swing.JTextField dbField = new javax.swing.JTextField(20);
         javax.swing.JTextField userField = new javax.swing.JTextField(20);
         javax.swing.JPasswordField passField = new javax.swing.JPasswordField(20);
-
+        dbField.setText("smart_city");
+        userField.setText("root");
         Object[] message = {
             "Database:", dbField,
             "Utente:", userField,
@@ -96,9 +98,15 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void signup(final Utente user) {
+    public void signup(final Utente user, final String ruolo) {
         Preconditions.checkNotNull(user);
-        UtenteImpl.DAO.insert(connection, user);
+        Preconditions.checkNotNull(ruolo);
+        if (ruolo.equalsIgnoreCase("utente")) {
+            UtenteImpl.DAO.insert(connection, user);
+        } else {
+            DipendenteImpl.DAO.insert(connection, user, Ruolo.valueOf(ruolo.toUpperCase()));
+        }
+
     }
 
     @Override
@@ -119,6 +127,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void login(String username, String password) {
         var utente = UtenteImpl.DAO.byUser(connection, username);
+        checkState(this.currentUserLevel == UserLevel.NOT_LOGGED, "Devi essere disconnesso per registrarti");
         if (utente != null && BCrypt.checkpw(password, utente.getPassword())) {
             var ruolo = DipendenteImpl.DAO.getRuolo(connection, username);
             if (ruolo.isEmpty()) {
@@ -178,4 +187,10 @@ public class ControllerImpl implements Controller {
         DipendenteImpl.DAO.remove(connection, dipendente);
         this.updateEmployeesList();
     }
+
+    @Override
+    public void updateManutGravose() {
+        views.forEach(v -> v.updateManutGravose(ManutenzioneLineaImpl.DAO.estrazManutPiuGravose(connection)));
+    }
+
 }

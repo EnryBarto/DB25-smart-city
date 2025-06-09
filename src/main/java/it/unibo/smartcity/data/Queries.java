@@ -35,6 +35,7 @@ public final class Queries {
         INSERT INTO UTENTI (username, documento, email, telefono, password)
         VALUES (?, ?, ?, ?, ?);
     """;
+
     public static final String LIST_MEZZI =
         """
         SELECT *
@@ -98,9 +99,9 @@ public final class Queries {
     public static final String LIST_HUB_MOBILITA =
     """
         SELECT h.codice_hub, h.nome nome_hub, h.indirizzo, h.longitudine, h.latitudine, h.codice_fermata, f.nome nome_fermata, ch.descrizione tipo_contenuto, c.posti_disponibili
-        FROM hub_mobilita h LEFT JOIN fermate f on (h.codice_fermata = f.codice_fermata)
-        JOIN contenuti c ON (c.codice_hub = h.codice_hub)
-        JOIN contenuti_hub ch ON (c.codice_contenuto = ch.codice_contenuto);
+        FROM HUB_MOBILITA h LEFT JOIN FERMATE f on (h.codice_fermata = f.codice_fermata)
+        JOIN CONTENUTI c ON (c.codice_hub = h.codice_hub)
+        JOIN CONTENUTI_HUB ch ON (c.codice_contenuto = ch.codice_contenuto);
     """;
     //OPERAZIONE 4
     public static final String LIST_ORARIO_LINEE_ASSEGN =
@@ -128,10 +129,10 @@ public final class Queries {
     public static final String VARIAZIONE_SERVIZIO_LINEA =
     """
         SELECT l.codice_linea codice_linea_in_manutenzione, m.data_inizio, m.data_fine, m.nome, m.descrizione, a.p_iva, a.email, a.telefono, a.ragione_sociale, ls.codice_linea codice_linea_sostituta
-        FROM linee l JOIN manutenzioni_linee m ON (m.codice_linea = l.codice_linea)
-        RIGHT JOIN aziende a ON (m.p_iva = a.p_iva)
-        JOIN sostituzioni s ON (m.codice_linea = s.sost_manut_codice_linea AND m.data_inizio = s.sost_manut_data_inizio)
-        JOIN linee ls ON (ls.codice_linea = s.codice_linea)
+        FROM LINEE l JOIN MANUTENZIONI_LINEE m ON (m.codice_linea = l.codice_linea)
+        RIGHT JOIN AZIENDE a ON (m.p_iva = a.p_iva)
+        JOIN SOSTITUZIONI s ON (m.codice_linea = s.sost_manut_codice_linea AND m.data_inizio = s.sost_manut_data_inizio)
+        JOIN LINEE ls ON (ls.codice_linea = s.codice_linea)
         WHERE l.codice_linea = ?;
     """;
 
@@ -151,7 +152,7 @@ public final class Queries {
     public static final String LINEE_PIU_MULTE =
     """
         SELECT l.codice_linea, COUNT(*) numero_multe
-        FROM linee l, orari_linee ol, attuazioni_corse ac, multe m
+        FROM LINEE l, ORARI_LINEE ol, ATTUAZIONI_CORSE ac, MULTE m
         WHERE l.codice_linea = ol.codice_linea
         AND ol.codice_orario = ac.codice_orario
         AND ac.codice_corsa = m.codice_corsa
@@ -175,12 +176,12 @@ public final class Queries {
     public static final String LINEE_CINQUE_CONTROL_DIECI_MULT =
     """
             SELECT l.codice_linea
-            FROM linee l JOIN orari_linee ol ON (l.codice_linea = ol.codice_linea)
-            JOIN attuazioni_corse ac ON (ol.codice_orario = ac.codice_orario)
+            FROM LINEE l JOIN ORARI_LINEE ol ON (l.codice_linea = ol.codice_linea)
+            JOIN ATTUAZIONI_CORSE ac ON (ol.codice_orario = ac.codice_orario)
             GROUP BY l.codice_linea
             HAVING COUNT(*) = (SELECT COUNT(DISTINCT ac1.codice_corsa)									# conto attuazioni corsa
-                                FROM linee l1 JOIN orari_linee ol1 ON (l1.codice_linea = ol1.codice_linea)
-                                JOIN attuazioni_corse ac1 ON (ol1.codice_orario = ac1.codice_orario)
+                                FROM LINEE l1 JOIN ORARI_LINEE ol1 ON (l1.codice_linea = ol1.codice_linea)
+                                JOIN ATTUAZIONI_CORSE ac1 ON (ol1.codice_orario = ac1.codice_orario)
                                 WHERE l1.codice_linea = l.codice_linea
                                 AND ac1.codice_corsa IN (SELECT ac2.codice_corsa							# seleziono i giorni in cui ho quelle condizioni
                                             FROM attuazioni_corse ac2
@@ -205,7 +206,7 @@ public final class Queries {
     public static final String MEDIA_SOLDI_MULTE =
     """
         SELECT AVG(m.importo)
-        FROM multe m, persone p
+        FROM MULTE m, PERSONE p
         WHERE p.documento = m.codice_multa
         GROUP BY p.documento;
     """;
@@ -233,14 +234,14 @@ public final class Queries {
     // OPERAZIONE 19 - Da trattare come transaction
     public static final String AGGIUNGI_VARIAZIONE =
         """
-            INSERT INTO manutenzioni_linee (codice_linea, data_inizio, data_fine, nome, descrizione, p_iva)
+            INSERT INTO MANUTENZIONI_LINEE (codice_linea, data_inizio, data_fine, nome, descrizione, p_iva)
             VALUES ('A', '2025-06-06', '2025-06-10', 'Aggiornamento', 'Aggiornamento di qualcosa', NULL);
 
-            INSERT INTO sostituzioni (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea)
+            INSERT INTO SOSTITUZIONI (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea)
             VALUES ('2025-06-06', 'A', 'A-1');
 
             # to do if data_inizio corresponds with today
-            UPDATE linee
+            UPDATE LINEE
             SET attiva = False
             WHERE codice_linea = 'A';
         """;
@@ -248,15 +249,15 @@ public final class Queries {
     // OPERAZIONE 21
     public static final String AGGIUNGI_LINEA =
     """
-        INSERT INTO linee (codice_linea, inizio_validita, fine_validita, attiva, codice_tipo_mezzo)
+        INSERT INTO LINEE (codice_linea, inizio_validita, fine_validita, attiva, codice_tipo_mezzo)
         VALUES('L101', '2025-01-01', '2026-12-31', 1, '1');
 
-        INSERT INTO tragitti (partenza_codice_fermata, arrivo_codice_fermata, codice_linea, ordine)
+        INSERT INTO TRAGITTI (partenza_codice_fermata, arrivo_codice_fermata, codice_linea, ordine)
         VALUES ('F101', 'F202', 'L101', 1); # And so on
 
-        UPDATE linee
+        UPDATE LINEE
         SET tempo_percorrenza = (SELECT *
-                                FROM tratte trt, tragitti trg, linee l
+                                FROM TRATTE trt, TRAGITTI trg, LINEE l
                                 WHERE l.codice_linea = trg.codice_linea
                                 AND trg.partenza_codice_fermata = trt.partenza_codice_fermata
                                 AND trg.arrivo_codice_fermata = trt.arrivo_codice_fermata

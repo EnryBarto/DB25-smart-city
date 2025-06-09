@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -30,6 +31,7 @@ import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.view.api.View;
 
 public class SwingView implements View {
@@ -105,9 +107,10 @@ public class SwingView implements View {
         this.tabs.put("Dipendenti", new EmployeeManagementPanel(controller));
         this.tabs.put("Profilo", new UserPanel(controller));
         this.tabs.put("Lavoro", new OrariLavoroPanel(controller));
+        this.tabs.put("Manutenzioni", new MaintenancePanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Manutenzioni", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
@@ -139,10 +142,16 @@ public class SwingView implements View {
                         break;
                     case "Hub":
                         controller.updateHubsList();
+                        break;
                     case "Profilo":
                         controller.updateUserInfo();
+                        break;
                     case "Dipendenti":
                         controller.updateEmployeesList();
+                        break;
+                    case "Lavoro":
+                        controller.updateOrariLavoro();
+                        break;
                 }
             }
         });
@@ -175,6 +184,11 @@ public class SwingView implements View {
     @Override
     public void updateEmployeesList(List<Dipendente> employees, List<Utente> notEmployeed) {
         ((EmployeeManagementPanel)this.tabs.get("Dipendenti")).updateLists(employees, notEmployeed);
+    }
+
+    @Override
+    public void updateManutGravose(ArrayList<ManutenzioneGravosa> manutenzioneGravose) {
+        ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutGravose(manutenzioneGravose);
     }
 
 }

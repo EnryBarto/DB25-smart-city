@@ -1,5 +1,6 @@
 package it.unibo.smartcity.view.api;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 
 public interface View {
@@ -36,5 +38,7 @@ public interface View {
     void updateUserInfo(Utente user, UserLevel userLevel);
 
     void updateEmployeesList(List<Dipendente> employees, List<Utente> notEmployeed);
+
+    void updateManutGravose(ArrayList<ManutenzioneGravosa> estrazManutPiuGravose);
 
 }

@@ -56,7 +56,7 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
         }
 
         public static Optional<Ruolo> getRuolo(Connection connection, String user) {
-            var query = "SELECT ruolo FROM dipendenti WHERE username = ?";
+            var query = "SELECT ruolo FROM DIPENDENTI WHERE username = ?";
             String ruolo = null;
             try (
                 var statement = DAOUtils.prepare(connection, query, user);
@@ -66,7 +66,7 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
                     ruolo = rs.getString("ruolo");
                 }
             } catch (Exception e) {
-                throw new DAOException("Errore nella query sul dipendente.", e);
+                throw new DAOException("Errore nell'estrazione del ruolo del dipendente.", e);
             }
 
             return ruolo == null ? Optional.empty() : Optional.of(Ruolo.valueOf(ruolo.toUpperCase()));
@@ -101,9 +101,37 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
 
         public static void insert(Connection connection, Utente utente, Ruolo ruolo) {
             try (
-                var statement = DAOUtils.prepare(connection, Queries.INSERT_DIPENDENTE, utente.getUsername(), ruolo.toString());
+                var insertDipendente = DAOUtils.prepare(
+                    connection,
+                    Queries.INSERT_DIPENDENTE,
+                    utente.getUsername(),
+                    ruolo.toString());
+
+                var insertPersona = DAOUtils.prepare(
+                    connection,
+                    Queries.INSERT_PERSONA,
+                    utente.getCognome(),
+                    utente.getNome(),
+                    utente.getDocumento()
+                );
+
+                var insertUtente = DAOUtils.prepare(
+                    connection,
+                    Queries.INSERT_USER,
+                    utente.getUsername(),
+                    utente.getDocumento(),
+                    utente.getEmail(),
+                    utente.getTelefono(),
+                    utente.getPassword()
+                );
             ) {
-                statement.executeUpdate();
+                if (utente.getCodiceFiscale().isPresent()) insertPersona.setString(4, utente.getCodiceFiscale().get());
+                else insertPersona.setNull(4, java.sql.Types.CHAR);
+
+                if (PersonaImpl.DAO.byDocument(connection, utente.getDocumento()) == null) insertPersona.executeUpdate();
+
+                insertUtente.executeUpdate();
+                insertDipendente.executeUpdate();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 throw new DAOException("Failed to add dipendente", e);
