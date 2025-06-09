@@ -6,11 +6,11 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.view.api.View;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -49,9 +49,12 @@ class LoginPanel extends JPanel {
                 checkArgument(!userField.getText().isBlank());
                 checkNotNull(passwordField.getText());
                 checkArgument(!passwordField.getText().isBlank());
+
+                // calling the controller to login, the password is not hashed here
+                // for security reasons, the controller will hash it.
                 controller.login(userField.getText(), passwordField.getText());
             } catch (IllegalArgumentException | NullPointerException ec) {
-                JOptionPane.showMessageDialog(this, "Inserire tutti i dati", "Errore", JOptionPane.ERROR_MESSAGE);
+                View.showErrorDialog(ec.getMessage());
                 ec.printStackTrace();
             } finally {
                 passwordField.setText("");

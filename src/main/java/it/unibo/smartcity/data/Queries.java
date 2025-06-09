@@ -24,10 +24,16 @@ public final class Queries {
         JOIN PERSONE p on u.documento = p.documento
         WHERE u.username = ?;
         """;
-    public static final String INSERT_USE =
+    public static final String INSERT_PERSONA =
     """
-        INSERT INTO UTENTI (nome, cognome, documento, codice_fiscale, telefono, email, username, password)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+        INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale)
+        VALUES (?, ?, ?, ?);
+    """;
+
+    public static final String INSERT_USER =
+    """
+        INSERT INTO UTENTI (username, documento, email, telefono, password)
+        VALUES (?, ?, ?, ?, ?);
     """;
     public static final String LIST_MEZZI =
         """

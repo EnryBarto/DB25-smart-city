@@ -104,18 +104,25 @@ public class UtenteImpl extends PersonaImpl implements Utente {
             try (
                 var statement = DAOUtils.prepare(
                     connection,
-                    Queries.INSERT_USE,
-                    utente.getNome(),
-                    utente.getCognome(),
-                    utente.getDocumento(),
-                    utente.getCodiceFiscale(),
-                    utente.getTelefono(),
-                    utente.getEmail(),
+                    Queries.INSERT_USER,
                     utente.getUsername(),
+                    utente.getDocumento(),
+                    utente.getEmail(),
+                    utente.getTelefono(),
                     utente.getPassword()
+                );
+
+                var statement2 = DAOUtils.prepare(
+                    connection,
+                    Queries.INSERT_PERSONA,
+                    utente.getCognome(),
+                    utente.getNome(),
+                    utente.getDocumento(),
+                    utente.getCodiceFiscale()
                 );
             ) {
                 statement.executeUpdate();
+                statement2.executeUpdate();
             } catch (Exception e) {
                 throw new DAOException("Failed to insert Utente", e);
             }

@@ -83,11 +83,6 @@ public class SwingView implements View {
     }
 
     @Override
-    public void showLoginError() {
-        JOptionPane.showMessageDialog(this.frame, "Credenziali errate!", "Errore", JOptionPane.ERROR_MESSAGE);
-    }
-
-    @Override
     public void userLevelChanged(UserLevel newLevel) {
         this.setTabPane(newLevel);
     }
@@ -144,6 +139,11 @@ public class SwingView implements View {
         } catch (UnsupportedLookAndFeelException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    @Override
+    public void showError(String errorMessage) {
+        JOptionPane.showMessageDialog(null, errorMessage, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
 }

@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.google.common.base.Preconditions;
 
 import it.unibo.smartcity.controller.api.Controller;
@@ -87,6 +89,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void signup(SignupData signupData) {
         Preconditions.checkNotNull(signupData);
+        System.err.println("Signup data: " + signupData);
         // call the model to save user data
         UtenteImpl.DAO.insert(this.connection, new UtenteImpl(
             signupData.name(),
@@ -96,7 +99,7 @@ public class ControllerImpl implements Controller {
             signupData.username(),
             signupData.email(),
             signupData.phone(),
-            signupData.password()
+            BCrypt.hashpw(signupData.password(), BCrypt.gensalt())
         ));
     }
 
@@ -118,7 +121,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void login(String username, String password) {
         var utente = UtenteImpl.DAO.byUser(connection, username);
-        if (utente != null && utente.getPassword().compareTo(password) == 0) {
+        if (utente != null && BCrypt.checkpw(password, utente.getPassword())) {
             var ruolo = DipendenteImpl.DAO.getRuolo(connection, username);
             if (ruolo.isEmpty()) {
                 this.currentUserLevel = UserLevel.USER;
@@ -131,7 +134,7 @@ public class ControllerImpl implements Controller {
             }
             views.forEach(v -> v.userLevelChanged(this.currentUserLevel));
         } else {
-            views.forEach(View::showLoginError);
+            views.forEach(v -> v.showError("Username o password errati"));
         }
     }
 

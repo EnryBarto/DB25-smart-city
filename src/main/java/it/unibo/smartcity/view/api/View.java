@@ -3,6 +3,8 @@ package it.unibo.smartcity.view.api;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Linea;
@@ -21,6 +23,12 @@ public interface View {
         String password
     ) {}
 
+    static void showErrorDialog(String errorMessage) {
+        JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    void showError(String errorMessage);
+
     void showMainMenu();
 
     void updateLinesList(List<InfoLinea> linee);
@@ -30,8 +38,6 @@ public interface View {
     void showLineTimetable(String codLinea);
 
     void updateHubsList(Set<ListHubMobilita> set);
-
-    void showLoginError();
 
     void userLevelChanged(UserLevel newLevel);
 
