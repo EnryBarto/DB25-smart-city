@@ -1,5 +1,7 @@
 package it.unibo.smartcity.model.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.sql.Connection;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +22,9 @@ public class TragittoImpl implements Tragitto {
         this.arrivoCodiceFermata = arrivoCodiceFermata;
         this.codiceLinea = codiceLinea;
         this.ordine = ordine;
+        checkArgument(partenzaCodiceFermata != arrivoCodiceFermata,
+"Il codice della fermata di partenza e di arrivo devono essere diversi");
+        checkArgument(ordine >= 0, "L'ordine deve essere un numero non negativo");
     }
 
     @Override
