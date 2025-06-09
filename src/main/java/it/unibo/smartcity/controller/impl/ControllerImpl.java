@@ -20,8 +20,10 @@ import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
+import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.DipendenteImpl;
+import it.unibo.smartcity.model.impl.FermataImpl;
 import it.unibo.smartcity.model.impl.LineaImpl;
 import it.unibo.smartcity.model.impl.UtenteImpl;
 import it.unibo.smartcity.view.api.View;
@@ -166,6 +168,11 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
+    public void updateFermateList() {
+        views.forEach(v -> v.updateFermateList(FermataImpl.DAO.list(connection).stream().toList()));
+    }
+
+    @Override
     public void addEmployee(Utente utente, Ruolo ruolo) {
         checkState(this.currentUserLevel == UserLevel.ADMIN);
         DipendenteImpl.DAO.insert(connection, utente, ruolo);
@@ -177,5 +184,19 @@ public class ControllerImpl implements Controller {
         checkState(this.currentUserLevel == UserLevel.ADMIN);
         DipendenteImpl.DAO.remove(connection, dipendente);
         this.updateEmployeesList();
+    }
+
+    @Override
+    public void addFermata(Fermata fermata) {
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        FermataImpl.DAO.insert(connection, fermata);
+        this.updateFermateList();
+    }
+
+    @Override
+    public void removeFermata(Fermata f) {
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        FermataImpl.DAO.delete(connection, f.getCodiceFermata());
+        this.updateFermateList();
     }
 }

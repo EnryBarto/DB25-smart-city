@@ -2,6 +2,7 @@ package it.unibo.smartcity.controller.api;
 
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
+import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.view.api.View;
 
@@ -57,4 +58,10 @@ public interface Controller {
     void addEmployee(Utente utente, Ruolo ruolo);
 
     void removeEmployee(Dipendente dipendente);
+
+    void addFermata(Fermata fermata);
+
+    void removeFermata(Fermata f);
+
+    void updateFermateList();
 }

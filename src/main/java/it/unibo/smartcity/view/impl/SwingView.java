@@ -27,6 +27,7 @@ import it.unibo.smartcity.controller.api.Controller.UserLevel;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Dipendente;
+import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Utente;
@@ -105,9 +106,10 @@ public class SwingView implements View {
         this.tabs.put("Dipendenti", new EmployeeManagementPanel(controller));
         this.tabs.put("Profilo", new UserPanel(controller));
         this.tabs.put("Lavoro", new OrariLavoroPanel(controller));
+        this.tabs.put("InserisciFermata", new FermataManagePanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Profilo", "InserisciFermata"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
@@ -143,6 +145,10 @@ public class SwingView implements View {
                         controller.updateUserInfo();
                     case "Dipendenti":
                         controller.updateEmployeesList();
+                        break;
+                    case "InserisciFermata":
+                        controller.updateFermateList();
+                        break;
                 }
             }
         });
@@ -175,6 +181,11 @@ public class SwingView implements View {
     @Override
     public void updateEmployeesList(List<Dipendente> employees, List<Utente> notEmployeed) {
         ((EmployeeManagementPanel)this.tabs.get("Dipendenti")).updateLists(employees, notEmployeed);
+    }
+
+    @Override
+    public void updateFermateList(List<Fermata> fermate) {
+        ((FermataManagePanel)this.tabs.get("InserisciFermata")).updateFermateList(fermate);
     }
 
 }
