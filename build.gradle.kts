@@ -21,7 +21,8 @@ repositories { // Where to search for dependencies
 dependencies {
     // Suppressions for SpotBugs
     compileOnly("com.github.spotbugs:spotbugs-annotations:4.8.6")
-    
+
+    implementation("com.formdev:flatlaf:3.6")
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("com.google.guava:guava:33.4.0-jre")
     implementation("com.mysql:mysql-connector-j:9.3.0")

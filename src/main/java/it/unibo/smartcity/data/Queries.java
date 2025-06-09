@@ -54,16 +54,16 @@ public final class Queries {
     public static final String LIST_LINEE_ATTIVE =
     """
         SELECT *
-        FROM linee L
-        JOIN tipologie_mezzi M ON L.codice_tipo_mezzo = M.codice_tipo_mezzo
-        JOIN tragitti TRA1 on TRA1.codice_linea = L.codice_linea
-        JOIN tratte TR1 ON TRA1.partenza_codice_fermata = TR1.partenza_codice_fermata AND TRA1.arrivo_codice_fermata = TR1.arrivo_codice_fermata
-        JOIN fermate F1 ON F1.codice_fermata = TR1.partenza_codice_fermata
-        JOIN tragitti TRA2 on TRA2.codice_linea = L.codice_linea
-        JOIN tratte TR2 ON TRA2.partenza_codice_fermata = TR2.partenza_codice_fermata AND TRA2.arrivo_codice_fermata = TR2.arrivo_codice_fermata
-        JOIN fermate F2 ON F2.codice_fermata = TR2.arrivo_codice_fermata
+        FROM LINEE L
+        JOIN TIPOLOGIE_MEZZI M ON L.codice_tipo_mezzo = M.codice_tipo_mezzo
+        JOIN TRAGITTI TRA1 on TRA1.codice_linea = L.codice_linea
+        JOIN TRATTE TR1 ON TRA1.partenza_codice_fermata = TR1.partenza_codice_fermata AND TRA1.arrivo_codice_fermata = TR1.arrivo_codice_fermata
+        JOIN FERMATE F1 ON F1.codice_fermata = TR1.partenza_codice_fermata
+        JOIN TRAGITTI TRA2 on TRA2.codice_linea = L.codice_linea
+        JOIN TRATTE TR2 ON TRA2.partenza_codice_fermata = TR2.partenza_codice_fermata AND TRA2.arrivo_codice_fermata = TR2.arrivo_codice_fermata
+        JOIN FERMATE F2 ON F2.codice_fermata = TR2.arrivo_codice_fermata
         WHERE TRA1.ordine = 1 AND TRA2.ordine =	(SELECT MAX(T1.ordine)
-                                                FROM linee L1 JOIN tragitti T1 ON L1.codice_linea = T1.codice_linea
+                                                FROM LINEE L1 JOIN TRAGITTI T1 ON L1.codice_linea = T1.codice_linea
                                                 WHERE L1.codice_linea = L.codice_linea)
             AND L.attiva IS TRUE OR (CURDATE() BETWEEN L.inizio_validita AND L.fine_validita)
         ORDER BY L.codice_linea
@@ -92,7 +92,7 @@ public final class Queries {
     public static final String LIST_HUB_MOBILITA =
     """
         SELECT h.codice_hub, h.nome nome_hub, h.indirizzo, h.longitudine, h.latitudine, h.codice_fermata, f.nome nome_fermata, ch.descrizione tipo_contenuto, c.posti_disponibili
-        FROM hub_mobilita h RIGHT JOIN fermate f on (h.codice_fermata = f.codice_fermata)
+        FROM hub_mobilita h LEFT JOIN fermate f on (h.codice_fermata = f.codice_fermata)
         JOIN contenuti c ON (c.codice_hub = h.codice_hub)
         JOIN contenuti_hub ch ON (c.codice_contenuto = ch.codice_contenuto);
     """;

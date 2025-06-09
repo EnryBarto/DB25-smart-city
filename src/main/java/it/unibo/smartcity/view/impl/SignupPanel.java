@@ -9,7 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.view.api.View.SignupData;
@@ -22,7 +23,7 @@ class SignupPanel extends JPanel {
     public SignupPanel(Controller controller) {
         super(new BorderLayout());
 
-        Preconditions.checkNotNull(controller, "Controller cannot be null");
+        checkNotNull(controller, "Controller cannot be null");
         this.controller = controller;
 
         var namePanel = new JPanel();
@@ -84,23 +85,23 @@ class SignupPanel extends JPanel {
         //this thing should probably vecome a function
         signupButton.addActionListener(e -> {
             // gather input data
-            String name = Preconditions.checkNotNull(nameField.getText());
-            Preconditions.checkArgument(!name.isEmpty(), "Nome cannot be empty");
-            String surname = Preconditions.checkNotNull(surnameField.getText());
-            Preconditions.checkArgument(!surname.isEmpty(), "Cognome cannot be empty");
-            String documento = Preconditions.checkNotNull(documentField.getText());
-            Preconditions.checkArgument(!documento.isEmpty(), "Documento cannot be empty");
+            String name = checkNotNull(nameField.getText());
+            checkArgument(!name.isEmpty(), "Nome cannot be empty");
+            String surname = checkNotNull(surnameField.getText());
+            checkArgument(!surname.isEmpty(), "Cognome cannot be empty");
+            String documento = checkNotNull(documentField.getText());
+            checkArgument(!documento.isEmpty(), "Documento cannot be empty");
             String cf = cfField.getText();
-            if (!cf.isEmpty()) Preconditions.checkArgument(
+            if (!cf.isEmpty()) checkArgument(
                 cf.matches("[A-Z0-9]{16}"), "Codice Fiscale must be 16 alphanumeric characters"
             );
-            Preconditions.checkArgument(cf.length() == 16, "Codice Fiscale must be 16 characters long");
-            String tel = Preconditions.checkNotNull(telField.getText());
-            Preconditions.checkArgument(
+            checkArgument(cf.length() == 16, "Codice Fiscale must be 16 characters long");
+            String tel = checkNotNull(telField.getText());
+            checkArgument(
                 tel.matches("\\d{10}"), "Telefono must be a 10-digit number"
             );
-            String email = Preconditions.checkNotNull(emailField.getText());
-            Preconditions.checkArgument(
+            String email = checkNotNull(emailField.getText());
+            checkArgument(
                 !email.isEmpty() &&
                 email.contains("@") &&
                 email.contains(".") &&
@@ -113,10 +114,10 @@ class SignupPanel extends JPanel {
                 !email.contains("#"),
                 "Email is invalid"
             );
-            String username = Preconditions.checkNotNull(userField.getText());
-            Preconditions.checkArgument(!username.isEmpty(), "Username cannot be empty");
-            String password = Preconditions.checkNotNull(passwordField.getSelectedText());
-            Preconditions.checkArgument(
+            String username = checkNotNull(userField.getText());
+            checkArgument(!username.isEmpty(), "Username cannot be empty");
+            String password = checkNotNull(passwordField.getSelectedText());
+            checkArgument(
                 password != null && !password.isEmpty(), "Password cannot be empty"
             );
 

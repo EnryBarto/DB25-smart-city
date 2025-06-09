@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.controller.api.Controller.UserLevel;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Linea;
@@ -28,7 +32,8 @@ public class SwingView implements View {
 
     private final Controller controller;
     private final JFrame frame = new JFrame();
-    private final JTabbedPane tabPane = new JTabbedPane();
+    private JTabbedPane tabPane;
+    private final Map<UserLevel, List<String>> tabsForUserLevel = new HashMap<>();
     private final Map<String, JPanel> tabs = new LinkedHashMap<>();
 
     private static final float RIDIM = 1.5f;
@@ -45,7 +50,7 @@ public class SwingView implements View {
         frame.setLocationByPlatform(true);
         frame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         this.setLookAndFeel();
-        this.createTabs();
+        this.initTabPanes();
     }
 
     @Override
@@ -53,47 +58,6 @@ public class SwingView implements View {
         this.frame.setVisible(true);
         controller.updateLinesList();
         controller.updateTimetableLinesList();
-    }
-
-    private void createTabs() {
-        this.tabs.put("Linee", new LinesPanel(controller));
-        this.tabs.put("Orari", new TimetablePanel(controller));
-        this.tabs.put("Hub", new HubMobilityPanel());
-        this.tabs.put("Login", new LoginPanel());
-        this.tabs.put("Registrati", new SignupPanel(controller));
-        this.tabs.entrySet().forEach(e -> tabPane.addTab(e.getKey(), e.getValue()));
-        this.frame.add(tabPane);
-
-        tabPane.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                int selectedIndex = tabPane.getSelectedIndex();
-                switch (tabPane.getTitleAt(selectedIndex)) {
-                    case "Orari":
-                        controller.updateTimetableLinesList();
-                        break;
-                    case "Linee":
-                        controller.updateLinesList();
-                        break;
-                    case "Hub":
-                        controller.updateHubsList();
-                }
-            }
-        });
-
-    }
-
-    private void setLookAndFeel() {
-        try {
-            UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName()
-            );
-        } catch (ClassNotFoundException
-                | InstantiationException
-                | IllegalAccessException
-                | UnsupportedLookAndFeelException e
-            ) {
-            JOptionPane.showMessageDialog(frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
     @Override
@@ -116,6 +80,70 @@ public class SwingView implements View {
     @Override
     public void updateHubsList(Set<ListHubMobilita> set) {
         ((HubMobilityPanel)this.tabs.get("Hub")).updateHubs(set);
+    }
+
+    @Override
+    public void showLoginError() {
+        JOptionPane.showMessageDialog(this.frame, "Credenziali errate!", "Errore", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void userLevelChanged(UserLevel newLevel) {
+        this.setTabPane(newLevel);
+    }
+
+    private void initTabPanes() {
+        this.tabs.put("Linee", new LinesPanel(controller));
+        this.tabs.put("Orari", new TimetablePanel(controller));
+        this.tabs.put("Hub", new HubMobilityPanel());
+        this.tabs.put("Login", new LoginPanel(controller));
+        this.tabs.put("Registrati", new SignupPanel(controller));
+        this.tabs.put("Profilo", new UserPanel(controller));
+
+        this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub", "Profilo"));
+    }
+
+    private void setTabPane(UserLevel userLevel) {
+        if (this.tabPane != null) this.frame.remove(this.tabPane);
+
+        this.tabPane = new JTabbedPane();
+
+        this.tabsForUserLevel.get(userLevel).forEach(title -> this.tabPane.add(title, this.tabs.get(title)));
+
+        this.tabPane.setSelectedComponent(this.tabs.get("Linee"));
+
+        this.frame.add(tabPane);
+        this.frame.repaint();
+        this.frame.revalidate();
+
+        this.tabPane.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                int selectedIndex = tabPane.getSelectedIndex();
+                if (selectedIndex == -1) return;
+                switch (tabPane.getTitleAt(selectedIndex)) {
+                    case "Orari":
+                        controller.updateTimetableLinesList();
+                        break;
+                    case "Linee":
+                        controller.updateLinesList();
+                        break;
+                    case "Hub":
+                        controller.updateHubsList();
+                }
+            }
+        });
+    }
+
+    private void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (UnsupportedLookAndFeelException e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 }

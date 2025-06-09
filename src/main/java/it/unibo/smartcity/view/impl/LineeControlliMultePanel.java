@@ -13,7 +13,7 @@ import javax.swing.table.TableCellEditor;
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 
-public class LineeControlliMultePanel extends JPanel{
+class LineeControlliMultePanel extends JPanel{
     private final static String[] columnNames = {
         "Codice linea", "Visualizza Orario"
     };

@@ -9,7 +9,7 @@ import javax.swing.JTable;
 
 import it.unibo.smartcity.data.ListLineeMulte;
 
-public class LineePiuMultePanel extends JPanel {
+class LineePiuMultePanel extends JPanel {
     private JScrollPane tableArea;
     private final static String[] columnNames = {
         "Codice Linea", "Numero di Multe"

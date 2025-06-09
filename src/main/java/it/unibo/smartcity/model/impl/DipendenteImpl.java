@@ -8,25 +8,11 @@ import java.util.Map;
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.Queries;
+import java.util.Optional;
+
 import it.unibo.smartcity.model.api.Dipendente;
 
 public class DipendenteImpl extends UtenteImpl implements Dipendente {
-
-    public static enum Ruolo {
-        AMMINISTRATIVO("Amministrativo"),
-        AUTISTA("Autista"),
-        DIPENDENTE("Dipendente");
-
-        private final String nome;
-
-        private Ruolo(final String nome) {
-            this.nome = nome;
-        }
-
-        public String toString() {
-            return this.nome;
-        }
-    }
 
     private final Ruolo ruolo;
 
@@ -63,6 +49,23 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
                 throw new DAOException("Errore nell'estrazione degli orari di lavoro.", e);
             }
             return orari;
+        }
+
+        public static Optional<Ruolo> getRuolo(Connection connection, String user) {
+            var query = "SELECT ruolo FROM dipendenti WHERE username = ?";
+            String ruolo = null;
+            try (
+                var statement = DAOUtils.prepare(connection, query, user);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    ruolo = rs.getString("ruolo");
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nella query sul dipendente.", e);
+            }
+
+            return ruolo == null ? Optional.empty() : Optional.of(Ruolo.valueOf(ruolo.toUpperCase()));
         }
     }
 }

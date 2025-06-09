@@ -6,14 +6,20 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import it.unibo.smartcity.controller.api.Controller;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 class LoginPanel extends JPanel {
 
     private static final int TEXT_WIDTH = 40;
 
-    public LoginPanel() {
+    public LoginPanel(final Controller controller) {
         super(new BorderLayout());
 
         var userNamePanel = new JPanel();
@@ -36,6 +42,21 @@ class LoginPanel extends JPanel {
 
         var loginButton = new JButton("Login");
         this.add(loginButton, BorderLayout.SOUTH);
+
+        loginButton.addActionListener(e -> {
+            try {
+                checkNotNull(userField.getText());
+                checkArgument(!userField.getText().isBlank());
+                checkNotNull(passwordField.getText());
+                checkArgument(!passwordField.getText().isBlank());
+                controller.login(userField.getText(), passwordField.getText());
+            } catch (IllegalArgumentException | NullPointerException ec) {
+                JOptionPane.showMessageDialog(this, "Inserire tutti i dati", "Errore", JOptionPane.ERROR_MESSAGE);
+                ec.printStackTrace();
+            } finally {
+                passwordField.setText("");
+            }
+        });
     }
 
 }

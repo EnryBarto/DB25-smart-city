@@ -14,6 +14,8 @@ import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
+import it.unibo.smartcity.model.api.Dipendente;
+import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.LineaImpl;
 import it.unibo.smartcity.model.impl.UtenteImpl;
 import it.unibo.smartcity.view.api.View;
@@ -21,8 +23,10 @@ import it.unibo.smartcity.view.api.View.SignupData;
 
 public class ControllerImpl implements Controller {
 
+    private final static UserLevel DEFAULT_LEVEL = UserLevel.NOT_LOGGED;
     private final Set<View> views = new HashSet<>();
     private Connection connection;
+    private UserLevel currentUserLevel = UserLevel.NOT_LOGGED;
 
     public ControllerImpl () {
         var fake = new JFrame();
@@ -66,6 +70,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void attachView(final View v) {
         Preconditions.checkNotNull(v);
+        v.userLevelChanged(DEFAULT_LEVEL);
         views.add(v);
     }
 
@@ -108,6 +113,33 @@ public class ControllerImpl implements Controller {
     @Override
     public void updateHubsList() {
         views.forEach(v -> v.updateHubsList(ListHubMobilita.DAO.get(connection)));
+    }
+
+    @Override
+    public void login(String username, String password) {
+        var utente = UtenteImpl.DAO.byUser(connection, username);
+        if (utente != null && utente.getPassword().compareTo(password) == 0) {
+            var ruolo = DipendenteImpl.DAO.getRuolo(connection, username);
+            if (ruolo.isEmpty()) {
+                this.currentUserLevel = UserLevel.USER;
+            } else {
+                this.currentUserLevel = switch (ruolo.get()) {
+                    case Dipendente.Ruolo.AMMINISTRATIVO -> UserLevel.ADMIN;
+                    case Dipendente.Ruolo.AUTISTA -> UserLevel.DRIVER;
+                    case Dipendente.Ruolo.CONTROLLORE -> UserLevel.CONTROLLER;
+                };
+            }
+            views.forEach(v -> v.userLevelChanged(this.currentUserLevel));
+        } else {
+            views.forEach(View::showLoginError);
+        }
+    }
+
+    @Override
+    public void logout() {
+        Preconditions.checkState(this.currentUserLevel != UserLevel.NOT_LOGGED, "Non sei loggato");
+        this.currentUserLevel = UserLevel.NOT_LOGGED;
+        views.forEach(v -> v.userLevelChanged(this.currentUserLevel));
     }
 
 }

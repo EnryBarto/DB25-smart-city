@@ -6,6 +6,7 @@ import java.util.Set;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Linea;
+import it.unibo.smartcity.controller.api.Controller.UserLevel;
 
 public interface View {
 
@@ -19,10 +20,19 @@ public interface View {
         String username,
         String password
     ) {}
+
     void showMainMenu();
+
     void updateLinesList(List<InfoLinea> linee);
+
     void updateTimetableLinesList(List<Linea> list);
+
     void showLineTimetable(String codLinea);
+
     void updateHubsList(Set<ListHubMobilita> set);
+
+    void showLoginError();
+
+    void userLevelChanged(UserLevel newLevel);
 
 }

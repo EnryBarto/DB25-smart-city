@@ -20,7 +20,9 @@ final class LaunchApp {
     public static void main(final String[] args) {
         final Controller controller = new ControllerImpl();
         final View view = new SwingView(controller);
+        final View view2 = new SwingView(controller);
         controller.attachView(view);
+        controller.attachView(view2);
         controller.showMainMenu();
     }
 }

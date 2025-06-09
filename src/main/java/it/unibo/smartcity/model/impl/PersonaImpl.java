@@ -1,7 +1,7 @@
 package it.unibo.smartcity.model.impl;
 
 import java.util.Optional;
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import it.unibo.smartcity.model.api.Persona;
 
@@ -13,14 +13,15 @@ public class PersonaImpl implements Persona {
     private final Optional<String> codiceFiscale;
 
     public PersonaImpl(final String cognome, final String nome, final String documento, final String codiceFiscale) {
-        Preconditions.checkArgument(!cognome.isBlank());
-        Preconditions.checkArgument(!nome.isBlank());
-        Preconditions.checkArgument(!documento.isBlank());
+        checkArgument(!cognome.isBlank());
+        checkArgument(!nome.isBlank());
+        checkArgument(!documento.isBlank());
 
         this.cognome = cognome;
         this.nome = nome;
         this.documento = documento;
-        this.codiceFiscale = codiceFiscale.isBlank() ? Optional.empty() : Optional.of(codiceFiscale);
+        if (codiceFiscale != null && !codiceFiscale.isBlank()) this.codiceFiscale = Optional.of(codiceFiscale);
+        else this.codiceFiscale = Optional.empty();
     }
 
     public PersonaImpl(final String cognome, final String nome, final String documento) {

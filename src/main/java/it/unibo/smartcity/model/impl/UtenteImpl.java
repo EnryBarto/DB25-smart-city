@@ -1,7 +1,6 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
@@ -73,30 +72,29 @@ public class UtenteImpl extends PersonaImpl implements Utente {
 
     public static final class DAO {
 
-        public static ArrayList<UtenteImpl> list(Connection connection) {
-            var utenti = new ArrayList<UtenteImpl>();
+        public static Utente byUser(Connection connection, String username) {
+            Utente utente = null;
             try (
-                var statement = DAOUtils.prepare(connection, Queries.SELECT_UTENTE);
+                var statement = DAOUtils.prepare(connection, Queries.SELECT_UTENTE, username);
                 var rs = statement.executeQuery();
             ) {
                 while (rs.next()) {
-                    var utente = new UtenteImpl(
-                        rs.getString("cognome"),
-                        rs.getString("nome"),
-                        rs.getString("documento"),
-                        rs.getString("codice_fiscale"),
-                        rs.getString("username"),
-                        rs.getString("email"),
-                        rs.getString("telefono"),
-                        rs.getString("password")
+                    utente = new UtenteImpl(
+                        rs.getString("p.cognome"),
+                        rs.getString("p.nome"),
+                        rs.getString("p.documento"),
+                        rs.getString("p.codice_fiscale"),
+                        rs.getString("u.username"),
+                        rs.getString("u.email"),
+                        rs.getString("u.telefono"),
+                        rs.getString("u.password")
                         );
-                    utenti.add(utente);
                 }
-
             } catch (Exception e) {
+                System.out.println(e.getMessage());
                 throw new DAOException("Failed to list Utente", e);
             }
-            return utenti;
+            return utente;
         }
 
         public static void insert(Connection connection, UtenteImpl utente) {
