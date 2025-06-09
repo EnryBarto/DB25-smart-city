@@ -28,8 +28,11 @@ import it.unibo.smartcity.controller.api.Controller.UserLevel;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Dipendente;
+import it.unibo.smartcity.model.api.Fermata;
+import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.OrarioLinea;
+import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.view.api.View;
@@ -108,9 +111,12 @@ public class SwingView implements View {
         this.tabs.put("Profilo", new UserPanel(controller));
         this.tabs.put("Lavoro", new OrariLavoroPanel(controller));
         this.tabs.put("Manutenzioni", new MaintenancePanel(controller));
+        this.tabs.put("InserisciFermata", new FermataManagePanel(controller));
+        this.tabs.put("Gestisci Hub", new HubMobilitaManagePanel(controller));
+        this.tabs.put("Gestisci Tratte", new TratteManagePanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Manutenzioni", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Manutenzioni", "Profilo", "InserisciFermata", "Gestisci Hub", "Gestisci Tratte"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
@@ -151,6 +157,16 @@ public class SwingView implements View {
                         break;
                     case "Lavoro":
                         controller.updateOrariLavoro();
+                    case "InserisciFermata":
+                        controller.updateFermateList();
+                        break;
+                    case "Gestisci Hub":
+                        controller.updateFermateList();
+                        controller.updateHubsList();
+                        break;
+                    case "Gestisci Tratte":
+                        controller.updateFermateList();
+                        controller.updateTratte();
                         break;
                 }
             }
@@ -189,6 +205,23 @@ public class SwingView implements View {
     @Override
     public void updateManutGravose(ArrayList<ManutenzioneGravosa> manutenzioneGravose) {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutGravose(manutenzioneGravose);
+    }
+
+    @Override
+    public void updateFermateList(List<Fermata> fermate) {
+        ((FermataManagePanel)this.tabs.get("InserisciFermata")).updateFermateList(fermate);
+        ((HubMobilitaManagePanel)this.tabs.get("Gestisci Hub")).updateFermateList(fermate);
+        ((TratteManagePanel)this.tabs.get("Gestisci Tratte")).updateFermateList(fermate);
+    }
+
+    @Override
+    public void updateHubs(List<HubMobilita> hubs) {
+        ((HubMobilitaManagePanel)this.tabs.get("Gestisci Hub")).updateHubList(hubs);
+    }
+
+    @Override
+    public void updateTratte(Set<Tratta> set) {
+        ((TratteManagePanel)this.tabs.get("Gestisci Tratte")).updateTratteList(set.stream().toList());
     }
 
 }

@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -178,6 +178,47 @@ public class LineaImpl implements Linea {
                 throw new DAOException("Errore nell'estrazione degli incassi relativi alla linea.", e);
             }
             return incassi;
+        }
+
+        public static void insertOrdinaria(Connection connection, Linea linea) {
+            var query = "INSERT INTO linee (tempo_percorrenza, attiva, codice_tipo_mezzo) VALUES (?, ?, ?)";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setInt(1, 0);
+                statement.setBoolean(2, linea.getAttiva());
+                statement.setInt(3, linea.getCodiceTipoMezzo());
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'inserimento della linea.", e);
+            }
+        }
+
+        public static void insertStraordinaria(Connection connection, Linea linea) {
+            var query = "INSERT INTO linee (tempo_percorrenza, inizio_validita, fine_validita, codice_tipo_mezzo) VALUES (?, ?, ?, ?)";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setInt(1, linea.getTempoPercorrenza());
+                statement.setDate(2, linea.getInizioValidita().orElse(null));
+                statement.setDate(3, linea.getFineValidita().orElse(null));
+                statement.setInt(4, linea.getCodiceTipoMezzo());
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'inserimento della linea.", e);
+            }
+        }
+
+        public static void delete(Connection connection, String codiceLinea) {
+            var query = "DELETE FROM linee WHERE codice_linea = ?";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setString(1, codiceLinea);
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'eliminazione della linea.", e);
+            }
         }
     }
 }

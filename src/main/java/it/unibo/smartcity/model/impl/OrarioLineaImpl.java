@@ -63,5 +63,31 @@ public class OrarioLineaImpl implements OrarioLinea {
             }
             return orari;
         }
+
+        public static void insert(Connection connection, OrarioLinea orarioLinea) {
+            var query = "INSERT INTO orari_linea (ora_partenza, giorno_settimanale, codice_linea) VALUES (?, ?, ?)";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setString(1, orarioLinea.getOraPartenza());
+                statement.setString(2, orarioLinea.getGiornoSettimanale());
+                statement.setString(3, orarioLinea.getCodiceLinea());
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'inserimento dell'orario della linea.", e);
+            }
+        }
+
+        public static void delete(Connection connection, OrarioLinea orarioLinea) {
+            var query = "DELETE FROM orari_linea WHERE codice_orario = ?";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setInt(1, orarioLinea.getCodiceOrario());
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'eliminazione dell'orario della linea.", e);
+            }
+        }
     }
 }

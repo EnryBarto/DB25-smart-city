@@ -75,5 +75,33 @@ public class FermataImpl implements Fermata {
             }
             return fermate;
         }
+
+        public static void insert(Connection connection, Fermata fermata) {
+            var query = "INSERT INTO fermate (nome, via, CAP, longitudine, latitudine) VALUES (?, ?, ?, ?, ?)";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setString(1, fermata.getNome());
+                statement.setString(2, fermata.getVia());
+                statement.setInt(3, fermata.getCap());
+                statement.setString(4, fermata.getLongitudine());
+                statement.setString(5, fermata.getLatitudine());
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'inserimento della fermata.", e);
+            }
+        }
+
+        public static void delete(Connection connection, int codiceFermata) {
+            var query = "DELETE FROM fermate WHERE codice_fermata = ?";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setInt(1, codiceFermata);
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'eliminazione della fermata.", e);
+            }
+        }
     }
 }

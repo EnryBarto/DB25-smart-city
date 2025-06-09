@@ -1,5 +1,7 @@
 package it.unibo.smartcity.model.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.sql.Connection;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +20,9 @@ public class TrattaImpl implements Tratta {
         this.arrivoCodiceFermata = arrivoCodiceFermata;
         this.partenzaCodiceFermata = partenzaCodiceFermata;
         this.tempoPercorrenza = tempoPercorrenza;
-    }
+        checkArgument(partenzaCodiceFermata != arrivoCodiceFermata,
+"Il codice della fermata di partenza e di arrivo devono essere diversi");
+        checkArgument(tempoPercorrenza > 0, "Il tempo di percorrenza deve essere un numero positivo");}
 
     @Override
     public int getArrivoCodiceFermata() {
@@ -55,6 +59,33 @@ public class TrattaImpl implements Tratta {
                 throw new DAOException("Errore nell'estrazione delle tratte.", e);
             }
             return tratte;
+        }
+
+        public static void insert(Connection connection, Tratta tratta) {
+            var query = "INSERT INTO tratte (arrivo_codice_fermata, partenza_codice_fermata, tempo_percorrenza) VALUES (?, ?, ?)";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setInt(1, tratta.getArrivoCodiceFermata());
+                statement.setInt(2, tratta.getPartenzaCodiceFermata());
+                statement.setInt(3, tratta.getTempoPercorrenza());
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'inserimento della tratta.", e);
+            }
+        }
+
+        public static void delete(Connection connection, Tratta tratta) {
+            var query = "DELETE FROM tratte WHERE arrivo_codice_fermata = ? AND partenza_codice_fermata = ?";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setInt(1, tratta.getArrivoCodiceFermata());
+                statement.setInt(2, tratta.getPartenzaCodiceFermata());
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'eliminazione della tratta.", e);
+            }
         }
     }
 }
