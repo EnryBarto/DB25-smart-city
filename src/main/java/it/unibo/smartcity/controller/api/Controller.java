@@ -1,5 +1,8 @@
 package it.unibo.smartcity.controller.api;
 
+import it.unibo.smartcity.model.api.Dipendente;
+import it.unibo.smartcity.model.api.Dipendente.Ruolo;
+import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.view.api.View;
 import it.unibo.smartcity.view.api.View.SignupData;
 
@@ -43,4 +46,10 @@ public interface Controller {
     void logout();
 
     void updateUserInfo();
+
+    void updateEmployeesList();
+
+    void addEmployee(Utente utente, Ruolo ruolo);
+
+    void removeEmployee(Dipendente dipendente);
 }

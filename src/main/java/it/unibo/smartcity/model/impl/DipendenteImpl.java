@@ -3,6 +3,8 @@ package it.unibo.smartcity.model.impl;
 import java.sql.Connection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import it.unibo.smartcity.data.DAOException;
@@ -11,6 +13,7 @@ import it.unibo.smartcity.data.Queries;
 import java.util.Optional;
 
 import it.unibo.smartcity.model.api.Dipendente;
+import it.unibo.smartcity.model.api.Utente;
 
 public class DipendenteImpl extends UtenteImpl implements Dipendente {
 
@@ -66,6 +69,55 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
             }
 
             return ruolo == null ? Optional.empty() : Optional.of(Ruolo.valueOf(ruolo.toUpperCase()));
+        }
+
+        public static List<Dipendente> list(Connection connection) {
+            List<Dipendente> dipendenti = new LinkedList<>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_DIPENDENTI);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var dip = new DipendenteImpl(
+                        rs.getString("p.cognome"),
+                        rs.getString("p.nome"),
+                        rs.getString("p.documento"),
+                        rs.getString("p.codice_fiscale"),
+                        rs.getString("u.username"),
+                        rs.getString("u.email"),
+                        rs.getString("u.telefono"),
+                        rs.getString("u.password"),
+                        Dipendente.Ruolo.valueOf(rs.getString("ruolo").toUpperCase())
+                        );
+                        dipendenti.add(dip);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                throw new DAOException("Failed to list Dipendenti", e);
+            }
+            return dipendenti;
+        }
+
+        public static void insert(Connection connection, Utente utente, Ruolo ruolo) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.INSERT_DIPENDENTE, utente.getUsername(), ruolo.toString());
+            ) {
+                statement.executeUpdate();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                throw new DAOException("Failed to add dipendente", e);
+            }
+        }
+
+        public static void remove(Connection connection, Dipendente dipendente) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.REMOVE_DIPENDENTE, dipendente.getUsername());
+            ) {
+                statement.executeUpdate();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                throw new DAOException("Failed to remove dipendente", e);
+            }
         }
     }
 }

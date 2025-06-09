@@ -258,6 +258,37 @@ public final class Queries {
         WHERE codice_linea = 'L101';
     """;
 
+    public static final String LIST_DIPENDENTI =
+    """
+        SELECT *
+        FROM DIPENDENTI D
+        JOIN UTENTI U ON D.username = U.username
+        JOIN PERSONE P ON P.documento = U.documento
+        ORDER BY P.documento
+    """;
+
+    public static final String LIST_UTENTI_NON_DIPENDENTI =
+    """
+        SELECT *
+        FROM PERSONE P
+        JOIN UTENTI U ON P.documento = U.documento
+        LEFT JOIN DIPENDENTI D ON D.username = U.username
+        WHERE D.ruolo IS NULL
+        ORDER BY P.documento
+    """;
+
+    public static final String INSERT_DIPENDENTE =
+    """
+        INSERT INTO DIPENDENTI (username, ruolo)
+        VALUES (?, ?);
+    """;
+
+    public static final String REMOVE_DIPENDENTE =
+    """
+        DELETE FROM DIPENDENTI
+        WHERE username = ?
+    """;
+
     /*
      * ALTRE QUERY
      */
