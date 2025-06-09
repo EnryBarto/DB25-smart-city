@@ -13,6 +13,7 @@ import it.unibo.smartcity.data.Queries;
 import java.util.Optional;
 
 import it.unibo.smartcity.model.api.Dipendente;
+import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Utente;
 
 public class DipendenteImpl extends UtenteImpl implements Dipendente {
@@ -32,10 +33,10 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
 
     public static final class DAO {
 
-        public static Map<Date, OrarioLineaImpl> listOrari(Connection connection, String codiceLinea) {
-            var orari = new HashMap<Date, OrarioLineaImpl>();
+        public static Map<Date, OrarioLinea> listOrari(Connection connection, String username) {
+            var orari = new HashMap<Date, OrarioLinea>();
             try (
-                var statement = DAOUtils.prepare(connection, Queries.LIST_ORARI_UNA_LINEA, codiceLinea);
+                var statement = DAOUtils.prepare(connection, Queries.LIST_ORARIO_LINEE_ASSEGN, username);
                 var rs = statement.executeQuery();
             ) {
                 while (rs.next()) {

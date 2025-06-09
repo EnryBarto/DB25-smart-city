@@ -32,6 +32,8 @@ public interface Controller {
 
     void updateLinesList();
 
+    void updateOrariLavoro();
+
     void signup(Utente user);
 
     void updateTimetableLinesList();

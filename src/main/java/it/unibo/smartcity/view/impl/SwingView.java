@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Linea;
+import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.view.api.View;
 
@@ -60,6 +62,11 @@ public class SwingView implements View {
         this.frame.setVisible(true);
         controller.updateLinesList();
         controller.updateTimetableLinesList();
+    }
+
+    @Override
+    public void updateOrariLavoro(Map<Date, OrarioLinea> orariLavoro) {
+        ((OrariLavoroPanel)tabs.get("Lavoro")).updateOrariLavoro(orariLavoro);
     }
 
     @Override
@@ -97,12 +104,13 @@ public class SwingView implements View {
         this.tabs.put("Registrati", new SignupPanel(controller));
         this.tabs.put("Dipendenti", new EmployeeManagementPanel(controller));
         this.tabs.put("Profilo", new UserPanel(controller));
+        this.tabs.put("Lavoro", new OrariLavoroPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
         this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
-        this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub", "Profilo"));
-        this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
     }
 
     private void setTabPane(UserLevel userLevel) {

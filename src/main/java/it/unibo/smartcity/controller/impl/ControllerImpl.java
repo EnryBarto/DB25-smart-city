@@ -91,6 +91,11 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
+    public void updateOrariLavoro() {
+        views.forEach(v -> v.updateOrariLavoro(DipendenteImpl.DAO.listOrari(connection, user.getUsername())));
+    }
+
+    @Override
     public void signup(final Utente user) {
         Preconditions.checkNotNull(user);
         UtenteImpl.DAO.insert(connection, user);
