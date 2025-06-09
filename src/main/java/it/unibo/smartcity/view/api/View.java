@@ -12,17 +12,6 @@ import it.unibo.smartcity.controller.api.Controller.UserLevel;
 
 public interface View {
 
-    public record  SignupData(
-        String name,
-        String surname,
-        String document,
-        String cf,
-        String phone,
-        String email,
-        String username,
-        String password
-    ) {}
-
     static void showErrorDialog(String errorMessage) {
         JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -40,5 +29,7 @@ public interface View {
     void updateHubsList(Set<ListHubMobilita> set);
 
     void userLevelChanged(UserLevel newLevel);
+
+    void showLoginUser(String username);
 
 }

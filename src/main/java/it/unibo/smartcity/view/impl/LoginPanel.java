@@ -18,12 +18,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 class LoginPanel extends JPanel {
 
     private static final int TEXT_WIDTH = 40;
+    private final JTextField userField = new JTextField(TEXT_WIDTH);
 
     public LoginPanel(final Controller controller) {
         super(new BorderLayout());
 
         var userNamePanel = new JPanel();
-        var userField = new JTextField(TEXT_WIDTH);
         userNamePanel.add(new JLabel("Username: "));
         userNamePanel.add(userField);
 
@@ -60,6 +60,10 @@ class LoginPanel extends JPanel {
                 passwordField.setText("");
             }
         });
+    }
+
+    public void setUsername(String username) {
+        this.userField.setText(username);
     }
 
 }

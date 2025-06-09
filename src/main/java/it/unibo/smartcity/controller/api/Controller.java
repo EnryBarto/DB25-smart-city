@@ -1,7 +1,7 @@
 package it.unibo.smartcity.controller.api;
 
+import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.view.api.View;
-import it.unibo.smartcity.view.api.View.SignupData;
 
 public interface Controller {
 
@@ -19,7 +19,7 @@ public interface Controller {
 
     void updateLinesList();
 
-    void signup(SignupData data);
+    void signup(Utente user);
 
     void updateTimetableLinesList();
 
@@ -30,5 +30,7 @@ public interface Controller {
     void login(String username, String password);
 
     void logout();
+
+    void showLoginUser(String username);
 
 }

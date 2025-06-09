@@ -264,6 +264,13 @@ public final class Queries {
         WHERE codice_linea = 'L101';
     """;
 
+    public static final String SELECT_PERSONA =
+    """
+        SELECT *
+        FROM PERSONE P
+        WHERE P.documento = ?;
+    """;
+
     /*
      * ALTRE QUERY
      */

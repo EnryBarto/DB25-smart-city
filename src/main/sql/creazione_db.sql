@@ -209,7 +209,7 @@ create table UTENTI (
      documento varchar(20) not null,
      email varchar(50) not null,
      telefono varchar(14) not null,
-     password varchar(18) not null,
+     password varchar(255) not null,
      constraint ID_UTENTE primary key (username),
      constraint FKutenza_ID unique (documento));
 

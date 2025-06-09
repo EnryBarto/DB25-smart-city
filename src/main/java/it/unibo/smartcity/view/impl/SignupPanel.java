@@ -1,6 +1,10 @@
 package it.unibo.smartcity.view.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.awt.BorderLayout;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -9,11 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.mindrot.jbcrypt.BCrypt;
 
 import it.unibo.smartcity.controller.api.Controller;
-import it.unibo.smartcity.view.api.View.SignupData;
+import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.UtenteImpl;
 import it.unibo.smartcity.view.api.View;
 
 class SignupPanel extends JPanel {
@@ -94,13 +98,12 @@ class SignupPanel extends JPanel {
                 String documento = checkNotNull(documentField.getText());
                 checkArgument(!documento.isEmpty(), "Documento cannot be empty");
                 String cf = cfField.getText();
-                if (!cf.isEmpty()) checkArgument(
+                if (!cf.isBlank()) checkArgument(
                     cf.matches("[A-Za-z0-9]{16}"), "Codice Fiscale must be 16 alphanumeric characters"
                 );
-                checkArgument(cf.length() == 16, "Codice Fiscale must be 16 characters long");
                 String tel = checkNotNull(telField.getText());
                 checkArgument(
-                    tel.matches("\\d{10}"), "Telefono must be a 10-digit number"
+                    tel.matches("^.{1,14}$"), "Telefono must be from 1 to 14 characters"
                 );
                 String email = checkNotNull(emailField.getText());
                 checkArgument(
@@ -118,19 +121,25 @@ class SignupPanel extends JPanel {
                 );
                 String username = checkNotNull(userField.getText());
                 checkArgument(!username.isEmpty(), "Username cannot be empty");
-                String password = checkNotNull(passwordField.getSelectedText());
+                checkArgument(passwordField.getPassword().length != 0);
+                String password = new String(passwordField.getPassword());
                 checkArgument(!password.isEmpty(), "Password cannot be empty");
 
-                // Calling the controller to handle the signup logic
-                //the password is not hashed here for security reasons,
-                // the controller will hash it.
-                SignupData data = new SignupData(
-                    name, surname, documento, cf, tel, email, username, password
-                );
-                this.controller.signup(data);
+                Utente newUser = new UtenteImpl(name, surname, documento, cf, tel, email, username, BCrypt.hashpw(password, BCrypt.gensalt()));
+                this.controller.signup(newUser);
+
+                nameField.setText("");
+                surnameField.setText("");
+                documentField.setText("");
+                cfField.setText("");
+                telField.setText("");
+                emailField.setText("");
+                userField.setText("");
+                passwordField.setText("");
+
+                controller.showLoginUser(username);
 
             } catch (IllegalArgumentException | NullPointerException ex) {
-                // Show error message if any input is invalid
                 View.showErrorDialog(ex.getMessage());
             }
         });

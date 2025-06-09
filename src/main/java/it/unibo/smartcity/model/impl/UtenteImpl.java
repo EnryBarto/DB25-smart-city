@@ -91,18 +91,25 @@ public class UtenteImpl extends PersonaImpl implements Utente {
                         );
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 throw new DAOException("Failed to list Utente", e);
             }
             return utente;
         }
 
-        public static void insert(Connection connection, UtenteImpl utente) {
+        public static void insert(Connection connection, Utente utente) {
             Preconditions.checkNotNull(connection);
             Preconditions.checkNotNull(utente);
 
             try (
-                var statement = DAOUtils.prepare(
+                var insertPerson = DAOUtils.prepare(
+                    connection,
+                    Queries.INSERT_PERSONA,
+                    utente.getCognome(),
+                    utente.getNome(),
+                    utente.getDocumento()
+                );
+
+                var insertUser = DAOUtils.prepare(
                     connection,
                     Queries.INSERT_USER,
                     utente.getUsername(),
@@ -111,18 +118,12 @@ public class UtenteImpl extends PersonaImpl implements Utente {
                     utente.getTelefono(),
                     utente.getPassword()
                 );
-
-                var statement2 = DAOUtils.prepare(
-                    connection,
-                    Queries.INSERT_PERSONA,
-                    utente.getCognome(),
-                    utente.getNome(),
-                    utente.getDocumento(),
-                    utente.getCodiceFiscale()
-                );
             ) {
-                statement.executeUpdate();
-                statement2.executeUpdate();
+                if (utente.getCodiceFiscale().isPresent()) insertPerson.setString(4, utente.getCodiceFiscale().get());
+                else insertPerson.setNull(4, java.sql.Types.CHAR);
+
+                if (PersonaImpl.DAO.byDocument(connection, utente.getDocumento()) == null) insertPerson.executeUpdate();
+                insertUser.executeUpdate();
             } catch (Exception e) {
                 throw new DAOException("Failed to insert Utente", e);
             }

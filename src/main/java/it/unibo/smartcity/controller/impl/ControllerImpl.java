@@ -17,11 +17,11 @@ import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.Dipendente;
+import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.LineaImpl;
 import it.unibo.smartcity.model.impl.UtenteImpl;
 import it.unibo.smartcity.view.api.View;
-import it.unibo.smartcity.view.api.View.SignupData;
 
 public class ControllerImpl implements Controller {
 
@@ -87,20 +87,9 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void signup(SignupData signupData) {
-        Preconditions.checkNotNull(signupData);
-        System.err.println("Signup data: " + signupData);
-        // call the model to save user data
-        UtenteImpl.DAO.insert(this.connection, new UtenteImpl(
-            signupData.name(),
-            signupData.surname(),
-            signupData.document(),
-            signupData.cf(),
-            signupData.username(),
-            signupData.email(),
-            signupData.phone(),
-            BCrypt.hashpw(signupData.password(), BCrypt.gensalt())
-        ));
+    public void signup(final Utente user) {
+        Preconditions.checkNotNull(user);
+        UtenteImpl.DAO.insert(connection, user);
     }
 
     @Override
@@ -143,6 +132,11 @@ public class ControllerImpl implements Controller {
         Preconditions.checkState(this.currentUserLevel != UserLevel.NOT_LOGGED, "Non sei loggato");
         this.currentUserLevel = UserLevel.NOT_LOGGED;
         views.forEach(v -> v.userLevelChanged(this.currentUserLevel));
+    }
+
+    @Override
+    public void showLoginUser(String username) {
+        views.forEach(v -> v.showLoginUser(username));
     }
 
 }

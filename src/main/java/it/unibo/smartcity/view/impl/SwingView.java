@@ -146,4 +146,10 @@ public class SwingView implements View {
         JOptionPane.showMessageDialog(null, errorMessage, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
+    @Override
+    public void showLoginUser(String username) {
+        this.tabPane.setSelectedComponent(this.tabs.get("Login"));
+        ((LoginPanel)this.tabs.get("Login")).setUsername(username);
+    }
+
 }

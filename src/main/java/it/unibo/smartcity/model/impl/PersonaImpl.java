@@ -1,8 +1,12 @@
 package it.unibo.smartcity.model.impl;
 
+import java.sql.Connection;
 import java.util.Optional;
 import static com.google.common.base.Preconditions.checkArgument;
 
+import it.unibo.smartcity.data.DAOException;
+import it.unibo.smartcity.data.DAOUtils;
+import it.unibo.smartcity.data.Queries;
 import it.unibo.smartcity.model.api.Persona;
 
 public class PersonaImpl implements Persona {
@@ -46,6 +50,29 @@ public class PersonaImpl implements Persona {
     @Override
     public Optional<String> getCodiceFiscale() {
         return codiceFiscale;
+    }
+
+    public static final class DAO {
+
+        public static Persona byDocument(Connection connection, String document) {
+            Persona persona = null;
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.SELECT_PERSONA, document);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    persona = new PersonaImpl(
+                        rs.getString("p.cognome"),
+                        rs.getString("p.nome"),
+                        rs.getString("p.documento"),
+                        rs.getString("p.codice_fiscale")
+                    );
+                }
+            } catch (Exception e) {
+                throw new DAOException("Failed to select Persona", e);
+            }
+            return persona;
+        }
     }
 
 }
