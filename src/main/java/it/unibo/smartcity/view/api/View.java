@@ -15,7 +15,9 @@ import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
+import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 
 public interface View {
@@ -49,4 +51,8 @@ public interface View {
     void updateHubs(List<HubMobilita> hubs);
 
     void updateTratte(Set<Tratta> list);
+
+    void updateManutMezziPanel(ArrayList<ManutenzioneMezzoImpl> list);
+
+    void updateManutLineePanel(ArrayList<ManutenzioneLineaImpl> list);
 }

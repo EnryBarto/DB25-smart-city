@@ -260,7 +260,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void addManutenzione(ManutenzioneMezzoImpl manut) {
+    public void addManutenzioneMezzo(ManutenzioneMezzoImpl manut) {
         checkState(this.currentUserLevel == UserLevel.ADMIN);
         checkNotNull(manut, "Manutenzione cannot be null");
         ManutenzioneMezzoImpl.DAO.insert(connection, manut);
@@ -279,8 +279,39 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void removeManutMezzo(String getnImmatricolazione, Date dataInzio) {
-        ManutenzioneMezzoImpl.DAO.remove(connection, getnImmatricolazione, dataInzio);
+    public void removeManutMezzo(String nImmatricolazione, Date dataInzio) {
+        ManutenzioneMezzoImpl.DAO.remove(connection, nImmatricolazione, dataInzio);
+    }
+
+    @Override
+    public void updateManutMezziPanel() {
+        views.forEach(v -> v.updateManutMezziPanel(ManutenzioneMezzoImpl.DAO.list(connection)));
+    }
+
+    @Override
+    public void updateManutLineePanel() {
+        views.forEach(v -> v.updateManutLineePanel(ManutenzioneLineaImpl.DAO.list(connection)));
+    }
+
+    @Override
+    public ArrayList<ManutenzioneLineaImpl> getManutLinee() {
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        return ManutenzioneLineaImpl.DAO.list(connection);
+    }
+
+    @Override
+    public void addManutenzioneLinea(ManutenzioneLineaImpl manut) {
+        checkNotNull(manut, "Manutenzione cannot be null");
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        ManutenzioneLineaImpl.DAO.insert(connection, manut);
+    }
+
+    @Override
+    public void removeManutLinea(String codiceLinea, Date dataInizio) {
+        checkNotNull(codiceLinea, "Codice linea cannot be null");
+        checkNotNull(dataInizio, "Data inizio cannot be null");
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        ManutenzioneLineaImpl.DAO.remove(connection, codiceLinea, dataInizio);
     }
 
 }

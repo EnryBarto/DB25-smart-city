@@ -34,7 +34,9 @@ import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
+import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.view.api.View;
 
 public class SwingView implements View {
@@ -155,6 +157,10 @@ public class SwingView implements View {
                     case "Dipendenti":
                         controller.updateEmployeesList();
                         break;
+                    case "Manutenzioni":
+                        controller.updateManutGravose();
+                        controller.updateManutMezziPanel();
+                        break;
                     case "Lavoro":
                         controller.updateOrariLavoro();
                     case "InserisciFermata":
@@ -222,6 +228,16 @@ public class SwingView implements View {
     @Override
     public void updateTratte(Set<Tratta> set) {
         ((TratteManagePanel)this.tabs.get("Gestisci Tratte")).updateTratteList(set.stream().toList());
+    }
+
+    @Override
+    public void updateManutMezziPanel(ArrayList<ManutenzioneMezzoImpl> list) {
+        ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutMezziPanel();;
+    }
+
+    @Override
+    public void updateManutLineePanel(ArrayList<ManutenzioneLineaImpl> list) {
+        ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutLineePanel();
     }
 
 }

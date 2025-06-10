@@ -10,6 +10,7 @@ import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
+import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.impl.TrattaImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
@@ -86,12 +87,22 @@ public interface Controller {
 
     void updateManutGravose();
 
-    void addManutenzione(ManutenzioneMezzoImpl manut);
+    void addManutenzioneMezzo(ManutenzioneMezzoImpl manut);
 
     ArrayList<MezzoConNome> getMezzi();
 
     ArrayList<ManutenzioneMezzoImpl> getManutenzioniMezzi();
 
     void removeManutMezzo(String getnImmatricolazione, Date dataInzio);
+
+    void updateManutMezziPanel();
+
+    void updateManutLineePanel();
+
+    ArrayList<ManutenzioneLineaImpl> getManutLinee();
+
+    void addManutenzioneLinea(ManutenzioneLineaImpl manut);
+
+    void removeManutLinea(String codiceLinea, Date dataInizio);
 
 }

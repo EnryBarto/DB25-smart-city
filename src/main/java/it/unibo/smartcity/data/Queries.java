@@ -56,10 +56,24 @@ public final class Queries {
         JOIN TIPOLOGIE_MEZZI tm ON m.codice_tipo_mezzo = tm.codice_tipo_mezzo
         """;
     public static final String LIST_MANUTENZIONI_LINEE =
-        """
+    """
         SELECT *
         FROM MANUTENZIONI_LINEE;
-        """;
+    """;
+
+    public static final String INSERT_MANUTENZIONI_LINEE =
+    """
+        INSERT INTO MANUTENZIONI_LINEE (codice_linea, data_inizio, data_fine, nome, descrizione, p_iva)
+        VALUES (?, ?, ?, ?, ?, ?);
+    """;
+
+    public static final String REMOVE_MANUT_LINEE =
+    """
+        DELETE FROM MANUTENZIONI_LINEE
+        WHERE codice_linea = ?
+        AND data_inizio = ?
+    """;
+
     public static final String LIST_MANUTENZIONI_MEZZI =
         """
         SELECT *

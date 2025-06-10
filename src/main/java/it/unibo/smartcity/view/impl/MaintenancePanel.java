@@ -5,9 +5,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
@@ -16,7 +19,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,13 +30,15 @@ import static com.google.common.base.Preconditions.*;
 
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
+import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 
 public class MaintenancePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private final static String[] columnNamesLinee = {"Codice Linea", "Nome", "Durata Lavoro", "Linee Sostitutive"};
-    private final static String[] columnNamesManut = {"Num immatricolazione", "nome", "data inizio", "data fine", "partita iva"};
+    private final static String[] columnNamesManutGravose = {"Codice Linea", "Nome", "Durata Lavoro", "Num Linee Sostitutive", "Visualizza"};
+    private final static String[] columnNamesLinee = {"Codice Linea", "Nome", "data inizio", "data fine", "descrizione", "partita iva", "Visualizza"};
+    private final static String[] columnNamesMezzi = {"Num immatricolazione", "nome", "data inizio", "data fine", "descrizione", "partita iva", "Visualizza"};
     private static final List<String> options = new ArrayList<>(List.of(
         "estrai 5 manutenzioni più gravose",
         "manutenzione mezzi",
@@ -44,9 +48,7 @@ public class MaintenancePanel extends JPanel {
     private final Controller controller;
     private final JPanel northPanel = new JPanel(new FlowLayout());
     private final JComboBox<String> optionList = new JComboBox<>();
-    private final JComboBox<String> mezzoCombo = new JComboBox<>();
     private final JComboBox<String> manutList = new JComboBox<>();
-    private ArrayList<ManutenzioneMezzoImpl> manutenzioni = new ArrayList<>();
     private JScrollPane maintenanceDetails;
 
     public MaintenancePanel(final Controller controller) {
@@ -71,8 +73,8 @@ public class MaintenancePanel extends JPanel {
         btn.addActionListener(e -> {
             switch ((String)this.optionList.getSelectedItem()) {
                 case "estrai 5 manutenzioni più gravose" -> controller.updateManutGravose();
-                case "manutenzione mezzi" -> addManutMezziPanel();
-                case "manutenzione linee" -> addManutLineePanel();
+                case "manutenzione mezzi" -> controller.updateManutMezziPanel();
+                case "manutenzione linee" -> controller.updateManutLineePanel();
                 default -> throw new IllegalArgumentException("Opzione non valida: " + this.optionList.getSelectedItem());
             }
         });
@@ -80,7 +82,7 @@ public class MaintenancePanel extends JPanel {
     }
 
     public void showManutGravose(ArrayList<ManutenzioneGravosa> manutenzioneGravose) {
-        if(this.maintenanceDetails != null) this.remove(maintenanceDetails);
+        clearContentExceptNorth();
         Object[][] righe = manutenzioneGravose.stream()
             .map(m -> {
                 var row = new Object[5];
@@ -94,7 +96,7 @@ public class MaintenancePanel extends JPanel {
                 return row;
             }).toArray(Object[][]::new);
 
-        var tabella = new JTable(righe, columnNamesLinee) {
+        var tabella = new JTable(righe, columnNamesManutGravose) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return column == 4; // La colonna dei pulsanti è l'unica modificabile
@@ -123,75 +125,14 @@ public class MaintenancePanel extends JPanel {
         this.revalidate();
     }
 
-    private void addManutMezziPanel() {
-        createLeftPanel();
-        createRightPanel();
-    }
-
-    private void addManutLineePanel() {
-        createLeftPanel();
-        createRightPanel();
-    }
-
-    private void createRightPanel() {
-        var rightPanel = new JPanel();
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
-        rightPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(220, 53, 69), 2),
-            BorderFactory.createEmptyBorder(20, 30, 20, 30)
-        ));
-        rightPanel.setBackground(Color.WHITE);
-
-        var removeTitle = new JLabel("Rimozione manutenzione", SwingConstants.CENTER);
-        removeTitle.setFont(new Font("Arial", Font.BOLD, 18));
-        removeTitle.setForeground(new Color(220, 53, 69));
-        removeTitle.setAlignmentX(CENTER_ALIGNMENT);
-
-        manutList.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        //filling the ComboBox with the data (all the data will be displayed after).
-        manutenzioni = this.controller.getManutenzioniMezzi();
-        manutenzioni.forEach(man -> manutList.addItem(man.getnImmatricolazione() + man.getDataInzio()));
-        manutList.setMaximumSize(manutList.getPreferredSize());
-
-        var visualBtn = new JButton("Visualizza");
-        visualBtn.setFont(new Font("Arial", Font.BOLD, 14));
-        visualBtn.setBackground(new Color(20, 233, 39));
-        visualBtn.setForeground(Color.WHITE);
-        visualBtn.setFocusPainted(false);
-        visualBtn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
-        visualBtn.setAlignmentX(CENTER_ALIGNMENT);
-        visualBtn.addActionListener(e -> {
-            if(manutList.getSelectedIndex() != -1) {
-                updateVisualPanel(rightPanel, manutenzioni.get(manutList.getSelectedIndex()));
-            }
-        });
-
-        var rimuoviBtn = new JButton("Rimuovi");
-        rimuoviBtn.setFont(new Font("Arial", Font.BOLD, 14));
-        rimuoviBtn.setBackground(new Color(220, 53, 69));
-        rimuoviBtn.setForeground(Color.WHITE);
-        rimuoviBtn.setFocusPainted(false);
-        rimuoviBtn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
-        rimuoviBtn.setAlignmentX(BOTTOM_ALIGNMENT);
-        rimuoviBtn.addActionListener(e -> {
-            var choice = JOptionPane.showOptionDialog(maintenanceDetails, "sei sicuro di voler eliminare questo record?", "Attenzione", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, columnNamesLinee, e);
-            var selInd = manutList.getSelectedIndex();
-            if (selInd != -1 && choice == JOptionPane.YES_OPTION) {
-                this.controller.removeManutMezzo(manutenzioni.get(selInd).getnImmatricolazione(), manutenzioni.get(selInd).getDataInzio());
-            }
-        });
-
-        rightPanel.add(removeTitle);
-        rightPanel.add(Box.createVerticalStrut(15));
-        rightPanel.add(manutList);
-        rightPanel.add(Box.createVerticalStrut(20));
-        rightPanel.add(rimuoviBtn);
-        rightPanel.add(visualBtn);
-
-        this.add(rightPanel);
-    }
-
-    private void createLeftPanel() {
+    // Generic left panel creation
+    private <T> void createLeftPanel(
+        String title,
+        Supplier<List<String>> itemsSupplier,
+        java.util.function.Function<FormFields, T> buildManutenzione,
+        Consumer<T> addAction
+    ) {
+        clearContentExceptNorth();
         var leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
         leftPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -207,14 +148,14 @@ public class MaintenancePanel extends JPanel {
 
         var mezzoPanel = new JPanel();
         mezzoPanel.setBackground(Color.WHITE);
-        JLabel partenzaLabel = new JLabel("mezzo:");
-        mezzoCombo.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        mezzoCombo.setMaximumSize(mezzoCombo.getPreferredSize());
-        mezzoCombo.setEditable(false);
-        //adding all the mezzi to the combo box
-        controller.getMezzi().forEach(m -> mezzoCombo.addItem(m.nImmatricolazione() + "-" +m.nomeMezzo()));
+        JLabel partenzaLabel = new JLabel(title + ":");
+        JComboBox<String> combo = new JComboBox<>();
+        combo.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        combo.setMaximumSize(combo.getPreferredSize());
+        combo.setEditable(false);
+        itemsSupplier.get().forEach(combo::addItem);
         mezzoPanel.add(partenzaLabel);
-        mezzoPanel.add(mezzoCombo);
+        mezzoPanel.add(combo);
 
         var dataPanel = new JPanel();
         dataPanel.setBackground(Color.WHITE);
@@ -257,8 +198,7 @@ public class MaintenancePanel extends JPanel {
         aggiungiBtn.setAlignmentX(CENTER_ALIGNMENT);
         aggiungiBtn.addActionListener(e -> {
             try {
-                // Validazione dei campi
-                checkNotNull(mezzoCombo.getSelectedIndex(), "Selezionare un mezzo");
+                checkNotNull(combo.getSelectedIndex(), "Selezionare un " + title);
                 checkNotNull(dataInizio.getText(), "Inserire la data di inizio manutenzione");
                 checkArgument(!dataInizio.getText().isEmpty(), "La data di inizio manutenzione non può essere vuota");
                 checkNotNull(dataFine.getText(), "Inserire la data di fine manutenzione");
@@ -268,18 +208,17 @@ public class MaintenancePanel extends JPanel {
                 checkNotNull(descField.getText(), "Inserire descrizione manutenzione");
                 checkArgument(!descField.getText().isEmpty(), "La descrizione della manutenzione non può essere vuota");
                 if (!pIvaField.getText().isEmpty()) checkArgument(pIvaField.getText().matches("\\d{11}"), "La partita IVA deve essere un numero di 11 cifre");
-                // Creazione della manutenzione
-                var manut = new ManutenzioneMezzoImpl(
-                    (String) mezzoCombo.getSelectedItem(),
-                    Date.valueOf(dataInizio.getText()),
-                    Date.valueOf(dataFine.getText()),
+                var formFields = new FormFields(
+                    (String) combo.getSelectedItem(),
+                    dataInizio.getText(),
+                    dataFine.getText(),
                     nomeField.getText(),
                     descField.getText(),
                     pIvaField.getText()
                 );
-                this.controller.addManutenzione(manut);
-                //setting tutto vuoto
-                mezzoCombo.setSelectedIndex(0);
+                T manut = buildManutenzione.apply(formFields);
+                addAction.accept(manut);
+                combo.setSelectedIndex(0);
                 dataFine.setText("");
                 dataInizio.setText("");
                 descField.setText("");
@@ -299,23 +238,191 @@ public class MaintenancePanel extends JPanel {
         leftPanel.add(Box.createVerticalStrut(20));
         leftPanel.add(aggiungiBtn);
         this.add(leftPanel, BorderLayout.WEST);
+        this.revalidate();
+        this.repaint();
     }
 
-    private void updateVisualPanel(JPanel panel, ManutenzioneMezzoImpl manut) {
+    // Generic right panel creation with generics and function parameters
+    private <T> void createRightPanel(
+        String title,
+        Supplier<List<T>> manutenzioniSupplier,
+        BiConsumer<String, Date> removeAction,
+        java.util.function.Function<T, String> getId,
+        java.util.function.Function<T, Date> getDate,
+        java.util.function.Consumer<T> visualAction
+    ) {
+        clearContentExceptNorth();
+        var rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
+        rightPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(220, 53, 69), 2),
+            BorderFactory.createEmptyBorder(20, 30, 20, 30)
+        ));
+        rightPanel.setBackground(Color.WHITE);
+
+        var removeTitle = new JLabel("Rimozione " + title, SwingConstants.CENTER);
+        removeTitle.setFont(new Font("Arial", Font.BOLD, 18));
+        removeTitle.setForeground(new Color(220, 53, 69));
+        removeTitle.setAlignmentX(CENTER_ALIGNMENT);
+
+        manutList.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        var manutenzioni = manutenzioniSupplier.get();
+        manutList.removeAllItems();
+        manutenzioni.forEach(man -> manutList.addItem(getId.apply(man) + " - " + getDate.apply(man)));
+        manutList.setMaximumSize(manutList.getPreferredSize());
+
+        var visualBtn = new JButton("Visualizza");
+        visualBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        visualBtn.setBackground(new Color(20, 233, 39));
+        visualBtn.setForeground(Color.WHITE);
+        visualBtn.setFocusPainted(false);
+        visualBtn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        visualBtn.setAlignmentX(BOTTOM_ALIGNMENT);
+        visualBtn.addActionListener(e -> {
+            if(manutList.getSelectedIndex() != -1) {
+                visualAction.accept(manutenzioni.get(manutList.getSelectedIndex()));
+            }
+        });
+
+        var rimuoviBtn = new JButton("Rimuovi");
+        rimuoviBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        rimuoviBtn.setBackground(new Color(220, 53, 69));
+        rimuoviBtn.setForeground(Color.WHITE);
+        rimuoviBtn.setFocusPainted(false);
+        rimuoviBtn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        rimuoviBtn.setAlignmentX(BOTTOM_ALIGNMENT);
+        rimuoviBtn.addActionListener(e -> {
+            var selInd = manutList.getSelectedIndex();
+            if (selInd != -1) {
+                var manut = manutenzioni.get(selInd);
+                removeAction.accept(getId.apply(manut), getDate.apply(manut));
+                // Refresh list
+                var updated = manutenzioniSupplier.get();
+                manutList.removeAllItems();
+                updated.forEach(man -> manutList.addItem(getId.apply(man) + " - " + getDate.apply(man)));
+            }
+        });
+
+        var buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.add(rimuoviBtn);
+        buttonPanel.add(visualBtn);
+
+        rightPanel.add(removeTitle);
+        rightPanel.add(Box.createVerticalStrut(15));
+        rightPanel.add(manutList);
+        rightPanel.add(Box.createVerticalStrut(20));
+        rightPanel.add(buttonPanel);
+        rightPanel.add(Box.createVerticalGlue());
+
+        this.add(rightPanel);
+        this.revalidate();
+        this.repaint();
+    }
+
+    private <T> void updateVisualPanel(
+        JPanel panel,
+        T manut,
+        String[] columnNames,
+        java.util.function.Function<T, Object[]> rowExtractor
+    ) {
         var visualPanel = new JPanel();
-
-        var row = new Object[5];
-        row[0] = manut.getnImmatricolazione();
-        row[1] = manut.getNome();
-        row[2] = manut.getDataInzio();
-        row[3] = manut.getDataFine();
-        row[4] = manut.getDescrizione();
-        row[5] = manut.getpIva();
-
-        Object[][] righe = new Object[][]{row};
-
-        var tabella = new JTable(righe, columnNamesManut);
+        Object[][] righe = new Object[][]{ rowExtractor.apply(manut) };
+        var tabella = new JTable(righe, columnNames);
         visualPanel.add(tabella);
         panel.add(visualPanel, BorderLayout.CENTER);
     }
+
+    private void clearContentExceptNorth() {
+        this.removeAll();
+        this.add(northPanel, BorderLayout.NORTH);
+        this.revalidate();
+        this.repaint();
+    }
+
+    public void showManutMezziPanel() {
+        createRightPanel(
+            "mezzo",
+            () -> controller.getManutenzioniMezzi(),
+            (nImmatricolazione, dataInizio) -> controller.removeManutMezzo(nImmatricolazione, dataInizio),
+            ManutenzioneMezzoImpl::getnImmatricolazione,
+            ManutenzioneMezzoImpl::getDataInzio,
+            manut -> updateVisualPanel(
+                this,
+                manut,
+                columnNamesMezzi,
+                m -> new Object[]{
+                    m.getnImmatricolazione(),
+                    m.getNome(),
+                    m.getDataInzio(),
+                    m.getDataFine(),
+                    m.getpIva()
+                }
+            )
+        );
+        createLeftPanel(
+            "mezzo",
+            () -> controller.getMezzi().stream().map(m -> m.nImmatricolazione() + "-" + m.nomeMezzo()).toList(),
+            fields -> new ManutenzioneMezzoImpl(
+                fields.comboValue(),
+                java.sql.Date.valueOf(fields.dataInizio()),
+                java.sql.Date.valueOf(fields.dataFine()),
+                fields.nome(),
+                fields.descrizione(),
+                fields.partitaIva()
+            ),
+            manut -> controller.addManutenzioneMezzo(manut)
+        );
+        this.repaint();
+        this.revalidate();
+    }
+
+    public void showManutLineePanel() {
+        createRightPanel(
+            "linea",
+            () -> controller.getManutLinee(),
+            (codiceLinea, dataInizio) -> controller.removeManutLinea(codiceLinea, dataInizio),
+            ManutenzioneLineaImpl::getCodiceLinea,
+            ManutenzioneLineaImpl::getDataInizio,
+            manut -> updateVisualPanel(
+                this,
+                manut,
+                columnNamesLinee,
+                l -> new Object[] {
+                    l.getCodiceLinea(),
+                    l.getNome(),
+                    l.getDataInizio(),
+                    l.getDataFine(),
+                    l.getDescrizione(),
+                    l.getPIva()
+                }
+            )
+        );
+        createLeftPanel(
+            "linea",
+            () -> controller.getManutLinee().stream().map(l -> l.getCodiceLinea() + "-" + l.getNome()).toList(),
+            fields -> new ManutenzioneLineaImpl(
+                fields.comboValue(),
+                java.sql.Date.valueOf(fields.dataInizio()),
+                java.sql.Date.valueOf(fields.dataFine()),
+                fields.nome(),
+                fields.descrizione(),
+                fields.partitaIva()
+            ),
+            manut -> controller.addManutenzioneLinea(manut)
+        );
+        this.repaint();
+        this.revalidate();
+    }
+
+    // Helper record to pass form data
+    public record FormFields(
+        String comboValue,
+        String dataInizio,
+        String dataFine,
+        String nome,
+        String descrizione,
+        String partitaIva
+    ) {}
 }

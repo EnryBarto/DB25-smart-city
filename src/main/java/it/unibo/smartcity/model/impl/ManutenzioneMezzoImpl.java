@@ -168,7 +168,7 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
                     manutenzioneMezzo.getNome(),
                     manutenzioneMezzo.getDescrizione(),
                     manutenzioneMezzo.getpIva().isEmpty() ? null : manutenzioneMezzo.getpIva()
-                    )
+                )
             ) {
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Manutenzione Mezzo inserita con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
@@ -181,7 +181,7 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
         public static void remove(Connection connection, String nImmatricolazione, Date dataInizio) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.REMOVE_MANUT_MEZZI,
-                    nImmatricolazione, 
+                    nImmatricolazione,
                     dataInizio
                     )
             ) {

@@ -1,10 +1,14 @@
 package it.unibo.smartcity.model.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.swing.JOptionPane;
 
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
@@ -157,6 +161,39 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
                 throw new DAOException("Failed to list Manutenzioni Linee", e);
             }
             return manutenzioniLinee;
+        }
+
+        public static void insert(Connection connection, ManutenzioneLineaImpl manutenzioneLinea) {
+            checkNotNull(manutenzioneLinea);
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.INSERT_MANUTENZIONI_LINEE,
+                    manutenzioneLinea.getCodiceLinea(),
+                    manutenzioneLinea.getDataInizio(),
+                    manutenzioneLinea.getDataFine(),
+                    manutenzioneLinea.getNome(),
+                    manutenzioneLinea.getDescrizione(),
+                    manutenzioneLinea.getPIva().orElse(null)
+                );
+            ) {
+                statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Manutenzione linea inserita con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Errore nell'inserimento della manutenzione linea: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                throw new DAOException("Failed to list Manutenzioni Linee", e);
+            }
+        }
+
+        public static void remove(Connection connection, String codiceLinea, Date dataInizio) {
+            checkNotNull(codiceLinea);
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.REMOVE_MANUT_LINEE, codiceLinea, dataInizio);
+            ) {
+                statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Manutenzione linea eliminata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Errore nell'eliminazione della manutenzione linea: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                throw new DAOException("Failed to delete Manutenzioni Linee", e);
+            }
         }
 
         public static ArrayList<ManutenzioneGravosa> estrazManutPiuGravose(Connection connection) {
