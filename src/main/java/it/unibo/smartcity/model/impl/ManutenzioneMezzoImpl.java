@@ -144,7 +144,7 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
                 while (rs.next()) {
                     var manutenzioneMezzo = new ManutenzioneMezzoImpl(
                         rs.getString("n_immatricolazione"),
-                        rs.getDate("data_inizio"),
+                        rs.getDate("data_inzio"),
                         rs.getDate("data_fine"),
                         rs.getString("nome"),
                         rs.getString("descrizione"),

@@ -80,7 +80,7 @@ public class LineaImpl implements Linea {
 
     public static final class DAO {
         public static List<Linea> list(Connection connection) {
-            var query = "SELECT * FROM linee ORDER BY codice_linea";
+            var query = "SELECT * FROM LINEE ORDER BY codice_linea";
             var lines = new LinkedList<Linea>();
             try (
                 var statement = DAOUtils.prepare(connection, query);

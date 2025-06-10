@@ -81,6 +81,91 @@ public class MaintenancePanel extends JPanel {
         northPanel.add(btn);
     }
 
+    public void showManutMezziPanel() {
+        createRightPanel(
+            "mezzo",
+            () -> controller.getManutenzioniMezzi(),
+            (nImmatricolazione, dataInizio) -> controller.removeManutMezzo(nImmatricolazione, dataInizio),
+            ManutenzioneMezzoImpl::getnImmatricolazione,
+            ManutenzioneMezzoImpl::getDataInzio,
+            manut -> updateVisualPanel(
+                this,
+                manut,
+                columnNamesMezzi,
+                m -> new Object[]{
+                    m.getnImmatricolazione(),
+                    m.getNome(),
+                    m.getDataInzio(),
+                    m.getDataFine(),
+                    m.getpIva()
+                }
+            )
+        );
+        createLeftPanel(
+            "mezzo",
+            () -> controller.getMezzi().stream().map(m -> m.nImmatricolazione() + "-" + m.nomeMezzo()).toList(),
+            fields -> new ManutenzioneMezzoImpl(
+                fields.comboValue(),
+                java.sql.Date.valueOf(fields.dataInizio()),
+                java.sql.Date.valueOf(fields.dataFine()),
+                fields.nome(),
+                fields.descrizione(),
+                fields.partitaIva()
+            ),
+            manut -> controller.addManutenzioneMezzo(manut)
+        );
+        this.repaint();
+        this.revalidate();
+    }
+
+    public void showManutLineePanel() {
+        createRightPanel(
+            "linea",
+            () -> controller.getManutLinee(),
+            (codiceLinea, dataInizio) -> controller.removeManutLinea(codiceLinea, dataInizio),
+            ManutenzioneLineaImpl::getCodiceLinea,
+            ManutenzioneLineaImpl::getDataInizio,
+            manut -> updateVisualPanel(
+                this,
+                manut,
+                columnNamesLinee,
+                l -> new Object[] {
+                    l.getCodiceLinea(),
+                    l.getNome(),
+                    l.getDataInizio(),
+                    l.getDataFine(),
+                    l.getDescrizione(),
+                    l.getPIva()
+                }
+            )
+        );
+        createLeftPanel(
+            "linea",
+            () -> controller.getManutLinee().stream().map(l -> l.getCodiceLinea() + "-" + l.getNome()).toList(),
+            fields -> new ManutenzioneLineaImpl(
+                fields.comboValue(),
+                java.sql.Date.valueOf(fields.dataInizio()),
+                java.sql.Date.valueOf(fields.dataFine()),
+                fields.nome(),
+                fields.descrizione(),
+                fields.partitaIva()
+            ),
+            manut -> controller.addManutenzioneLinea(manut)
+        );
+        this.repaint();
+        this.revalidate();
+    }
+
+    // Helper record to pass form data
+    public record FormFields(
+        String comboValue,
+        String dataInizio,
+        String dataFine,
+        String nome,
+        String descrizione,
+        String partitaIva
+    ) {}
+
     public void showManutGravose(ArrayList<ManutenzioneGravosa> manutenzioneGravose) {
         clearContentExceptNorth();
         Object[][] righe = manutenzioneGravose.stream()
@@ -132,7 +217,6 @@ public class MaintenancePanel extends JPanel {
         java.util.function.Function<FormFields, T> buildManutenzione,
         Consumer<T> addAction
     ) {
-        clearContentExceptNorth();
         var leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
         leftPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -260,7 +344,7 @@ public class MaintenancePanel extends JPanel {
         ));
         rightPanel.setBackground(Color.WHITE);
 
-        var removeTitle = new JLabel("Rimozione " + title, SwingConstants.CENTER);
+        var removeTitle = new JLabel("Rimozione manutenzione " +title, SwingConstants.CENTER);
         removeTitle.setFont(new Font("Arial", Font.BOLD, 18));
         removeTitle.setForeground(new Color(220, 53, 69));
         removeTitle.setAlignmentX(CENTER_ALIGNMENT);
@@ -341,88 +425,4 @@ public class MaintenancePanel extends JPanel {
         this.repaint();
     }
 
-    public void showManutMezziPanel() {
-        createRightPanel(
-            "mezzo",
-            () -> controller.getManutenzioniMezzi(),
-            (nImmatricolazione, dataInizio) -> controller.removeManutMezzo(nImmatricolazione, dataInizio),
-            ManutenzioneMezzoImpl::getnImmatricolazione,
-            ManutenzioneMezzoImpl::getDataInzio,
-            manut -> updateVisualPanel(
-                this,
-                manut,
-                columnNamesMezzi,
-                m -> new Object[]{
-                    m.getnImmatricolazione(),
-                    m.getNome(),
-                    m.getDataInzio(),
-                    m.getDataFine(),
-                    m.getpIva()
-                }
-            )
-        );
-        createLeftPanel(
-            "mezzo",
-            () -> controller.getMezzi().stream().map(m -> m.nImmatricolazione() + "-" + m.nomeMezzo()).toList(),
-            fields -> new ManutenzioneMezzoImpl(
-                fields.comboValue(),
-                java.sql.Date.valueOf(fields.dataInizio()),
-                java.sql.Date.valueOf(fields.dataFine()),
-                fields.nome(),
-                fields.descrizione(),
-                fields.partitaIva()
-            ),
-            manut -> controller.addManutenzioneMezzo(manut)
-        );
-        this.repaint();
-        this.revalidate();
-    }
-
-    public void showManutLineePanel() {
-        createRightPanel(
-            "linea",
-            () -> controller.getManutLinee(),
-            (codiceLinea, dataInizio) -> controller.removeManutLinea(codiceLinea, dataInizio),
-            ManutenzioneLineaImpl::getCodiceLinea,
-            ManutenzioneLineaImpl::getDataInizio,
-            manut -> updateVisualPanel(
-                this,
-                manut,
-                columnNamesLinee,
-                l -> new Object[] {
-                    l.getCodiceLinea(),
-                    l.getNome(),
-                    l.getDataInizio(),
-                    l.getDataFine(),
-                    l.getDescrizione(),
-                    l.getPIva()
-                }
-            )
-        );
-        createLeftPanel(
-            "linea",
-            () -> controller.getManutLinee().stream().map(l -> l.getCodiceLinea() + "-" + l.getNome()).toList(),
-            fields -> new ManutenzioneLineaImpl(
-                fields.comboValue(),
-                java.sql.Date.valueOf(fields.dataInizio()),
-                java.sql.Date.valueOf(fields.dataFine()),
-                fields.nome(),
-                fields.descrizione(),
-                fields.partitaIva()
-            ),
-            manut -> controller.addManutenzioneLinea(manut)
-        );
-        this.repaint();
-        this.revalidate();
-    }
-
-    // Helper record to pass form data
-    public record FormFields(
-        String comboValue,
-        String dataInizio,
-        String dataFine,
-        String nome,
-        String descrizione,
-        String partitaIva
-    ) {}
 }

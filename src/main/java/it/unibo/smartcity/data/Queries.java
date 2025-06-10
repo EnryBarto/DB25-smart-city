@@ -38,7 +38,7 @@ public final class Queries {
 
     public static final String INSERT_MANUT_MEZZI =
     """
-        INSERT INTO MANUTENZIONI_MEZZI (n_immatricolazione, data_inizio, data_fine, nome, descrizione, p_iva)
+        INSERT INTO MANUTENZIONI_MEZZI (n_immatricolazione, data_inzio, data_fine, nome, descrizione, p_iva)
         VALUES (?, ?, ?, ?, ?, ?);
     """;
 
@@ -46,7 +46,7 @@ public final class Queries {
     """
         DELETE FROM MANUTENZIONI_MEZZI
         WHERE n_immatricolazione = ?
-        AND data_inizio = ?
+        AND data_inzio = ?
     """;
 
     public static final String LIST_MEZZI =
@@ -193,11 +193,11 @@ public final class Queries {
     public static final String CINQUE_MANUT_PIU_GRAVOSE =
     //il controllo dei punteggi si farà a livello applicativo
     """
-        SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_inizio, ml.data_fine) AS durata_lavoro,
+        SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_inzio, ml.data_fine) AS durata_lavoro,
             COUNT(*) AS num_linee_sostitutive
         FROM MANUTENZIONI_LINEE ml
         JOIN SOSTITUZIONI s ON ml.codice_linea = s.sost_manut_codice_linea
-        GROUP BY ml.codice_linea, ml.data_inizio, ml.nome
+        GROUP BY ml.codice_linea, ml.data_inzio, ml.nome
     """;
 
     // OPERAZIONE 13
@@ -250,7 +250,7 @@ public final class Queries {
         WHERE a.p_iva NOT IN (
             SELECT DISTINCT mm.p_iva
             FROM MANUTENZIONI_MEZZI mm
-            WHERE mm.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
+            WHERE mm.data_inzio >= CURRENT_DATE - INTERVAL 1 MONTH
             )
         AND a.p_iva NOT IN (
             SELECT DISTINCT ml.p_iva
@@ -262,7 +262,7 @@ public final class Queries {
     // OPERAZIONE 19 - Da trattare come transaction
     public static final String AGGIUNGI_VARIAZIONE =
         """
-            INSERT INTO MANUTENZIONI_LINEE (codice_linea, data_inizio, data_fine, nome, descrizione, p_iva)
+            INSERT INTO MANUTENZIONI_LINEE (codice_linea, data_inzio, data_fine, nome, descrizione, p_iva)
             VALUES ('A', '2025-06-06', '2025-06-10', 'Aggiornamento', 'Aggiornamento di qualcosa', NULL);
 
             INSERT INTO SOSTITUZIONI (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea)

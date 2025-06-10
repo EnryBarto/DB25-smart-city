@@ -154,6 +154,7 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
                         rs.getString("descrizione"),
                         rs.getString("p_iva")
                         );
+                    System.err.println("***************************Manutenzione Linea: ****************************\n" + manutenzioneLinea);
                     manutenzioniLinee.add(manutenzioneLinea);
                 }
 
