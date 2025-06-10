@@ -1,6 +1,7 @@
 package it.unibo.smartcity.controller.api;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
@@ -88,5 +89,9 @@ public interface Controller {
     void addManutenzione(ManutenzioneMezzoImpl manut);
 
     ArrayList<MezzoConNome> getMezzi();
+
+    ArrayList<ManutenzioneMezzoImpl> getManutenzioniMezzi();
+
+    void removeManutMezzo(String getnImmatricolazione, Date dataInzio);
 
 }

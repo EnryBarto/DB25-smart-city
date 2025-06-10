@@ -42,6 +42,13 @@ public final class Queries {
         VALUES (?, ?, ?, ?, ?, ?);
     """;
 
+    public static final String REMOVE_MANUT_MEZZI =
+    """
+        DELETE FROM MANUTENZIONI_MEZZI
+        WHERE n_immatricolazione = ?
+        AND data_inizio = ?
+    """;
+
     public static final String LIST_MEZZI =
         """
         SELECT m.n_immatricolazione, tm.nome

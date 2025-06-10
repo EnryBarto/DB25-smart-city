@@ -16,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -32,7 +33,8 @@ import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 public class MaintenancePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private final static String[] columnNames = {"Codice Linea", "Nome", "Durata Lavoro", "Linee Sostitutive"};
+    private final static String[] columnNamesLinee = {"Codice Linea", "Nome", "Durata Lavoro", "Linee Sostitutive"};
+    private final static String[] columnNamesManut = {"Num immatricolazione", "nome", "data inizio", "data fine", "partita iva"};
     private static final List<String> options = new ArrayList<>(List.of(
         "estrai 5 manutenzioni più gravose",
         "manutenzione mezzi",
@@ -43,6 +45,8 @@ public class MaintenancePanel extends JPanel {
     private final JPanel northPanel = new JPanel(new FlowLayout());
     private final JComboBox<String> optionList = new JComboBox<>();
     private final JComboBox<String> mezzoCombo = new JComboBox<>();
+    private final JComboBox<String> manutList = new JComboBox<>();
+    private ArrayList<ManutenzioneMezzoImpl> manutenzioni = new ArrayList<>();
     private JScrollPane maintenanceDetails;
 
     public MaintenancePanel(final Controller controller) {
@@ -90,7 +94,7 @@ public class MaintenancePanel extends JPanel {
                 return row;
             }).toArray(Object[][]::new);
 
-        var tabella = new JTable(righe, columnNames) {
+        var tabella = new JTable(righe, columnNamesLinee) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return column == 4; // La colonna dei pulsanti è l'unica modificabile
@@ -120,7 +124,74 @@ public class MaintenancePanel extends JPanel {
     }
 
     private void addManutMezziPanel() {
-        //LEFT PANEL
+        createLeftPanel();
+        createRightPanel();
+    }
+
+    private void addManutLineePanel() {
+        createLeftPanel();
+        createRightPanel();
+    }
+
+    private void createRightPanel() {
+        var rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
+        rightPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(220, 53, 69), 2),
+            BorderFactory.createEmptyBorder(20, 30, 20, 30)
+        ));
+        rightPanel.setBackground(Color.WHITE);
+
+        var removeTitle = new JLabel("Rimozione manutenzione", SwingConstants.CENTER);
+        removeTitle.setFont(new Font("Arial", Font.BOLD, 18));
+        removeTitle.setForeground(new Color(220, 53, 69));
+        removeTitle.setAlignmentX(CENTER_ALIGNMENT);
+
+        manutList.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        //filling the ComboBox with the data (all the data will be displayed after).
+        manutenzioni = this.controller.getManutenzioniMezzi();
+        manutenzioni.forEach(man -> manutList.addItem(man.getnImmatricolazione() + man.getDataInzio()));
+        manutList.setMaximumSize(manutList.getPreferredSize());
+
+        var visualBtn = new JButton("Visualizza");
+        visualBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        visualBtn.setBackground(new Color(20, 233, 39));
+        visualBtn.setForeground(Color.WHITE);
+        visualBtn.setFocusPainted(false);
+        visualBtn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        visualBtn.setAlignmentX(CENTER_ALIGNMENT);
+        visualBtn.addActionListener(e -> {
+            if(manutList.getSelectedIndex() != -1) {
+                updateVisualPanel(rightPanel, manutenzioni.get(manutList.getSelectedIndex()));
+            }
+        });
+
+        var rimuoviBtn = new JButton("Rimuovi");
+        rimuoviBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        rimuoviBtn.setBackground(new Color(220, 53, 69));
+        rimuoviBtn.setForeground(Color.WHITE);
+        rimuoviBtn.setFocusPainted(false);
+        rimuoviBtn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        rimuoviBtn.setAlignmentX(BOTTOM_ALIGNMENT);
+        rimuoviBtn.addActionListener(e -> {
+            var choice = JOptionPane.showOptionDialog(maintenanceDetails, "sei sicuro di voler eliminare questo record?", "Attenzione", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, columnNamesLinee, e);
+            var selInd = manutList.getSelectedIndex();
+            if (selInd != -1 && choice == JOptionPane.YES_OPTION) {
+                this.controller.removeManutMezzo(manutenzioni.get(selInd).getnImmatricolazione(), manutenzioni.get(selInd).getDataInzio());
+            }
+        });
+
+        rightPanel.add(removeTitle);
+        rightPanel.add(Box.createVerticalStrut(15));
+        rightPanel.add(manutList);
+        rightPanel.add(Box.createVerticalStrut(20));
+        rightPanel.add(rimuoviBtn);
+        rightPanel.add(visualBtn);
+
+        this.add(rightPanel);
+    }
+
+    private void createLeftPanel() {
         var leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
         leftPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -177,7 +248,7 @@ public class MaintenancePanel extends JPanel {
         pIvaPanel.add(pIvaLabel);
         pIvaPanel.add(pIvaField);
 
-        var aggiungiBtn = new JButton("Aggiungi Manutenzone");
+        var aggiungiBtn = new JButton("Aggiungi Manutenzione");
         aggiungiBtn.setFont(new Font("Arial", Font.BOLD, 14));
         aggiungiBtn.setBackground(new Color(40, 167, 69));
         aggiungiBtn.setForeground(Color.WHITE);
@@ -230,7 +301,21 @@ public class MaintenancePanel extends JPanel {
         this.add(leftPanel, BorderLayout.WEST);
     }
 
-    private void addManutLineePanel() {
-        // Implementazione per rimuovere una manutenzione
+    private void updateVisualPanel(JPanel panel, ManutenzioneMezzoImpl manut) {
+        var visualPanel = new JPanel();
+
+        var row = new Object[5];
+        row[0] = manut.getnImmatricolazione();
+        row[1] = manut.getNome();
+        row[2] = manut.getDataInzio();
+        row[3] = manut.getDataFine();
+        row[4] = manut.getDescrizione();
+        row[5] = manut.getpIva();
+
+        Object[][] righe = new Object[][]{row};
+
+        var tabella = new JTable(righe, columnNamesManut);
+        visualPanel.add(tabella);
+        panel.add(visualPanel, BorderLayout.CENTER);
     }
 }

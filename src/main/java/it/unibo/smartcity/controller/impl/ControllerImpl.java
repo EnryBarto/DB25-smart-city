@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -269,6 +270,17 @@ public class ControllerImpl implements Controller {
     public ArrayList<MezzoConNome> getMezzi() {
         checkState(this.currentUserLevel == UserLevel.ADMIN || this.currentUserLevel == UserLevel.DRIVER);
         return MezzoImpl.DAO.list(connection);
+    }
+
+    @Override
+    public ArrayList<ManutenzioneMezzoImpl> getManutenzioniMezzi() {
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        return ManutenzioneMezzoImpl.DAO.list(connection);
+    }
+
+    @Override
+    public void removeManutMezzo(String getnImmatricolazione, Date dataInzio) {
+        ManutenzioneMezzoImpl.DAO.remove(connection, getnImmatricolazione, dataInzio);
     }
 
 }

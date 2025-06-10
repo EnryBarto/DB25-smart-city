@@ -177,5 +177,21 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
                 throw new DAOException("Failed to insert Manutenzione Mezzo", e);
             }
         }
+
+        public static void remove(Connection connection, String nImmatricolazione, Date dataInizio) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.REMOVE_MANUT_MEZZI,
+                    nImmatricolazione, 
+                    dataInizio
+                    )
+            ) {
+                statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Manutenzione Mezzo eliminata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Fallita eliminazione della Manutenzione!", "Fallito", JOptionPane.INFORMATION_MESSAGE);
+                throw new DAOException("Failed to insert Manutenzione Mezzo", e);
+            }
+        }
     }
 }
