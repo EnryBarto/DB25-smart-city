@@ -1,5 +1,7 @@
 package it.unibo.smartcity.controller.api;
 
+import java.util.ArrayList;
+
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
 import it.unibo.smartcity.model.api.Fermata;
@@ -7,7 +9,9 @@ import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
+import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.impl.TrattaImpl;
+import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
 import it.unibo.smartcity.view.api.View;
 
 public interface Controller {
@@ -80,4 +84,9 @@ public interface Controller {
     void updateTratte();
 
     void updateManutGravose();
+
+    void addManutenzione(ManutenzioneMezzoImpl manut);
+
+    ArrayList<MezzoConNome> getMezzi();
+
 }

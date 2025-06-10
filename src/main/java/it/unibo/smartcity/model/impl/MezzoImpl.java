@@ -10,6 +10,8 @@ import it.unibo.smartcity.model.api.Mezzo;
 
 public class MezzoImpl implements Mezzo {
 
+    public record MezzoConNome(String nImmatricolazione, String nomeMezzo) {}
+
     private String nImmatricolazione;
     private int codiceTipoMezzo;
 
@@ -58,18 +60,18 @@ public class MezzoImpl implements Mezzo {
 
     public static final class DAO {
 
-        public static ArrayList<MezzoImpl> list(Connection connection) {
-            var mezzi = new ArrayList<MezzoImpl>();
+        public static ArrayList<MezzoConNome> list(Connection connection) {
+            var mezzi = new ArrayList<MezzoConNome>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_MEZZI);
                 var rs = statement.executeQuery();
             ) {
                 while (rs.next()) {
-                    var utente = new MezzoImpl(
+                    var mezzo = new MezzoConNome(
                         rs.getString("n_immatricolazione"),
-                        rs.getInt("codice_tipo_mezzo")
+                        rs.getString("nome")
                         );
-                    mezzi.add(utente);
+                    mezzi.add(mezzo);
                 }
 
             } catch (Exception e) {

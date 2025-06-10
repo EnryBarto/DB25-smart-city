@@ -1,8 +1,10 @@
 package it.unibo.smartcity.controller.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +32,9 @@ import it.unibo.smartcity.model.impl.HubMobilitaImpl;
 import it.unibo.smartcity.model.impl.LineaImpl;
 import it.unibo.smartcity.model.impl.TrattaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
+import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
+import it.unibo.smartcity.model.impl.MezzoImpl;
+import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
 import it.unibo.smartcity.model.impl.UtenteImpl;
 import it.unibo.smartcity.view.api.View;
 
@@ -251,6 +256,19 @@ public class ControllerImpl implements Controller {
     @Override
     public void updateManutGravose() {
         views.forEach(v -> v.updateManutGravose(ManutenzioneLineaImpl.DAO.estrazManutPiuGravose(connection)));
+    }
+
+    @Override
+    public void addManutenzione(ManutenzioneMezzoImpl manut) {
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        checkNotNull(manut, "Manutenzione cannot be null");
+        ManutenzioneMezzoImpl.DAO.insert(connection, manut);
+    }
+
+    @Override
+    public ArrayList<MezzoConNome> getMezzi() {
+        checkState(this.currentUserLevel == UserLevel.ADMIN || this.currentUserLevel == UserLevel.DRIVER);
+        return MezzoImpl.DAO.list(connection);
     }
 
 }

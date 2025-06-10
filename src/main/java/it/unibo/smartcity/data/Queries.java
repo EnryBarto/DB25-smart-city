@@ -36,10 +36,17 @@ public final class Queries {
         VALUES (?, ?, ?, ?, ?);
     """;
 
+    public static final String INSERT_MANUT_MEZZI =
+    """
+        INSERT INTO MANUTENZIONI_MEZZI (n_immatricolazione, data_inizio, data_fine, nome, descrizione, p_iva)
+        VALUES (?, ?, ?, ?, ?, ?);
+    """;
+
     public static final String LIST_MEZZI =
         """
-        SELECT *
-        FROM MEZZI;
+        SELECT m.n_immatricolazione, tm.nome
+        FROM MEZZI m
+        JOIN TIPOLOGIE_MEZZI tm ON m.codice_tipo_mezzo = tm.codice_tipo_mezzo
         """;
     public static final String LIST_MANUTENZIONI_LINEE =
         """

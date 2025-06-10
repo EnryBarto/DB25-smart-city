@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.Printer;
@@ -155,6 +157,25 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
                 throw new DAOException("Failed to list Manutenzioni Mezzi", e);
             }
             return manutenzioniMezzi;
+        }
+
+        public static void insert(Connection connection, ManutenzioneMezzoImpl manutenzioneMezzo) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.INSERT_MANUT_MEZZI,
+                    manutenzioneMezzo.getnImmatricolazione(),
+                    manutenzioneMezzo.getDataInzio(),
+                    manutenzioneMezzo.getDataFine(),
+                    manutenzioneMezzo.getNome(),
+                    manutenzioneMezzo.getDescrizione(),
+                    manutenzioneMezzo.getpIva().isEmpty() ? null : manutenzioneMezzo.getpIva()
+                    )
+            ) {
+                statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Manutenzione Mezzo inserita con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (Exception e) {
+                throw new DAOException("Failed to insert Manutenzione Mezzo", e);
+            }
         }
     }
 }
