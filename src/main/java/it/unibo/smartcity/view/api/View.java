@@ -1,7 +1,6 @@
 package it.unibo.smartcity.view.api;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +14,7 @@ import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
@@ -38,13 +38,13 @@ public interface View {
 
     void showLoginUser(String username);
 
-    void showError(String title, String message);
+    void showMessage(String title, String message);
 
     void updateUserInfo(Utente user, UserLevel userLevel);
 
     void updateEmployeesList(List<Dipendente> employees, List<Utente> notEmployeed);
 
-    void updateManutGravose(ArrayList<ManutenzioneGravosa> estrazManutPiuGravose);
+    void updateManutGravose(List<ManutenzioneGravosa> estrazManutPiuGravose);
 
     void updateFermateList(List<Fermata> fermate);
 
@@ -52,7 +52,9 @@ public interface View {
 
     void updateTratte(Set<Tratta> list);
 
-    void updateManutMezziPanel(ArrayList<ManutenzioneMezzoImpl> list);
+    void updateManutMezziPanel(List<ManutenzioneMezzoImpl> list);
 
-    void updateManutLineePanel(ArrayList<ManutenzioneLineaImpl> list);
+    void updateManutLineePanel(List<ManutenzioneLineaImpl> list);
+
+    void updateAziendeNoManut(List<AziendaImpl> extracAziendeNoManut);
 }

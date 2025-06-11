@@ -1,7 +1,6 @@
 package it.unibo.smartcity.model.api;
 
 import java.util.Date;
-import java.util.Optional;
 
 public interface ManutenzioneLinea {
 
@@ -15,6 +14,6 @@ public interface ManutenzioneLinea {
 
     String getDescrizione();
 
-    Optional<String> getPIva();
+    String getPIva();
 
 }

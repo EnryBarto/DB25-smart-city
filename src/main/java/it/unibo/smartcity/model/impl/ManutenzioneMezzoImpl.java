@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.JOptionPane;
-
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.Printer;
@@ -30,7 +28,7 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
         this.dataFine = dataFine;
         this.nome = nome;
         this.descrizione = descrizione;
-        this.pIva = Optional.of(pIva);
+        this.pIva = Optional.ofNullable(pIva);
     }
 
     @Override
@@ -98,7 +96,7 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
                 Printer.field("data_fine", this.dataFine),
                 Printer.field("nome", this.nome),
                 Printer.field("descrizione", this.descrizione),
-                Printer.field("p_iva", this.pIva.get())
+                Printer.field("p_iva", this.pIva.orElse("N/A"))
             )
         );
     }
@@ -130,12 +128,12 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
 
     @Override
     public String getpIva() {
-        return pIva.get();
+        return pIva.orElse("");
     }
 
     public static final class DAO {
 
-        public static ArrayList<ManutenzioneMezzoImpl> list(Connection connection) {
+        public static List<ManutenzioneMezzoImpl> list(Connection connection) {
             var manutenzioniMezzi = new ArrayList<ManutenzioneMezzoImpl>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_MANUTENZIONI_MEZZI);
@@ -163,15 +161,14 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.INSERT_MANUT_MEZZI,
                     manutenzioneMezzo.getnImmatricolazione(),
-                    manutenzioneMezzo.getDataInzio(),
-                    manutenzioneMezzo.getDataFine(),
+                    java.sql.Date.valueOf(manutenzioneMezzo.getDataInzio().toString()),
+                    java.sql.Date.valueOf(manutenzioneMezzo.getDataFine().toString()),
                     manutenzioneMezzo.getNome(),
                     manutenzioneMezzo.getDescrizione(),
-                    manutenzioneMezzo.getpIva().isEmpty() ? null : manutenzioneMezzo.getpIva()
+                    manutenzioneMezzo.pIva.orElse(null)
                 )
             ) {
                 statement.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Manutenzione Mezzo inserita con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (Exception e) {
                 throw new DAOException("Failed to insert Manutenzione Mezzo", e);
@@ -186,11 +183,9 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
                     )
             ) {
                 statement.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Manutenzione Mezzo eliminata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Fallita eliminazione della Manutenzione!", "Fallito", JOptionPane.INFORMATION_MESSAGE);
-                throw new DAOException("Failed to insert Manutenzione Mezzo", e);
+                throw new DAOException("Failed to remove Manutenzione Mezzo", e);
             }
         }
     }

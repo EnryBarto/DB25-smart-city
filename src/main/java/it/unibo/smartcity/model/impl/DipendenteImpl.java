@@ -1,7 +1,7 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

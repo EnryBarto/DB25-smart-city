@@ -4,8 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,6 +33,7 @@ import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
@@ -194,7 +194,7 @@ public class SwingView implements View {
     }
 
     @Override
-    public void showError(String title, String message) {
+    public void showMessage(String title, String message) {
         JOptionPane.showMessageDialog(this.frame, message, title, JOptionPane.ERROR_MESSAGE);
     }
 
@@ -209,7 +209,7 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateManutGravose(ArrayList<ManutenzioneGravosa> manutenzioneGravose) {
+    public void updateManutGravose(List<ManutenzioneGravosa> manutenzioneGravose) {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutGravose(manutenzioneGravose);
     }
 
@@ -231,13 +231,18 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateManutMezziPanel(ArrayList<ManutenzioneMezzoImpl> list) {
+    public void updateManutMezziPanel(List<ManutenzioneMezzoImpl> list) {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutMezziPanel();;
     }
 
     @Override
-    public void updateManutLineePanel(ArrayList<ManutenzioneLineaImpl> list) {
+    public void updateManutLineePanel(List<ManutenzioneLineaImpl> list) {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutLineePanel();
+    }
+
+    @Override
+    public void updateAziendeNoManut(List<AziendaImpl> aziende) {
+        ((MaintenancePanel)this.tabs.get("Manutenzioni")).showAziendeNoManut(aziende);
     }
 
 }

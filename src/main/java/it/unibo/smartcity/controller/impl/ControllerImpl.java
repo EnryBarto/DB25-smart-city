@@ -5,8 +5,9 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -27,6 +28,7 @@ import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.FermataImpl;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
@@ -155,7 +157,7 @@ public class ControllerImpl implements Controller {
             this.user = utente;
             views.forEach(v -> v.userLevelChanged(this.currentUserLevel));
         } else {
-            this.showError("Errore Login", "Username o Password errati");
+            this.showMessage("Errore Login", "Username o Password errati");
         }
     }
 
@@ -173,8 +175,8 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void showError(String title, String message) {
-        views.forEach(v -> v.showError(title, message));
+    public void showMessage(String title, String message) {
+        views.forEach(v -> v.showMessage(title, message));
     }
 
     @Override
@@ -273,7 +275,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public ArrayList<ManutenzioneMezzoImpl> getManutenzioniMezzi() {
+    public List<ManutenzioneMezzoImpl> getManutenzioniMezzi() {
         checkState(this.currentUserLevel == UserLevel.ADMIN);
         return ManutenzioneMezzoImpl.DAO.list(connection);
     }
@@ -294,7 +296,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public ArrayList<ManutenzioneLineaImpl> getManutLinee() {
+    public List<ManutenzioneLineaImpl> getManutLinee() {
         checkState(this.currentUserLevel == UserLevel.ADMIN);
         return ManutenzioneLineaImpl.DAO.list(connection);
     }
@@ -312,6 +314,11 @@ public class ControllerImpl implements Controller {
         checkNotNull(dataInizio, "Data inizio cannot be null");
         checkState(this.currentUserLevel == UserLevel.ADMIN);
         ManutenzioneLineaImpl.DAO.remove(connection, codiceLinea, dataInizio);
+    }
+
+    @Override
+    public void updateAziendeNoManut() {
+        views.forEach(v -> v.updateAziendeNoManut(AziendaImpl.DAO.extracAziendeNoManut(connection)));
     }
 
 }

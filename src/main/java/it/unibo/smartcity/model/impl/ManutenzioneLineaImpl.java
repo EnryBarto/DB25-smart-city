@@ -4,11 +4,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
-
-import javax.swing.JOptionPane;
 
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
@@ -35,7 +33,7 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
         this.dataFine = dataFine;
         this.nome = nome;
         this.descrizione = descrizione;
-        this.pIva = Optional.of(pIva);
+        this.pIva = Optional.ofNullable(pIva);
     }
 
     @Override
@@ -102,7 +100,7 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
                 Printer.field("data_fine", this.dataFine),
                 Printer.field("nome", this.nome),
                 Printer.field("descrizione", this.descrizione),
-                Printer.field("p_iva", this.pIva.get())
+                Printer.field("p_iva", this.pIva.orElse("N/A"))
             )
         );
     }
@@ -133,13 +131,13 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
     }
 
     @Override
-    public Optional<String> getPIva() {
-        return pIva;
+    public String getPIva() {
+        return pIva.orElse("");
     }
 
     public static final class DAO {
 
-        public static ArrayList<ManutenzioneLineaImpl> list(Connection connection) {
+        public static List<ManutenzioneLineaImpl> list(Connection connection) {
             var manutenzioniLinee = new ArrayList<ManutenzioneLineaImpl>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_MANUTENZIONI_LINEE);
@@ -154,7 +152,6 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
                         rs.getString("descrizione"),
                         rs.getString("p_iva")
                         );
-                    System.err.println("***************************Manutenzione Linea: ****************************\n" + manutenzioneLinea);
                     manutenzioniLinee.add(manutenzioneLinea);
                 }
 
@@ -169,18 +166,16 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.INSERT_MANUTENZIONI_LINEE,
                     manutenzioneLinea.getCodiceLinea(),
-                    manutenzioneLinea.getDataInizio(),
-                    manutenzioneLinea.getDataFine(),
+                    java.sql.Date.valueOf(manutenzioneLinea.getDataInizio().toString()),
+                    java.sql.Date.valueOf(manutenzioneLinea.getDataFine().toString()),
                     manutenzioneLinea.getNome(),
                     manutenzioneLinea.getDescrizione(),
-                    manutenzioneLinea.getPIva().orElse(null)
+                    manutenzioneLinea.pIva.orElse(null)
                 );
             ) {
                 statement.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Manutenzione linea inserita con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Errore nell'inserimento della manutenzione linea: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-                throw new DAOException("Failed to list Manutenzioni Linee", e);
+                throw new DAOException("Failed to insert Manutenzioni Linee", e);
             }
         }
 
@@ -190,14 +185,12 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
                 var statement = DAOUtils.prepare(connection, Queries.REMOVE_MANUT_LINEE, codiceLinea, dataInizio);
             ) {
                 statement.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Manutenzione linea eliminata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Errore nell'eliminazione della manutenzione linea: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                 throw new DAOException("Failed to delete Manutenzioni Linee", e);
             }
         }
 
-        public static ArrayList<ManutenzioneGravosa> estrazManutPiuGravose(Connection connection) {
+        public static List<ManutenzioneGravosa> estrazManutPiuGravose(Connection connection) {
             var manutenzioni = new ArrayList<ManutenzioneGravosa>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.CINQUE_MANUT_PIU_GRAVOSE);

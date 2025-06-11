@@ -19,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -30,26 +31,30 @@ import static com.google.common.base.Preconditions.*;
 
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
+import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 
 public class MaintenancePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private final static String[] columnNamesManutGravose = {"Codice Linea", "Nome", "Durata Lavoro", "Num Linee Sostitutive", "Visualizza"};
-    private final static String[] columnNamesLinee = {"Codice Linea", "Nome", "data inizio", "data fine", "descrizione", "partita iva", "Visualizza"};
-    private final static String[] columnNamesMezzi = {"Num immatricolazione", "nome", "data inizio", "data fine", "descrizione", "partita iva", "Visualizza"};
+    private final static String[] columnNamesManutGravose = {"Codice Linea", "Nome", "Durata Lavoro", "Num Linee Sostitutive", "visualizza"};
+    private final static String[] columnNamesLinee = {"Codice Linea", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
+    private final static String[] columnNamesMezzi = {"Num immatricolazione", "nome", "data inizio", "data fine", "descrizione", "partita iva"};
+    private final static String[] columnNamesAziende = {"partita iva", "ragione sociale", "comune", "via", "civico", "telefono", "email"};
     private static final List<String> options = new ArrayList<>(List.of(
         "estrai 5 manutenzioni più gravose",
+        "estrai aziende senza manutenzione nell'ultimo mese",
         "manutenzione mezzi",
         "manutenzione linee"
     ));
 
     private final Controller controller;
     private final JPanel northPanel = new JPanel(new FlowLayout());
+    private JPanel rightPanel = new JPanel();
+    private JPanel leftPanel = new JPanel();
     private final JComboBox<String> optionList = new JComboBox<>();
     private final JComboBox<String> manutList = new JComboBox<>();
-    private JScrollPane maintenanceDetails;
 
     public MaintenancePanel(final Controller controller) {
         super(new BorderLayout());
@@ -73,6 +78,7 @@ public class MaintenancePanel extends JPanel {
         btn.addActionListener(e -> {
             switch ((String)this.optionList.getSelectedItem()) {
                 case "estrai 5 manutenzioni più gravose" -> controller.updateManutGravose();
+                case "estrai aziende senza manutenzione nell'ultimo mese" -> controller.updateAziendeNoManut();
                 case "manutenzione mezzi" -> controller.updateManutMezziPanel();
                 case "manutenzione linee" -> controller.updateManutLineePanel();
                 default -> throw new IllegalArgumentException("Opzione non valida: " + this.optionList.getSelectedItem());
@@ -85,11 +91,11 @@ public class MaintenancePanel extends JPanel {
         createRightPanel(
             "mezzo",
             () -> controller.getManutenzioniMezzi(),
-            (nImmatricolazione, dataInizio) -> controller.removeManutMezzo(nImmatricolazione, dataInizio),
+            (nImmatricolazione, dataInizio) -> controller.removeManutMezzo(nImmatricolazione, java.sql.Date.valueOf(dataInizio.toString())),
             ManutenzioneMezzoImpl::getnImmatricolazione,
             ManutenzioneMezzoImpl::getDataInzio,
             manut -> updateVisualPanel(
-                this,
+                rightPanel,
                 manut,
                 columnNamesMezzi,
                 m -> new Object[]{
@@ -122,11 +128,11 @@ public class MaintenancePanel extends JPanel {
         createRightPanel(
             "linea",
             () -> controller.getManutLinee(),
-            (codiceLinea, dataInizio) -> controller.removeManutLinea(codiceLinea, dataInizio),
+            (codiceLinea, dataInizio) -> controller.removeManutLinea(codiceLinea, java.sql.Date.valueOf(dataInizio.toString())),
             ManutenzioneLineaImpl::getCodiceLinea,
             ManutenzioneLineaImpl::getDataInizio,
             manut -> updateVisualPanel(
-                this,
+                rightPanel,
                 manut,
                 columnNamesLinee,
                 l -> new Object[] {
@@ -166,7 +172,7 @@ public class MaintenancePanel extends JPanel {
         String partitaIva
     ) {}
 
-    public void showManutGravose(ArrayList<ManutenzioneGravosa> manutenzioneGravose) {
+    public void showManutGravose(List<ManutenzioneGravosa> manutenzioneGravose) {
         clearContentExceptNorth();
         Object[][] righe = manutenzioneGravose.stream()
             .map(m -> {
@@ -204,7 +210,31 @@ public class MaintenancePanel extends JPanel {
             }
         }
         tabella.getColumnModel().getColumn(4).setCellEditor(new MyCellEditor());
+        var maintenanceDetails = new JScrollPane();
+        maintenanceDetails.add(tabella);
+        this.add(maintenanceDetails, BorderLayout.CENTER);
+        this.repaint();
+        this.revalidate();
+    }
 
+    public void showAziendeNoManut(List<AziendaImpl> aziende) {
+        clearContentExceptNorth();
+        Object[][] righe = aziende.stream()
+            .map(m -> {
+                var row = new Object[7];
+                row[0] = m.getPartitaIva();
+                row[1] = m.getRagioneSociale();
+                row[2] = m.getIndirizzoComune();
+                row[3] = m.getIndirizzoVia();
+                row[4] = m.getIndirizzoCivico();
+                row[5] = m.getTelefono();
+                row[6] = m.getEmail();
+                return row;
+            }).toArray(Object[][]::new);
+        var tabella = new JTable(righe, columnNamesAziende);
+
+        var maintenanceDetails = new JScrollPane();
+        maintenanceDetails.add(tabella);
         this.add(maintenanceDetails, BorderLayout.CENTER);
         this.repaint();
         this.revalidate();
@@ -217,7 +247,7 @@ public class MaintenancePanel extends JPanel {
         java.util.function.Function<FormFields, T> buildManutenzione,
         Consumer<T> addAction
     ) {
-        var leftPanel = new JPanel();
+        leftPanel.removeAll();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
         leftPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(52, 152, 219), 2),
@@ -225,7 +255,7 @@ public class MaintenancePanel extends JPanel {
         ));
         leftPanel.setBackground(Color.WHITE);
 
-        JLabel addTitle = new JLabel("Aggiunta manutenzione", SwingConstants.CENTER);
+        JLabel addTitle = new JLabel("Aggiunta manutenzione " +title, SwingConstants.CENTER);
         addTitle.setFont(new Font("Arial", Font.BOLD, 18));
         addTitle.setForeground(new Color(52, 152, 219));
         addTitle.setAlignmentX(CENTER_ALIGNMENT);
@@ -241,12 +271,13 @@ public class MaintenancePanel extends JPanel {
         mezzoPanel.add(partenzaLabel);
         mezzoPanel.add(combo);
 
+        var istruz = new JLabel("data: YYYY-MM-DD");
+
         var dataPanel = new JPanel();
         dataPanel.setBackground(Color.WHITE);
-        JLabel arrivoLabel = new JLabel("data inizio:");
         var dataInizio = new JTextField(10);
         var dataFine = new JTextField(10);
-        dataPanel.add(arrivoLabel);
+        dataPanel.add(new JLabel("data inizio:"));
         dataPanel.add(dataInizio);
         dataPanel.add(Box.createHorizontalStrut(10)); // Spazio tra i due field
         dataPanel.add(new JLabel("data fine:"));
@@ -292,13 +323,15 @@ public class MaintenancePanel extends JPanel {
                 checkNotNull(descField.getText(), "Inserire descrizione manutenzione");
                 checkArgument(!descField.getText().isEmpty(), "La descrizione della manutenzione non può essere vuota");
                 if (!pIvaField.getText().isEmpty()) checkArgument(pIvaField.getText().matches("\\d{11}"), "La partita IVA deve essere un numero di 11 cifre");
+                var selected = (String) combo.getSelectedItem();
+                String id = selected.split("-")[0];
                 var formFields = new FormFields(
-                    (String) combo.getSelectedItem(),
+                    id,
                     dataInizio.getText(),
                     dataFine.getText(),
                     nomeField.getText(),
                     descField.getText(),
-                    pIvaField.getText()
+                    pIvaField.getText().isBlank() ? null : pIvaField.getText()
                 );
                 T manut = buildManutenzione.apply(formFields);
                 addAction.accept(manut);
@@ -307,14 +340,16 @@ public class MaintenancePanel extends JPanel {
                 dataInizio.setText("");
                 descField.setText("");
                 nomeField.setText("");
+                JOptionPane.showMessageDialog(this, "manutenione inserita correttamente");
             } catch (Exception ex) {
-                controller.showError("Errore inserimento manutenzione", ex.getMessage());
+                controller.showMessage("Errore inserimento manutenzione", ex.getMessage());
             }
         });
 
         leftPanel.add(addTitle);
         leftPanel.add(Box.createVerticalStrut(15));
         leftPanel.add(mezzoPanel);
+        leftPanel.add(istruz);
         leftPanel.add(dataPanel);
         leftPanel.add(nomePanel);
         leftPanel.add(descriptionPanel);
@@ -336,7 +371,7 @@ public class MaintenancePanel extends JPanel {
         java.util.function.Consumer<T> visualAction
     ) {
         clearContentExceptNorth();
-        var rightPanel = new JPanel();
+        rightPanel.removeAll();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
         rightPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(220, 53, 69), 2),
@@ -365,6 +400,8 @@ public class MaintenancePanel extends JPanel {
         visualBtn.addActionListener(e -> {
             if(manutList.getSelectedIndex() != -1) {
                 visualAction.accept(manutenzioni.get(manutList.getSelectedIndex()));
+                this.revalidate();
+                this.repaint();
             }
         });
 
@@ -411,11 +448,9 @@ public class MaintenancePanel extends JPanel {
         String[] columnNames,
         java.util.function.Function<T, Object[]> rowExtractor
     ) {
-        var visualPanel = new JPanel();
         Object[][] righe = new Object[][]{ rowExtractor.apply(manut) };
         var tabella = new JTable(righe, columnNames);
-        visualPanel.add(tabella);
-        panel.add(visualPanel, BorderLayout.CENTER);
+        panel.add(tabella, BorderLayout.PAGE_END);
     }
 
     private void clearContentExceptNorth() {

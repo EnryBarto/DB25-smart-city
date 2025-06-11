@@ -1,7 +1,7 @@
 package it.unibo.smartcity.view.impl;
 
 import java.awt.BorderLayout;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Map;
 
 import javax.swing.AbstractCellEditor;

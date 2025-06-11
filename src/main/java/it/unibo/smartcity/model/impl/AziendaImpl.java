@@ -1,7 +1,16 @@
 package it.unibo.smartcity.model.impl;
 
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import com.google.common.base.Preconditions;
 
+import it.unibo.smartcity.data.DAOException;
+import it.unibo.smartcity.data.DAOUtils;
+import it.unibo.smartcity.data.Queries;
 import it.unibo.smartcity.model.api.Azienda;
 
 public class AziendaImpl implements Azienda {
@@ -69,6 +78,35 @@ public class AziendaImpl implements Azienda {
     @Override
     public String getEmail() {
         return email;
+    }
+
+    public static final class DAO {
+
+        public static List<AziendaImpl> extracAziendeNoManut(Connection connection) {
+            var aziende = new ArrayList<AziendaImpl>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.AZIENDE_NO_MANUT_ULTIMO_MESE);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var azienda = new AziendaImpl(
+                        rs.getString("p_iva"),
+                        rs.getString("ragione_sociale"),
+                        rs.getString("indirizzo_civico"),
+                        rs.getString("indirizzo_via"),
+                        rs.getString("indirizzo_comune"),
+                        rs.getInt("indirizzo_cap"),
+                        rs.getString("telefono"),
+                        rs.getString("email")
+                    );
+                    aziende.add(azienda);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "estrazione aziende senza manutenzione nell'ultimo mese fallito!", "Fallimento", JOptionPane.ERROR_MESSAGE);
+                throw new DAOException("Failed to list Aziende no manut", e);
+            }
+            return aziende;
+        }
     }
 
 }
