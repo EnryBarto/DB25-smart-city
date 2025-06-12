@@ -152,7 +152,13 @@ public final class Queries {
         ORDER BY COUNT(*) DESC
         );
     """;
-
+    //OPERAZIONE 7
+    public static final String LIST_MANUT_PER_MEZZO =
+    """
+        SELECT *
+        FROM MANUTENZIONI_MEZZI mm
+        WHERE mm.n_immatricolazione = ?
+    """;
     // OPERAZIONE 8
     public static final String VARIAZIONE_SERVIZIO_LINEA =
     """

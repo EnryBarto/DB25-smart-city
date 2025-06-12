@@ -321,4 +321,14 @@ public class ControllerImpl implements Controller {
         views.forEach(v -> v.updateAziendeNoManut(AziendaImpl.DAO.extracAziendeNoManut(connection)));
     }
 
+    @Override
+    public void updateManutPerMezzo() {
+        views.forEach(v -> v.updateManutPerMezzo(MezzoImpl.DAO.list(connection)));
+    }
+
+    @Override
+    public List<ManutenzioneMezzoImpl> getManutPerMezzo(String nImmatricolazione) {
+        return ManutenzioneMezzoImpl.DAO.listByMezzo(connection, nImmatricolazione);
+    }
+
 }

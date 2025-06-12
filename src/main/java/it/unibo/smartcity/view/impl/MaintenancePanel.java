@@ -33,6 +33,7 @@ import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
+import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
 
 public class MaintenancePanel extends JPanel {
 
@@ -44,6 +45,7 @@ public class MaintenancePanel extends JPanel {
     private static final List<String> options = new ArrayList<>(List.of(
         "estrai 5 manutenzioni più gravose",
         "estrai aziende senza manutenzione nell'ultimo mese",
+        "estrai manutenzioni dato un mezzo",
         "manutenzione mezzi",
         "manutenzione linee"
     ));
@@ -78,6 +80,7 @@ public class MaintenancePanel extends JPanel {
             switch ((String)this.optionList.getSelectedItem()) {
                 case "estrai 5 manutenzioni più gravose" -> controller.updateManutGravose();
                 case "estrai aziende senza manutenzione nell'ultimo mese" -> controller.updateAziendeNoManut();
+                case "estrai manutenzioni dato un mezzo" -> controller.updateManutPerMezzo();
                 case "manutenzione mezzi" -> controller.updateManutMezziPanel();
                 case "manutenzione linee" -> controller.updateManutLineePanel();
                 default -> throw new IllegalArgumentException("Opzione non valida: " + this.optionList.getSelectedItem());
@@ -217,6 +220,50 @@ public class MaintenancePanel extends JPanel {
             });
         this.repaint();
         this.revalidate();
+    }
+
+    public void showManutPerMezzoPanel(List<MezzoConNome> mezzi) {
+        clearContentExceptNorth();
+
+        var mezzoPanel = new JPanel(new BorderLayout());
+        mezzoPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(52, 152, 219), 2),
+            BorderFactory.createEmptyBorder(60, 30, 20, 30)
+        ));
+        mezzoPanel.setBackground(Color.WHITE);
+
+        JLabel mezzoLabel = new JLabel("mezzo :");
+        JComboBox<String> combo = new JComboBox<>();
+        combo.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        combo.setMaximumSize(combo.getPreferredSize());
+        combo.setEditable(false);
+        combo.addActionListener(e -> {
+            String choice = (String)combo.getSelectedItem();
+            choice = choice.split("-")[0];
+            var manutenioni = controller.getManutPerMezzo(choice);
+            updateVisualPanel(
+                this,
+                manutenioni,
+                columnNamesMezzi,
+                m -> {
+                    var row = new Object[columnNamesMezzi.length];
+                    row[0] = m.getnImmatricolazione();
+                    row[1] = m.getNome();
+                    row[2] = m.getDataInzio();
+                    row[3] = m.getDataFine();
+                    row[4] = m.getDescrizione();
+                    row[5] = m.getpIva();
+                    return row;
+                }
+            );
+            this.revalidate();
+            this.repaint();
+        });
+        mezzi.forEach(m -> combo.addItem(m.nImmatricolazione() + "-" + m.nomeMezzo()));
+        mezzoPanel.add(mezzoLabel);
+        mezzoPanel.add(combo);
+
+        this.add(mezzoPanel, BorderLayout.NORTH);
     }
 
     // Generic left panel creation

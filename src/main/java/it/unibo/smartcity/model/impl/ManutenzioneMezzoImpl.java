@@ -188,5 +188,30 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
                 throw new DAOException("Failed to remove Manutenzione Mezzo", e);
             }
         }
+
+        public static List<ManutenzioneMezzoImpl> listByMezzo(Connection connection, String nImmatricolazione) {
+            var manutenzioniMezzi = new ArrayList<ManutenzioneMezzoImpl>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_MANUT_PER_MEZZO, nImmatricolazione);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var manutenzioneMezzo = new ManutenzioneMezzoImpl(
+                        rs.getString("n_immatricolazione"),
+                        rs.getDate("data_inzio"),
+                        rs.getDate("data_fine"),
+                        rs.getString("nome"),
+                        rs.getString("descrizione"),
+                        rs.getString("p_iva")
+                        );
+                    manutenzioniMezzi.add(manutenzioneMezzo);
+                }
+
+            } catch (Exception e) {
+                throw new DAOException("Failed to list Manutenzioni per Mezzo selezionato", e);
+            }
+            return manutenzioniMezzi;
+        }
     }
+
 }

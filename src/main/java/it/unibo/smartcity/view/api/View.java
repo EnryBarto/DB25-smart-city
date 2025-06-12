@@ -1,6 +1,7 @@
 package it.unibo.smartcity.view.api;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +19,7 @@ import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
+import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 
 public interface View {
@@ -57,4 +59,6 @@ public interface View {
     void updateManutLineePanel(List<ManutenzioneLineaImpl> list);
 
     void updateAziendeNoManut(List<AziendaImpl> extracAziendeNoManut);
+
+    void updateManutPerMezzo(ArrayList<MezzoConNome> mezzi);
 }

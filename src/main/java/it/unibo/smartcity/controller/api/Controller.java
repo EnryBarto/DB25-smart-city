@@ -107,4 +107,7 @@ public interface Controller {
 
     void updateAziendeNoManut();
 
+    void updateManutPerMezzo();
+
+    List<ManutenzioneMezzoImpl> getManutPerMezzo(String nImmatricolazione);
 }

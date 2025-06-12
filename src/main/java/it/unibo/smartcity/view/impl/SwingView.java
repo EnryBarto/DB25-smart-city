@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
+import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
 import it.unibo.smartcity.view.api.View;
 
 public class SwingView implements View {
@@ -242,6 +244,11 @@ public class SwingView implements View {
     @Override
     public void updateAziendeNoManut(List<AziendaImpl> aziende) {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showAziendeNoManut(aziende);
+    }
+
+    @Override
+    public void updateManutPerMezzo(ArrayList<MezzoConNome> mezzi) {
+        ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutPerMezzoPanel(mezzi);
     }
 
 }
