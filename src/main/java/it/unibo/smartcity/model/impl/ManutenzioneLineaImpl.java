@@ -132,7 +132,7 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
 
     @Override
     public String getPIva() {
-        return pIva.orElse("");
+        return pIva.orElse("N/A");
     }
 
     public static final class DAO {

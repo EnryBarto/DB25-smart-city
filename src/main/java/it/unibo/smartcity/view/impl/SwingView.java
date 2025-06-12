@@ -159,7 +159,6 @@ public class SwingView implements View {
                         break;
                     case "Manutenzioni":
                         controller.updateManutGravose();
-                        controller.updateManutMezziPanel();
                         break;
                     case "Lavoro":
                         controller.updateOrariLavoro();

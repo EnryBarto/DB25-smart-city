@@ -241,21 +241,25 @@ public final class Queries {
 
     //OPERAZIONE 17
     public static final String AZIENDE_NO_MANUT_ULTIMO_MESE =
-        //ho scelto di utilizzare il NOT IN in quanto ignora i valori
-        //a NULL, che possono essere presenti quando selezioniamo le
-        //p_iva nelle query innestate.
+        //ho scelto di utilizzare il NOT EXIST in quanto ignora i valori
+        //a NULL, che possono essere presenti nelle colonne p_iva
+        //delle query innestate. SELECT 1 serve per evitare che il DB
+        //ottimizzi al meglio evitando di andare a prendere tutte le colonne
+        //delle manutenzioni (che a noi non servono).
         """
-        SELECT a.p_iva, a.ragione_sociale
+        SELECT a.*
         FROM AZIENDE a
-        WHERE a.p_iva NOT IN (
-            SELECT DISTINCT mm.p_iva
+        WHERE NOT EXISTS (
+            SELECT 1
             FROM MANUTENZIONI_MEZZI mm
-            WHERE mm.data_inzio >= CURRENT_DATE - INTERVAL 1 MONTH
+            WHERE mm.p_iva = a.p_iva
+            AND mm.data_inzio >= CURRENT_DATE - INTERVAL 1 MONTH
             )
-        AND a.p_iva NOT IN (
-            SELECT DISTINCT ml.p_iva
+        AND NOT EXISTS (
+            SELECT 1
             FROM MANUTENZIONI_LINEE ml
-            WHERE ml.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
+            WHERE ml.p_iva = a.p_iva
+            AND ml.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
             );
         """;
 

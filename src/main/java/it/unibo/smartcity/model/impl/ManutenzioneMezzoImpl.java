@@ -128,7 +128,7 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
 
     @Override
     public String getpIva() {
-        return pIva.orElse("");
+        return pIva.orElse("N/A");
     }
 
     public static final class DAO {

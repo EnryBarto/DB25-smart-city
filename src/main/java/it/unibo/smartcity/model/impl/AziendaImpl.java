@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import com.google.common.base.Preconditions;
 
 import it.unibo.smartcity.data.DAOException;
@@ -102,7 +100,6 @@ public class AziendaImpl implements Azienda {
                     aziende.add(azienda);
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "estrazione aziende senza manutenzione nell'ultimo mese fallito!", "Fallimento", JOptionPane.ERROR_MESSAGE);
                 throw new DAOException("Failed to list Aziende no manut", e);
             }
             return aziende;

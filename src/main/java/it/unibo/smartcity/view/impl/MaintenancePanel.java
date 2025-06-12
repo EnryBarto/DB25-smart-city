@@ -12,7 +12,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,7 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -40,7 +39,7 @@ public class MaintenancePanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private final static String[] columnNamesManutGravose = {"Codice Linea", "Nome", "Durata Lavoro", "Num Linee Sostitutive", "visualizza"};
     private final static String[] columnNamesLinee = {"Codice Linea", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
-    private final static String[] columnNamesMezzi = {"Num immatricolazione", "nome", "data inizio", "data fine", "descrizione", "partita iva"};
+    private final static String[] columnNamesMezzi = {"Num immatricolazione", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
     private final static String[] columnNamesAziende = {"partita iva", "ragione sociale", "comune", "via", "civico", "telefono", "email"};
     private static final List<String> options = new ArrayList<>(List.of(
         "estrai 5 manutenzioni più gravose",
@@ -98,12 +97,15 @@ public class MaintenancePanel extends JPanel {
                 rightPanel,
                 manut,
                 columnNamesMezzi,
-                m -> new Object[]{
-                    m.getnImmatricolazione(),
-                    m.getNome(),
-                    m.getDataInzio(),
-                    m.getDataFine(),
-                    m.getpIva()
+                m -> {
+                    var row = new Object[columnNamesMezzi.length];
+                    row[0] = m.getnImmatricolazione();
+                    row[1] = m.getNome();
+                    row[2] = m.getDataInzio();
+                    row[3] = m.getDataFine();
+                    row[4] = m.getDescrizione();
+                    row[5] = m.getpIva();
+                    return row;
                 }
             )
         );
@@ -135,13 +137,15 @@ public class MaintenancePanel extends JPanel {
                 rightPanel,
                 manut,
                 columnNamesLinee,
-                l -> new Object[] {
-                    l.getCodiceLinea(),
-                    l.getNome(),
-                    l.getDataInizio(),
-                    l.getDataFine(),
-                    l.getDescrizione(),
-                    l.getPIva()
+                m -> {
+                    var row = new Object[columnNamesLinee.length];
+                    row[0] = m.getCodiceLinea();
+                    row[1] = m.getNome();
+                    row[2] = m.getDataInizio();
+                    row[3] = m.getDataFine();
+                    row[4] = m.getDescrizione();
+                    row[5] = m.getPIva();
+                    return row;
                 }
             )
         );
@@ -174,9 +178,12 @@ public class MaintenancePanel extends JPanel {
 
     public void showManutGravose(List<ManutenzioneGravosa> manutenzioneGravose) {
         clearContentExceptNorth();
-        Object[][] righe = manutenzioneGravose.stream()
-            .map(m -> {
-                var row = new Object[5];
+        updateVisualPanel(
+            this,
+            manutenzioneGravose,
+            columnNamesManutGravose,
+            m -> {
+                var row = new Object[columnNamesManutGravose.length];
                 row[0] = m.codiceLinea();
                 row[1] = m.nome();
                 row[2] = m.durata_lavoro();
@@ -185,57 +192,29 @@ public class MaintenancePanel extends JPanel {
                 b.addActionListener(e -> controller.showTimetable(m.codiceLinea()));
                 row[4] = b;
                 return row;
-            }).toArray(Object[][]::new);
-
-        var tabella = new JTable(righe, columnNamesManutGravose) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 4; // La colonna dei pulsanti è l'unica modificabile
             }
-        };
-        // Renderer per la colonna dei pulsanti (colonna 4)
-        tabella.getColumnModel().getColumn(4).setCellRenderer((table, value, isSelected, hasFocus, row, column) -> {
-            return (JButton) value;
-        });
-
-        // Editor per la colonna dei pulsanti (colonna 4)
-        class MyCellEditor extends AbstractCellEditor implements TableCellEditor {
-            @Override
-            public Object getCellEditorValue() {
-                return null;
-            }
-            @Override
-            public java.awt.Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-                return (JButton) value;
-            }
-        }
-        tabella.getColumnModel().getColumn(4).setCellEditor(new MyCellEditor());
-        var maintenanceDetails = new JScrollPane();
-        maintenanceDetails.add(tabella);
-        this.add(maintenanceDetails, BorderLayout.CENTER);
+        );
         this.repaint();
         this.revalidate();
     }
 
     public void showAziendeNoManut(List<AziendaImpl> aziende) {
         clearContentExceptNorth();
-        Object[][] righe = aziende.stream()
-            .map(m -> {
-                var row = new Object[7];
-                row[0] = m.getPartitaIva();
-                row[1] = m.getRagioneSociale();
-                row[2] = m.getIndirizzoComune();
-                row[3] = m.getIndirizzoVia();
-                row[4] = m.getIndirizzoCivico();
-                row[5] = m.getTelefono();
-                row[6] = m.getEmail();
+        updateVisualPanel(
+            this,
+            aziende,
+            columnNamesAziende,
+            a -> {
+                var row = new Object[columnNamesAziende.length];
+                row[0] = a.getPartitaIva();
+                row[1] = a.getRagioneSociale();
+                row[2] = a.getIndirizzoComune();
+                row[3] = a.getIndirizzoVia();
+                row[4] = a.getIndirizzoCivico();
+                row[5] = a.getTelefono();
+                row[6] = a.getEmail();
                 return row;
-            }).toArray(Object[][]::new);
-        var tabella = new JTable(righe, columnNamesAziende);
-
-        var maintenanceDetails = new JScrollPane();
-        maintenanceDetails.add(tabella);
-        this.add(maintenanceDetails, BorderLayout.CENTER);
+            });
         this.repaint();
         this.revalidate();
     }
@@ -368,7 +347,7 @@ public class MaintenancePanel extends JPanel {
         BiConsumer<String, Date> removeAction,
         java.util.function.Function<T, String> getId,
         java.util.function.Function<T, Date> getDate,
-        java.util.function.Consumer<T> visualAction
+        java.util.function.Consumer<List<T>> visualAction
     ) {
         clearContentExceptNorth();
         rightPanel.removeAll();
@@ -399,7 +378,10 @@ public class MaintenancePanel extends JPanel {
         visualBtn.setAlignmentX(BOTTOM_ALIGNMENT);
         visualBtn.addActionListener(e -> {
             if(manutList.getSelectedIndex() != -1) {
-                visualAction.accept(manutenzioni.get(manutList.getSelectedIndex()));
+                if (rightPanel.getComponentCount() > 6) rightPanel.remove(6);
+                var items = new ArrayList<T>();
+                items.add(manutenzioni.get(manutList.getSelectedIndex()));
+                visualAction.accept(items);
                 this.revalidate();
                 this.repaint();
             }
@@ -444,15 +426,42 @@ public class MaintenancePanel extends JPanel {
 
     private <T> void updateVisualPanel(
         JPanel panel,
-        T manut,
+        List<T> items,
         String[] columnNames,
         java.util.function.Function<T, Object[]> rowExtractor
     ) {
-        Object[][] righe = new Object[][]{ rowExtractor.apply(manut) };
-        var tabella = new JTable(righe, columnNames);
-        panel.add(tabella, BorderLayout.PAGE_END);
+        Object[][] righe = items.stream()
+            .map(elem -> rowExtractor.apply(elem))
+            .toArray(Object[][]::new);
+        var tabella = new JTable(righe, columnNames){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; //nothing is editable
+            }
+        };
+        resizeColumnWidth(tabella);
+        tabella.setFillsViewportHeight(true);
+        tabella.setBorder(BorderFactory.createLineBorder(new Color(52, 152, 219), 2));
+        var scrollPane = new JScrollPane(tabella);
+        tabella.setFillsViewportHeight(true);
+        scrollPane.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(52, 152, 219), 2),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        panel.add(scrollPane);
     }
 
+    private void resizeColumnWidth(JTable table) {
+        for (int column = 0; column < table.getColumnCount(); column++) {
+            int width = 50; // Min width
+            for (int row = 0; row < table.getRowCount(); row++) {
+                TableCellRenderer renderer = table.getCellRenderer(row, column);
+                var comp = table.prepareRenderer(renderer, row, column);
+                width = Math.max(comp.getPreferredSize().width + 1, width);
+            }
+            table.getColumnModel().getColumn(column).setPreferredWidth(width);
+        }
+    }
     private void clearContentExceptNorth() {
         this.removeAll();
         this.add(northPanel, BorderLayout.NORTH);
