@@ -31,11 +31,11 @@ import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
+import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.AziendaImpl;
-import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
@@ -86,6 +86,7 @@ public class SwingView implements View {
     @Override
     public void updateTimetableLinesList(List<Linea> list) {
         ((TimetablePanel)this.tabs.get("Orari")).updateLinesList(list);
+        ((InsertServiceVariationPanel)this.tabs.get("Variazione servizi")).updateLineList(list);
     }
 
     @Override
@@ -118,6 +119,7 @@ public class SwingView implements View {
         this.tabs.put("Inserim. Fermata", new FermataManagePanel(controller));
         this.tabs.put("Gestione Hub", new HubMobilitaManagePanel(controller));
         this.tabs.put("Gestione Tratte", new TratteManagePanel(controller));
+        this.tabs.put("Variazione servizi", new InsertServiceVariationPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
         this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Manutenzioni", "Profilo", "Inserim. Fermata", "Gestione Hub", "Gestione Tratte"));
@@ -174,6 +176,10 @@ public class SwingView implements View {
                     case "Gestione Tratte":
                         controller.updateFermateList();
                         controller.updateTratte();
+                        break;
+                    case "Variazione servizi":
+                        controller.updateManutLineePanel();
+                        controller.updateTimetableLinesList();
                         break;
                 }
             }
@@ -237,8 +243,9 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateManutLineePanel(List<ManutenzioneLineaImpl> list) {
+    public void updateManutLineePanel(List<ManutenzioneLinea> list) {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutLineePanel();
+        ((InsertServiceVariationPanel)this.tabs.get("Variazione servizi")).updateManutenzioneList(list);
     }
 
     @Override

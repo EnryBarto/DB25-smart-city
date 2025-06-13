@@ -12,11 +12,11 @@ import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
+import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.AziendaImpl;
-import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
@@ -56,7 +56,7 @@ public interface View {
 
     void updateManutMezziPanel(List<ManutenzioneMezzoImpl> list);
 
-    void updateManutLineePanel(List<ManutenzioneLineaImpl> list);
+    void updateManutLineePanel(List<ManutenzioneLinea> list);
 
     void updateAziendeNoManut(List<AziendaImpl> extracAziendeNoManut);
 
