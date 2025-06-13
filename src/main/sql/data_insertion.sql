@@ -1,4 +1,4 @@
-use smart_city
+use smart_city;
 INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Acerbi', 'Luciana', 'RN099529AA', 'oGIGdLDZxwxyeGEr');
 INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Albertini', 'Alessandro', 'jB857186AA', 'UpOpKvBFzLRBKIfy');
 INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Luzi', 'Michelotto', 'QB954597AA', 'krOvQhTAHjILUdzI');
@@ -9,6 +9,7 @@ INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Columbo'
 INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Polani', 'Annibale', 'MM790278AA', 'gLUtcwSCoqXrDwbe');
 INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Trincavelli', 'Natalia', 'dQ994531AA', 'lcEFyvNoXqNIEzNf');
 INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Piccio', 'Lamberto', 'Wr384506AA', 'RhnWEphWSpSmChVk');
+INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('admin', 'admin', 'Amm91332AA', NULL);
 INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('nico', 'RN099529AA', 'rpalombi@argento.net', '3456503582', '$2a$12$1qwIWDXeO47MR8bglBL2ZuB6z8SEzF08CqkPvZM3F/2M.T.BKhv8K');
 INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user1', 'jB857186AA', 'antonelloungaretti@live.com', '3453524521', '$2a$12$.RuAc9vq9hlEQDQW1Z5GY.wnnahTZSva9ManxToj9uyfKrRY.IBwe');
 INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user2', 'QB954597AA', 'qossani@vodafone.it', '3486012374', '$2a$12$pEsEeAH6l5UpqE1.RXANzOgqVRiH5cC7TEZybfApH4Qb4o8QrBkui');
@@ -19,11 +20,13 @@ INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('use
 INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user7', 'MM790278AA', 'mazzeoeugenia@tiscali.it', '3452087961', '$2a$12$vzV792pkBogOKhkqLcYOrOza0ct/ZC1iIPmrYqR1PDvQhsdbZ8aoi');
 INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user8', 'dQ994531AA', 'fernanda48@hotmail.it', '3485631752', '$2a$12$l1PQOP8ADFSQ1yzVShfQ6O3C6zLDOy9rojIdbJesq/LRl4iBtGmRW');
 INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user9', 'Wr384506AA', 'marianaccari@gmail.com', '3456503892', '$2a$12$vaR/Hfa3G01XoTS4iM2eHeUoBos1Xibkf.ys9X0tOqXYSsE7zUWT.');
+INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('admin', 'Amm91332AA', 'admin@smartcity.it', '123456789', '$2a$10$u43PXOBQkSbOwUtbrNeot./Qk1qAf0EAnNT5KDwYgBEnuxtTk8J5q');
 INSERT INTO DIPENDENTI (username, ruolo) VALUES ('nico', 'amministrativo');
 INSERT INTO DIPENDENTI (username, ruolo) VALUES ('user1', 'controllore');
 INSERT INTO DIPENDENTI (username, ruolo) VALUES ('user2', 'amministrativo');
 INSERT INTO DIPENDENTI (username, ruolo) VALUES ('user3', 'controllore');
 INSERT INTO DIPENDENTI (username, ruolo) VALUES ('user4', 'amministrativo');
+INSERT INTO DIPENDENTI (username, ruolo) VALUES ('admin', 'amministrativo');
 INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (1, 'autobus');
 INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (2, 'treno');
 INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (3, 'tram');
