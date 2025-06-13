@@ -50,38 +50,51 @@ public class HubMobilitaManagePanel extends JPanel {
 
         var nomePanel = new JPanel();
         nomePanel.setBackground(Color.WHITE);
-        JLabel nomeLabel = new JLabel("Nome:");
-        JTextField nomeField = new JTextField(15);
-        nomePanel.add(nomeLabel);
+        var nomeField = new JTextField(15);
+        nomePanel.add(new JLabel("Nome:"));
         nomePanel.add(nomeField);
 
-        var indirizzoPanel = new JPanel();
-        indirizzoPanel.setBackground(Color.WHITE);
-        JLabel indirizzoLabel = new JLabel("Indirizzo:");
-        JTextField indirizzoField = new JTextField(15);
-        indirizzoPanel.add(indirizzoLabel);
-        indirizzoPanel.add(indirizzoField);
+        var indirizzoViaPanel = new JPanel();
+        indirizzoViaPanel.setBackground(Color.WHITE);
+        var indirizzoViaField = new JTextField(15);
+        indirizzoViaPanel.add(new JLabel("Indirizzo:"));
+        indirizzoViaPanel.add(indirizzoViaField);
+
+        var indirizzoCivicoPanel = new JPanel();
+        indirizzoCivicoPanel.setBackground(Color.WHITE);
+        var indirizzoCivicoField = new JTextField(15);
+        indirizzoCivicoPanel.add(new JLabel("Civico:"));
+        indirizzoCivicoPanel.add(indirizzoCivicoField);
+
+        var indirizzoComunePanel = new JPanel();
+        indirizzoComunePanel.setBackground(Color.WHITE);
+        var indirizzoComuneField = new JTextField(15);
+        indirizzoComunePanel.add(new JLabel("Comune:"));
+        indirizzoComunePanel.add(indirizzoComuneField);
+
+        var indirizzoCapPanel = new JPanel();
+        indirizzoCapPanel.setBackground(Color.WHITE);
+        var indirizzoCapField = new JTextField(15);
+        indirizzoCapPanel.add(new JLabel("CAP:"));
+        indirizzoCapPanel.add(indirizzoCapField);
 
         var latPanel = new JPanel();
         latPanel.setBackground(Color.WHITE);
-        JLabel latLabel = new JLabel("Latitudine:");
-        JTextField latField = new JTextField(15);
-        latPanel.add(latLabel);
+        var latField = new JTextField(15);
+        latPanel.add(new JLabel("Latitudine:"));
         latPanel.add(latField);
 
         var lonPanel = new JPanel();
         lonPanel.setBackground(Color.WHITE);
-        JLabel lonLabel = new JLabel("Longitudine:");
-        JTextField lonField = new JTextField(15);
-        lonPanel.add(lonLabel);
+        var lonField = new JTextField(15);
+        lonPanel.add(new JLabel("Longitudine:"));
         lonPanel.add(lonField);
 
         var fermataPanel = new JPanel();
         fermataPanel.setBackground(Color.WHITE);
-        JLabel fermataLabel = new JLabel("Fermata (opzionale):");
         fermataCombo.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         fermataCombo.setMaximumSize(fermataCombo.getPreferredSize());
-        fermataPanel.add(fermataLabel);
+        fermataPanel.add(new JLabel("Fermata (opzionale):"));
         fermataPanel.add(fermataCombo);
 
         var aggiungiBtn = new JButton("Aggiungi Hub");
@@ -102,12 +115,18 @@ public class HubMobilitaManagePanel extends JPanel {
                     lonField.getText(),
                     latField.getText(),
                     nomeField.getText(),
-                    indirizzoField.getText(),
+                    indirizzoViaField.getText(),
+                    indirizzoCivicoField.getText(),
+                    indirizzoComuneField.getText(),
+                    indirizzoCapField.getText(),
                     selectedFermata.getCodiceFermata()
                 );
                 controller.addHub(hub);
                 nomeField.setText("");
-                indirizzoField.setText("");
+                indirizzoViaField.setText("");
+                indirizzoCivicoField.setText("");
+                indirizzoComuneField.setText("");
+                indirizzoCapField.setText("");
                 latField.setText("");
                 lonField.setText("");
                 fermataCombo.setSelectedIndex(0);
@@ -119,7 +138,10 @@ public class HubMobilitaManagePanel extends JPanel {
         leftPanel.add(addTitle);
         leftPanel.add(Box.createVerticalStrut(15));
         leftPanel.add(nomePanel);
-        leftPanel.add(indirizzoPanel);
+        leftPanel.add(indirizzoViaPanel);
+        leftPanel.add(indirizzoCivicoPanel);
+        leftPanel.add(indirizzoComunePanel);
+        leftPanel.add(indirizzoCapPanel);
         leftPanel.add(latPanel);
         leftPanel.add(lonPanel);
         leftPanel.add(fermataPanel);

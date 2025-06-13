@@ -15,16 +15,22 @@ public class HubMobilitaImpl implements HubMobilita {
     private final String longitudine;
     private final String latitudine;
     private final String nome;
-    private final String indirizzo;
+    private final String via;
+    private final String civico;
+    private final String comune;
+    private final String cap;
     private final Optional<Integer> codiceFermata;
 
-    public HubMobilitaImpl(int codiceHub, String longitudine, String latitudine, String nome, String indirizzo,
-            int codiceFermata) {
+    public HubMobilitaImpl(int codiceHub, String longitudine, String latitudine, String nome, String via,
+            String civico, String comune, String cap, int codiceFermata) {
         this.codiceHub = codiceHub;
         this.longitudine = longitudine;
         this.latitudine = latitudine;
         this.nome = nome;
-        this.indirizzo = indirizzo;
+        this.civico = civico;
+        this.cap = cap;
+        this.comune = comune;
+        this.via = via;
         this.codiceFermata = Optional.ofNullable(codiceFermata);
     }
 
@@ -50,7 +56,7 @@ public class HubMobilitaImpl implements HubMobilita {
 
     @Override
     public String getIndirizzo() {
-        return indirizzo;
+        return this.via + ", " + this.civico + ", " + this.comune + ", " + this.cap;
     }
 
     public Optional<Integer> getCodiceFermata() {
@@ -69,10 +75,13 @@ public class HubMobilitaImpl implements HubMobilita {
                     var longitudine = rs.getString("longitudine");
                     var latitudine = rs.getString("latitudine");
                     var nome = rs.getString("nome");
-                    var indirizzo = rs.getString("indirizzo");
+                    var civico = rs.getString("indirizzo_civico");
+                    var via = rs.getString("indirizzo_via");
+                    var comune = rs.getString("indirizzo_comune");
+                    var cap = rs.getString("indirizzo_cap");
                     var codiceFermata = rs.getInt("codice_fermata");
 
-                    hubs.add(new HubMobilitaImpl(codiceHub, longitudine, latitudine, nome, indirizzo, codiceFermata));
+                    hubs.add(new HubMobilitaImpl(codiceHub, longitudine, latitudine, nome, via, civico, comune, cap, codiceFermata));
                 }
             } catch (Exception e) {
                 throw new DAOException("Errore nell'estrazione degli hub di mobilità.", e);

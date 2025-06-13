@@ -34,7 +34,10 @@ public record ListHubMobilita(HubMobilita hub, Optional<String> nomeFermata, Str
                             rs.getString("longitudine"),
                             rs.getString("latitudine"),
                             rs.getString("nome_hub"),
-                            rs.getString("indirizzo"),
+                            rs.getString("indirizzo_via"),
+                            rs.getString("indirizzo_civico"),
+                            rs.getString("indirizzo_comune"),
+                            rs.getString("indirizzo_cap"),
                             rs.getInt("codice_fermata")
                         ),
                         Optional.ofNullable(rs.getString("nome_fermata")),
