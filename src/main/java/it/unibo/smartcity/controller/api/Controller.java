@@ -114,4 +114,10 @@ public interface Controller {
     List<ManutenzioneMezzoImpl> getManutPerMezzo(String nImmatricolazione);
 
 	void addServiceVariation(ManutenzioneLinea selectedManutenzione, Linea selectedLinea);
+
+    void updateListsManagementLinee();
+
+    void updateTratteListPerLinea(String codiceLinea);
+
+    void addTrattaLinea(String codLinea, Tratta tratta);
 }

@@ -61,4 +61,8 @@ public interface View {
     void updateAziendeNoManut(List<AziendaImpl> extracAziendeNoManut);
 
     void updateManutPerMezzo(ArrayList<MezzoConNome> mezzi);
+
+    void updateListsManagementLinee(List<Linea> daAggiungere, Map<Linea, Tratta> daRimuovere);
+
+    void updateTratteListPerLinea(List<Tratta> tratte);
 }

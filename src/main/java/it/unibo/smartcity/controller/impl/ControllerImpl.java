@@ -1,11 +1,12 @@
 package it.unibo.smartcity.controller.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,11 +37,12 @@ import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.FermataImpl;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
 import it.unibo.smartcity.model.impl.LineaImpl;
-import it.unibo.smartcity.model.impl.TrattaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl;
+import it.unibo.smartcity.model.impl.TragittoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
+import it.unibo.smartcity.model.impl.TrattaImpl;
 import it.unibo.smartcity.model.impl.UtenteImpl;
 import it.unibo.smartcity.view.api.View;
 
@@ -341,6 +343,28 @@ public class ControllerImpl implements Controller {
         checkNotNull(selectedLinea, "Linea cannot be null");
         checkState(this.currentUserLevel == UserLevel.ADMIN);
         ListVariazioniServizi.DAO.insert(selectedManutenzione, selectedLinea, connection);
+    }
+
+    @Override
+    public void updateListsManagementLinee() {
+        views.forEach(v -> v.updateListsManagementLinee(
+            LineaImpl.DAO.list(connection),
+            TrattaImpl.DAO.listUltimeTratte(connection)
+        ));
+    }
+
+    @Override
+    public void updateTratteListPerLinea(String codiceLinea) {
+        views.forEach(v -> v.updateTratteListPerLinea(TrattaImpl.DAO.listByCodicePartenza(connection, codiceLinea)));
+    }
+
+    @Override
+    public void addTrattaLinea(String codLinea, Tratta tratta) {
+        checkNotNull(tratta);
+        checkNotNull(codLinea);
+        checkArgument(!codLinea.isBlank());
+        TragittoImpl.DAO.insert(connection, codLinea, tratta);
+        this.updateListsManagementLinee();
     }
 
 

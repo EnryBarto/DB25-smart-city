@@ -9,6 +9,7 @@ import java.util.Set;
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.model.api.Tragitto;
+import it.unibo.smartcity.model.api.Tratta;
 
 public class TragittoImpl implements Tragitto {
 
@@ -68,6 +69,58 @@ public class TragittoImpl implements Tragitto {
                 throw new DAOException("Errore nell'estrazione dei tragitti.", e);
             }
             return tragitti;
+        }
+
+        public static int getOrdine(Connection connection, String codLinea, Tratta tratta) {
+            var query = "SELECT ordine FROM tragitti WHERE codice_linea = ? AND partenza_codice_fermata = ? AND arrivo_codice_fermata = ?";
+            int ordine = 0;
+            try (
+                var statement = DAOUtils.prepare(connection, query, codLinea, tratta.getPartenzaCodiceFermata(), tratta.getArrivoCodiceFermata());
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    ordine = rs.getInt("ordine");
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione dei tragitti.", e);
+            }
+            return ordine;
+
+        }
+
+        public static void insert(Connection connection, String codLinea, Tratta tratta) {
+            int ordine = DAO.getOrdine(connection, codLinea, tratta);
+            ordine++;
+            var query = "INSERT INTO TRAGITTI (codice_linea, partenza_codice_fermata, arrivo_codice_fermata, ordine) VALUES (?, ?, ?, ?)";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setString(1, codLinea);
+                statement.setInt(2, tratta.getPartenzaCodiceFermata());
+                statement.setInt(3, tratta.getArrivoCodiceFermata());
+                statement.setInt(4, ordine);
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'inserimento della linea.", e);
+            }
+
+            int tempoPercorrenza = LineaImpl.DAO.getTempoPercorrenza(connection, codLinea);
+            tempoPercorrenza += tratta.getTempoPercorrenza();
+
+            LineaImpl.DAO.updateTempoPercorrenza(connection, codLinea, tempoPercorrenza);
+
+        }
+
+        public static void delete(Connection connection, String codiceLinea) {
+            var query = "DELETE FROM linee WHERE codice_linea = ?";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setString(1, codiceLinea);
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'eliminazione della linea.", e);
+            }
         }
     }
 }

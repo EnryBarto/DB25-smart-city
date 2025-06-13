@@ -220,5 +220,31 @@ public class LineaImpl implements Linea {
                 throw new DAOException("Errore nell'eliminazione della linea.", e);
             }
         }
+
+        public static int getTempoPercorrenza(Connection connection, String codiceLinea) {
+            var tempoPercorrenza = 0;
+            try (
+                var statement = DAOUtils.prepare(connection, "SELECT tempo_percorrenza FROM LINEE WHERE codice_linea = ?", codiceLinea);
+                var rs = statement.executeQuery();
+            ) {
+                if (rs.next()) {
+                    tempoPercorrenza = rs.getInt(1);
+                }
+            } catch (Exception e) {
+                throw new DAOException(e.getMessage(), e);
+            }
+            return tempoPercorrenza;
+        }
+
+        public static void updateTempoPercorrenza(Connection connection, String codLinea, int tempoPercorrenza) {
+            var query = "UPDATE linee SET tempo_percorrenza = ? WHERE codice_linea = ?";
+            try (
+                var statement = DAOUtils.prepare(connection, query, tempoPercorrenza, codLinea);
+            ) {
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException(e.getMessage(), e);
+            }
+        }
     }
 }

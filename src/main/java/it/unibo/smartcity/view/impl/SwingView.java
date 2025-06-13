@@ -116,13 +116,14 @@ public class SwingView implements View {
         this.tabs.put("Profilo", new UserPanel(controller));
         this.tabs.put("Lavoro", new OrariLavoroPanel(controller));
         this.tabs.put("Manutenzioni", new MaintenancePanel(controller));
+        this.tabs.put("Gestione Linea", new LineaManagePanel(controller));
         this.tabs.put("Inserim. Fermata", new FermataManagePanel(controller));
-        this.tabs.put("Gestione Hub", new HubMobilitaManagePanel(controller));
         this.tabs.put("Gestione Tratte", new TratteManagePanel(controller));
+        this.tabs.put("Gestione Hub", new HubMobilitaManagePanel(controller));
         this.tabs.put("Variazione servizi", new InsertServiceVariationPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Manutenzioni", "Profilo", "Inserim. Fermata", "Gestione Hub", "Gestione Tratte", "Variazione servizi"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Manutenzioni", "Profilo", "Inserim. Fermata", "Gestione Linea", "Gestione Hub", "Gestione Tratte", "Variazione servizi"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
@@ -180,6 +181,9 @@ public class SwingView implements View {
                     case "Variazione servizi":
                         controller.updateManutLineePanel();
                         controller.updateTimetableLinesList();
+                        break;
+                    case "Gestione Linea":
+                        controller.updateListsManagementLinee();
                         break;
                 }
             }
@@ -258,4 +262,13 @@ public class SwingView implements View {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutPerMezzoPanel(mezzi);
     }
 
+    @Override
+    public void updateListsManagementLinee(List<Linea> daAggiungere, Map<Linea, Tratta> daRimuovere) {
+        ((LineaManagePanel)this.tabs.get("Gestione Linea")).updateLinesLists(daAggiungere, daRimuovere);
+    }
+
+    @Override
+    public void updateTratteListPerLinea(List<Tratta> tratte) {
+        ((LineaManagePanel)this.tabs.get("Gestione Linea")).updateTratteList(tratte);
+    }
 }

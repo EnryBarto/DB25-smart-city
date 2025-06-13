@@ -32,7 +32,7 @@ public class InsertServiceVariationPanel extends JPanel {
             "manutenzione linea:",
             manutenzioneLinea,
             "Codice Linea sostituta:",
-            codeLineaSost // TODO: Populate
+            codeLineaSost 
         );
         JButton btnSubmit = new JButton("Aggiungi variazione");
         btnSubmit.addActionListener(e -> {
