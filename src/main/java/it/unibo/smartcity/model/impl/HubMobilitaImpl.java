@@ -15,22 +15,16 @@ public class HubMobilitaImpl implements HubMobilita {
     private final String longitudine;
     private final String latitudine;
     private final String nome;
-    private final String via;
-    private final String civico;
-    private final String comune;
-    private final String cap;
+    private final Indirizzo indirizzo;
     private final Optional<Integer> codiceFermata;
 
     public HubMobilitaImpl(int codiceHub, String longitudine, String latitudine, String nome, String via,
-            String civico, String comune, String cap, int codiceFermata) {
+            String civico, String comune, int cap, int codiceFermata) {
         this.codiceHub = codiceHub;
         this.longitudine = longitudine;
         this.latitudine = latitudine;
         this.nome = nome;
-        this.civico = civico;
-        this.cap = cap;
-        this.comune = comune;
-        this.via = via;
+        this.indirizzo = new Indirizzo(via, civico, comune, cap);
         this.codiceFermata = Optional.ofNullable(codiceFermata);
     }
 
@@ -56,7 +50,7 @@ public class HubMobilitaImpl implements HubMobilita {
 
     @Override
     public String getIndirizzo() {
-        return this.via + ", " + this.civico + ", " + this.comune + ", " + this.cap;
+        return this.indirizzo.toString();
     }
 
     public Optional<Integer> getCodiceFermata() {
@@ -78,7 +72,7 @@ public class HubMobilitaImpl implements HubMobilita {
                     var civico = rs.getString("indirizzo_civico");
                     var via = rs.getString("indirizzo_via");
                     var comune = rs.getString("indirizzo_comune");
-                    var cap = rs.getString("indirizzo_cap");
+                    var cap = rs.getInt("indirizzo_cap");
                     var codiceFermata = rs.getInt("codice_fermata");
 
                     hubs.add(new HubMobilitaImpl(codiceHub, longitudine, latitudine, nome, via, civico, comune, cap, codiceFermata));

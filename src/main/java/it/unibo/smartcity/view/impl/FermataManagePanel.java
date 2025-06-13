@@ -36,37 +36,44 @@ public class FermataManagePanel extends JPanel {
 
         var nomePanel = new JPanel();
         nomePanel.setBackground(Color.WHITE);
-        JLabel nomeLabel = new JLabel("Nome:");
-        JTextField nomeField = new JTextField(15);
-        nomePanel.add(nomeLabel);
+        var nomeField = new JTextField(15);
+        nomePanel.add(new JLabel("Nome:"));
         nomePanel.add(nomeField);
 
         var viaPanel = new JPanel();
         viaPanel.setBackground(Color.WHITE);
-        JLabel viaLabel = new JLabel("Via:");
-        JTextField viaField = new JTextField(15);
-        viaPanel.add(viaLabel);
+        var viaField = new JTextField(15);
+        viaPanel.add(new JLabel("Via:"));
         viaPanel.add(viaField);
+
+        var civicoPanel = new JPanel();
+        civicoPanel.setBackground(Color.WHITE);
+        var civicoField = new JTextField(15);
+        civicoPanel.add(new JLabel("Civico:"));
+        civicoPanel.add(civicoField);
+
+        var comunePanel = new JPanel();
+        comunePanel.setBackground(Color.WHITE);
+        var comuneField = new JTextField(15);
+        comunePanel.add(new JLabel("Comune:"));
+        comunePanel.add(comuneField);
 
         var capPanel = new JPanel();
         capPanel.setBackground(Color.WHITE);
-        JLabel capLabel = new JLabel("CAP:");
-        JTextField capField = new JTextField(15);
-        capPanel.add(capLabel);
+        var capField = new JTextField(15);
+        capPanel.add(new JLabel("CAP:"));
         capPanel.add(capField);
 
         var latPanel = new JPanel();
         latPanel.setBackground(Color.WHITE);
-        JLabel latLabel = new JLabel("Latitudine:");
-        JTextField latField = new JTextField(15);
-        latPanel.add(latLabel);
+        var latField = new JTextField(15);
+        latPanel.add(new JLabel("Latitudine:"));
         latPanel.add(latField);
 
         var lonPanel = new JPanel();
         lonPanel.setBackground(Color.WHITE);
-        JLabel lonLabel = new JLabel("Longitudine:");
-        JTextField lonField = new JTextField(15);
-        lonPanel.add(lonLabel);
+        var lonField = new JTextField(15);
+        lonPanel.add(new JLabel("Longitudine:"));
         lonPanel.add(lonField);
 
         var aggiungiBtn = new JButton("Aggiungi Fermata");
@@ -81,12 +88,16 @@ public class FermataManagePanel extends JPanel {
                 var fermata = new FermataImpl(0,
                     nomeField.getText(),
                     viaField.getText(),
+                    civicoField.getText(),
+                    comuneField.getText(),
                     Integer.parseInt(capField.getText()),
                     latField.getText(),
                     lonField.getText());
                 controller.addFermata(fermata);
                 nomeField.setText("");
                 viaField.setText("");
+                civicoField.setText("");
+                comuneField.setText("");
                 capField.setText("");
                 latField.setText("");
                 lonField.setText("");
@@ -99,6 +110,8 @@ public class FermataManagePanel extends JPanel {
         leftPanel.add(Box.createVerticalStrut(15));
         leftPanel.add(nomePanel);
         leftPanel.add(viaPanel);
+        leftPanel.add(civicoPanel);
+        leftPanel.add(comunePanel);
         leftPanel.add(capPanel);
         leftPanel.add(latPanel);
         leftPanel.add(lonPanel);

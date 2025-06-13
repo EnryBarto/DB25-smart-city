@@ -108,7 +108,7 @@ public final class Queries {
     public static final String LIST_FERMATE_UNA_LINEA =
     """
         SELECT t.codice_linea, t.arrivo_codice_fermata, t.partenza_codice_fermata,
-            t.ordine, f.nome, f.indirizzo_via, tr.tempo_percorrenza
+            t.ordine, f.nome, f.indirizzo_via, f.indirizzo_civico, f.indirizzo_comune, f.indirizzo_cap, tr.tempo_percorrenza
         FROM TRAGITTI t
         JOIN TRATTE tr ON t.partenza_codice_fermata = tr.partenza_codice_fermata AND t.arrivo_codice_fermata = tr.arrivo_codice_fermata
         JOIN FERMATE f ON t.arrivo_codice_fermata = f.codice_fermata
@@ -126,7 +126,7 @@ public final class Queries {
     // OPERAZIONE 3
     public static final String LIST_HUB_MOBILITA =
     """
-        SELECT h.codice_hub, h.nome nome_hub, h.indirizzo_via, h.longitudine, h.latitudine, h.codice_fermata, f.nome nome_fermata, ch.descrizione tipo_contenuto, c.posti_disponibili
+        SELECT h.codice_hub, h.nome nome_hub, h.indirizzo_via, h.indirizzo_civico, h.indirizzo_comune, h.indirizzo_cap, h.longitudine, h.latitudine, h.codice_fermata, f.nome nome_fermata, ch.descrizione tipo_contenuto, c.posti_disponibili
         FROM HUB_MOBILITA h LEFT JOIN FERMATE f on (h.codice_fermata = f.codice_fermata)
         JOIN CONTENUTI c ON (c.codice_hub = h.codice_hub)
         JOIN CONTENUTI_HUB ch ON (c.codice_contenuto = ch.codice_contenuto);

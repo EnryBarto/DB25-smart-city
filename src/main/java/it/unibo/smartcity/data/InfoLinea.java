@@ -45,15 +45,19 @@ public record InfoLinea(Linea linea, TipologiaMezzo mezzo, Fermata partenza, Fer
                         new FermataImpl(
                             rs.getInt("F1.codice_fermata"),
                             rs.getString("F1.nome"),
-                            rs.getString("F1.via"),
-                            rs.getInt("F1.cap"),
+                            rs.getString("F1.indirizzo_via"),
+                            rs.getString("F1.indirizzo_civico"),
+                            rs.getString("F1.indirizzo_comune"),
+                            rs.getInt("F1.indirizzo_cap"),
                             rs.getString("F1.longitudine"),
                             rs.getString("F1.latitudine")),
                         new FermataImpl(
                             rs.getInt("F2.codice_fermata"),
                             rs.getString("F2.nome"),
-                            rs.getString("F2.via"),
-                            rs.getInt("F2.cap"),
+                            rs.getString("F2.indirizzo_via"),
+                            rs.getString("F2.indirizzo_civico"),
+                            rs.getString("F2.indirizzo_comune"),
+                            rs.getInt("F2.indirizzo_cap"),
                             rs.getString("F2.longitudine"),
                             rs.getString("F2.latitudine"))
                     ));

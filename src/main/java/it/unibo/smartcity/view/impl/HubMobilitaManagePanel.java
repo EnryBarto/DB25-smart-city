@@ -118,7 +118,7 @@ public class HubMobilitaManagePanel extends JPanel {
                     indirizzoViaField.getText(),
                     indirizzoCivicoField.getText(),
                     indirizzoComuneField.getText(),
-                    indirizzoCapField.getText(),
+                    Integer.parseInt(indirizzoCapField.getText()),
                     selectedFermata.getCodiceFermata()
                 );
                 controller.addHub(hub);

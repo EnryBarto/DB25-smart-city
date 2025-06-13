@@ -1,14 +1,14 @@
 package it.unibo.smartcity.model.api;
 
+import it.unibo.smartcity.model.impl.Indirizzo;
+
 public interface Fermata {
 
     int getCodiceFermata();
 
     String getNome();
 
-    String getVia();
-
-    int getCap();
+    Indirizzo getIndirizzo();
 
     String getLongitudine();
 

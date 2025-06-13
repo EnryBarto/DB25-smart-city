@@ -13,16 +13,14 @@ public class FermataImpl implements Fermata {
 
     private final int codiceFermata;
     private final String nome;
-    private final String via;
-    private final int cap;
+    private final Indirizzo indirizzo;
     private final String longitudine;
     private final String latitudine;
 
-    public FermataImpl(int codiceFermata, String nome, String via, int cap, String longitudine, String latitudine) {
+    public FermataImpl(int codiceFermata, String nome, String via, String civico, String comune, int cap, String longitudine, String latitudine) {
         this.codiceFermata = codiceFermata;
         this.nome = nome;
-        this.via = via;
-        this.cap = cap;
+        this.indirizzo = new Indirizzo(via, civico, comune, cap);
         this.longitudine = longitudine;
         this.latitudine = latitudine;
     }
@@ -34,14 +32,12 @@ public class FermataImpl implements Fermata {
     public String getNome() {
         return nome;
     }
+
     @Override
-    public String getVia() {
-        return via;
+    public Indirizzo getIndirizzo() {
+        return this.indirizzo;
     }
-    @Override
-    public int getCap() {
-        return cap;
-    }
+
     @Override
     public String getLongitudine() {
         return longitudine;
@@ -63,8 +59,10 @@ public class FermataImpl implements Fermata {
                     var fermata = new FermataImpl(
                         rs.getInt("codice_fermata"),
                         rs.getString("nome"),
-                        rs.getString("via"),
-                        rs.getInt("CAP"),
+                        rs.getString("indirizzo_via"),
+                        rs.getString("indirizzo_civico"),
+                        rs.getString("indirizzo_comune"),
+                        rs.getInt("indirizzo_cap"),
                         rs.getString("longitudine"),
                         rs.getString("latitudine")
                     );
@@ -77,15 +75,17 @@ public class FermataImpl implements Fermata {
         }
 
         public static void insert(Connection connection, Fermata fermata) {
-            var query = "INSERT INTO fermate (nome, via, CAP, longitudine, latitudine) VALUES (?, ?, ?, ?, ?)";
+            var query = "INSERT INTO fermate (nome, indirizzo_via, indirizzo_civico, indirizzo_comune, indirizzo_cap, longitudine, latitudine) VALUES (?, ?, ?, ?, ?)";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
                 statement.setString(1, fermata.getNome());
-                statement.setString(2, fermata.getVia());
-                statement.setInt(3, fermata.getCap());
-                statement.setString(4, fermata.getLongitudine());
-                statement.setString(5, fermata.getLatitudine());
+                statement.setString(2, fermata.getIndirizzo().via());
+                statement.setString(3, fermata.getIndirizzo().civico());
+                statement.setString(4, fermata.getIndirizzo().via());
+                statement.setInt(5, fermata.getIndirizzo().cap());
+                statement.setString(6, fermata.getLongitudine());
+                statement.setString(7, fermata.getLatitudine());
                 statement.executeUpdate();
             } catch (Exception e) {
                 throw new DAOException("Errore nell'inserimento della fermata.", e);
