@@ -122,7 +122,7 @@ public class SwingView implements View {
         this.tabs.put("Variazione servizi", new InsertServiceVariationPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Manutenzioni", "Profilo", "Inserim. Fermata", "Gestione Hub", "Gestione Tratte"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Manutenzioni", "Profilo", "Inserim. Fermata", "Gestione Hub", "Gestione Tratte", "Variazione servizi"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
