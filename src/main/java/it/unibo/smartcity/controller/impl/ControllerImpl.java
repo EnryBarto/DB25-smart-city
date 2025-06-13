@@ -42,6 +42,7 @@ import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl;
 import it.unibo.smartcity.model.impl.TragittoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
+import it.unibo.smartcity.model.impl.TipologiaMezzoImpl;
 import it.unibo.smartcity.model.impl.TrattaImpl;
 import it.unibo.smartcity.model.impl.UtenteImpl;
 import it.unibo.smartcity.view.api.View;
@@ -367,5 +368,14 @@ public class ControllerImpl implements Controller {
         this.updateListsManagementLinee();
     }
 
+    @Override
+    public void addLinea(Linea linea, List<Tratta> selectedTratte, boolean straordinaria) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addLinea'");
+    }
 
+    @Override
+    public void updateTipoMezzi() {
+        views.forEach(v -> v.updateTipoMezzi(TipologiaMezzoImpl.DAO.list(connection)));
+    }
 }

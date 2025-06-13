@@ -14,6 +14,7 @@ import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
+import it.unibo.smartcity.model.api.TipologiaMezzo;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.AziendaImpl;
@@ -65,4 +66,6 @@ public interface View {
     void updateListsManagementLinee(List<Linea> daAggiungere, Map<Linea, Tratta> daRimuovere);
 
     void updateTratteListPerLinea(List<Tratta> tratte);
+
+    void updateTipoMezzi(Set<TipologiaMezzo> list);
 }

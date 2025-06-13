@@ -39,4 +39,9 @@ public interface PanelFactory {
             JComboBox<String> comboBox,
             JButton btnSubmit);
 
+    JPanel createGreenPanel(
+            String title,
+            Map<String, JComponent> components,
+            JButton btnSubmit);
+
 }

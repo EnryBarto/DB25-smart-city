@@ -120,4 +120,8 @@ public interface Controller {
     void updateTratteListPerLinea(String codiceLinea);
 
     void addTrattaLinea(String codLinea, Tratta tratta);
+
+    void addLinea(Linea linea, List<Tratta> selectedTratte, boolean straordinaria);
+
+    void updateTipoMezzi();
 }

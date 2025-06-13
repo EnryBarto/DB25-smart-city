@@ -283,24 +283,23 @@ public final class Queries {
                         AND codice_linea = ?);
         """;
 
-    // OPERAZIONE 19 -TMP
-    public static final String AGGIUNGI_VARIAZIONE_TMP =
-        """
-            INSERT INTO SOSTITUZIONI (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea)
-            VALUES (?, ?, ?);
-        """;
-
     // OPERAZIONE 21
     public static final String AGGIUNGI_LINEA =
     """
         INSERT INTO LINEE (codice_linea, inizio_validita, fine_validita, attiva, codice_tipo_mezzo)
         VALUES(?, ?, ?, ?, ?);
+    """;
 
+    public static final String AGGIUNGI_TRAGITTO =
+    """
         INSERT INTO TRAGITTI (partenza_codice_fermata, arrivo_codice_fermata, codice_linea, ordine)
         VALUES (?, ?, ?, ?); # And so on
+    """;
 
+    public static final String UPDATE_TEMPO_PERCORRENZA =
+    """
         UPDATE LINEE
-        SET tempo_percorrenza = (SELECT *
+        SET tempo_percorrenza = (SELECT SUM(trt.tempo_percorrenza)
                                 FROM TRATTE trt, TRAGITTI trg, LINEE l
                                 WHERE l.codice_linea = trg.codice_linea
                                 AND trg.partenza_codice_fermata = trt.partenza_codice_fermata
