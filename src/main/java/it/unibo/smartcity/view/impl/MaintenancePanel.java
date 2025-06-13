@@ -237,10 +237,18 @@ public class MaintenancePanel extends JPanel {
         combo.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         combo.setMaximumSize(combo.getPreferredSize());
         combo.setEditable(false);
+
+        mezzi.forEach(m -> combo.addItem(m.nImmatricolazione() + "-" + m.nomeMezzo()));
+        mezzoPanel.add(mezzoLabel);
+        mezzoPanel.add(combo);
+
+        this.add(mezzoPanel, BorderLayout.NORTH);
+
         combo.addActionListener(e -> {
             String choice = (String)combo.getSelectedItem();
             choice = choice.split("-")[0];
             var manutenioni = controller.getManutPerMezzo(choice);
+            if (this.getComponentCount() > 2) this.remove(2);
             updateVisualPanel(
                 this,
                 manutenioni,
@@ -259,11 +267,6 @@ public class MaintenancePanel extends JPanel {
             this.revalidate();
             this.repaint();
         });
-        mezzi.forEach(m -> combo.addItem(m.nImmatricolazione() + "-" + m.nomeMezzo()));
-        mezzoPanel.add(mezzoLabel);
-        mezzoPanel.add(combo);
-
-        this.add(mezzoPanel, BorderLayout.NORTH);
     }
 
     // Generic left panel creation

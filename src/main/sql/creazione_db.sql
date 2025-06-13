@@ -93,19 +93,24 @@ create table DIPENDENTI (
 create table FERMATE (
      codice_fermata int auto_increment not null,
      nome varchar(150) not null,
-     via varchar(40) not null,
-     CAP int not null,
-     longitudine varchar(10) not null,
-     latitudine varchar(10) not null,
+     indirizzo_via varchar(50) not null,
+     indirizzo_comune varchar(50) not null,
+     indirizzo_civico varchar(10) not null,
+     indirizzo_cap int not null,
+     longitudine varchar(15) not null,
+     latitudine varchar(15) not null,
      constraint ID_FERMATA primary key (codice_fermata),
      constraint SID_FERMATA unique (longitudine, latitudine));
 
 create table HUB_MOBILITA (
      codice_hub int auto_increment not null,
-     longitudine varchar(10) not null,
-     latitudine varchar(10) not null,
+     longitudine varchar(15) not null,
+     latitudine varchar(15) not null,
      nome varchar(100) not null,
-     indirizzo varchar(40) not null,
+     indirizzo_via varchar(50) not null,
+     indirizzo_comune varchar(50) not null,
+     indirizzo_cap int not null,
+     indirizzo_civico varchar(10) not null,
      codice_fermata int,
      constraint ID_HUB_MOBILITA_ID primary key (codice_hub),
      constraint SID_HUB_MOBILITA unique (longitudine, latitudine));
@@ -130,12 +135,12 @@ create table MANUTENZIONI_LINEE (
 
 create table MANUTENZIONI_MEZZI (
      n_immatricolazione varchar(20) not null,
-     data_inzio date not null,
+     data_inizio date not null,
      data_fine date not null,
      nome varchar(50) not null,
      descrizione varchar(255) not null,
      p_iva char(11),
-     constraint ID_MANUTENZIONE_MEZZO primary key (data_inzio, n_immatricolazione));
+     constraint ID_MANUTENZIONE_MEZZO primary key (data_inizio, n_immatricolazione));
 
 create table MEZZI (
      n_immatricolazione varchar(20) not null,
