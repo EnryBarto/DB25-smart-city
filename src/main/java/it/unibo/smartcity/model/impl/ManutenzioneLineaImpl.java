@@ -137,8 +137,8 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
 
     public static final class DAO {
 
-        public static List<ManutenzioneLineaImpl> list(Connection connection) {
-            var manutenzioniLinee = new ArrayList<ManutenzioneLineaImpl>();
+        public static List<ManutenzioneLinea> list(Connection connection) {
+            var manutenzioniLinee = new ArrayList<ManutenzioneLinea>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_MANUTENZIONI_LINEE);
                 var rs = statement.executeQuery();

@@ -22,7 +22,7 @@ public interface PanelFactory {
      */
     JPanel createLeftPanel(
             String title,
-            Map<JLabel, JComponent> components,
+            Map<String, JComponent> components,
             JButton btnSubmit);
 
     /**

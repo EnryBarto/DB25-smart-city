@@ -7,6 +7,8 @@ import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
 import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
+import it.unibo.smartcity.model.api.Linea;
+import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
@@ -99,7 +101,7 @@ public interface Controller {
 
     void updateManutLineePanel();
 
-    List<ManutenzioneLineaImpl> getManutLinee();
+    List<ManutenzioneLinea> getManutLinee();
 
     void addManutenzioneLinea(ManutenzioneLineaImpl manut);
 
@@ -110,4 +112,6 @@ public interface Controller {
     void updateManutPerMezzo();
 
     List<ManutenzioneMezzoImpl> getManutPerMezzo(String nImmatricolazione);
+
+	void addServiceVariation(ManutenzioneLinea selectedManutenzione, Linea selectedLinea);
 }

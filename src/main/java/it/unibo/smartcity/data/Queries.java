@@ -272,26 +272,32 @@ public final class Queries {
     // OPERAZIONE 19 - Da trattare come transaction
     public static final String AGGIUNGI_VARIAZIONE =
         """
-            INSERT INTO MANUTENZIONI_LINEE (codice_linea, data_inzio, data_fine, nome, descrizione, p_iva)
-            VALUES ('A', '2025-06-06', '2025-06-10', 'Aggiornamento', 'Aggiornamento di qualcosa', NULL);
-
             INSERT INTO SOSTITUZIONI (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea)
-            VALUES ('2025-06-06', 'A', 'A-1');
+            VALUES (?, ?, ?);
 
-            # to do if data_inizio corresponds with today
             UPDATE LINEE
             SET attiva = False
-            WHERE codice_linea = 'A';
+            WHERE codice_linea = ?
+            AND EXISTS (SELECT * FROM manutenzioni_linee
+                        WHERE CURDATE() BETWEEN inizio_validita AND fine_validita
+                        AND codice_linea = ?);
+        """;
+
+    // OPERAZIONE 19 -TMP
+    public static final String AGGIUNGI_VARIAZIONE_TMP =
+        """
+            INSERT INTO SOSTITUZIONI (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea)
+            VALUES (?, ?, ?);
         """;
 
     // OPERAZIONE 21
     public static final String AGGIUNGI_LINEA =
     """
         INSERT INTO LINEE (codice_linea, inizio_validita, fine_validita, attiva, codice_tipo_mezzo)
-        VALUES('L101', '2025-01-01', '2026-12-31', 1, '1');
+        VALUES(?, ?, ?, ?, ?);
 
         INSERT INTO TRAGITTI (partenza_codice_fermata, arrivo_codice_fermata, codice_linea, ordine)
-        VALUES ('F101', 'F202', 'L101', 1); # And so on
+        VALUES (?, ?, ?, ?); # And so on
 
         UPDATE LINEE
         SET tempo_percorrenza = (SELECT *
@@ -299,8 +305,8 @@ public final class Queries {
                                 WHERE l.codice_linea = trg.codice_linea
                                 AND trg.partenza_codice_fermata = trt.partenza_codice_fermata
                                 AND trg.arrivo_codice_fermata = trt.arrivo_codice_fermata
-                                AND l.codice_linea = 'L101')
-        WHERE codice_linea = 'L101';
+                                AND l.codice_linea = ?)
+        WHERE codice_linea = ?;
     """;
 
     public static final String SELECT_PERSONA =

@@ -30,6 +30,7 @@ import static com.google.common.base.Preconditions.*;
 
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
+import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
@@ -134,8 +135,8 @@ public class MaintenancePanel extends JPanel {
             "linea",
             () -> controller.getManutLinee(),
             (codiceLinea, dataInizio) -> controller.removeManutLinea(codiceLinea, java.sql.Date.valueOf(dataInizio.toString())),
-            ManutenzioneLineaImpl::getCodiceLinea,
-            ManutenzioneLineaImpl::getDataInizio,
+            ManutenzioneLinea::getCodiceLinea,
+            ManutenzioneLinea::getDataInizio,
             manut -> updateVisualPanel(
                 rightPanel,
                 manut,

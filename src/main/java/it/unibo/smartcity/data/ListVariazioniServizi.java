@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import it.unibo.smartcity.model.api.Azienda;
+import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
@@ -76,6 +77,23 @@ public record ListVariazioniServizi(ManutenzioneLinea manutenzione, Optional<Azi
                 throw new DAOException("Errore nell'estrazione delle variazioni di servizio", e);
             }
             return variazioni;
+        }
+
+        public static void insert(ManutenzioneLinea m, Linea lineaSostituita, Connection connection) {
+            checkNotNull(m);
+            checkNotNull(lineaSostituita);
+            checkNotNull(connection);
+            final var query = Queries.AGGIUNGI_VARIAZIONE;
+            try (var statement = DAOUtils.prepare(connection, query,
+                m.getCodiceLinea(),
+                m.getDataInizio(),
+                lineaSostituita.getCodiceLinea(),
+                m.getCodiceLinea(),
+                m.getCodiceLinea())) {
+                statement.executeUpdate();
+            } catch (final Exception e) {
+                throw new DAOException("Errore nell'inserimento della variazione di servizio", e);
+            }
         }
     }
 }

@@ -22,10 +22,13 @@ import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
+import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
 import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
+import it.unibo.smartcity.model.api.Linea;
+import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.AziendaImpl;
@@ -292,11 +295,12 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateManutLineePanel() {
-        views.forEach(v -> v.updateManutLineePanel(ManutenzioneLineaImpl.DAO.list(connection)));
+        List<ManutenzioneLinea> manutLinee = ManutenzioneLineaImpl.DAO.list(connection);
+        views.forEach(v -> v.updateManutLineePanel(manutLinee));
     }
 
     @Override
-    public List<ManutenzioneLineaImpl> getManutLinee() {
+    public List<ManutenzioneLinea> getManutLinee() {
         checkState(this.currentUserLevel == UserLevel.ADMIN);
         return ManutenzioneLineaImpl.DAO.list(connection);
     }
@@ -330,5 +334,14 @@ public class ControllerImpl implements Controller {
     public List<ManutenzioneMezzoImpl> getManutPerMezzo(String nImmatricolazione) {
         return ManutenzioneMezzoImpl.DAO.listByMezzo(connection, nImmatricolazione);
     }
+
+    @Override
+    public void addServiceVariation(ManutenzioneLinea selectedManutenzione, Linea selectedLinea) {
+        checkNotNull(selectedManutenzione, "Manutenzione cannot be null");
+        checkNotNull(selectedLinea, "Linea cannot be null");
+        checkState(this.currentUserLevel == UserLevel.ADMIN);
+        ListVariazioniServizi.DAO.insert(selectedManutenzione, selectedLinea, connection);
+    }
+
 
 }

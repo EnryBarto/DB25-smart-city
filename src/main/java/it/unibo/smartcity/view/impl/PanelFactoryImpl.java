@@ -19,20 +19,10 @@ import it.unibo.smartcity.view.api.PanelFactory;
 
 public class PanelFactoryImpl implements PanelFactory {
 
-    // Generic left panel creation
-    /**
-     * Creates a styled left panel with a vertical layout, containing a set of labeled components and a submit button.
-     * The panel uses a compound border with a colored line and padding, and applies consistent styling to labels and the submit button.
-     *
-     * @param title      the title of the panel (currently unused in the method)
-     * @param components a map associating each {@link JLabel} with its corresponding {@link JComponent} to be added to the panel
-     * @param btnSubmit  the submit {@link JButton} to be styled and added to the panel
-     * @return a {@link JPanel} containing the provided components arranged vertically with custom styling
-     */
     @Override
     public JPanel createLeftPanel(
         String title,
-        Map<JLabel, JComponent> components,
+        Map<String, JComponent> components,
         JButton btnSubmit
     ) {
         JPanel leftPanel = new JPanel();
@@ -44,18 +34,16 @@ public class PanelFactoryImpl implements PanelFactory {
         ));
         leftPanel.setBackground(Color.WHITE);
 
-        JLabel addTitle = new JLabel("Aggiunta hub mobilità", SwingConstants.CENTER);
+        JLabel addTitle = new JLabel(title, SwingConstants.CENTER);
         addTitle.setFont(new Font("Arial", Font.BOLD, 18));
         addTitle.setForeground(new Color(52, 152, 219));
         addTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         leftPanel.add(addTitle);
-        components.forEach((l, c) -> {
+        components.forEach((s, c) -> {
             var p =  new JPanel();
             p.setBackground(Color.WHITE);
-            l.setFont(new Font("Arial", Font.BOLD, 18));
-            l.setForeground(new Color(52, 152, 219));
-            l.setAlignmentX(Component.CENTER_ALIGNMENT);
+            var l = new JLabel(s, SwingConstants.CENTER);
             p.add(l);
             p.add(c);
             leftPanel.add(p);
@@ -71,15 +59,6 @@ public class PanelFactoryImpl implements PanelFactory {
         return leftPanel;
     }
 
-    /**
-     * Creates a styled right panel with a vertical layout, containing a title label, a combo box, and a submit button.
-     * The panel uses a compound border with a colored line and padding, and applies consistent styling to the title label and the submit button.
-     *
-     * @param title      the title of the panel
-     * @param comboBox   the {@link JComboBox} to be added to the panel
-     * @param btnSubmit  the submit {@link JButton} to be styled and added to the panel
-     * @return a {@link JPanel} containing the title, combo box, and submit button arranged vertically with custom styling
-     */
     @Override
     public JPanel createRightPanel(
         String title,
