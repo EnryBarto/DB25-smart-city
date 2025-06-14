@@ -574,4 +574,10 @@ public class ControllerImpl implements Controller {
         var list = ListVariazioniServizi.DAO.get(connection, selectedLinea.getCodiceLinea());
         views.forEach(v -> v.updateVariazioniServizio(list));
     }
+
+    @Override
+    public void updateLineeAttuazioneCorse(LocalDate data) {
+        var lineeAttive = LineaImpl.DAO.listAttiveByDate(connection, data);
+        views.forEach(v -> v.updateLineeAttuazioneCorsa(lineeAttive));
+    }
 }

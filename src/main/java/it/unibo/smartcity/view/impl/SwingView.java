@@ -22,16 +22,17 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.formdev.flatlaf.FlatLightLaf;
+
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
-import it.unibo.smartcity.model.api.AttuazioneCorsa;
-import it.unibo.smartcity.model.api.Biglietto;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
 import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.data.MediaSoldiMulte;
+import it.unibo.smartcity.model.api.AttuazioneCorsa;
+import it.unibo.smartcity.model.api.Biglietto;
 import it.unibo.smartcity.model.api.CausaleMulta;
 import it.unibo.smartcity.model.api.Contenuto;
 import it.unibo.smartcity.model.api.ContenutoHub;
@@ -41,10 +42,10 @@ import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
-import it.unibo.smartcity.model.api.TariffaBiglietto;
 import it.unibo.smartcity.model.api.Persona;
-import it.unibo.smartcity.model.api.Tragitto;
+import it.unibo.smartcity.model.api.TariffaBiglietto;
 import it.unibo.smartcity.model.api.TipologiaMezzo;
+import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.AziendaImpl;
@@ -135,6 +136,7 @@ public class SwingView implements View {
         this.tabs.put("Gest. Tratte", new TratteManagePanel(controller));
         this.tabs.put("Gest. Hub", new HubMobilitaManagePanel(controller));
         this.tabs.put("Ins. Var. Servizio", new InsertServiceVariationPanel(controller));
+        this.tabs.put("Gest. Att. Corse", new AttuazioneCorseManagementPanel(controller));
         this.tabs.put("Ins. Linea", new LineaInsertPanel(controller));
         this.tabs.put("Assoc. Hub-Contenuto", new AssocContenutoToHubPanel(controller));
         this.tabs.put("Ins. Multa", new InsertMultaPanel(controller));
@@ -142,7 +144,7 @@ public class SwingView implements View {
         this.tabs.put("Variazioni di servizio", new VariazioniServizioPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Variazioni di servizio", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Orari Linee", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio", "Assoc. Hub-Contenuto", "Statistiche"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Orari Linee", "Gest. Att. Corse", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio", "Assoc. Hub-Contenuto", "Statistiche"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo", "Ins. Multa"));
@@ -223,7 +225,7 @@ public class SwingView implements View {
                         break;
                     case "Statistiche":
                         controller.updateManutGravose();
-                    break;
+                        break;
                     case "Variazioni di servizio":
                         controller.updateLinesList();
                         break;
@@ -386,5 +388,10 @@ public class SwingView implements View {
     @Override
     public void updateVariazioniServizio(Set<ListVariazioniServizi> list) {
         ((VariazioniServizioPanel)this.tabs.get("Variazioni di servizio")).updateVariazioniServizio(list.stream().toList());
+    }
+
+    @Override
+    public void updateLineeAttuazioneCorsa(List<Linea> lineeAttive) {
+        ((AttuazioneCorseManagementPanel)this.tabs.get("Gest. Att. Corse")).updateLineeList(lineeAttive);
     }
 }

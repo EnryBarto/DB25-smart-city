@@ -3,8 +3,10 @@ package it.unibo.smartcity.model.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -247,6 +249,32 @@ public class LineaImpl implements Linea {
             } catch (Exception e) {
                 throw new DAOException(e.getMessage(), e);
             }
+        }
+
+        public static List<Linea> listAttiveByDate(Connection connection, LocalDate data) {
+            var lines = new LinkedList<Linea>();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String dataFormattata = data.format(formatter);
+
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_LINEE_ATTIVE_BY_DATE, dataFormattata);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var linea = new LineaImpl(
+                        rs.getString("codice_linea"),
+                        rs.getInt("tempo_percorrenza"),
+                        rs.getDate("inizio_validita"),
+                        rs.getDate("fine_validita"),
+                        rs.getBoolean("attiva"),
+                        rs.getInt("codice_tipo_mezzo")
+                    );
+                    lines.add(linea);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione delle linee:\n" + e.getMessage(), e);
+            }
+            return lines;
         }
     }
 }

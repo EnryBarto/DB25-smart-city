@@ -1,6 +1,7 @@
 package it.unibo.smartcity.controller.api;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -174,4 +175,6 @@ public interface Controller {
     void updateLineeMulte(Date dataInizio, Date dataFine);
 
     void updateVariazioniServizio(Linea selectedLinea);
+
+    void updateLineeAttuazioneCorse(LocalDate data);
 }

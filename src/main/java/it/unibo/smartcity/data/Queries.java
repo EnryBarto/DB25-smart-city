@@ -410,4 +410,12 @@ public final class Queries {
                 FROM TRAGITTI WHERE codice_linea = ? LIMIT 1) IS NULL
     ; """;
 
+     public static final String LIST_LINEE_ATTIVE_BY_DATE =
+     """
+        SELECT *
+        FROM LINEE L
+        WHERE (L.attiva IS TRUE OR (? BETWEEN L.inizio_validita AND L.fine_validita))
+        ORDER BY L.codice_linea
+        ;""";
+
 }

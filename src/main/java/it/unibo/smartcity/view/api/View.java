@@ -106,4 +106,6 @@ public interface View {
     void updateLineeMulte(List<ListLineeMulte> lineeMulte);
 
     void updateVariazioniServizio(Set<ListVariazioniServizi> list);
+
+    void updateLineeAttuazioneCorsa(List<Linea> lineeAttive);
 }
