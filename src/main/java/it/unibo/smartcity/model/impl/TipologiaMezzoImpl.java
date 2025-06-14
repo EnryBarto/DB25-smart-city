@@ -30,7 +30,7 @@ public class TipologiaMezzoImpl implements TipologiaMezzo  {
 
     public static final class DAO {
         public static Set<TipologiaMezzo> list(Connection connection) {
-            var query = "SELECT * FROM tipologie_mezzo";
+            var query = "SELECT * FROM tipologie_mezzi";
             var tipologie = new HashSet<TipologiaMezzo>();
             try (
                 var statement = DAOUtils.prepare(connection, query);

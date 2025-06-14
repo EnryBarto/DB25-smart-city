@@ -123,4 +123,8 @@ public interface Controller {
     void addTragitto(String codLinea, Tratta tratta);
 
     void removeTragitto(Tragitto tragitto);
+
+    void addLinea(Linea linea, List<Tratta> selectedTratte, boolean straordinaria);
+
+    void updateTipoMezzi();
 }

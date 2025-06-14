@@ -98,4 +98,40 @@ public class PanelFactoryImpl implements PanelFactory {
 
         return rightPanel;
     }
+
+    @Override
+    public JPanel createGreenPanel(String title, Map<String, JComponent> components, JButton btnSubmit) {
+        JPanel greenPanel = new JPanel();
+        greenPanel.setLayout(new BoxLayout(greenPanel, BoxLayout.PAGE_AXIS));
+        greenPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(40, 167, 69), 2),
+            BorderFactory.createEmptyBorder(20, 30, 20, 30)
+        ));
+        greenPanel.setBackground(Color.WHITE);
+
+        JLabel greenTitle = new JLabel(title, SwingConstants.CENTER);
+        greenTitle.setFont(new Font("Arial", Font.BOLD, 18));
+        greenTitle.setForeground(new Color(40, 167, 69));
+        greenTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        greenPanel.add(greenTitle);
+        components.forEach((s, c) -> {
+            JPanel p = new JPanel();
+            p.setBackground(Color.WHITE);
+            JLabel l = new JLabel(s, SwingConstants.CENTER);
+            p.add(l);
+            p.add(c);
+            greenPanel.add(p);
+        });
+        btnSubmit.setFont(new Font("Arial", Font.BOLD, 14));
+        btnSubmit.setBackground(new Color(40, 167, 69));
+        btnSubmit.setForeground(Color.WHITE);
+        btnSubmit.setFocusPainted(false);
+        btnSubmit.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        btnSubmit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        greenPanel.add(Box.createVerticalStrut(20));
+        greenPanel.add(btnSubmit);
+
+        return greenPanel;
+    }
 }
