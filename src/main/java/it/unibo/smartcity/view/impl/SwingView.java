@@ -22,11 +22,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.formdev.flatlaf.FlatLightLaf;
-
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
+import it.unibo.smartcity.model.api.AttuazioneCorsa;
+import it.unibo.smartcity.model.api.CausaleMulta;
 import it.unibo.smartcity.model.api.Contenuto;
 import it.unibo.smartcity.model.api.ContenutoHub;
 import it.unibo.smartcity.model.api.Dipendente;
@@ -35,6 +36,7 @@ import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
+import it.unibo.smartcity.model.api.Persona;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.TipologiaMezzo;
 import it.unibo.smartcity.model.api.Tratta;
@@ -127,12 +129,13 @@ public class SwingView implements View {
         this.tabs.put("Ins. Var. Servizio", new InsertServiceVariationPanel(controller));
         this.tabs.put("Ins. Linea", new LineaInsertPanel(controller));
         this.tabs.put("Assoc. Hub-Contenuto", new AssocContenutoToHubPanel(controller));
+        this.tabs.put("Ins. Multa", new InsertMultaPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
         this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio", "Assoc. Hub-Contenuto"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
-        this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo", "Ins. Multa"));
     }
 
     private void setTabPane(UserLevel userLevel) {
@@ -199,6 +202,11 @@ public class SwingView implements View {
                         controller.updateHubsList();
                         controller.updateContenutiHub();
                         controller.updateContenuti();
+                        break;
+                    case "Ins. Multa":
+                        controller.updatePersone();
+                        controller.updateCausaliMulta();
+                        controller.updateCorse();
                         break;
                 }
             }
@@ -302,5 +310,20 @@ public class SwingView implements View {
     @Override
     public void updateContenuti(List<Contenuto> contenuti) {
         ((AssocContenutoToHubPanel)this.tabs.get("Assoc. Hub-Contenuto")).updateContenutoList(contenuti.stream().toList());
+    }
+
+    @Override
+    public void updatePersone(List<Persona> list) {
+        ((InsertMultaPanel)this.tabs.get("Ins. Multa")).updatePersonaList(list);
+    }
+
+    @Override
+    public void updateCausaliMulta(List<CausaleMulta> list) {
+        ((InsertMultaPanel)this.tabs.get("Ins. Multa")).updateCausaleList(list);
+    }
+
+    @Override
+    public void updateCorse(List<AttuazioneCorsa> list) {
+        ((InsertMultaPanel)this.tabs.get("Ins. Multa")).updateCorsaList(list);
     }
 }
