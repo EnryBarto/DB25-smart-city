@@ -1,7 +1,13 @@
 package it.unibo.smartcity.model.impl;
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
+import it.unibo.smartcity.data.DAOException;
+import it.unibo.smartcity.data.DAOUtils;
+import it.unibo.smartcity.data.Queries;
 import it.unibo.smartcity.model.api.Biglietto;
 
 public class BigliettoImpl implements Biglietto {
@@ -43,5 +49,43 @@ public class BigliettoImpl implements Biglietto {
         return username;
     }
 
+    public class DAO {
 
+        public static void insert(Connection connection, String data, int durata, String username) {
+            try (
+                var statement = DAOUtils.prepare(
+                    connection,
+                    Queries.INSERT_BIGLIETTO,
+                    java.sql.Date.valueOf(data),
+                    durata,
+                    username);
+            ) {
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Failed to insert Biglietto", e);
+            }
+        }
+
+        public static List<Biglietto> byUser(Connection connection, String username) {
+            var biglietti = new ArrayList<Biglietto>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.ESTRAZ_BIGLIETTI_BYUSER, username);
+                var rs = statement.executeQuery();
+            ){
+                while (rs.next()) {
+                    var biglietto = new BigliettoImpl(
+                        rs.getInt("codice_biglietto"),
+                        rs.getDate("data_acquisto"),
+                        rs.getInt("durata"),
+                        rs.getString("username")
+                    );
+                    biglietti.add(biglietto);
+                }
+
+            } catch (Exception e) {
+                throw new DAOException("Failed to list biglietti by user", e);
+            }
+            return biglietti;
+        }
+    }
 }

@@ -513,6 +513,7 @@ public class MaintenancePanel extends JPanel {
             table.getColumnModel().getColumn(column).setPreferredWidth(width);
         }
     }
+
     private void clearContentExceptNorth() {
         this.removeAll();
         this.add(northPanel, BorderLayout.NORTH);

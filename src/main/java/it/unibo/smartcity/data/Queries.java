@@ -30,6 +30,31 @@ public final class Queries {
         VALUES (?, ?, ?, ?);
     """;
 
+    public static final String LIST_TARIFFE_BIGLIETTI =
+    """
+        SELECT *
+        FROM TARIFFE_BIGLIETTI
+    """;
+
+    public static final String INSERT_BIGLIETTO =
+    """
+        INSERT INTO BIGLIETTI (data_acquisto, durata, username)
+        VALUES (?, ?, ?)
+    """;
+
+    public static final String ESTRAZ_BIGLIETTI_BYUSER =
+    """
+        SELECT *
+        FROM BIGLIETTI
+        WHERE username = ?
+    """;
+
+    public static final String INSERT_CONVALIDA =
+    """
+        INSERT INTO CONVALIDE (codice_biglietto, data_ora, codice_corsa)
+        VALUES (?, ?, ?)
+    """;
+
     public static final String INSERT_USER =
     """
         INSERT INTO UTENTI (username, documento, email, telefono, password)

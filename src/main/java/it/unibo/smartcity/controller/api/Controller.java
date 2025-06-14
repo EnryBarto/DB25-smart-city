@@ -127,4 +127,12 @@ public interface Controller {
     void addLinea(Linea linea, List<Tratta> selectedTratte, boolean straordinaria);
 
     void updateTipoMezzi();
+
+    void updateBuyTicket();
+
+    void updateValidateTicket();
+
+    void addBiglietto(int biglietto);
+
+    void validateBiglietto(int codiceBiglietto, int codice_corsa);
 }

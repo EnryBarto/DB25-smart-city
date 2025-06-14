@@ -6,7 +6,10 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,7 +37,10 @@ import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.AttuazioneCorsaImpl;
 import it.unibo.smartcity.model.impl.AziendaImpl;
+import it.unibo.smartcity.model.impl.BigliettoImpl;
+import it.unibo.smartcity.model.impl.ConvalidaImpl;
 import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.FermataImpl;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
@@ -42,6 +48,7 @@ import it.unibo.smartcity.model.impl.LineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl;
+import it.unibo.smartcity.model.impl.TariffaBigliettoImpl;
 import it.unibo.smartcity.model.impl.TragittoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
 import it.unibo.smartcity.model.impl.TipologiaMezzoImpl;
@@ -404,5 +411,36 @@ public class ControllerImpl implements Controller {
     public void updateTipoMezzi() {
         var list = TipologiaMezzoImpl.DAO.list(connection);
         views.forEach(v -> v.updateTipoMezzi(list));
+    }
+
+    @Override
+    public void updateBuyTicket() {
+        views.forEach(v -> v.updateBuyTicket(TariffaBigliettoImpl.DAO.list(connection)));
+    }
+
+    @Override
+    public void updateValidateTicket() {
+        views.forEach(v -> v.updateValidateTicket(
+            BigliettoImpl.DAO.byUser(connection, this.user.getUsername()),
+            AttuazioneCorsaImpl.DAO.list(connection)
+        ));
+    }
+
+    @Override
+    public void addBiglietto(int durata) {
+        checkNotNull(durata);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        var data = LocalDate.now().format(formatter);
+        BigliettoImpl.DAO.insert(connection, data, durata, this.user.getUsername());
+    }
+
+    @Override
+    public void validateBiglietto(int codiceBiglietto, int codice_corsa) {
+        checkNotNull(codiceBiglietto);
+        var today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        ConvalidaImpl.DAO.insert(connection, codiceBiglietto, today.getTime().toString(), codiceBiglietto);
     }
 }

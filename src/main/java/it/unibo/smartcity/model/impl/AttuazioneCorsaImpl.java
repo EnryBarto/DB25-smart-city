@@ -113,8 +113,8 @@ public class AttuazioneCorsaImpl implements AttuazioneCorsa {
 
     public static final class DAO {
 
-        public static ArrayList<AttuazioneCorsaImpl> list(Connection connection) {
-            var attuazioni_corse = new ArrayList<AttuazioneCorsaImpl>();
+        public static ArrayList<AttuazioneCorsa> list(Connection connection) {
+            var attuazioni_corse = new ArrayList<AttuazioneCorsa>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_ATTUAZIONI_CORSE);
                 var resultSet = statement.executeQuery();
@@ -130,7 +130,7 @@ public class AttuazioneCorsaImpl implements AttuazioneCorsa {
                 }
 
             } catch (Exception e) {
-                throw new DAOException(e);
+                throw new DAOException("Failed to list attuazioni corse");
             }
             return attuazioni_corse;
         }

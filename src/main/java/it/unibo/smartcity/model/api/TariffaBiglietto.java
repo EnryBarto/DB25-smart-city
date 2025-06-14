@@ -4,7 +4,7 @@ public interface TariffaBiglietto {
 
     String getNome();
 
-    double getDurata();
+    int getDurata();
 
     double getPrezzo();
 

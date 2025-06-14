@@ -80,7 +80,7 @@ public class TariffaBigliettoImpl implements TariffaBiglietto {
     }
 
     @Override
-    public double getDurata() {
+    public int getDurata() {
         return durata;
     }
 
@@ -91,10 +91,10 @@ public class TariffaBigliettoImpl implements TariffaBiglietto {
 
     public static final class DAO {
 
-        public static ArrayList<TariffaBigliettoImpl> list(Connection connection) {
-            var tariffe = new ArrayList<TariffaBigliettoImpl>();
+        public static ArrayList<TariffaBiglietto> list(Connection connection) {
+            var tariffe = new ArrayList<TariffaBiglietto>();
             try (
-                var statement = DAOUtils.prepare(connection, Queries.LIST_TARIFFE_ABBONAMENTI);
+                var statement = DAOUtils.prepare(connection, Queries.LIST_TARIFFE_BIGLIETTI);
                 var rs = statement.executeQuery();
             ) {
                 while (rs.next()) {
