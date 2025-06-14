@@ -26,7 +26,6 @@ import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.view.api.PanelFactory;
-import it.unibo.smartcity.view.impl.PanelFactoryImpl;
 import raven.datetime.TimePicker;
 
 class TimetableManagePanel extends JPanel {

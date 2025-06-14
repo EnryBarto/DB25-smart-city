@@ -1,8 +1,7 @@
 package it.unibo.smartcity.view.impl;
 
 import java.awt.BorderLayout;
-import java.util.Set;
-
+import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -19,7 +18,7 @@ class LineePiuMultePanel extends JPanel {
         this.setLayout(new BorderLayout());
     }
 
-    public void updateLinesWithMostFines(final Set<ListLineeMulte> lines) {
+    public void updateLinesWithMostFines(final List<ListLineeMulte> lines) {
         if (this.tableArea != null) this.remove(tableArea);
         Object[][] righe = lines.stream().
             map(l -> {

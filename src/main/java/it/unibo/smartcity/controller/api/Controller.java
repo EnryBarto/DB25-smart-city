@@ -160,4 +160,8 @@ public interface Controller {
     void updateCausaliMulta();
 
     void updateCorse();
+
+    void updateStatistics();
+
+    void updateLineeMulte(Date dataInizio, Date dataFine);
 }

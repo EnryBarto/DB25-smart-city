@@ -8,6 +8,9 @@ import java.util.Set;
 
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
+import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
+import it.unibo.smartcity.data.ListLineeMulte;
+import it.unibo.smartcity.data.MediaSoldiMulte;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.CausaleMulta;
 import it.unibo.smartcity.model.api.Contenuto;
@@ -88,4 +91,10 @@ public interface View {
     void updateCausaliMulta(List<CausaleMulta> list);
 
     void updateCorse(List<AttuazioneCorsa> list);
+
+    void updateLineeControlliMulte(Set<ListLineeCinqueContrDiecMul> lineeMulteControlli);
+
+    void updateMediaSoldiMulte(MediaSoldiMulte mediaSoldiMulte);
+
+    void updateLineeMulte(List<ListLineeMulte> lineeMulte);
 }

@@ -26,7 +26,10 @@ import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.InsertLineaComplete;
 import it.unibo.smartcity.data.ListHubMobilita;
+import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
+import it.unibo.smartcity.data.ListLineeMulte;
 import it.unibo.smartcity.data.ListVariazioniServizi;
+import it.unibo.smartcity.data.MediaSoldiMulte;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.CausaleMulta;
 import it.unibo.smartcity.model.api.Contenuto;
@@ -515,5 +518,19 @@ public class ControllerImpl implements Controller {
     public void updateCorse() {
         var list = AttuazioneCorsaImpl.DAO.list(connection);
         views.forEach(v -> v.updateCorse(list));
+    }
+
+    @Override
+    public void updateStatistics() {
+        var lineeMulteControlli = ListLineeCinqueContrDiecMul.DAO.get(connection);
+        var mediaSoldiMulte = MediaSoldiMulte.DAO.get(connection);
+        views.forEach(v -> v.updateLineeControlliMulte(lineeMulteControlli));
+        views.forEach(v -> v.updateMediaSoldiMulte(mediaSoldiMulte));
+    }
+
+    @Override
+    public void updateLineeMulte(Date dataInizio, Date dataFine) {
+        var lineeMulte = ListLineeMulte.DAO.get(connection, dataInizio, dataFine);
+        views.forEach(v -> v.updateLineeMulte(lineeMulte));
     }
 }
