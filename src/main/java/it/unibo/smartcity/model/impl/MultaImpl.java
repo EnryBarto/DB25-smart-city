@@ -1,10 +1,13 @@
 package it.unibo.smartcity.model.impl;
 
-import java.util.Date;
+import java.sql.Connection;
+import java.sql.Date;
 import java.util.Optional;
 
 import com.google.common.base.Preconditions;
 
+import it.unibo.smartcity.data.DAOException;
+import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.model.api.Multa;
 
 public class MultaImpl implements Multa {
@@ -79,6 +82,29 @@ public class MultaImpl implements Multa {
     @Override
     public String getUsernameControllore() {
         return usernameControllore;
+    }
+
+    public static final class DAO {
+        public static void insert(final Multa multa, final Connection connection) {
+            Preconditions.checkNotNull(multa, "La multa non può essere null");
+            Preconditions.checkNotNull(connection, "La connessione non può essere null");
+            var query = "INSERT INTO multe (data_ora_emissione, importo, codice_causale, codice_corsa, documento, username) VALUES (?, ?, ?, ?, ?, ?)";
+            try (
+                var statement = DAOUtils.prepare(connection, query,
+                    multa.getDataOraEmissione(),
+                    multa.getImporto(),
+                    multa.getCodiceCausale(),
+                    multa.getCodiceCorsa(),
+                    multa.getDocumentoIntestatario(),
+                    multa.getUsernameControllore()
+                )
+            ) {
+                statement.executeUpdate();
+            }
+            catch (Exception e) {
+                throw new DAOException("Failed to insert Multa: " + e.getMessage(), e);
+            }
+        }
     }
 
 }

@@ -22,13 +22,18 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.formdev.flatlaf.FlatLightLaf;
-
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.Biglietto;
+import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
+import it.unibo.smartcity.data.ListLineeMulte;
+import it.unibo.smartcity.data.MediaSoldiMulte;
+import it.unibo.smartcity.model.api.CausaleMulta;
+import it.unibo.smartcity.model.api.Contenuto;
+import it.unibo.smartcity.model.api.ContenutoHub;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
@@ -36,6 +41,7 @@ import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.TariffaBiglietto;
+import it.unibo.smartcity.model.api.Persona;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.TipologiaMezzo;
 import it.unibo.smartcity.model.api.Tratta;
@@ -123,17 +129,20 @@ public class SwingView implements View {
         this.tabs.put("Manutenzioni", new MaintenancePanel(controller));
         this.tabs.put("Gest. Tragitti", new TragittiManagePanel(controller));
         this.tabs.put("Gest. Fermate", new FermataManagePanel(controller));
+        this.tabs.put("Gest. Orari Linee", new TimetableManagePanel(controller));
         this.tabs.put("Gest. Tratte", new TratteManagePanel(controller));
         this.tabs.put("Gest. Hub", new HubMobilitaManagePanel(controller));
         this.tabs.put("Ins. Var. Servizio", new InsertServiceVariationPanel(controller));
         this.tabs.put("Ins. Linea", new LineaInsertPanel(controller));
-        this.tabs.put("Biglietti" ,new TicketManagerPanel(controller));
+        this.tabs.put("Assoc. Hub-Contenuto", new AssocContenutoToHubPanel(controller));
+        this.tabs.put("Ins. Multa", new InsertMultaPanel(controller));
+        this.tabs.put("Statistiche", new StatisticsPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio"));
-        this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari","Biglietti",  "Hub", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Orari Linee", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio", "Assoc. Hub-Contenuto", "Statistiche"));
+        this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
-        this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo", "Ins. Multa"));
     }
 
     private void setTabPane(UserLevel userLevel) {
@@ -196,6 +205,22 @@ public class SwingView implements View {
                         controller.updateTratte();
                         controller.updateTipoMezzi();
                         break;
+                    case "Gest. Orari Linee":
+                        controller.updateLineeInOrari();
+                        break;
+                    case "Assoc. Hub-Contenuto":
+                        controller.updateHubsList();
+                        controller.updateContenutiHub();
+                        controller.updateContenuti();
+                        break;
+                    case "Ins. Multa":
+                        controller.updatePersone();
+                        controller.updateCausaliMulta();
+                        controller.updateCorse();
+                        break;
+                    case "Statistiche":
+                        controller.updateManutGravose();
+                    break;
                 }
             }
         });
@@ -233,6 +258,7 @@ public class SwingView implements View {
     @Override
     public void updateManutGravose(List<ManutenzioneGravosa> manutenzioneGravose) {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutGravose(manutenzioneGravose);
+        ((StatisticsPanel)this.tabs.get("Statistiche")).showManutGravose(manutenzioneGravose);
     }
 
     @Override
@@ -245,6 +271,7 @@ public class SwingView implements View {
     @Override
     public void updateHubs(List<HubMobilita> hubs) {
         ((HubMobilitaManagePanel)this.tabs.get("Gest. Hub")).updateHubList(hubs);
+        ((AssocContenutoToHubPanel)this.tabs.get("Assoc. Hub-Contenuto")).updateHubList(hubs);
     }
 
     @Override
@@ -255,7 +282,7 @@ public class SwingView implements View {
 
     @Override
     public void updateManutMezziPanel(List<ManutenzioneMezzoImpl> list) {
-        ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutMezziPanel();;
+        ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutMezziPanel();
     }
 
     @Override
@@ -267,11 +294,13 @@ public class SwingView implements View {
     @Override
     public void updateAziendeNoManut(List<AziendaImpl> aziende) {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showAziendeNoManut(aziende);
+        ((StatisticsPanel)this.tabs.get("Statistiche")).showAziendeNoManut(aziende);
     }
 
     @Override
     public void updateManutPerMezzo(ArrayList<MezzoConNome> mezzi) {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutPerMezzoPanel(mezzi);
+        ((StatisticsPanel)this.tabs.get("Statistiche")).showManutPerMezzoPanel(mezzi);
     }
 
     @Override
@@ -297,5 +326,54 @@ public class SwingView implements View {
     @Override
     public void updateValidateTicket(List<Biglietto> biglietti, List<AttuazioneCorsa> corse) {
         ((TicketManagerPanel)this.tabs.get("Biglietti")).updateValidateTicketPanel(biglietti, corse);
+    }
+
+    public void updateLineeListInOrari(List<Linea> list) {
+        ((TimetableManagePanel)this.tabs.get("Gest. Orari Linee")).updateLinesLists(list);
+    }
+
+    @Override
+    public void updateOrariLineaInManagement(List<OrarioLinea> list) {
+        ((TimetableManagePanel)this.tabs.get("Gest. Orari Linee")).updateOrari(list);
+    }
+
+    @Override
+    public void updateContenutiHub(Set<ContenutoHub> contenutiHub) {
+        ((AssocContenutoToHubPanel)this.tabs.get("Assoc. Hub-Contenuto")).updateContenutoHubList(contenutiHub.stream().toList());
+    }
+
+    @Override
+    public void updateContenuti(List<Contenuto> contenuti) {
+        ((AssocContenutoToHubPanel)this.tabs.get("Assoc. Hub-Contenuto")).updateContenutoList(contenuti.stream().toList());
+    }
+
+    @Override
+    public void updatePersone(List<Persona> list) {
+        ((InsertMultaPanel)this.tabs.get("Ins. Multa")).updatePersonaList(list);
+    }
+
+    @Override
+    public void updateCausaliMulta(List<CausaleMulta> list) {
+        ((InsertMultaPanel)this.tabs.get("Ins. Multa")).updateCausaleList(list);
+    }
+
+    @Override
+    public void updateCorse(List<AttuazioneCorsa> list) {
+        ((InsertMultaPanel)this.tabs.get("Ins. Multa")).updateCorsaList(list);
+    }
+
+    @Override
+    public void updateLineeControlliMulte(Set<ListLineeCinqueContrDiecMul> lineeMulteControlli) {
+        ((StatisticsPanel)this.tabs.get("Statistiche")).updateLineeConControlliMulte(lineeMulteControlli);
+    }
+
+    @Override
+    public void updateMediaSoldiMulte(MediaSoldiMulte mediaSoldiMulte) {
+        ((StatisticsPanel)this.tabs.get("Statistiche")).updateMediaSoldiMulte(mediaSoldiMulte);
+    }
+
+    @Override
+    public void updateLineeMulte(List<ListLineeMulte> lineeMulte) {
+        ((StatisticsPanel)this.tabs.get("Statistiche")).updateLineeConPiuMulte(lineeMulte);
     }
 }

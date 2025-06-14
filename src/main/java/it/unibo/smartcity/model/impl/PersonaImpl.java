@@ -1,6 +1,8 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -54,6 +56,28 @@ public class PersonaImpl implements Persona {
 
     public static final class DAO {
 
+        public static List<Persona> list(Connection connection) {
+            var persone = new LinkedList<Persona>();
+            var query = "SELECT p.cognome, p.nome, p.documento, p.codice_fiscale FROM persone p";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var persona = new PersonaImpl(
+                        rs.getString("p.cognome"),
+                        rs.getString("p.nome"),
+                        rs.getString("p.documento"),
+                        rs.getString("p.codice_fiscale")
+                    );
+                    persone.add(persona);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Failed to select Personas", e);
+            }
+            return persone;
+        }
+
         public static Persona byDocument(Connection connection, String document) {
             Persona persona = null;
             try (
@@ -72,6 +96,21 @@ public class PersonaImpl implements Persona {
                 throw new DAOException("Failed to select Persona", e);
             }
             return persona;
+        }
+
+        public static void insert(Connection connection, Persona persona) {
+            var query = "INSERT INTO persone (cognome, nome, documento, codice_fiscale) VALUES (?, ?, ?, ?)";
+            try (
+                var statement = DAOUtils.prepare(connection, query,
+                persona.getCognome(),
+                persona.getNome(),
+                persona.getDocumento(),
+                persona.getCodiceFiscale().orElse(null));
+            ) {
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Failed to insert Persona", e);
+            }
         }
     }
 

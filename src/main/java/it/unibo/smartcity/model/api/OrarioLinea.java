@@ -1,10 +1,12 @@
 package it.unibo.smartcity.model.api;
 
+import java.time.LocalTime;
+
 public interface OrarioLinea {
 
     int getCodiceOrario();
 
-    String getOraPartenza();
+    LocalTime getOraPartenza();
 
     String getGiornoSettimanale();
 

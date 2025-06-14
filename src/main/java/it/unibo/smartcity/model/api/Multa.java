@@ -1,6 +1,6 @@
 package it.unibo.smartcity.model.api;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Optional;
 
 public interface Multa {
