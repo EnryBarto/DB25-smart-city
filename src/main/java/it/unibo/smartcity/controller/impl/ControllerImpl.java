@@ -568,4 +568,10 @@ public class ControllerImpl implements Controller {
         var lineeMulte = ListLineeMulte.DAO.get(connection, dataInizio, dataFine);
         views.forEach(v -> v.updateLineeMulte(lineeMulte));
     }
+
+    @Override
+    public void updateVariazioniServizio(Linea selectedLinea) {
+        var list = ListVariazioniServizi.DAO.get(connection, selectedLinea.getCodiceLinea());
+        views.forEach(v -> v.updateVariazioniServizio(list));
+    }
 }

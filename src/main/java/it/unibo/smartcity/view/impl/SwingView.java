@@ -30,6 +30,7 @@ import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.Biglietto;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
+import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.data.MediaSoldiMulte;
 import it.unibo.smartcity.model.api.CausaleMulta;
 import it.unibo.smartcity.model.api.Contenuto;
@@ -98,6 +99,7 @@ public class SwingView implements View {
     public void updateTimetableLinesList(List<Linea> list) {
         ((TimetablePanel)this.tabs.get("Orari")).updateLinesList(list);
         ((InsertServiceVariationPanel)this.tabs.get("Ins. Var. Servizio")).updateLineList(list);
+        ((VariazioniServizioPanel)this.tabs.get("Variazioni di servizio")).updateLinee(list);
     }
 
     @Override
@@ -137,8 +139,9 @@ public class SwingView implements View {
         this.tabs.put("Assoc. Hub-Contenuto", new AssocContenutoToHubPanel(controller));
         this.tabs.put("Ins. Multa", new InsertMultaPanel(controller));
         this.tabs.put("Statistiche", new StatisticsPanel(controller));
+        this.tabs.put("Variazioni di servizio", new VariazioniServizioPanel(controller));
 
-        this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
+        this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Variazioni di servizio", "Login", "Registrati"));
         this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Orari Linee", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio", "Assoc. Hub-Contenuto", "Statistiche"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
@@ -221,6 +224,9 @@ public class SwingView implements View {
                     case "Statistiche":
                         controller.updateManutGravose();
                     break;
+                    case "Variazioni di servizio":
+                        controller.updateLinesList();
+                        break;
                 }
             }
         });
@@ -375,5 +381,10 @@ public class SwingView implements View {
     @Override
     public void updateLineeMulte(List<ListLineeMulte> lineeMulte) {
         ((StatisticsPanel)this.tabs.get("Statistiche")).updateLineeConPiuMulte(lineeMulte);
+    }
+
+    @Override
+    public void updateVariazioniServizio(Set<ListVariazioniServizi> list) {
+        ((VariazioniServizioPanel)this.tabs.get("Variazioni di servizio")).updateVariazioniServizio(list.stream().toList());
     }
 }
