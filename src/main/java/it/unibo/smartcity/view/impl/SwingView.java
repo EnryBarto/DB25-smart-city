@@ -82,7 +82,7 @@ public class SwingView implements View {
 
     @Override
     public void updateLinesList(List<InfoLinea> linee) {
-        linee.forEach(l -> ((LinesPanel)tabs.get("Linee")).updateLines(linee));
+        ((LinesPanel)tabs.get("Linee")).updateLines(linee);
     }
 
     @Override

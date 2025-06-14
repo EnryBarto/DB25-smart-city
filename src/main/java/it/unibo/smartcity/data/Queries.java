@@ -100,7 +100,7 @@ public final class Queries {
         WHERE TRA1.ordine = 1 AND TRA2.ordine =	(SELECT MAX(T1.ordine)
                                                 FROM LINEE L1 JOIN TRAGITTI T1 ON L1.codice_linea = T1.codice_linea
                                                 WHERE L1.codice_linea = L.codice_linea)
-            AND L.attiva IS TRUE OR (CURDATE() BETWEEN L.inizio_validita AND L.fine_validita)
+            AND (L.attiva IS TRUE OR (CURDATE() BETWEEN L.inizio_validita AND L.fine_validita))
         ORDER BY L.codice_linea
     ;""";
 
@@ -382,7 +382,7 @@ public final class Queries {
                                         ORDER BY T.ordine DESC
                                         LIMIT 1)
             OR (SELECT codice_linea
-                FROM TRAGITTI WHERE codice_linea = ?) IS NULL
+                FROM TRAGITTI WHERE codice_linea = ? LIMIT 1) IS NULL
     ; """;
 
 }
