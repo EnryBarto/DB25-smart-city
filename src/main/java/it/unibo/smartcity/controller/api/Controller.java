@@ -3,6 +3,8 @@ package it.unibo.smartcity.controller.api;
 import java.sql.Date;
 import java.util.List;
 
+import it.unibo.smartcity.model.api.Contenuto;
+import it.unibo.smartcity.model.api.ContenutoHub;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
 import it.unibo.smartcity.model.api.Fermata;
@@ -127,4 +129,12 @@ public interface Controller {
     void addLinea(Linea linea, List<Tratta> selectedTratte, boolean straordinaria);
 
     void updateTipoMezzi();
+
+    void addContenutoToHub(ContenutoHub selectedContenuto, HubMobilita selectedHub, int postiMassimi);
+
+    void deleteContenutoHub(Contenuto selectedContenutoHub);
+
+    void updateContenuti();
+
+    void updateContenutiHub();
 }

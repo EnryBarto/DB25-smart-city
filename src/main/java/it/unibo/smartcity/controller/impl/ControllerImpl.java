@@ -25,6 +25,8 @@ import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.InsertLineaComplete;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.data.ListVariazioniServizi;
+import it.unibo.smartcity.model.api.Contenuto;
+import it.unibo.smartcity.model.api.ContenutoHub;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
 import it.unibo.smartcity.model.api.Fermata;
@@ -35,6 +37,8 @@ import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.AziendaImpl;
+import it.unibo.smartcity.model.impl.ContenutoHubImpl;
+import it.unibo.smartcity.model.impl.ContenutoImpl;
 import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.FermataImpl;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
@@ -57,7 +61,7 @@ public class ControllerImpl implements Controller {
     private UserLevel currentUserLevel = UserLevel.NOT_LOGGED;
     private Utente user;
 
-    public ControllerImpl () {
+    public ControllerImpl() {
         var fake = new JFrame();
         fake.setVisible(true);
         // Crea i campi di input
@@ -67,13 +71,13 @@ public class ControllerImpl implements Controller {
         dbField.setText("smart_city");
         userField.setText("root");
         Object[] message = {
-            "Database:", dbField,
-            "Utente:", userField,
-            "Password:", passField
+                "Database:", dbField,
+                "Utente:", userField,
+                "Password:", passField
         };
 
         int option = javax.swing.JOptionPane.showConfirmDialog(
-            fake, message, "Parametri connessione DB", javax.swing.JOptionPane.OK_CANCEL_OPTION);
+                fake, message, "Parametri connessione DB", javax.swing.JOptionPane.OK_CANCEL_OPTION);
 
         String dbName, user, pass;
         if (option == javax.swing.JOptionPane.OK_OPTION) {
@@ -90,7 +94,8 @@ public class ControllerImpl implements Controller {
         try {
             this.connection = DAOUtils.localMySQLConnection(dbName, user, pass);
         } catch (DAOException e) {
-            JOptionPane.showMessageDialog(fake, "Connessione non riuscita!\n" + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(fake, "Connessione non riuscita!\n" + e.getMessage(), "Errore",
+                    JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         } finally {
             fake.setVisible(false);
@@ -396,7 +401,7 @@ public class ControllerImpl implements Controller {
         checkNotNull(selectedTratte, "Tratte cannot be null");
         checkArgument(!selectedTratte.isEmpty(), "Devi selezionare almeno una tratta");
         InsertLineaComplete.DAO.insert(
-            new InsertLineaComplete(linea, selectedTratte, straordinaria), connection);
+                new InsertLineaComplete(linea, selectedTratte, straordinaria), connection);
         this.updateLinesList();
     }
 
@@ -404,5 +409,37 @@ public class ControllerImpl implements Controller {
     public void updateTipoMezzi() {
         var list = TipologiaMezzoImpl.DAO.list(connection);
         views.forEach(v -> v.updateTipoMezzi(list));
+    }
+
+    @Override
+    public void addContenutoToHub(ContenutoHub selectedContenuto, HubMobilita selectedHub, int postiMassimi) {
+        checkNotNull(selectedContenuto, "Contenuto cannot be null");
+        checkNotNull(selectedHub, "Hub cannot be null");
+        checkArgument(postiMassimi > 0, "Posti massimi deve essere maggiore di zero");
+        ContenutoImpl.DAO.insert(new ContenutoImpl(
+                selectedHub.getCodiceHub(),
+                selectedContenuto.getCodiceContenuto(),
+                postiMassimi),
+                connection);
+        this.updateContenuti();
+    }
+
+    @Override
+    public void deleteContenutoHub(Contenuto selectedContenuto) {
+        checkNotNull(selectedContenuto, "Contenuto cannot be null");
+        ContenutoImpl.DAO.delete(selectedContenuto, connection);
+        this.updateContenuti();
+    }
+
+    @Override
+    public void updateContenuti() {
+        var list = ContenutoImpl.DAO.list(connection);
+        views.forEach(v -> v.updateContenuti(list));
+    }
+
+    @Override
+    public void updateContenutiHub() {
+        var list = ContenutoHubImpl.DAO.list(connection);
+        views.forEach(v -> v.updateContenutiHub(list));
     }
 }

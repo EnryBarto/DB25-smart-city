@@ -8,6 +8,8 @@ import java.util.Set;
 
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
+import it.unibo.smartcity.model.api.Contenuto;
+import it.unibo.smartcity.model.api.ContenutoHub;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
@@ -69,4 +71,8 @@ public interface View {
     void updateTratteListPerLinea(List<Tratta> tratte);
 
     void updateTipoMezzi(Set<TipologiaMezzo> list);
+
+    void updateContenutiHub(Set<ContenutoHub> list);
+
+    void updateContenuti(List<Contenuto> list);
 }

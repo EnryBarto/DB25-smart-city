@@ -27,6 +27,8 @@ import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
+import it.unibo.smartcity.model.api.Contenuto;
+import it.unibo.smartcity.model.api.ContenutoHub;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
@@ -124,9 +126,10 @@ public class SwingView implements View {
         this.tabs.put("Gest. Hub", new HubMobilitaManagePanel(controller));
         this.tabs.put("Ins. Var. Servizio", new InsertServiceVariationPanel(controller));
         this.tabs.put("Ins. Linea", new LineaInsertPanel(controller));
+        this.tabs.put("Assoc. Hub-Contenuto", new AssocContenutoToHubPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio", "Assoc. Hub-Contenuto"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
@@ -192,6 +195,11 @@ public class SwingView implements View {
                         controller.updateTratte();
                         controller.updateTipoMezzi();
                         break;
+                    case "Assoc. Hub-Contenuto":
+                        controller.updateHubsList();
+                        controller.updateContenutiHub();
+                        controller.updateContenuti();
+                        break;
                 }
             }
         });
@@ -241,6 +249,7 @@ public class SwingView implements View {
     @Override
     public void updateHubs(List<HubMobilita> hubs) {
         ((HubMobilitaManagePanel)this.tabs.get("Gest. Hub")).updateHubList(hubs);
+        ((AssocContenutoToHubPanel)this.tabs.get("Assoc. Hub-Contenuto")).updateHubList(hubs);
     }
 
     @Override
@@ -283,5 +292,15 @@ public class SwingView implements View {
     @Override
     public void updateTipoMezzi(Set<TipologiaMezzo> list) {
         ((LineaInsertPanel)this.tabs.get("Ins. Linea")).updateMezziList(list.stream().toList());
+    }
+
+    @Override
+    public void updateContenutiHub(Set<ContenutoHub> contenutiHub) {
+        ((AssocContenutoToHubPanel)this.tabs.get("Assoc. Hub-Contenuto")).updateContenutoHubList(contenutiHub.stream().toList());
+    }
+
+    @Override
+    public void updateContenuti(List<Contenuto> contenuti) {
+        ((AssocContenutoToHubPanel)this.tabs.get("Assoc. Hub-Contenuto")).updateContenutoList(contenuti.stream().toList());
     }
 }
