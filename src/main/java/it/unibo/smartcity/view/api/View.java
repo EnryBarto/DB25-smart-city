@@ -69,4 +69,8 @@ public interface View {
     void updateTratteListPerLinea(List<Tratta> tratte);
 
     void updateTipoMezzi(Set<TipologiaMezzo> list);
+
+    void updateLineeListInOrari(List<Linea> list);
+
+    void updateOrariLineaInManagement(List<OrarioLinea> list);
 }

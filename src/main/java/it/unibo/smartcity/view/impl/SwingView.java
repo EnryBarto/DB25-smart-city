@@ -120,13 +120,14 @@ public class SwingView implements View {
         this.tabs.put("Manutenzioni", new MaintenancePanel(controller));
         this.tabs.put("Gest. Tragitti", new TragittiManagePanel(controller));
         this.tabs.put("Gest. Fermate", new FermataManagePanel(controller));
+        this.tabs.put("Gest. Orari Linee", new TimetableManagePanel(controller));
         this.tabs.put("Gest. Tratte", new TratteManagePanel(controller));
         this.tabs.put("Gest. Hub", new HubMobilitaManagePanel(controller));
         this.tabs.put("Ins. Var. Servizio", new InsertServiceVariationPanel(controller));
         this.tabs.put("Ins. Linea", new LineaInsertPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Orari Linee", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
@@ -191,6 +192,9 @@ public class SwingView implements View {
                     case "Ins. Linea":
                         controller.updateTratte();
                         controller.updateTipoMezzi();
+                        break;
+                    case "Gest. Orari Linee":
+                        controller.updateLineeInOrari();
                         break;
                 }
             }
@@ -283,5 +287,15 @@ public class SwingView implements View {
     @Override
     public void updateTipoMezzi(Set<TipologiaMezzo> list) {
         ((LineaInsertPanel)this.tabs.get("Ins. Linea")).updateMezziList(list.stream().toList());
+    }
+
+    @Override
+    public void updateLineeListInOrari(List<Linea> list) {
+        ((TimetableManagePanel)this.tabs.get("Gest. Orari Linee")).updateLinesLists(list);
+    }
+
+    @Override
+    public void updateOrariLineaInManagement(List<OrarioLinea> list) {
+        ((TimetableManagePanel)this.tabs.get("Gest. Orari Linee")).updateOrari(list);
     }
 }

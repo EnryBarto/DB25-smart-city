@@ -6,6 +6,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +32,7 @@ import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
+import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
@@ -42,6 +44,7 @@ import it.unibo.smartcity.model.impl.LineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl;
+import it.unibo.smartcity.model.impl.OrarioLineaImpl;
 import it.unibo.smartcity.model.impl.TragittoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
 import it.unibo.smartcity.model.impl.TipologiaMezzoImpl;
@@ -404,5 +407,27 @@ public class ControllerImpl implements Controller {
     public void updateTipoMezzi() {
         var list = TipologiaMezzoImpl.DAO.list(connection);
         views.forEach(v -> v.updateTipoMezzi(list));
+    }
+
+    @Override
+    public void updateLineeInOrari() {
+        var list = LineaImpl.DAO.list(connection);
+        views.forEach(v -> v.updateLineeListInOrari(list));
+    }
+
+    @Override
+    public void updateOrariLineaInManagement(String codiceLinea) {
+        var list = OrarioLineaImpl.DAO.listByCodiceLinea(connection, codiceLinea);
+        views.forEach(v -> v.updateOrariLineaInManagement(list));
+    }
+
+    @Override
+    public void addOrarioLinea(String codLinea, String giorno, LocalTime orario) {
+        OrarioLineaImpl.DAO.insert(connection, codLinea, giorno, orario);
+    }
+
+    @Override
+    public void removeOrario(OrarioLinea orarioLinea) {
+        OrarioLineaImpl.DAO.delete(connection, orarioLinea);
     }
 }

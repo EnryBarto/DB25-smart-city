@@ -1,6 +1,7 @@
 package it.unibo.smartcity.controller.api;
 
 import java.sql.Date;
+import java.time.LocalTime;
 import java.util.List;
 
 import it.unibo.smartcity.model.api.Dipendente;
@@ -9,6 +10,7 @@ import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
+import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
@@ -127,4 +129,12 @@ public interface Controller {
     void addLinea(Linea linea, List<Tratta> selectedTratte, boolean straordinaria);
 
     void updateTipoMezzi();
+
+    void updateLineeInOrari();
+
+    void updateOrariLineaInManagement(String codiceLinea);
+
+    void addOrarioLinea(String codLinea, String giorno, LocalTime orario);
+
+    void removeOrario(OrarioLinea orarioLinea);
 }
