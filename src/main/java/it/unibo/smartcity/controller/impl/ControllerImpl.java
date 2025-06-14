@@ -22,6 +22,7 @@ import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.InfoLinea;
+import it.unibo.smartcity.data.InsertLineaComplete;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.model.api.Dipendente;
@@ -391,8 +392,12 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void addLinea(Linea linea, List<Tratta> selectedTratte, boolean straordinaria) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addLinea'");
+        checkNotNull(linea, "Linea cannot be null");
+        checkNotNull(selectedTratte, "Tratte cannot be null");
+        checkArgument(!selectedTratte.isEmpty(), "Devi selezionare almeno una tratta");
+        InsertLineaComplete.DAO.insert(
+            new InsertLineaComplete(linea, selectedTratte, straordinaria), connection);
+        this.updateLinesList();
     }
 
     @Override
