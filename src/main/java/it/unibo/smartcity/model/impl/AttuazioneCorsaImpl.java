@@ -1,8 +1,8 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
@@ -113,8 +113,8 @@ public class AttuazioneCorsaImpl implements AttuazioneCorsa {
 
     public static final class DAO {
 
-        public static ArrayList<AttuazioneCorsaImpl> list(Connection connection) {
-            var attuazioni_corse = new ArrayList<AttuazioneCorsaImpl>();
+        public static List<AttuazioneCorsa> list(Connection connection) {
+            var attuazioni_corse = new LinkedList<AttuazioneCorsa>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_ATTUAZIONI_CORSE);
                 var resultSet = statement.executeQuery();

@@ -123,7 +123,7 @@ class TimetableManagePanel extends JPanel {
             btnAggiungi
         );
 
-        var rightPanel = panelFactory.createLeftPanel(
+        var rightPanel = panelFactory.createRedPanel(
             "Rimuovi orario a linea",
             componentsRight,
             btnRimuovi

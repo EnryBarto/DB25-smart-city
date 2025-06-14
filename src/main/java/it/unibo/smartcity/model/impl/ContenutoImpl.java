@@ -2,8 +2,13 @@ package it.unibo.smartcity.model.impl;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import java.sql.Connection;
+import java.util.LinkedList;
+import java.util.List;
 import com.google.common.base.Preconditions;
 
+import it.unibo.smartcity.data.DAOException;
+import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.model.api.Contenuto;
 
 public class ContenutoImpl implements Contenuto {
@@ -59,6 +64,60 @@ public class ContenutoImpl implements Contenuto {
     public void removePosto() {
         if (this.postiDisponibili > 0) {
             this.postiDisponibili--;
+        }
+    }
+
+    public static final class DAO {
+
+        public static List<Contenuto> list(Connection connection) {
+            var query = "SELECT * FROM contenuti";
+            var contenuti = new LinkedList<Contenuto>();
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var contenuto = new ContenutoImpl(
+                        rs.getInt("codice_hub"),
+                        rs.getInt("codice_contenuto"),
+                        rs.getInt("posti_max")
+                    );
+                    contenuti.add(contenuto);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione dei contenuti degli hub.", e);
+            }
+            return contenuti;
+        }
+
+        public static void insert(Contenuto contenuto, Connection connection) {
+            Preconditions.checkNotNull(contenuto, "Il contenuto non può essere null");
+            var query = "INSERT INTO contenuti (codice_hub, codice_contenuto, posti_max, posti_disponibili) VALUES (?, ?, ?, ?)";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setInt(1, contenuto.getCodiceHub());
+                statement.setInt(2, contenuto.getCodiceContenuto());
+                statement.setInt(3, contenuto.getPostiMax());
+                statement.setInt(4, contenuto.getPostiDisponibili());
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'inserimento del contenuto:\n" + e.getMessage() + "\n (Hub: " + contenuto.getCodiceHub() + ", Contenuto: " + contenuto.getCodiceContenuto() + ")", e);
+            }
+        }
+
+        public static void delete(Contenuto contenuto, Connection connection) {
+            Preconditions.checkNotNull(contenuto, "Il contenuto non può essere null");
+            var query = "DELETE FROM contenuti WHERE codice_hub = ? AND codice_contenuto = ?";
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+            ) {
+                statement.setInt(1, contenuto.getCodiceHub());
+                statement.setInt(2, contenuto.getCodiceContenuto());
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'eliminazione del contenuto.", e);
+            }
         }
     }
 }

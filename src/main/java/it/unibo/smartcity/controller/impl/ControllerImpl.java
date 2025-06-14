@@ -7,6 +7,7 @@ import static com.google.common.base.Preconditions.checkState;
 import java.sql.Connection;
 import java.sql.Date;
 import java.time.LocalTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +27,10 @@ import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.InsertLineaComplete;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.data.ListVariazioniServizi;
+import it.unibo.smartcity.model.api.AttuazioneCorsa;
+import it.unibo.smartcity.model.api.CausaleMulta;
+import it.unibo.smartcity.model.api.Contenuto;
+import it.unibo.smartcity.model.api.ContenutoHub;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
 import it.unibo.smartcity.model.api.Fermata;
@@ -33,10 +38,15 @@ import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
+import it.unibo.smartcity.model.api.Persona;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.AttuazioneCorsaImpl;
 import it.unibo.smartcity.model.impl.AziendaImpl;
+import it.unibo.smartcity.model.impl.CausaleMultaImpl;
+import it.unibo.smartcity.model.impl.ContenutoHubImpl;
+import it.unibo.smartcity.model.impl.ContenutoImpl;
 import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.FermataImpl;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
@@ -47,6 +57,8 @@ import it.unibo.smartcity.model.impl.MezzoImpl;
 import it.unibo.smartcity.model.impl.OrarioLineaImpl;
 import it.unibo.smartcity.model.impl.TragittoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
+import it.unibo.smartcity.model.impl.MultaImpl;
+import it.unibo.smartcity.model.impl.PersonaImpl;
 import it.unibo.smartcity.model.impl.TipologiaMezzoImpl;
 import it.unibo.smartcity.model.impl.TrattaImpl;
 import it.unibo.smartcity.model.impl.UtenteImpl;
@@ -60,7 +72,7 @@ public class ControllerImpl implements Controller {
     private UserLevel currentUserLevel = UserLevel.NOT_LOGGED;
     private Utente user;
 
-    public ControllerImpl () {
+    public ControllerImpl() {
         var fake = new JFrame();
         fake.setVisible(true);
         // Crea i campi di input
@@ -70,13 +82,13 @@ public class ControllerImpl implements Controller {
         dbField.setText("smart_city");
         userField.setText("root");
         Object[] message = {
-            "Database:", dbField,
-            "Utente:", userField,
-            "Password:", passField
+                "Database:", dbField,
+                "Utente:", userField,
+                "Password:", passField
         };
 
         int option = javax.swing.JOptionPane.showConfirmDialog(
-            fake, message, "Parametri connessione DB", javax.swing.JOptionPane.OK_CANCEL_OPTION);
+                fake, message, "Parametri connessione DB", javax.swing.JOptionPane.OK_CANCEL_OPTION);
 
         String dbName, user, pass;
         if (option == javax.swing.JOptionPane.OK_OPTION) {
@@ -93,7 +105,8 @@ public class ControllerImpl implements Controller {
         try {
             this.connection = DAOUtils.localMySQLConnection(dbName, user, pass);
         } catch (DAOException e) {
-            JOptionPane.showMessageDialog(fake, "Connessione non riuscita!\n" + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(fake, "Connessione non riuscita!\n" + e.getMessage(), "Errore",
+                    JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         } finally {
             fake.setVisible(false);
@@ -399,7 +412,7 @@ public class ControllerImpl implements Controller {
         checkNotNull(selectedTratte, "Tratte cannot be null");
         checkArgument(!selectedTratte.isEmpty(), "Devi selezionare almeno una tratta");
         InsertLineaComplete.DAO.insert(
-            new InsertLineaComplete(linea, selectedTratte, straordinaria), connection);
+                new InsertLineaComplete(linea, selectedTratte, straordinaria), connection);
         this.updateLinesList();
     }
 
@@ -429,5 +442,78 @@ public class ControllerImpl implements Controller {
     @Override
     public void removeOrario(OrarioLinea orarioLinea) {
         OrarioLineaImpl.DAO.delete(connection, orarioLinea);
+    }
+
+    @Override
+    public void addContenutoToHub(ContenutoHub selectedContenuto, HubMobilita selectedHub, int postiMassimi) {
+        checkNotNull(selectedContenuto, "Contenuto cannot be null");
+        checkNotNull(selectedHub, "Hub cannot be null");
+        checkArgument(postiMassimi > 0, "Posti massimi deve essere maggiore di zero");
+        ContenutoImpl.DAO.insert(new ContenutoImpl(
+                selectedHub.getCodiceHub(),
+                selectedContenuto.getCodiceContenuto(),
+                postiMassimi),
+                connection);
+        this.updateContenuti();
+    }
+
+    @Override
+    public void deleteContenutoHub(Contenuto selectedContenuto) {
+        checkNotNull(selectedContenuto, "Contenuto cannot be null");
+        ContenutoImpl.DAO.delete(selectedContenuto, connection);
+        this.updateContenuti();
+    }
+
+    @Override
+    public void updateContenuti() {
+        var list = ContenutoImpl.DAO.list(connection);
+        views.forEach(v -> v.updateContenuti(list));
+    }
+
+    @Override
+    public void updateContenutiHub() {
+        var list = ContenutoHubImpl.DAO.list(connection);
+        views.forEach(v -> v.updateContenutiHub(list));
+    }
+
+    @Override
+    public void addPersona(String cognome, String nome, String documento, String codiceFiscale) {
+        checkState(this.currentUserLevel == UserLevel.CONTROLLER);
+        checkNotNull(cognome, "Cognome cannot be null");
+        checkNotNull(nome, "Nome cannot be null");
+        checkNotNull(documento, "Documento cannot be null");
+        var persona = new PersonaImpl(cognome, nome, documento, codiceFiscale);
+        PersonaImpl.DAO.insert(connection, persona);
+        this.updatePersone();
+    }
+
+    @Override
+    public void addMulta(Persona persona, CausaleMulta causale, AttuazioneCorsa corsa, double importo) {
+        checkState(this.currentUserLevel == UserLevel.CONTROLLER);
+        checkNotNull(persona, "Persona cannot be null");
+        checkNotNull(causale, "Causale cannot be null");
+        checkNotNull(corsa, "Corsa cannot be null");
+        checkArgument(importo >= causale.prezzoBase() && importo <= causale.prezzoMassimo(), "Importo must be within the valid range");
+        var multa = new MultaImpl(0, Date.valueOf(LocalDate.now()), importo, causale.codice(), corsa.getCodiceCorsa(), persona.getDocumento(),
+                this.user.getUsername());
+        MultaImpl.DAO.insert(multa, connection);
+    }
+
+    @Override
+    public void updatePersone() {
+        var list = PersonaImpl.DAO.list(connection);
+        views.forEach(v -> v.updatePersone(list));
+    }
+
+    @Override
+    public void updateCausaliMulta() {
+        var list = CausaleMultaImpl.DAO.list(connection);
+        views.forEach(v -> v.updateCausaliMulta(list));
+    }
+
+    @Override
+    public void updateCorse() {
+        var list = AttuazioneCorsaImpl.DAO.list(connection);
+        views.forEach(v -> v.updateCorse(list));
     }
 }

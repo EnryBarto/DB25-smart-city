@@ -8,12 +8,17 @@ import java.util.Set;
 
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
+import it.unibo.smartcity.model.api.AttuazioneCorsa;
+import it.unibo.smartcity.model.api.CausaleMulta;
+import it.unibo.smartcity.model.api.Contenuto;
+import it.unibo.smartcity.model.api.ContenutoHub;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
+import it.unibo.smartcity.model.api.Persona;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.TipologiaMezzo;
 import it.unibo.smartcity.model.api.Tratta;
@@ -73,4 +78,14 @@ public interface View {
     void updateLineeListInOrari(List<Linea> list);
 
     void updateOrariLineaInManagement(List<OrarioLinea> list);
+
+    void updateContenutiHub(Set<ContenutoHub> list);
+
+    void updateContenuti(List<Contenuto> list);
+
+    void updatePersone(List<Persona> list);
+
+    void updateCausaliMulta(List<CausaleMulta> list);
+
+    void updateCorse(List<AttuazioneCorsa> list);
 }

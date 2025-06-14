@@ -4,6 +4,10 @@ import java.sql.Date;
 import java.time.LocalTime;
 import java.util.List;
 
+import it.unibo.smartcity.model.api.AttuazioneCorsa;
+import it.unibo.smartcity.model.api.CausaleMulta;
+import it.unibo.smartcity.model.api.Contenuto;
+import it.unibo.smartcity.model.api.ContenutoHub;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.model.api.Dipendente.Ruolo;
 import it.unibo.smartcity.model.api.Fermata;
@@ -11,6 +15,7 @@ import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
+import it.unibo.smartcity.model.api.Persona;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
@@ -137,4 +142,22 @@ public interface Controller {
     void addOrarioLinea(String codLinea, String giorno, LocalTime orario);
 
     void removeOrario(OrarioLinea orarioLinea);
+
+    void addContenutoToHub(ContenutoHub selectedContenuto, HubMobilita selectedHub, int postiMassimi);
+
+    void deleteContenutoHub(Contenuto selectedContenutoHub);
+
+    void updateContenuti();
+
+    void updateContenutiHub();
+
+    void addPersona(String cognome, String nome, String documento, String codiceFiscale);
+
+    void addMulta(Persona persona, CausaleMulta causale, AttuazioneCorsa corsa, double importo);
+
+    void updatePersone();
+
+    void updateCausaliMulta();
+
+    void updateCorse();
 }
