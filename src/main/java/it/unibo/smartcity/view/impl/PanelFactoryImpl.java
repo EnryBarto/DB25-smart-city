@@ -89,9 +89,14 @@ public class PanelFactoryImpl implements PanelFactory {
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.add(btnSubmit);
 
+        var comboBoxPanel = new JPanel();
+        comboBoxPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        comboBoxPanel.setBackground(Color.WHITE);
+        comboBoxPanel.add(comboBox);
+
         rightPanel.add(removeTitle);
         rightPanel.add(Box.createVerticalStrut(15));
-        rightPanel.add(comboBox);
+        rightPanel.add(comboBoxPanel);
         rightPanel.add(Box.createVerticalStrut(20));
         rightPanel.add(buttonPanel);
         rightPanel.add(Box.createVerticalGlue());
