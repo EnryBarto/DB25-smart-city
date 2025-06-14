@@ -110,12 +110,14 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateLinesList() {
-        views.forEach(v -> v.updateLinesList(InfoLinea.DAO.list(connection)));
+        var list = InfoLinea.DAO.list(connection);
+        views.forEach(v -> v.updateLinesList(list));
     }
 
     @Override
     public void updateOrariLavoro() {
-        views.forEach(v -> v.updateOrariLavoro(DipendenteImpl.DAO.listOrari(connection, user.getUsername())));
+        var list = DipendenteImpl.DAO.listOrari(connection, user.getUsername());
+        views.forEach(v -> v.updateOrariLavoro(list));
     }
 
     @Override
@@ -132,7 +134,8 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateTimetableLinesList() {
-        views.forEach(v -> v.updateTimetableLinesList(LineaImpl.DAO.list(connection)));
+        var list = LineaImpl.DAO.list(connection);
+        views.forEach(v -> v.updateTimetableLinesList(list));
     }
 
     @Override
@@ -142,8 +145,10 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateHubsList() {
-        views.forEach(v -> v.updateHubsList(ListHubMobilita.DAO.get(connection)));
-        views.forEach(v -> v.updateHubs(HubMobilitaImpl.DAO.list(connection).stream().toList()));
+        var list1 = ListHubMobilita.DAO.get(connection);
+        var list2 = HubMobilitaImpl.DAO.list(connection).stream().toList();
+        views.forEach(v -> v.updateHubsList(list1));
+        views.forEach(v -> v.updateHubs(list2));
     }
 
     @Override
@@ -193,12 +198,15 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateEmployeesList() {
-        views.forEach(v -> v.updateEmployeesList(DipendenteImpl.DAO.list(connection), UtenteImpl.DAO.listNotEmployeed(connection)));
+        var list1 = DipendenteImpl.DAO.list(connection);
+        var list2 = UtenteImpl.DAO.listNotEmployeed(connection);
+        views.forEach(v -> v.updateEmployeesList(list1, list2));
     }
 
     @Override
     public void updateFermateList() {
-        views.forEach(v -> v.updateFermateList(FermataImpl.DAO.list(connection).stream().toList()));
+        var list = FermataImpl.DAO.list(connection).stream().toList();
+        views.forEach(v -> v.updateFermateList(list));
     }
 
     @Override
@@ -260,12 +268,14 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateTratte() {
-        views.forEach(v -> v.updateTratte(TrattaImpl.DAO.list(connection)));
+        var list = TrattaImpl.DAO.list(connection);
+        views.forEach(v -> v.updateTratte(list));
     }
 
     @Override
     public void updateManutGravose() {
-        views.forEach(v -> v.updateManutGravose(ManutenzioneLineaImpl.DAO.estrazManutPiuGravose(connection)));
+        var list = ManutenzioneLineaImpl.DAO.estrazManutPiuGravose(connection);
+        views.forEach(v -> v.updateManutGravose(list));
     }
 
     @Override
@@ -294,7 +304,8 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateManutMezziPanel() {
-        views.forEach(v -> v.updateManutMezziPanel(ManutenzioneMezzoImpl.DAO.list(connection)));
+        var list = ManutenzioneMezzoImpl.DAO.list(connection);
+        views.forEach(v -> v.updateManutMezziPanel(list));
     }
 
     @Override
@@ -326,12 +337,14 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateAziendeNoManut() {
-        views.forEach(v -> v.updateAziendeNoManut(AziendaImpl.DAO.extracAziendeNoManut(connection)));
+        var list = AziendaImpl.DAO.extracAziendeNoManut(connection);
+        views.forEach(v -> v.updateAziendeNoManut(list));
     }
 
     @Override
     public void updateManutPerMezzo() {
-        views.forEach(v -> v.updateManutPerMezzo(MezzoImpl.DAO.list(connection)));
+        var list = MezzoImpl.DAO.list(connection);
+        views.forEach(v -> v.updateManutPerMezzo(list));
     }
 
     @Override
@@ -349,15 +362,15 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateListsManagementLinee() {
-        views.forEach(v -> v.updateListsManagementLinee(
-            LineaImpl.DAO.list(connection),
-            TragittoImpl.DAO.listUltimiTragitti(connection)
-        ));
+        var list1 = LineaImpl.DAO.list(connection);
+        var list2 = TragittoImpl.DAO.listUltimiTragitti(connection);
+        views.forEach(v -> v.updateListsManagementLinee(list1, list2));
     }
 
     @Override
     public void updateTratteListPerLinea(String codiceLinea) {
-        views.forEach(v -> v.updateTratteListPerLinea(TrattaImpl.DAO.listByCodicePartenza(connection, codiceLinea)));
+        var list = TrattaImpl.DAO.listByCodicePartenza(connection, codiceLinea);
+        views.forEach(v -> v.updateTratteListPerLinea(list));
     }
 
     @Override
@@ -384,6 +397,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateTipoMezzi() {
-        views.forEach(v -> v.updateTipoMezzi(TipologiaMezzoImpl.DAO.list(connection)));
+        var list = TipologiaMezzoImpl.DAO.list(connection);
+        views.forEach(v -> v.updateTipoMezzi(list));
     }
 }
