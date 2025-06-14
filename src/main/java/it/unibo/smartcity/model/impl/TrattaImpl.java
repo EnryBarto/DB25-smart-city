@@ -4,16 +4,13 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.sql.Connection;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.Queries;
-import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.Tratta;
 
 public class TrattaImpl implements Tratta {
@@ -94,36 +91,6 @@ public class TrattaImpl implements Tratta {
             }
         }
 
-        public static Map<Linea, Tratta> listUltimeTratte(Connection connection) {
-            var mappa = new LinkedHashMap<Linea, Tratta>();
-            try (
-                var statement = DAOUtils.prepare(connection, Queries.LIST_ULTIMA_TRATTA_LINEA);
-                var rs = statement.executeQuery();
-            ) {
-                while (rs.next()) {
-                    var linea = new LineaImpl(
-                        rs.getString("L.codice_linea"),
-                        rs.getInt("L.tempo_percorrenza"),
-                        rs.getDate("L.inizio_validita"),
-                        rs.getDate("L.fine_validita"),
-                        rs.getBoolean("L.attiva"),
-                        rs.getInt("L.codice_tipo_mezzo")
-                    );
-
-                    var tratta = new TrattaImpl(
-                        rs.getInt("TR.arrivo_codice_fermata"),
-                        rs.getInt("TR.partenza_codice_fermata"),
-                        rs.getInt("TR.tempo_percorrenza")
-                    );
-
-                    mappa.put(linea, tratta);
-                }
-            } catch (Exception e) {
-                throw new DAOException("Errore nell'estrazione delle tratte.", e);
-            }
-            return mappa;
-        }
-
         public static List<Tratta> listByCodicePartenza(Connection connection, String codiceLinea) {
             var list = new LinkedList<Tratta>();
             try (
@@ -139,10 +106,29 @@ public class TrattaImpl implements Tratta {
 
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 throw new DAOException("Errore nell'estrazione delle tratte.", e);
             }
             return list;
+        }
+
+        public static Tratta select(Connection connection, int partenzaCodiceFermata, int arrivoCodiceFermata) {
+            Tratta tratta = null;
+            var query = "SELECT * FROM TRATTE WHERE partenza_codice_fermata = ? AND arrivo_codice_fermata = ?";
+            try (
+                var statement = DAOUtils.prepare(connection, query, partenzaCodiceFermata, arrivoCodiceFermata);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    tratta = new TrattaImpl(
+                        rs.getInt("arrivo_codice_fermata"),
+                        rs.getInt("partenza_codice_fermata"),
+                        rs.getInt("tempo_percorrenza")
+                    );
+                }
+            } catch (Exception e) {
+                throw new DAOException(e.getMessage(), e);
+            }
+            return tratta;
         }
     }
 }

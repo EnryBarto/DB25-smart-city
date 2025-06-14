@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.model.api.Linea;
+import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.view.api.PanelFactory;
 
@@ -24,9 +25,9 @@ class LineaManagePanel extends JPanel {
     private final static String SELECT_LABEL = "--- SELEZIONA ---";
 
     private final JComboBox<String> linee = new JComboBox<>();
-    private final JComboBox<String> lineeUltimaTratta = new JComboBox<>();
+    private final JComboBox<String> tragittiFinali = new JComboBox<>();
     private final JComboBox<String> tratte = new JComboBox<>();
-    private Map<String, Linea> lineeMapper;
+    private Map<String, Tragitto> tragittiMapper;
     private Map<String, Tratta> tratteMapper;
 
     public LineaManagePanel(Controller controller) {
@@ -34,30 +35,27 @@ class LineaManagePanel extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         this.setBackground(new Color(245, 249, 255));
 
-        Map<String, JComponent> components = new LinkedHashMap<>(Map.of(
-            "Linea:",
-            linee,
-            "Tratta:",
-            tratte
-        ));
+        Map<String, JComponent> components = new LinkedHashMap<>();
+        components.put("Linea:", linee);
+        components.put("Tratta:", tratte);
 
-        var btnAggiungiTratta = new JButton("Aggiungi tratta");
+        var btnAggiungiTragitto = new JButton("Aggiungi tratta");
 
         PanelFactory panelFactory = new PanelFactoryImpl();
         var leftPanel = panelFactory.createLeftPanel(
             "Aggiunta tratta a linea",
             components,
-            btnAggiungiTratta
+            btnAggiungiTragitto
         );
 
-        var btnRimuoviTratta = new JButton("Rimuovi tratta");
+        var btnRimuoviTragitto = new JButton("Rimuovi tratta");
 
-        lineeUltimaTratta.addItem("Ciao");
+        tragittiFinali.addItem("Ciao");
 
         var rightPanel = panelFactory.createRightPanel(
             "Rimozione tratta da linea",
-            lineeUltimaTratta,
-            btnRimuoviTratta
+            tragittiFinali,
+            btnRimuoviTragitto
         );
         this.add(leftPanel);
         this.add(rightPanel);
@@ -72,25 +70,37 @@ class LineaManagePanel extends JPanel {
             }
         });
 
-        btnAggiungiTratta.addActionListener(e -> {
-            controller.addTrattaLinea(
-                (String)this.linee.getSelectedItem(),
-                this.tratteMapper.get(this.tratte.getSelectedItem())
-            );
+        btnAggiungiTragitto.addActionListener(e -> {
+            if (!this.linee.getSelectedItem().toString().equals(SELECT_LABEL)) {
+                controller.addTragitto(
+                    (String)this.linee.getSelectedItem(),
+                    this.tratteMapper.get(this.tratte.getSelectedItem())
+                );
+            } else {
+                controller.showMessage("Errore", "Seleziona una linea");
+            }
+        });
+
+        btnRimuoviTragitto.addActionListener(e -> {
+            if (this.tragittiFinali.getSelectedIndex() != -1) {
+                controller.removeTragitto(this.tragittiMapper.get(this.tragittiFinali.getSelectedItem()));
+            } else {
+                controller.showMessage("Errore", "Seleziona un tragitto da rimuovere");
+            }
         });
     }
 
-    void updateLinesLists(List<Linea> linee, Map<Linea, Tratta> ultimeTratte) {
+    void updateLinesLists(List<Linea> linee, List<Tragitto> ultimeTratte) {
         this.linee.removeAllItems();
-        this.lineeUltimaTratta.removeAllItems();
+        this.tragittiFinali.removeAllItems();
         this.tratte.removeAllItems();
-        this.lineeMapper = new HashMap<>();
+        this.tragittiMapper = new HashMap<>();
         this.linee.addItem(SELECT_LABEL);
         linee.forEach(l -> this.linee.addItem(l.getCodiceLinea()));
-        ultimeTratte.forEach((l, t) -> {
-            var string = l.getCodiceLinea() + ": " + t.getPartenzaCodiceFermata() + " → " + t.getArrivoCodiceFermata();
-            this.lineeUltimaTratta.addItem(string);
-            this.lineeMapper.put(string, l);
+        ultimeTratte.forEach((t) -> {
+            var string = t.getCodiceLinea() + ": " + t.getPartenzaCodiceFermata() + " → " + t.getArrivoCodiceFermata();
+            this.tragittiFinali.addItem(string);
+            this.tragittiMapper.put(string, t);
         });
     }
 

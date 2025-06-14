@@ -30,6 +30,7 @@ import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
+import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.AziendaImpl;
@@ -349,7 +350,7 @@ public class ControllerImpl implements Controller {
     public void updateListsManagementLinee() {
         views.forEach(v -> v.updateListsManagementLinee(
             LineaImpl.DAO.list(connection),
-            TrattaImpl.DAO.listUltimeTratte(connection)
+            TragittoImpl.DAO.listUltimiTragitti(connection)
         ));
     }
 
@@ -359,11 +360,18 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void addTrattaLinea(String codLinea, Tratta tratta) {
+    public void addTragitto(String codLinea, Tratta tratta) {
         checkNotNull(tratta);
         checkNotNull(codLinea);
         checkArgument(!codLinea.isBlank());
         TragittoImpl.DAO.insert(connection, codLinea, tratta);
+        this.updateListsManagementLinee();
+    }
+
+    @Override
+    public void removeTragitto(Tragitto tragitto) {
+        checkNotNull(tragitto);
+        TragittoImpl.DAO.remove(connection, tragitto);
         this.updateListsManagementLinee();
     }
 

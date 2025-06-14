@@ -46,7 +46,6 @@ public record ListHubMobilita(HubMobilita hub, Optional<String> nomeFermata, Str
                     ));
                 }
             } catch (final Exception e) {
-                System.out.println(e.getMessage());
                 throw new DAOException("Errore nell'estrazione dei hub di mobilità", e);
             }
             return hubs;

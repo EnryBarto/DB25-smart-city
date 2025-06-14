@@ -93,7 +93,6 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
                         dipendenti.add(dip);
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 throw new DAOException("Failed to list Dipendenti", e);
             }
             return dipendenti;
@@ -133,7 +132,6 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
                 insertUtente.executeUpdate();
                 insertDipendente.executeUpdate();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 throw new DAOException("Failed to add dipendente", e);
             }
         }
@@ -144,7 +142,6 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
             ) {
                 statement.executeUpdate();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 throw new DAOException("Failed to remove dipendente", e);
             }
         }

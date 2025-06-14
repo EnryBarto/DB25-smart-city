@@ -9,6 +9,7 @@ import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
+import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
@@ -119,5 +120,7 @@ public interface Controller {
 
     void updateTratteListPerLinea(String codiceLinea);
 
-    void addTrattaLinea(String codLinea, Tratta tratta);
+    void addTragitto(String codLinea, Tratta tratta);
+
+    void removeTragitto(Tragitto tragitto);
 }

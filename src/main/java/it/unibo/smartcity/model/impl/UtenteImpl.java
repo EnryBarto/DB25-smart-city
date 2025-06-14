@@ -150,7 +150,6 @@ public class UtenteImpl extends PersonaImpl implements Utente {
                     utenti.add(u);
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 throw new DAOException("Failed to list Utenti", e);
             }
             return utenti;

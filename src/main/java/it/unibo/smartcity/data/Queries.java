@@ -351,16 +351,26 @@ public final class Queries {
      * ALTRE QUERY
      */
 
-     public static final String LIST_ULTIMA_TRATTA_LINEA =
+     public static final String LIST_ULTIMI_TRAGITTI =
      """
         SELECT *
         FROM LINEE L
         JOIN TRAGITTI TRA on TRA.codice_linea = L.codice_linea
-        JOIN TRATTE TR ON TRA.partenza_codice_fermata = TR.partenza_codice_fermata AND TRA.arrivo_codice_fermata = TR.arrivo_codice_fermata
         WHERE TRA.ordine =	(SELECT MAX(T1.ordine)
 							FROM LINEE L1 JOIN TRAGITTI T1 ON L1.codice_linea = T1.codice_linea
 							WHERE L1.codice_linea = L.codice_linea)
         ORDER BY L.codice_linea
+    """;
+
+    public static final String SELECT_ULTIMO_TRAGITTO =
+     """
+        SELECT *
+        FROM LINEE L
+        JOIN TRAGITTI TRA on TRA.codice_linea = L.codice_linea
+        WHERE L.codice_linea = ?
+        AND TRA.ordine =	(SELECT MAX(T1.ordine)
+							FROM LINEE L1 JOIN TRAGITTI T1 ON L1.codice_linea = T1.codice_linea
+							WHERE L1.codice_linea = L.codice_linea)
     """;
 
      public static final String LIST_TRATTE_POSSIBILI_LINEA =

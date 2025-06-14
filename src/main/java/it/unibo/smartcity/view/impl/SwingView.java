@@ -33,6 +33,7 @@ import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
+import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
 import it.unibo.smartcity.model.impl.AziendaImpl;
@@ -263,7 +264,7 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateListsManagementLinee(List<Linea> daAggiungere, Map<Linea, Tratta> daRimuovere) {
+    public void updateListsManagementLinee(List<Linea> daAggiungere, List<Tragitto> daRimuovere) {
         ((LineaManagePanel)this.tabs.get("Gestione Linea")).updateLinesLists(daAggiungere, daRimuovere);
     }
 
