@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.sql.Date;
-import java.text.ParseException;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -21,15 +21,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.MaskFormatter;
-
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.TipologiaMezzo;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.impl.LineaImpl;
 import it.unibo.smartcity.view.api.PanelFactory;
+import raven.datetime.DatePicker;
 
 public class LineaInsertPanel extends JPanel {
     private final JComboBox<String> mezzi = new JComboBox<>();
@@ -38,6 +36,8 @@ public class LineaInsertPanel extends JPanel {
     private final Map<String, Tratta> selectableTratteMap = new HashMap<>();
     private final Map<String, TipologiaMezzo> mezziMapper = new HashMap<>();
     private final List<Tratta> selectedTratte = new LinkedList<>();
+    private final DatePicker datePickerInizio = new DatePicker();
+    private final DatePicker datePickerFine = new DatePicker();
 
     public LineaInsertPanel(Controller c) {
         super(new BorderLayout());
@@ -52,22 +52,14 @@ public class LineaInsertPanel extends JPanel {
         JCheckBox straordinariaCheck = new JCheckBox();
         JFormattedTextField inizioValiditaField = new JFormattedTextField();
         JFormattedTextField fineValiditaField = new JFormattedTextField();
+        datePickerInizio.setEditor(inizioValiditaField);
+        datePickerFine.setEditor(fineValiditaField);
         inizioValiditaField.setColumns(30);
         fineValiditaField.setColumns(30);
         inizioValiditaField.setEnabled(false);
         fineValiditaField.setEnabled(false);
         fineValiditaField.setEnabled(false);
 
-        try {
-            MaskFormatter dateMask = new MaskFormatter("####-##-##");
-            dateMask.setPlaceholderCharacter('_');
-            inizioValiditaField.setFormatterFactory(
-            new DefaultFormatterFactory(dateMask));
-            fineValiditaField.setFormatterFactory(
-            new DefaultFormatterFactory(dateMask));
-        } catch (ParseException e) {
-            c.showMessage("Errore", "Errore nella formattazione della data");
-        }
         straordinariaCheck.addActionListener(e -> {
             inizioValiditaField.setEnabled(straordinariaCheck.isSelected());
             fineValiditaField.setEnabled(straordinariaCheck.isSelected());
@@ -135,13 +127,11 @@ public class LineaInsertPanel extends JPanel {
                 return;
             }
             if (straordinaria) {
-                try {
-                inizioValidita = Date.valueOf(inizioValiditaField.getText());
-                fineValidita = Date.valueOf(fineValiditaField.getText());
-                } catch (Exception e1) {
-                    c.showMessage("Errore", "Formato data non valido. Usa il formato YYYY-MM-DD.");
-                    return;
-                }
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String dataFormattataInizio = datePickerInizio.getSelectedDate().format(formatter);
+                String dataFormattataFine = datePickerFine.getSelectedDate().format(formatter);
+                inizioValidita = Date.valueOf(dataFormattataInizio);
+                fineValidita = Date.valueOf(dataFormattataFine);
             } else {
                 inizioValidita = Date.valueOf("1970-01-01");
                 fineValidita = Date.valueOf("1970-01-02");
