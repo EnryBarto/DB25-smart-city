@@ -122,23 +122,30 @@ public class LineaInsertPanel extends JPanel {
                 componentsSelezionaTratta,
                 btnSelezionaTratta);
 
+        makeButtonFancy(btnAggiungiLinea);
+
         btnAggiungiLinea.addActionListener(e -> {
             String codiceLinea = codiceLineaField.getText();
             TipologiaMezzo mezzo = mezziMapper.get(mezzi.getSelectedItem());
             boolean straordinaria = straordinariaCheck.isSelected();
-            Date inizioValidita = Date.valueOf(inizioValiditaField.getText());
-            Date fineValidita = Date.valueOf(fineValiditaField.getText());
+            Date inizioValidita;
+            Date fineValidita;
             if (codiceLinea.isEmpty() || mezzo == null || selectedTratte.isEmpty()) {
                 c.showMessage("Errore", "Compila tutti i campi obbligatori e seleziona almeno una tratta.");
                 return;
             }
             if (straordinaria) {
-                if (inizioValiditaField.getText().isEmpty() || fineValiditaField.getText().isEmpty()) {
-                    c.showMessage("Errore", "Inserisci le date di validità per la linea straordinaria.");
+                try {
+                inizioValidita = Date.valueOf(inizioValiditaField.getText());
+                fineValidita = Date.valueOf(fineValiditaField.getText());
+                } catch (Exception e1) {
+                    c.showMessage("Errore", "Formato data non valido. Usa il formato YYYY-MM-DD.");
                     return;
                 }
+            } else {
+                inizioValidita = Date.valueOf("1970-01-01");
+                fineValidita = Date.valueOf("1970-01-02");
             }
-
             Linea linea = new LineaImpl(codiceLinea, 0, inizioValidita, fineValidita, true,
                     mezzo.getCodiceTipoMezzo());
             c.addLinea(linea, selectedTratte, straordinaria);
@@ -199,4 +206,24 @@ public class LineaInsertPanel extends JPanel {
         });
         selectedTratteArea.setText(sb.toString());
     }
+
+    private void makeButtonFancy(JButton button) {
+            button.setBackground(new Color(76, 175, 80));
+            button.setForeground(Color.WHITE);
+            button.setFocusPainted(false);
+            button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+            button.setFont(button.getFont().deriveFont(16f));
+            button.setOpaque(true);
+            button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            button.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    button.setBackground(new Color(56, 142, 60));
+                }
+                @Override
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    button.setBackground(new Color(76, 175, 80));
+                }
+            });
+        }
 }

@@ -181,13 +181,14 @@ public class LineaImpl implements Linea {
         }
 
         public static void insertOrdinaria(Connection connection, Linea linea) {
-            var query = "INSERT INTO linee (tempo_percorrenza, attiva, codice_tipo_mezzo) VALUES (?, ?, ?)";
+            var query = "INSERT INTO linee (codice_linea, tempo_percorrenza, attiva, codice_tipo_mezzo) VALUES (?, ?, ?, ?)";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
-                statement.setInt(1, 0);
-                statement.setBoolean(2, linea.getAttiva());
-                statement.setInt(3, linea.getCodiceTipoMezzo());
+                statement.setString(1, linea.getCodiceLinea());
+                statement.setInt(2, 0);
+                statement.setBoolean(3, linea.getAttiva());
+                statement.setInt(4, linea.getCodiceTipoMezzo());
                 statement.executeUpdate();
             } catch (Exception e) {
                 throw new DAOException("Errore nell'inserimento della linea.", e);
@@ -195,14 +196,15 @@ public class LineaImpl implements Linea {
         }
 
         public static void insertStraordinaria(Connection connection, Linea linea) {
-            var query = "INSERT INTO linee (tempo_percorrenza, inizio_validita, fine_validita, codice_tipo_mezzo) VALUES (?, ?, ?, ?)";
+            var query = "INSERT INTO linee (codice_linea, tempo_percorrenza, inizio_validita, fine_validita, codice_tipo_mezzo) VALUES (?, ?, ?, ?, ?)";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
-                statement.setInt(1, linea.getTempoPercorrenza());
-                statement.setDate(2, linea.getInizioValidita().orElse(null));
-                statement.setDate(3, linea.getFineValidita().orElse(null));
-                statement.setInt(4, linea.getCodiceTipoMezzo());
+                statement.setString(1, linea.getCodiceLinea());
+                statement.setInt(2, 0);
+                statement.setDate(3, linea.getInizioValidita().orElse(null));
+                statement.setDate(4, linea.getFineValidita().orElse(null));
+                statement.setInt(5, linea.getCodiceTipoMezzo());
                 statement.executeUpdate();
             } catch (Exception e) {
                 throw new DAOException("Errore nell'inserimento della linea.", e);
