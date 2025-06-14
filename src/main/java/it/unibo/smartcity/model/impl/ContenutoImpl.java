@@ -70,7 +70,7 @@ public class ContenutoImpl implements Contenuto {
     public static final class DAO {
 
         public static List<Contenuto> list(Connection connection) {
-            var query = "SELECT * FROM contenuti";
+            var query = "SELECT * FROM CONTENUTI";
             var contenuti = new LinkedList<Contenuto>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
@@ -92,7 +92,7 @@ public class ContenutoImpl implements Contenuto {
 
         public static void insert(Contenuto contenuto, Connection connection) {
             Preconditions.checkNotNull(contenuto, "Il contenuto non può essere null");
-            var query = "INSERT INTO contenuti (codice_hub, codice_contenuto, posti_max, posti_disponibili) VALUES (?, ?, ?, ?)";
+            var query = "INSERT INTO CONTENUTI (codice_hub, codice_contenuto, posti_max, posti_disponibili) VALUES (?, ?, ?, ?)";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
@@ -108,7 +108,7 @@ public class ContenutoImpl implements Contenuto {
 
         public static void delete(Contenuto contenuto, Connection connection) {
             Preconditions.checkNotNull(contenuto, "Il contenuto non può essere null");
-            var query = "DELETE FROM contenuti WHERE codice_hub = ? AND codice_contenuto = ?";
+            var query = "DELETE FROM CONTENUTI WHERE codice_hub = ? AND codice_contenuto = ?";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {

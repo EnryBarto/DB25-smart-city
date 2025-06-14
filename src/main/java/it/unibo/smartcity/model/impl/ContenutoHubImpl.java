@@ -29,7 +29,7 @@ public class ContenutoHubImpl implements ContenutoHub {
     public static final class DAO {
 
         public static Set<ContenutoHub> list(Connection connection) {
-            var query = "SELECT * FROM contenuti_hub";
+            var query = "SELECT * FROM CONTENUTI_HUB";
             var contenuti = new HashSet<ContenutoHub>();
             try (
                 var statement = DAOUtils.prepare(connection, query);

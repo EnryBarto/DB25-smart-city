@@ -181,7 +181,7 @@ public class LineaImpl implements Linea {
         }
 
         public static void insertOrdinaria(Connection connection, Linea linea) {
-            var query = "INSERT INTO linee (codice_linea, tempo_percorrenza, attiva, codice_tipo_mezzo) VALUES (?, ?, ?, ?)";
+            var query = "INSERT INTO LINEE (codice_linea, tempo_percorrenza, attiva, codice_tipo_mezzo) VALUES (?, ?, ?, ?)";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
@@ -196,7 +196,7 @@ public class LineaImpl implements Linea {
         }
 
         public static void insertStraordinaria(Connection connection, Linea linea) {
-            var query = "INSERT INTO linee (codice_linea, tempo_percorrenza, inizio_validita, fine_validita, codice_tipo_mezzo) VALUES (?, ?, ?, ?, ?)";
+            var query = "INSERT INTO LINEE (codice_linea, tempo_percorrenza, inizio_validita, fine_validita, codice_tipo_mezzo) VALUES (?, ?, ?, ?, ?)";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
@@ -212,7 +212,7 @@ public class LineaImpl implements Linea {
         }
 
         public static void delete(Connection connection, String codiceLinea) {
-            var query = "DELETE FROM linee WHERE codice_linea = ?";
+            var query = "DELETE FROM LINEE WHERE codice_linea = ?";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {

@@ -49,7 +49,7 @@ public class OrarioLineaImpl implements OrarioLinea {
 
     public static final class DAO {
         public static Set<OrarioLinea> list(Connection connection) {
-            var query = "SELECT * FROM orari_linee";
+            var query = "SELECT * FROM ORARI_LINEE";
             var orari = new HashSet<OrarioLinea>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
@@ -70,7 +70,7 @@ public class OrarioLineaImpl implements OrarioLinea {
         }
 
         public static void insert(Connection connection, String codLinea, String giorno, LocalTime orario) {
-            var query = "INSERT INTO orari_linee (ora_partenza, giorno_settimanale, codice_linea) VALUES (?, ?, ?)";
+            var query = "INSERT INTO ORARI_LINEE (ora_partenza, giorno_settimanale, codice_linea) VALUES (?, ?, ?)";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
@@ -84,7 +84,7 @@ public class OrarioLineaImpl implements OrarioLinea {
         }
 
         public static void delete(Connection connection, OrarioLinea orarioLinea) {
-            var query = "DELETE FROM orari_linee WHERE codice_orario = ?";
+            var query = "DELETE FROM ORARI_LINEE WHERE codice_orario = ?";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
@@ -96,7 +96,7 @@ public class OrarioLineaImpl implements OrarioLinea {
         }
 
         public static List<OrarioLinea> listByCodiceLinea(Connection connection, String codLinea) {
-            var query = "SELECT * FROM orari_linee WHERE codice_linea = ? ORDER BY ora_partenza";
+            var query = "SELECT * FROM ORARI_LINEE WHERE codice_linea = ? ORDER BY ora_partenza";
             var orari = new LinkedList<OrarioLinea>();
             try (
                 var statement = DAOUtils.prepare(connection, query, codLinea);

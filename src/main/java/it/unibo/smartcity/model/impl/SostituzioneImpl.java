@@ -35,7 +35,7 @@ public class SostituzioneImpl implements Sostituzione {
     public static final class DAO {
 
         public static Set<Sostituzione> list(Connection connection) {
-            var query = "SELECT * FROM sostituzioni";
+            var query = "SELECT * FROM SOSTITUZIONI";
             var sostituzioni = new HashSet<Sostituzione>();
             try (
                 var statement = DAOUtils.prepare(connection, query);

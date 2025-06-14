@@ -88,7 +88,7 @@ public class MultaImpl implements Multa {
         public static void insert(final Multa multa, final Connection connection) {
             Preconditions.checkNotNull(multa, "La multa non può essere null");
             Preconditions.checkNotNull(connection, "La connessione non può essere null");
-            var query = "INSERT INTO multe (data_ora_emissione, importo, codice_causale, codice_corsa, documento, username) VALUES (?, ?, ?, ?, ?, ?)";
+            var query = "INSERT INTO MULTE (data_ora_emissione, importo, codice_causale, codice_corsa, documento, username) VALUES (?, ?, ?, ?, ?, ?)";
             try (
                 var statement = DAOUtils.prepare(connection, query,
                     multa.getDataOraEmissione(),

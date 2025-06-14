@@ -19,7 +19,7 @@ public record CausaleMultaImpl (int codice, String reato, double prezzoBase, dou
 
     public static final class DAO {
         public static List<CausaleMulta> list(Connection connection) {
-            var query = "SELECT * FROM causali_multe";
+            var query = "SELECT * FROM CAUSALI_MULTE";
             var causali = new LinkedList<CausaleMulta>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
