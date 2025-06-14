@@ -10,6 +10,7 @@ import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
+import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.data.MediaSoldiMulte;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.CausaleMulta;
@@ -97,4 +98,6 @@ public interface View {
     void updateMediaSoldiMulte(MediaSoldiMulte mediaSoldiMulte);
 
     void updateLineeMulte(List<ListLineeMulte> lineeMulte);
+
+    void updateVariazioniServizio(Set<ListVariazioniServizi> list);
 }

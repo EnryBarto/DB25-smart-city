@@ -164,4 +164,6 @@ public interface Controller {
     void updateStatistics();
 
     void updateLineeMulte(Date dataInizio, Date dataFine);
+
+    void updateVariazioniServizio(Linea selectedLinea);
 }
