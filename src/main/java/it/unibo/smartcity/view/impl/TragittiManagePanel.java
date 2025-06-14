@@ -20,7 +20,7 @@ import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.view.api.PanelFactory;
 
-class LineaManagePanel extends JPanel {
+class TragittiManagePanel extends JPanel {
 
     private final static String SELECT_LABEL = "--- SELEZIONA ---";
 
@@ -30,7 +30,7 @@ class LineaManagePanel extends JPanel {
     private Map<String, Tragitto> tragittiMapper;
     private Map<String, Tratta> tratteMapper;
 
-    public LineaManagePanel(Controller controller) {
+    public TragittiManagePanel(Controller controller) {
         super(new GridLayout(1, 2, 20, 0));
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         this.setBackground(new Color(245, 249, 255));

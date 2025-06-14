@@ -88,7 +88,7 @@ public class SwingView implements View {
     @Override
     public void updateTimetableLinesList(List<Linea> list) {
         ((TimetablePanel)this.tabs.get("Orari")).updateLinesList(list);
-        ((InsertServiceVariationPanel)this.tabs.get("Variazione servizi")).updateLineList(list);
+        ((InsertServiceVariationPanel)this.tabs.get("Ins. Var. Servizio")).updateLineList(list);
     }
 
     @Override
@@ -114,19 +114,19 @@ public class SwingView implements View {
         this.tabs.put("Hub", new HubMobilityPanel());
         this.tabs.put("Login", new LoginPanel(controller));
         this.tabs.put("Registrati", new SignupPanel(controller));
-        this.tabs.put("Dipendenti", new EmployeeManagementPanel(controller));
+        this.tabs.put("Gest. Dipendenti", new EmployeeManagementPanel(controller));
         this.tabs.put("Profilo", new UserPanel(controller));
         this.tabs.put("Lavoro", new OrariLavoroPanel(controller));
         this.tabs.put("Manutenzioni", new MaintenancePanel(controller));
-        this.tabs.put("Gestione Linea", new LineaManagePanel(controller));
-        this.tabs.put("Inserim. Fermata", new FermataManagePanel(controller));
-        this.tabs.put("Gestione Tratte", new TratteManagePanel(controller));
-        this.tabs.put("Gestione Hub", new HubMobilitaManagePanel(controller));
-        this.tabs.put("Variazione servizi", new InsertServiceVariationPanel(controller));
-        this.tabs.put("Inserim. Linea", new LineaInsertPanel(controller));
+        this.tabs.put("Gest. Tragitti", new TragittiManagePanel(controller));
+        this.tabs.put("Gest. Fermate", new FermataManagePanel(controller));
+        this.tabs.put("Gest. Tratte", new TratteManagePanel(controller));
+        this.tabs.put("Gest. Hub", new HubMobilitaManagePanel(controller));
+        this.tabs.put("Ins. Var. Servizio", new InsertServiceVariationPanel(controller));
+        this.tabs.put("Ins. Linea", new LineaInsertPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Dipendenti", "Manutenzioni", "Profilo", "Inserim. Fermata", "Gestione Linea", "Gestione Hub", "Gestione Tratte", "Variazione servizi", "Inserim. Linea"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
@@ -162,7 +162,7 @@ public class SwingView implements View {
                     case "Profilo":
                         controller.updateUserInfo();
                         break;
-                    case "Dipendenti":
+                    case "Gest. Dipendenti":
                         controller.updateEmployeesList();
                         break;
                     case "Manutenzioni":
@@ -170,25 +170,25 @@ public class SwingView implements View {
                         break;
                     case "Lavoro":
                         controller.updateOrariLavoro();
-                    case "Inserim. Fermata":
+                    case "Gest. Fermate":
                         controller.updateFermateList();
                         break;
-                    case "Gestione Hub":
+                    case "Gest. Hub":
                         controller.updateFermateList();
                         controller.updateHubsList();
                         break;
-                    case "Gestione Tratte":
+                    case "Gest. Tratte":
                         controller.updateFermateList();
                         controller.updateTratte();
                         break;
-                    case "Variazione servizi":
+                    case "Ins. Var. Servizio":
                         controller.updateManutLineePanel();
                         controller.updateTimetableLinesList();
                         break;
-                    case "Gestione Linea":
+                    case "Gest. Tragitti":
                         controller.updateListsManagementLinee();
                         break;
-                    case "Inserim. Linea":
+                    case "Ins. Linea":
                         controller.updateTratte();
                         controller.updateTipoMezzi();
                         break;
@@ -223,7 +223,7 @@ public class SwingView implements View {
 
     @Override
     public void updateEmployeesList(List<Dipendente> employees, List<Utente> notEmployeed) {
-        ((EmployeeManagementPanel)this.tabs.get("Dipendenti")).updateLists(employees, notEmployeed);
+        ((EmployeeManagementPanel)this.tabs.get("Gest. Dipendenti")).updateLists(employees, notEmployeed);
     }
 
     @Override
@@ -233,20 +233,20 @@ public class SwingView implements View {
 
     @Override
     public void updateFermateList(List<Fermata> fermate) {
-        ((FermataManagePanel)this.tabs.get("Inserim. Fermata")).updateFermateList(fermate);
-        ((HubMobilitaManagePanel)this.tabs.get("Gestione Hub")).updateFermateList(fermate);
-        ((TratteManagePanel)this.tabs.get("Gestione Tratte")).updateFermateList(fermate);
+        ((FermataManagePanel)this.tabs.get("Gest. Fermate")).updateFermateList(fermate);
+        ((HubMobilitaManagePanel)this.tabs.get("Gest. Hub")).updateFermateList(fermate);
+        ((TratteManagePanel)this.tabs.get("Gest. Tratte")).updateFermateList(fermate);
     }
 
     @Override
     public void updateHubs(List<HubMobilita> hubs) {
-        ((HubMobilitaManagePanel)this.tabs.get("Gestione Hub")).updateHubList(hubs);
+        ((HubMobilitaManagePanel)this.tabs.get("Gest. Hub")).updateHubList(hubs);
     }
 
     @Override
     public void updateTratte(Set<Tratta> set) {
-        ((TratteManagePanel)this.tabs.get("Gestione Tratte")).updateTratteList(set.stream().toList());
-        ((LineaInsertPanel)this.tabs.get("Inserim. Linea")).updateTratteList(set.stream().toList());
+        ((TratteManagePanel)this.tabs.get("Gest. Tratte")).updateTratteList(set.stream().toList());
+        ((LineaInsertPanel)this.tabs.get("Ins. Linea")).updateTratteList(set.stream().toList());
     }
 
     @Override
@@ -257,7 +257,7 @@ public class SwingView implements View {
     @Override
     public void updateManutLineePanel(List<ManutenzioneLinea> list) {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutLineePanel();
-        ((InsertServiceVariationPanel)this.tabs.get("Variazione servizi")).updateManutenzioneList(list);
+        ((InsertServiceVariationPanel)this.tabs.get("Ins. Var. Servizio")).updateManutenzioneList(list);
     }
 
     @Override
@@ -272,16 +272,16 @@ public class SwingView implements View {
 
     @Override
     public void updateListsManagementLinee(List<Linea> daAggiungere, List<Tragitto> daRimuovere) {
-        ((LineaManagePanel)this.tabs.get("Gestione Linea")).updateLinesLists(daAggiungere, daRimuovere);
+        ((TragittiManagePanel)this.tabs.get("Gest. Tragitti")).updateLinesLists(daAggiungere, daRimuovere);
     }
 
     @Override
     public void updateTratteListPerLinea(List<Tratta> tratte) {
-        ((LineaManagePanel)this.tabs.get("Gestione Linea")).updateTratteList(tratte);
+        ((TragittiManagePanel)this.tabs.get("Gest. Tragitti")).updateTratteList(tratte);
     }
 
     @Override
     public void updateTipoMezzi(Set<TipologiaMezzo> list) {
-        ((LineaInsertPanel)this.tabs.get("Inserim. Linea")).updateMezziList(list.stream().toList());
+        ((LineaInsertPanel)this.tabs.get("Ins. Linea")).updateMezziList(list.stream().toList());
     }
 }

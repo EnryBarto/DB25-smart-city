@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -98,6 +99,8 @@ public class TragittoImpl implements Tragitto {
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
+                connection.setAutoCommit(false);
+
                 statement.setString(1, codLinea);
                 statement.setInt(2, tratta.getPartenzaCodiceFermata());
                 statement.setInt(3, tratta.getArrivoCodiceFermata());
@@ -109,6 +112,18 @@ public class TragittoImpl implements Tragitto {
 
                 LineaImpl.DAO.updateTempoPercorrenza(connection, codLinea, tempoPercorrenza);
 
+                connection.commit();
+                connection.setAutoCommit(true);
+
+            } catch (SQLException e) {
+                if (connection != null) {
+                    try {
+                        connection.rollback();
+                    } catch (SQLException ex) {
+                        throw new DAOException(ex.getMessage(), ex);
+                    }
+                }
+                throw new DAOException(e.getMessage(), e);
             } catch (Exception e) {
                 throw new DAOException("Errore nell'inserimento della linea.", e);
             }
@@ -141,6 +156,8 @@ public class TragittoImpl implements Tragitto {
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
+                connection.setAutoCommit(false);
+
                 statement.setInt(1, tragitto.getArrivoCodiceFermata());
                 statement.setInt(2, tragitto.getPartenzaCodiceFermata());
                 statement.setString(3, tragitto.getCodiceLinea());
@@ -151,6 +168,18 @@ public class TragittoImpl implements Tragitto {
 
                 LineaImpl.DAO.updateTempoPercorrenza(connection, tragitto.getCodiceLinea(), tempoPercorrenza);
 
+                connection.commit();
+                connection.setAutoCommit(true);
+
+            } catch (SQLException e) {
+                if (connection != null) {
+                    try {
+                        connection.rollback();
+                    } catch (SQLException ex) {
+                        throw new DAOException(ex.getMessage(), ex);
+                    }
+                }
+                throw new DAOException(e.getMessage(), e);
             } catch (Exception e) {
                 throw new DAOException(e.getMessage(), e);
             }
