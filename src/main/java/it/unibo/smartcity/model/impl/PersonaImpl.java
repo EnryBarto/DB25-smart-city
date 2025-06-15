@@ -58,7 +58,7 @@ public class PersonaImpl implements Persona {
 
         public static List<Persona> list(Connection connection) {
             var persone = new LinkedList<Persona>();
-            var query = "SELECT p.cognome, p.nome, p.documento, p.codice_fiscale FROM persone p";
+            var query = "SELECT p.cognome, p.nome, p.documento, p.codice_fiscale FROM PERSONE p";
             try (
                 var statement = DAOUtils.prepare(connection, query);
                 var rs = statement.executeQuery();
@@ -99,7 +99,7 @@ public class PersonaImpl implements Persona {
         }
 
         public static void insert(Connection connection, Persona persona) {
-            var query = "INSERT INTO persone (cognome, nome, documento, codice_fiscale) VALUES (?, ?, ?, ?)";
+            var query = "INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES (?, ?, ?, ?)";
             try (
                 var statement = DAOUtils.prepare(connection, query,
                 persona.getCognome(),

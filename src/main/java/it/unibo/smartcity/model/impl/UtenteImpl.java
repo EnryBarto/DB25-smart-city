@@ -81,14 +81,14 @@ public class UtenteImpl extends PersonaImpl implements Utente {
             ) {
                 while (rs.next()) {
                     utente = new UtenteImpl(
-                        rs.getString("p.cognome"),
-                        rs.getString("p.nome"),
-                        rs.getString("p.documento"),
-                        rs.getString("p.codice_fiscale"),
-                        rs.getString("u.username"),
-                        rs.getString("u.email"),
-                        rs.getString("u.telefono"),
-                        rs.getString("u.password")
+                        rs.getString("cognome"),
+                        rs.getString("nome"),
+                        rs.getString("documento"),
+                        rs.getString("codice_fiscale"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("telefono"),
+                        rs.getString("password")
                         );
                 }
             } catch (Exception e) {
@@ -138,14 +138,14 @@ public class UtenteImpl extends PersonaImpl implements Utente {
             ) {
                 while (rs.next()) {
                     var u = new UtenteImpl(
-                        rs.getString("p.cognome"),
-                        rs.getString("p.nome"),
-                        rs.getString("p.documento"),
-                        rs.getString("p.codice_fiscale"),
-                        rs.getString("u.username"),
-                        rs.getString("u.email"),
-                        rs.getString("u.telefono"),
-                        rs.getString("u.password")
+                        rs.getString("cognome"),
+                        rs.getString("nome"),
+                        rs.getString("documento"),
+                        rs.getString("codice_fiscale"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("telefono"),
+                        rs.getString("password")
                     );
                     utenti.add(u);
                 }

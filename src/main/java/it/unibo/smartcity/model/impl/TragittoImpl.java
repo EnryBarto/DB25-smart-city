@@ -56,7 +56,7 @@ public class TragittoImpl implements Tragitto {
     public static final class DAO {
 
         public static Set<Tragitto> list(Connection connection) {
-            var query = "SELECT * FROM tragitti";
+            var query = "SELECT * FROM TRAGITTI";
             var tragitti = new HashSet<Tragitto>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
@@ -137,10 +137,10 @@ public class TragittoImpl implements Tragitto {
             ) {
                 while (rs.next()) {
                     var trag = new TragittoImpl(
-                        rs.getInt("TRA.partenza_codice_fermata"),
-                        rs.getInt("TRA.arrivo_codice_fermata"),
-                        rs.getString("TRA.codice_linea"),
-                        rs.getInt("TRA.ordine")
+                        rs.getInt("partenza_codice_fermata"),
+                        rs.getInt("arrivo_codice_fermata"),
+                        rs.getString("codice_linea"),
+                        rs.getInt("ordine")
                     );
                     list.add(trag);
                 }

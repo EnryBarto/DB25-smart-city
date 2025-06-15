@@ -45,7 +45,7 @@ public class TrattaImpl implements Tratta {
     public static final class DAO {
 
         public static Set<Tratta> list(Connection connection) {
-            var query = "SELECT * FROM tratte";
+            var query = "SELECT * FROM TRATTE";
             var tratte = new HashSet<Tratta>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
@@ -65,7 +65,7 @@ public class TrattaImpl implements Tratta {
         }
 
         public static void insert(Connection connection, Tratta tratta) {
-            var query = "INSERT INTO tratte (arrivo_codice_fermata, partenza_codice_fermata, tempo_percorrenza) VALUES (?, ?, ?)";
+            var query = "INSERT INTO TRATTE (arrivo_codice_fermata, partenza_codice_fermata, tempo_percorrenza) VALUES (?, ?, ?)";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
@@ -79,7 +79,7 @@ public class TrattaImpl implements Tratta {
         }
 
         public static void delete(Connection connection, Tratta tratta) {
-            var query = "DELETE FROM tratte WHERE arrivo_codice_fermata = ? AND partenza_codice_fermata = ?";
+            var query = "DELETE FROM TRATTE WHERE arrivo_codice_fermata = ? AND partenza_codice_fermata = ?";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {

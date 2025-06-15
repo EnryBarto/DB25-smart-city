@@ -59,7 +59,7 @@ public class HubMobilitaImpl implements HubMobilita {
 
     public static final class DAO {
         public static Set<HubMobilita> list(Connection connection) {
-            var query = "SELECT * FROM hub_mobilita";
+            var query = "SELECT * FROM HUB_MOBILITA";
             var hubs = new HashSet<HubMobilita>();
             try (
                     var statement = DAOUtils.prepare(connection, query);
@@ -84,7 +84,7 @@ public class HubMobilitaImpl implements HubMobilita {
         }
 
         public static void insert(Connection connection, HubMobilita hub) {
-            var query = "INSERT INTO hub_mobilita (longitudine, latitudine, nome, indirizzo, codice_fermata) VALUES (?, ?, ?, ?, ?)";
+            var query = "INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo, codice_fermata) VALUES (?, ?, ?, ?, ?)";
             try (
                     var statement = DAOUtils.prepare(connection, query);) {
                 statement.setString(1, hub.getLongitudine());
@@ -99,7 +99,7 @@ public class HubMobilitaImpl implements HubMobilita {
         }
 
         public static void delete(Connection connection, HubMobilita hub) {
-            var query = "DELETE FROM hub_mobilita WHERE codice_hub = ?";
+            var query = "DELETE FROM HUB_MOBILITA WHERE codice_hub = ?";
             try (
                     var statement = DAOUtils.prepare(connection, query);) {
                 statement.setInt(1, hub.getCodiceHub());

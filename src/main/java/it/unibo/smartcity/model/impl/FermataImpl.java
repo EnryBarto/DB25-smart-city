@@ -49,7 +49,7 @@ public class FermataImpl implements Fermata {
 
     public static final class DAO {
         public static Set<Fermata> list(Connection connection) {
-            var query = "SELECT * FROM fermate";
+            var query = "SELECT * FROM FERMATE";
             var fermate = new HashSet<Fermata>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
@@ -75,7 +75,7 @@ public class FermataImpl implements Fermata {
         }
 
         public static void insert(Connection connection, Fermata fermata) {
-            var query = "INSERT INTO fermate (nome, indirizzo_via, indirizzo_civico, indirizzo_comune, indirizzo_cap, longitudine, latitudine) VALUES (?, ?, ?, ?, ?)";
+            var query = "INSERT INTO FERMATE (nome, indirizzo_via, indirizzo_civico, indirizzo_comune, indirizzo_cap, longitudine, latitudine) VALUES (?, ?, ?, ?, ?)";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
@@ -93,7 +93,7 @@ public class FermataImpl implements Fermata {
         }
 
         public static void delete(Connection connection, int codiceFermata) {
-            var query = "DELETE FROM fermate WHERE codice_fermata = ?";
+            var query = "DELETE FROM FERMATE WHERE codice_fermata = ?";
             try (
                 var statement = DAOUtils.prepare(connection, query);
             ) {
