@@ -14,9 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.data.TragittoConTempo;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.OrarioLinea;
-import it.unibo.smartcity.model.impl.TragittoImpl.TragittiConTempo;
 
 class TimetablePanel extends JPanel {
 
@@ -44,7 +44,7 @@ class TimetablePanel extends JPanel {
         list.forEach(l -> this.linesList.addItem(l.getCodiceLinea()));
     }
 
-    public void showLineTimetable(String codiceLinea, List<TragittiConTempo> tragittiConTempo, List<OrarioLinea> orariLinee) {
+    public void showLineTimetable(String codiceLinea, List<TragittoConTempo> tragittiConTempo, List<OrarioLinea> orariLinee) {
         if (timeTable != null) {
             this.remove(timeTable);
         }
@@ -69,9 +69,9 @@ class TimetablePanel extends JPanel {
         Object[][] data = new Object[numFermate][numOrari+1];
 
         for(int i=0; i < numFermate-1; i++) {
-            data[i][0] = tragittiConTempo.get(i).tragitto().getPartenzaCodiceFermata();
+            data[i][0] = tragittiConTempo.get(i).partenza().getCodiceFermata() + ": " + tragittiConTempo.get(i).partenza().getNome();
         }
-        data[numFermate-1][0] = tragittiConTempo.getLast().tragitto().getArrivoCodiceFermata();
+        data[numFermate-1][0] = tragittiConTempo.getLast().arrivo().getCodiceFermata() + ": " + tragittiConTempo.getLast().arrivo().getNome();
 
         for(int i=1; i <= numOrari; i++) {
 

@@ -16,10 +16,9 @@ import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.Queries;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
+import it.unibo.smartcity.data.TragittoConTempo;
 
 public class TragittoImpl implements Tragitto {
-
-    public record TragittiConTempo(Tragitto tragitto, int tempoPercorrenza){}
 
     private final int partenzaCodiceFermata;
     private final int arrivoCodiceFermata;
@@ -189,20 +188,40 @@ public class TragittoImpl implements Tragitto {
 
         }
 
-        public static List<TragittiConTempo> tragittiByLinea(Connection connection, String codiceLinea) {
-            var tragitti = new ArrayList<TragittiConTempo>();
+        public static List<TragittoConTempo> tragittiByLinea(Connection connection, String codiceLinea) {
+            var tragitti = new ArrayList<TragittoConTempo>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_TRATTE_PER_LINEA, codiceLinea);
                 var rs = statement.executeQuery();
             ){
                 while (rs.next()) {
-                    var tragitto = new TragittiConTempo(
+                    var tragitto = new TragittoConTempo(
                         new TragittoImpl(
-                            rs.getInt("partenza_codice_fermata"),
-                            rs.getInt("arrivo_codice_fermata"),
+                            rs.getInt("t.partenza_codice_fermata"),
+                            rs.getInt("t.arrivo_codice_fermata"),
                             codiceLinea,
-                            rs.getInt("ordine")),
-                        rs.getInt("tempo_percorrenza")
+                            rs.getInt("t.ordine")),
+                        rs.getInt("tr.tempo_percorrenza"),
+                        new FermataImpl(
+                            rs.getInt("f_par.codice_fermata"),
+                            rs.getString("f_par.nome"),
+                            rs.getString("f_par.indirizzo_via"),
+                            rs.getString("f_par.indirizzo_civico"),
+                            rs.getString("f_par.indirizzo_comune"),
+                            rs.getInt("f_par.indirizzo_cap"),
+                            rs.getString("f_par.longitudine"),
+                            rs.getString("f_par.latitudine")
+                        ),
+                        new FermataImpl(
+                            rs.getInt("f_arr.codice_fermata"),
+                            rs.getString("f_arr.nome"),
+                            rs.getString("f_arr.indirizzo_via"),
+                            rs.getString("f_arr.indirizzo_civico"),
+                            rs.getString("f_arr.indirizzo_comune"),
+                            rs.getInt("f_arr.indirizzo_cap"),
+                            rs.getString("f_arr.longitudine"),
+                            rs.getString("f_arr.latitudine")
+                        )
                     );
                     tragitti.add(tragitto);
                 }

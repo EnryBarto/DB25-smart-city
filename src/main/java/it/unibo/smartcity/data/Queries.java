@@ -412,10 +412,11 @@ public final class Queries {
 
     public static final String LIST_TRATTE_PER_LINEA =
     """
-        SELECT t.arrivo_codice_fermata, t.partenza_codice_fermata, t.ordine, tr.tempo_percorrenza
+        SELECT t.arrivo_codice_fermata, t.partenza_codice_fermata, t.ordine, tr.tempo_percorrenza, f_par.*, f_arr.*
         FROM TRAGITTI t
-        JOIN TRATTE tr ON tr.arrivo_codice_fermata = t.arrivo_codice_fermata
-        AND tr.partenza_codice_fermata = t.partenza_codice_fermata
+        JOIN TRATTE tr ON (tr.arrivo_codice_fermata = t.arrivo_codice_fermata AND tr.partenza_codice_fermata = t.partenza_codice_fermata)
+        JOIN FERMATE f_par ON f_par.codice_fermata = tr.partenza_codice_fermata
+        JOIN FERMATE f_arr ON f_arr.codice_fermata = tr.arrivo_codice_fermata
 		WHERE t.codice_linea = ?
         ORDER BY t.ordine ASC
         ;
