@@ -472,4 +472,11 @@ public final class Queries {
         SET attiva = ?
         WHERE codice_linea = ?
     """;
+
+    public static final String LIST_LINEE_NON_ATTIVE =
+    """
+        SELECT *
+        FROM LINEE
+        WHERE attiva IS FALSE;
+    """;
 }

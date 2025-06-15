@@ -412,4 +412,9 @@ public class SwingView implements View {
     public void updateAutistiAttuazioneCorse(List<Dipendente> autisti) {
         ((AttuazioneCorseManagementPanel)this.tabs.get("Gest. Att. Corse")).updateAutistiList(autisti);
     }
+
+    @Override
+    public void updateAttivaLineePanel(List<Linea> linee) {
+        ((MaintenancePanel)this.tabs.get("Manutenzioni")).showAttivaLineePanel(linee);
+    }
 }

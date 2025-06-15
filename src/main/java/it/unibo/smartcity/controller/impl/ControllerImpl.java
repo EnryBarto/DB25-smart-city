@@ -617,4 +617,16 @@ public class ControllerImpl implements Controller {
     public List<Linea> getLinee() {
         return LineaImpl.DAO.list(connection);
     }
+
+    @Override
+    public void updateAttivaLineePanel() {
+        var linee = LineaImpl.DAO.listLineeNonAttive(connection);
+        views.forEach(v -> v.updateAttivaLineePanel(linee));
+    }
+
+    @Override
+    public void attivaLinea(String codiceLinea) {
+        checkNotNull(codiceLinea);
+        LineaImpl.DAO.attivaLinea(connection, codiceLinea);
+    }
 }

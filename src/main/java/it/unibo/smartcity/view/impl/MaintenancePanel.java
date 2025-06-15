@@ -30,6 +30,7 @@ import static com.google.common.base.Preconditions.*;
 
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
+import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
@@ -48,7 +49,8 @@ public class MaintenancePanel extends JPanel {
         "estrai aziende senza manutenzione nell'ultimo mese",
         "estrai manutenzioni dato un mezzo",
         "manutenzione mezzi",
-        "manutenzione linee"
+        "manutenzione linee",
+        "attiva linee"
     ));
 
     private final Controller controller;
@@ -84,10 +86,53 @@ public class MaintenancePanel extends JPanel {
                 case "estrai manutenzioni dato un mezzo" -> controller.updateManutPerMezzo();
                 case "manutenzione mezzi" -> controller.updateManutMezziPanel();
                 case "manutenzione linee" -> controller.updateManutLineePanel();
+                case "attiva linee" -> controller.updateAttivaLineePanel();
                 default -> throw new IllegalArgumentException("Opzione non valida: " + this.optionList.getSelectedItem());
             }
         });
         northPanel.add(btn);
+    }
+
+    public void showAttivaLineePanel(List<Linea> linee) {
+        clearContentExceptNorth();
+
+        var lineaPanel = new JPanel(new BorderLayout());
+        lineaPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(52, 152, 219), 2),
+            BorderFactory.createEmptyBorder(60, 30, 20, 30)
+        ));
+        lineaPanel.setBackground(Color.WHITE);
+
+        var selectPanel = new JPanel();
+        JLabel lineaLabel = new JLabel("linea :");
+        JComboBox<String> combo = new JComboBox<>();
+        combo.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        combo.setMaximumSize(combo.getPreferredSize());
+        combo.setEditable(false);
+        linee.forEach(l -> combo.addItem(l.getCodiceLinea()));
+
+        selectPanel.add(lineaLabel);
+        selectPanel.add(combo);
+
+        var aggiungiBtn = new JButton("Attiva");
+        aggiungiBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        aggiungiBtn.setBackground(new Color(40, 167, 69));
+        aggiungiBtn.setForeground(Color.WHITE);
+        aggiungiBtn.setFocusPainted(false);
+        aggiungiBtn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        aggiungiBtn.setAlignmentX(CENTER_ALIGNMENT);
+        aggiungiBtn.addActionListener(e -> {
+            if (combo.getSelectedIndex() != -1) {
+                this.controller.attivaLinea((String)combo.getSelectedItem());
+            }
+        });
+
+        lineaPanel.add(selectPanel);
+        rightPanel.add(Box.createVerticalStrut(20));
+        lineaPanel.add(aggiungiBtn);
+        this.add(lineaPanel, BorderLayout.CENTER);
+        this.revalidate();
+        this.repaint();
     }
 
     public void showManutMezziPanel() {

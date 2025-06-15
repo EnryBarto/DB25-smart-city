@@ -278,13 +278,45 @@ public class LineaImpl implements Linea {
         }
 
         public static void changeAttiva(Connection connection, String codiceLinea, int value) {
-
             try(
                 var statement = DAOUtils.prepare(connection, Queries.UPDATE_LINEA_ATTIVA, value, codiceLinea);
             ) {
                 statement.executeUpdate();
             } catch (Exception e) {
                 throw new DAOException("Errore nella modifica dell'attivita della linea", e);
+            }
+        }
+
+        public static List<Linea> listLineeNonAttive (Connection connection) {
+            var linee = new ArrayList<Linea>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_LINEE_NON_ATTIVE);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var linea = new LineaImpl(
+                        rs.getString("codice_linea"),
+                        rs.getInt("tempo_percorrenza"),
+                        rs.getDate("inizio_validita"),
+                        rs.getDate("inizio_validita"),
+                        rs.getBoolean("attiva"),
+                        rs.getInt("codice_tipo_mezzo")
+                    );
+                    linee.add(linea);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione delle linee non attive", e);
+            }
+            return linee;
+        }
+
+        public static void attivaLinea(Connection connection, String codiceLinea) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.UPDATE_LINEA_ATTIVA, 1, codiceLinea)
+            ) {
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'attivazione della linea'", e);
             }
         }
     }
