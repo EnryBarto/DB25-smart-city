@@ -23,7 +23,7 @@ public record ListLineeCinqueContrDiecMul(String codiceLinea) {
                     lineeCinqueContrDiecMul.add(new ListLineeCinqueContrDiecMul(rs.getString("codice_linea")));
                 }
             } catch (final Exception e) {
-                throw new DAOException("Errore nell'estrazione delle linee con < cinque controlli e > dieci multe", e);
+                throw new DAOException("Errore nell'estrazione delle linee con < 5 controlli e > 10 multe", e);
             }
             return lineeCinqueContrDiecMul;
         }
