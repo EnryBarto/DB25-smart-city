@@ -174,4 +174,6 @@ public interface Controller {
     void updateLineeMulte(Date dataInizio, Date dataFine);
 
     void updateVariazioniServizio(Linea selectedLinea);
+
+    List<Linea> getLinee();
 }
