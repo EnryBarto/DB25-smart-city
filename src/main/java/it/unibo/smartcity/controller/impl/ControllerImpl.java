@@ -604,4 +604,9 @@ public class ControllerImpl implements Controller {
     public void addAttuazioneCorsa(LocalDate data, OrarioLinea orario, Dipendente dipendente, String codMezzo) {
         AttuazioneCorsaImpl.DAO.insert(connection, data, orario, dipendente, codMezzo);
     }
+
+    @Override
+    public List<Linea> getLinee() {
+        return LineaImpl.DAO.list(connection);
+    }
 }

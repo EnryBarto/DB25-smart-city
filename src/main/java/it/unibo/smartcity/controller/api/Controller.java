@@ -185,4 +185,6 @@ public interface Controller {
     void updateAutistiListCreazioneCorsa();
 
     void addAttuazioneCorsa(LocalDate data, OrarioLinea orario, Dipendente dipendente, String codMezzo);
+
+    List<Linea> getLinee();
 }

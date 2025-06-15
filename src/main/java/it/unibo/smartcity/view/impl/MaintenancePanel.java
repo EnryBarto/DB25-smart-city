@@ -155,7 +155,7 @@ public class MaintenancePanel extends JPanel {
         );
         createLeftPanel(
             "linea",
-            () -> controller.getManutLinee().stream().map(l -> l.getCodiceLinea() + "-" + l.getNome()).toList(),
+            () -> controller.getLinee().stream().map(l -> l.getCodiceLinea()).toList(),
             fields -> new ManutenzioneLineaImpl(
                 fields.comboValue(),
                 java.sql.Date.valueOf(fields.dataInizio()),

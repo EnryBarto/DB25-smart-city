@@ -189,7 +189,7 @@ public final class Queries {
     """
         SELECT l.codice_linea codice_linea_in_manutenzione, m.data_inizio, m.data_fine, m.nome, m.descrizione, a.p_iva, a.email, a.telefono, a.ragione_sociale, ls.codice_linea codice_linea_sostituta
         FROM LINEE l JOIN MANUTENZIONI_LINEE m ON (m.codice_linea = l.codice_linea)
-        RIGHT JOIN AZIENDE a ON (m.p_iva = a.p_iva)
+        LEFT JOIN AZIENDE a ON (m.p_iva = a.p_iva)
         JOIN SOSTITUZIONI s ON (m.codice_linea = s.sost_manut_codice_linea AND m.data_inizio = s.sost_manut_data_inizio)
         JOIN LINEE ls ON (ls.codice_linea = s.codice_linea)
         WHERE l.codice_linea = ?;
@@ -224,7 +224,7 @@ public final class Queries {
     public static final String CINQUE_MANUT_PIU_GRAVOSE =
     //il controllo dei punteggi si farà a livello applicativo
     """
-        SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_inizio, ml.data_fine) AS durata_lavoro,
+        SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_fine, ml.data_inizio) AS durata_lavoro,
             COUNT(*) AS num_linee_sostitutive
         FROM MANUTENZIONI_LINEE ml
         JOIN SOSTITUZIONI s ON ml.codice_linea = s.sost_manut_codice_linea
@@ -244,8 +244,8 @@ public final class Queries {
                                 WHERE l1.codice_linea = l.codice_linea
                                 AND ac1.codice_corsa IN (SELECT ac2.codice_corsa							# seleziono i giorni in cui ho quelle condizioni
                                             FROM attuazioni_corse ac2
-                                            RIGHT JOIN controlli c ON (c.codice_corsa = ac2.codice_corsa)
-                                            RIGHT JOIN multe m ON (m.codice_corsa = ac2.codice_corsa)
+                                            LEFT JOIN controlli c ON (c.codice_corsa = ac2.codice_corsa)
+                                            LEFT JOIN multe m ON (m.codice_corsa = ac2.codice_corsa)
                                             GROUP BY ac2.data
                                             HAVING COUNT(m.codice_multa) <= 10 AND COUNT(c.codice_corsa) > 5));
             """;
