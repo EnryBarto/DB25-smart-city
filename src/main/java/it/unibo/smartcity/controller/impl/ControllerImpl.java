@@ -165,7 +165,9 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void showTimetable(String linea) {
-        views.forEach(v -> v.showLineTimetable(linea));
+        var tragittiConTempo = TragittoImpl.DAO.tragittiByLinea(connection, linea);
+        var orariLinea = OrarioLineaImpl.DAO.listByCodiceLinea(connection, linea);
+        views.forEach(v -> v.showLineTimetable(linea, tragittiConTempo, orariLinea));
     }
 
     @Override

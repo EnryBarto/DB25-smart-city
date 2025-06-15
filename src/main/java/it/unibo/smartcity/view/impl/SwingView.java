@@ -52,6 +52,7 @@ import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
+import it.unibo.smartcity.data.TragittoConTempo;
 import it.unibo.smartcity.view.api.View;
 
 public class SwingView implements View {
@@ -104,10 +105,9 @@ public class SwingView implements View {
     }
 
     @Override
-    public void showLineTimetable(String codLinea) {
+    public void showLineTimetable(String codLinea, List<TragittoConTempo> tragitti, List<OrarioLinea> orariLinea) {
         this.tabPane.setSelectedComponent(this.tabs.get("Orari"));
-        ((TimetablePanel)this.tabs.get("Orari")).showLineTimetable(codLinea);
-        // TODO: Mostra l'orario della linea scelta
+        ((TimetablePanel)this.tabs.get("Orari")).showLineTimetable(codLinea, tragitti, orariLinea);
     }
 
     @Override

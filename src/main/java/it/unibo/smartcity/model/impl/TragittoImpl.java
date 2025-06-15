@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +16,7 @@ import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.Queries;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
+import it.unibo.smartcity.data.TragittoConTempo;
 
 public class TragittoImpl implements Tragitto {
 
@@ -125,7 +127,7 @@ public class TragittoImpl implements Tragitto {
                 }
                 throw new DAOException(e.getMessage(), e);
             } catch (Exception e) {
-                throw new DAOException("Errore nell'inserimento della linea.", e);
+                throw new DAOException("Errore nell'inserimento del tragitto.\n" + e.getMessage(), e);
             }
         }
 
@@ -186,5 +188,47 @@ public class TragittoImpl implements Tragitto {
 
         }
 
+        public static List<TragittoConTempo> tragittiByLinea(Connection connection, String codiceLinea) {
+            var tragitti = new ArrayList<TragittoConTempo>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_TRATTE_PER_LINEA, codiceLinea);
+                var rs = statement.executeQuery();
+            ){
+                while (rs.next()) {
+                    var tragitto = new TragittoConTempo(
+                        new TragittoImpl(
+                            rs.getInt("t.partenza_codice_fermata"),
+                            rs.getInt("t.arrivo_codice_fermata"),
+                            codiceLinea,
+                            rs.getInt("t.ordine")),
+                        rs.getInt("tr.tempo_percorrenza"),
+                        new FermataImpl(
+                            rs.getInt("f_par.codice_fermata"),
+                            rs.getString("f_par.nome"),
+                            rs.getString("f_par.indirizzo_via"),
+                            rs.getString("f_par.indirizzo_civico"),
+                            rs.getString("f_par.indirizzo_comune"),
+                            rs.getInt("f_par.indirizzo_cap"),
+                            rs.getString("f_par.longitudine"),
+                            rs.getString("f_par.latitudine")
+                        ),
+                        new FermataImpl(
+                            rs.getInt("f_arr.codice_fermata"),
+                            rs.getString("f_arr.nome"),
+                            rs.getString("f_arr.indirizzo_via"),
+                            rs.getString("f_arr.indirizzo_civico"),
+                            rs.getString("f_arr.indirizzo_comune"),
+                            rs.getInt("f_arr.indirizzo_cap"),
+                            rs.getString("f_arr.longitudine"),
+                            rs.getString("f_arr.latitudine")
+                        )
+                    );
+                    tragitti.add(tragitto);
+                }
+            } catch (Exception e) {
+                throw new DAOException("failed to list tragitti by linea", e);
+            }
+            return tragitti;
+        }
     }
 }

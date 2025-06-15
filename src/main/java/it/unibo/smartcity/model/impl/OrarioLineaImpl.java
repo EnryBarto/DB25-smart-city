@@ -115,6 +115,5 @@ public class OrarioLineaImpl implements OrarioLinea {
             }
             return orari;
         }
-
     }
 }
