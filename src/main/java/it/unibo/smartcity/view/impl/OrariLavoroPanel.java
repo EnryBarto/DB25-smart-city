@@ -21,7 +21,7 @@ public class OrariLavoroPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private JScrollPane tableArea;
-    private final static String[] columnNames = {"Data", "Giorno", "Linea", "Ora Partenza"};
+    private final static String[] columnNames = {"Data", "Giorno", "Linea", "Ora Partenza", "Visualizza"};
     private final Controller controller;
 
     public OrariLavoroPanel(final Controller controller) {
@@ -51,7 +51,7 @@ public class OrariLavoroPanel extends JPanel {
                 return column == 4; // La colonna dei pulsanti è l'unica modificabile
             }
         };
-        // Renderer per la colonna dei pulsanti (colonna 4)
+        // Renderer per la colonna dei pulsanti (colonna 5)
         tabella.getColumnModel().getColumn(4).setCellRenderer((table, value, isSelected, hasFocus, row, column) -> {
             return (JButton) value;
         });
