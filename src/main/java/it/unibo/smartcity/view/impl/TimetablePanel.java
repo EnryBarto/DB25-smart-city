@@ -52,6 +52,8 @@ class TimetablePanel extends JPanel {
         int numOrari = orariLinee.size();
         int numFermate = tragittiConTempo.size()+1;
 
+        this.linesList.setSelectedItem(codiceLinea);
+
         if (numOrari == 0 || numFermate == 1) {
             this.timeTable = new JLabel("Non sono previste orari e/o fermate per questa linea");
             this.add(this.timeTable, BorderLayout.CENTER);
