@@ -2,6 +2,8 @@ package it.unibo.smartcity.model.api;
 
 import java.util.Optional;
 
+import it.unibo.smartcity.model.impl.Indirizzo;
+
 public interface HubMobilita {
 
     int getCodiceHub();
@@ -12,7 +14,7 @@ public interface HubMobilita {
 
     String getNome();
 
-    String getIndirizzo();
+    Indirizzo getIndirizzo();
 
     Optional<Integer> getCodiceFermata();
 
