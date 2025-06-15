@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +20,6 @@ import javax.swing.table.TableCellRenderer;
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
-import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.data.MediaSoldiMulte;
 import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
@@ -44,7 +42,7 @@ public class StatisticsPanel extends JPanel {
     private final Controller controller;
     private final JPanel northPanel = new JPanel(new FlowLayout());
     private final JComboBox<String> optionList = new JComboBox<>();
-    private LineePiuMultePanel lineePiuMultePanel = new LineePiuMultePanel();
+    private LineePiuMultePanel lineePiuMultePanel;
     private LineeControlliMultePanel lineeMulteControlli;
     private MediaSoldiMultePanel mediaSoldiMultePanel = new MediaSoldiMultePanel();
 
@@ -56,7 +54,7 @@ public class StatisticsPanel extends JPanel {
         }
         this.controller = controller;
         this.lineeMulteControlli = new LineeControlliMultePanel(controller);
-
+        this.lineePiuMultePanel = new LineePiuMultePanel(controller);
         this.add(northPanel, BorderLayout.NORTH);
 
         JLabel lbl = new JLabel("Scegli una opzione");
@@ -75,7 +73,6 @@ public class StatisticsPanel extends JPanel {
                 case "estrai manutenzioni dato un mezzo" -> controller.updateManutPerMezzo();
                 case "estrai le linee con più multe" -> {
                     this.showPanel(lineePiuMultePanel);
-                    controller.updateLineeMulte(Date.valueOf("2023-01-01"), Date.valueOf("2025-12-31"));
                 }
                 case "estrai le linee con < di 5 controlli e più di 10 multe al giorno" -> {
                     this.showPanel(lineeMulteControlli);

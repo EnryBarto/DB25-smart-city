@@ -28,7 +28,7 @@ create table ABBONAMENTI (
      constraint ID_ABBONAMENTO primary key (codice_abbonamento));
 
 create table ATTUAZIONI_CORSE (
-     codice_corsa bigint not null,
+     codice_corsa bigint auto_increment not null,
      data date not null,
      codice_orario bigint not null,
      n_immatricolazione varchar(20) not null,
@@ -59,17 +59,17 @@ create table CAUSALI_MULTE (
      reato varchar(255) not null,
      prezzo_base decimal(8,2) not null,
      prezzo_massimo decimal(8,2) not null,
+     check (prezzo_base > 0 and prezzo_massimo > prezzo_base),
      constraint SID_CAUSALE_MULTA unique (reato),
-     constraint ID_CAUSALE_MULTA primary key (codice_causale)
-     check prezzo_base > 0 and prezzo_massimo > prezzo_base);
+     constraint ID_CAUSALE_MULTA primary key (codice_causale));
 
 create table CONTENUTI (
      codice_hub int not null,
      codice_contenuto int not null,
      posti_max int not null,
      posti_disponibili int not null,
-     constraint ID_CONTENUTO primary key (codice_hub, codice_contenuto)
-     check posti_max > 0 and posti_disponibili <= posti_max and posti_disponibili >= 0);
+     check (posti_max > 0 and posti_disponibili <= posti_max and posti_disponibili >= 0),
+     constraint ID_CONTENUTO primary key (codice_hub, codice_contenuto));
 
 create table CONTENUTI_HUB (
      codice_contenuto int auto_increment not null,
@@ -124,8 +124,8 @@ create table LINEE (
      fine_validita date,
      attiva boolean,
      codice_tipo_mezzo int not null,
-     constraint ID_LINEA_ID primary key (codice_linea)
-     check inizio_validita <= fine_validita);
+     check (inizio_validita <= fine_validita),
+     constraint ID_LINEA_ID primary key (codice_linea));
 
 create table MANUTENZIONI_LINEE (
      codice_linea varchar(30) not null,
@@ -134,8 +134,8 @@ create table MANUTENZIONI_LINEE (
      nome varchar(50) not null,
      descrizione varchar(255) not null,
      p_iva char(11),
-     constraint ID_MANUTENZIONE_LINEA primary key (data_inizio, codice_linea)
-     check data_inizio <= data_fine);
+     check (data_inizio <= data_fine),
+     constraint ID_MANUTENZIONE_LINEA primary key (data_inizio, codice_linea));
 
 create table MANUTENZIONI_MEZZI (
      n_immatricolazione varchar(20) not null,
@@ -144,8 +144,8 @@ create table MANUTENZIONI_MEZZI (
      nome varchar(50) not null,
      descrizione varchar(255) not null,
      p_iva char(11),
-     constraint ID_MANUTENZIONE_MEZZO primary key (data_inizio, n_immatricolazione)
-     check data_inizio <= data_fine);
+     check (data_inizio <= data_fine),
+     constraint ID_MANUTENZIONE_MEZZO primary key (data_inizio, n_immatricolazione));
 
 create table MEZZI (
      n_immatricolazione varchar(20) not null,
@@ -161,8 +161,8 @@ create table MULTE (
      codice_corsa bigint not null,
      documento varchar(20) not null,
      username varchar(30) not null,
-     constraint ID_MULTA primary key (codice_multa)
-     check importo > 0);
+     check (importo > 0),
+     constraint ID_MULTA primary key (codice_multa));
 
 create table ORARI_LINEE (
      codice_orario bigint auto_increment not null,
@@ -189,15 +189,15 @@ create table TARIFFE_ABBONAMENTI (
      nome varchar(30) not null,
      num_giorni int not null,
      prezzo decimal(6,2) not null,
-     constraint ID_TARIFFA_ABBONAMENTO primary key (num_giorni)
-     check prezzo > 0 and num_giorni > 0);
+     check (prezzo > 0 and num_giorni > 0),
+     constraint ID_TARIFFA_ABBONAMENTO primary key (num_giorni));
 
 create table TARIFFE_BIGLIETTI (
      nome varchar(30) not null,
      durata int not null,
      prezzo decimal(6,2) not null,
-     constraint ID_TARIFFA_BIGLIETTO primary key (durata)
-     check durata > 0 and prezzo > 0);
+     check (durata > 0 and prezzo > 0),
+     constraint ID_TARIFFA_BIGLIETTO primary key (durata));
 
 create table TIPOLOGIE_MEZZI (
      codice_tipo_mezzo int auto_increment not null,
@@ -209,15 +209,15 @@ create table TRAGITTI (
      arrivo_codice_fermata int not null,
      codice_linea varchar(30) not null,
      ordine int not null,
-     constraint ID_TRAGITTO_ID primary key (codice_linea, partenza_codice_fermata, arrivo_codice_fermata)
-     check ordine > 0);
+     check (ordine > 0),
+     constraint ID_TRAGITTO_ID primary key (codice_linea, partenza_codice_fermata, arrivo_codice_fermata));
 
 create table TRATTE (
      arrivo_codice_fermata int not null,
      partenza_codice_fermata int not null,
      tempo_percorrenza int not null,
-     constraint ID_TRATTA primary key (partenza_codice_fermata, arrivo_codice_fermata)
-     check tempo_percorrenza >= 0);
+     check (tempo_percorrenza >= 0),
+     constraint ID_TRATTA primary key (partenza_codice_fermata, arrivo_codice_fermata));
 
 create table UTENTI (
      username varchar(30) not null,
