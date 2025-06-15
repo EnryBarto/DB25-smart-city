@@ -2,6 +2,7 @@ package it.unibo.smartcity.view.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -96,40 +97,61 @@ public class MaintenancePanel extends JPanel {
     public void showAttivaLineePanel(List<Linea> linee) {
         clearContentExceptNorth();
 
-        var lineaPanel = new JPanel(new BorderLayout());
+        // Main panel
+        var lineaPanel = new JPanel();
+        lineaPanel.setLayout(new BoxLayout(lineaPanel, BoxLayout.Y_AXIS));
         lineaPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(52, 152, 219), 2),
-            BorderFactory.createEmptyBorder(60, 30, 20, 30)
+            BorderFactory.createEmptyBorder(40, 60, 40, 60)
         ));
         lineaPanel.setBackground(Color.WHITE);
 
-        var selectPanel = new JPanel();
-        JLabel lineaLabel = new JLabel("linea :");
+        // Title label
+        var titleLabel = new JLabel("Attiva Linea");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleLabel.setForeground(new Color(52, 73, 94));
+        lineaPanel.add(titleLabel);
+        lineaPanel.add(Box.createVerticalStrut(30));
+
+        // Combo box panel
+        var formPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        formPanel.setBackground(Color.WHITE);
+        var lineaLabel = new JLabel("Linea:");
+        lineaLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+
         JComboBox<String> combo = new JComboBox<>();
         combo.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         combo.setMaximumSize(combo.getPreferredSize());
+        combo.setFont(new Font("Arial", Font.PLAIN, 14));
+        combo.setPreferredSize(new Dimension(250, 30));
         combo.setEditable(false);
         linee.forEach(l -> combo.addItem(l.getCodiceLinea()));
 
-        selectPanel.add(lineaLabel);
-        selectPanel.add(combo);
+        formPanel.add(lineaLabel);
+        formPanel.add(combo);
+        lineaPanel.add(formPanel);
+        lineaPanel.add(Box.createVerticalStrut(30));
 
+        // Button
         var aggiungiBtn = new JButton("Attiva");
-        aggiungiBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        aggiungiBtn.setFont(new Font("Arial", Font.BOLD, 15));
         aggiungiBtn.setBackground(new Color(40, 167, 69));
         aggiungiBtn.setForeground(Color.WHITE);
         aggiungiBtn.setFocusPainted(false);
-        aggiungiBtn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
-        aggiungiBtn.setAlignmentX(CENTER_ALIGNMENT);
+        aggiungiBtn.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
+        aggiungiBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         aggiungiBtn.addActionListener(e -> {
             if (combo.getSelectedIndex() != -1) {
-                this.controller.attivaLinea((String)combo.getSelectedItem());
+                this.controller.attivaLinea((String) combo.getSelectedItem());
             }
         });
-
-        lineaPanel.add(selectPanel);
-        rightPanel.add(Box.createVerticalStrut(20));
         lineaPanel.add(aggiungiBtn);
+
+        // Add spacing at the bottom
+        lineaPanel.add(Box.createVerticalGlue());
+
+        // Final placement
         this.add(lineaPanel, BorderLayout.CENTER);
         this.revalidate();
         this.repaint();
