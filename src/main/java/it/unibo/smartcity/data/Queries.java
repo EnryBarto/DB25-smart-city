@@ -224,7 +224,7 @@ public final class Queries {
     public static final String CINQUE_MANUT_PIU_GRAVOSE =
     //il controllo dei punteggi si farà a livello applicativo
     """
-        SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_inizio, ml.data_fine) AS durata_lavoro,
+        SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_fine, ml.data_inizio) AS durata_lavoro,
             COUNT(*) AS num_linee_sostitutive
         FROM MANUTENZIONI_LINEE ml
         JOIN SOSTITUZIONI s ON ml.codice_linea = s.sost_manut_codice_linea

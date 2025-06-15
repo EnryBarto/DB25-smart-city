@@ -7,11 +7,38 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{longtable}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[utf8]{inputenc}
 
 \usepackage{enumitem}
 \usepackage{amsmath}
 \usepackage{geometry}
 \geometry{margin=1in}
+
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{sqlstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegray},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=SQL
+}
 
 \usepackage{newlfont}
 \usepackage{gensymb}
@@ -339,7 +366,7 @@ Indichiamo con:
 \begin{enumerate}[label=\textbf{\arabic*)}]
 
   % -------------------------------------------------------------------------------------------------------------------------------------------
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
    \item \textbf{Visualizzazione di tutte le linee attive} \label{op1} \\
     \[ {O_{settimana} = 4.000} \]
@@ -350,8 +377,8 @@ Indichiamo con:
     \item Il codice della \texttt{LINEA}
     \item La prima e l'ultima \texttt{FERMATA}
     \item Il nome della \texttt{TIPOLOGIA MEZZO} utilizzato
-    \end{itemize}  
-    
+    \end{itemize}
+
     \begin{itemize}
     \item \textbf{Analisi con attributo ridondante \texttt{attiva} su \texttt{ORDINARIA}}
     \begin{center}
@@ -375,7 +402,7 @@ Indichiamo con:
     \hline
     FERMATA (ARRIVO) & E & 75 & L \\
     \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 1.950, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
@@ -408,7 +435,7 @@ Indichiamo con:
     \hline
     FERMATA (ARRIVO) & E & 75 & L \\
     \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 1.960, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
@@ -418,8 +445,8 @@ Indichiamo con:
     \end{center}
     \end{itemize}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
         \item \textbf{Visualizzazione fermate e orari di una linea} \label{op2} \\
         \[ {O_{settimana} = 3.500} \]
@@ -443,7 +470,7 @@ Indichiamo con:
         \hline
         FERMATA & E & 40 & L \\
         \hline
-        \multicolumn{4}{c}{\textbf{Totale}} \\    
+        \multicolumn{4}{c}{\textbf{Totale}} \\
         \multicolumn{4}{c}{${A_{lettura}}$ = 71, ${A_{scrittura}}$ = 0} \\
         \hline
         \end{tabular}
@@ -453,7 +480,7 @@ Indichiamo con:
         \end{center}
 
   % -------------------------------------------------------------------------------------------------------------------------------------------
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
         \item \textbf{Visualizzazione degli hub mobilità} \label{op3} \\
 	\[{O_{settimana} = 500}\]
@@ -482,17 +509,17 @@ Indichiamo con:
 	\hline
 	FERMATA & E & 165 & L \\
 	\hline
-        \multicolumn{4}{c}{\textbf{Totale}} \\    
+        \multicolumn{4}{c}{\textbf{Totale}} \\
         \multicolumn{4}{c}{${A_{lettura}}$ = 1290, ${A_{scrittura}}$ = 0} \\
         \hline
 	\end{tabular}
-    \end{table}	
+    \end{table}
     \begin{center}
     ${C_{tot} = {O_{settimana}}\cdot{A_{lettura}}= 645.000}$
     \end{center}
 
   % -------------------------------------------------------------------------------------------------------------------------------------------
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
          \item \textbf{Visualizzazione orario e linee assegnate agli autisti} \label{op4} \\
             \[ {O_{settimana} = 150} \]
@@ -511,15 +538,15 @@ Indichiamo con:
             \hline
             AUTISTA & E & 1 & L \\
             \hline
-            ATTUAZIONE CORSA & E & 1923 & L \\ 
+            ATTUAZIONE CORSA & E & 1923 & L \\
             \hline
-            ORARIO LINEA & E & 1923 & L \\ 
+            ORARIO LINEA & E & 1923 & L \\
             \hline
             LINEA & E & 1923 & L \\
             \hline
             MEZZO & E & 1923 & L \\
             \hline
-            \multicolumn{4}{c}{\textbf{Totale}} \\    
+            \multicolumn{4}{c}{\textbf{Totale}} \\
             \multicolumn{4}{c}{${A_{lettura}}$ = 7693, ${A_{scrittura}}$ = 0} \\
             \hline
             \end{tabular}
@@ -543,9 +570,9 @@ Indichiamo con:
             \hline
             AUTISTA & E & 1 & L \\
             \hline
-            ATTUAZIONE CORSA & E & 1.923 & L \\ 
+            ATTUAZIONE CORSA & E & 1.923 & L \\
             \hline
-            ORARIO LINEA & E & 1.923 & L \\ 
+            ORARIO LINEA & E & 1.923 & L \\
             \hline
             MEZZO & E & 1.923 & L \\
             \hline
@@ -554,8 +581,8 @@ Indichiamo con:
             TRAGITTO & A & 38.460 & L \\
             \hline
             TRATTA & E & 38.460 & L \\
-            \hline 
-            \multicolumn{4}{c}{\textbf{Totale}} \\    
+            \hline
+            \multicolumn{4}{c}{\textbf{Totale}} \\
             \multicolumn{4}{c}{${A_{lettura}}$ = 84.613, ${A_{scrittura}}$ = 0} \\
             \hline
             \end{tabular}
@@ -566,20 +593,20 @@ Indichiamo con:
     \end{itemize}
 
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
     \item \textbf{Visualizzazione orario e linee assegnate ai controllori} \label{op5} \\
     \[ {O_{settimana} = 100} \]
     Questa operazione serve a un controllore per visualizzare il suo orario di lavoro e come dovrà essere svolto (ovvero le linee che dovrà controllare). Poiché è necessario calcolare l'orario di arrivo della linea, l'attributo \texttt{tempo percorrenza} su \texttt{LINEA} rende superfluo il calcolo del tempo tramite la somma dei tempi di tutte le \texttt{TRATTA}: è quindi necessario eseguire i calcoli dei costi con attributo ridondante e non. \\
-    Nei conti terremo conto del fatto che l'operazione è relativa a un solo giorno, ovvero sarà eseguito un filtro delle \texttt{ATTUAZIONE CORSA}. \\ 
+    Nei conti terremo conto del fatto che l'operazione è relativa a un solo giorno, ovvero sarà eseguito un filtro delle \texttt{ATTUAZIONE CORSA}. \\
     Dati un controllore e una data, bisogna quindi visualizzare:
     \begin{itemize}
     \renewcommand\labelitemi{--}
     \item L'orario di partenza, di arrivo e il codice della \texttt{LINEA} da controllare
     \item Il numero di immatricolazione del \texttt{MEZZO} che effettua la corsa
     \end{itemize}
-	
+
     \begin{itemize}
     \item \textbf{Analisi con attributo ridondante \texttt{tempo percorrenza} su \texttt{LINEA}}
     \begin{center}
@@ -603,7 +630,7 @@ Indichiamo con:
     \hline
     MEZZO & E & 7 & L \\
    \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 2.522, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
@@ -638,7 +665,7 @@ Indichiamo con:
     \hline
     MEZZO & E & 7 & L \\
    \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 2.802, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
@@ -648,12 +675,12 @@ Indichiamo con:
     \end{center}
     \end{itemize}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
     \item \textbf{Estrazione delle linee con più convalide nell'ultimo mese} \label{op6} \\
     \[ {O_{settimana} = 3} \]
-    Dobbiamo estrarre le linee con più biglietti convalidati nell'ultimo mese. Il conteggio per la quantità di letture su \texttt{CONVALIDA} è stato fatto con una media tramite la tabella dei volumi. 
+    Dobbiamo estrarre le linee con più biglietti convalidati nell'ultimo mese. Il conteggio per la quantità di letture su \texttt{CONVALIDA} è stato fatto con una media tramite la tabella dei volumi.
     \begin{center}
 	\includegraphics[width=0.9\textwidth]{op_6}
 	\end{center}
@@ -665,13 +692,13 @@ Indichiamo con:
     \hline
     ATTUAZIONE CORSA & E & 250.000 & L \\
     \hline
-    CONVALIDA & E & 33.333 & L \\ 
+    CONVALIDA & E & 33.333 & L \\
     \hline
-    ORARIO LINEA & E & 1 & L \\ 
+    ORARIO LINEA & E & 1 & L \\
     \hline
-    LINEA & E & 1 & L \\ 
+    LINEA & E & 1 & L \\
     \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 283.335, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
@@ -680,8 +707,8 @@ Indichiamo con:
     ${C_{tot} = {O_{settimana}}\cdot {A_{lettura}} = 850.005}$
     \end{center}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
     \item \textbf{Estrazione delle manuntenzioni che coinvolgono un determinato mezzo} \label{op7} \\
     \[ {O_{settimana} = 5} \]
@@ -691,7 +718,7 @@ Indichiamo con:
     \renewcommand\labelitemi{--}
     \item Tutti i dati della \texttt{MANUTENZIONE}
     \item La partita iva dell'eventuale \texttt{AZIENDA} esterna incaricata della manutenzione
-    \end{itemize}  
+    \end{itemize}
     \begin{center}
     \includegraphics[width=0.8\textwidth]{VisualManutenzioniMezzo}
     \end{center}
@@ -707,7 +734,7 @@ Indichiamo con:
     \hline
     AZIENDA & E & 2 & L \\
     \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 7, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
@@ -716,8 +743,8 @@ Indichiamo con:
     ${C_{tot} = {O_{settimana}}\cdot{A_{lettura}}= 35}$
     \end{center}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
     \item \textbf{Estrazione delle manuntenzioni ed eventuali linee sostitutive che coinvolgono una linea (Variazioni di servizio)} \label{op8} \\
 	\[{O_{settimana} = 5}\]
@@ -729,7 +756,7 @@ Indichiamo con:
 	    \item L'azienda che effettua la manuntezione
 	    \item Tutte le linee straordinarie (codice, inizioValidita, fineValidita, partenza, arrivo) con cui viene sostituita la linea
 	\end{itemize}
-	
+
 	\begin{center}
 	\includegraphics[width=0.8\textwidth]{VisualManunLinee}
 	\end{center}
@@ -749,7 +776,7 @@ Indichiamo con:
 	\hline
 	STRAORDINARIA & E & 1 $\times$ 10 & L \\
           \hline
-          \multicolumn{4}{c}{\textbf{Totale}} \\    
+          \multicolumn{4}{c}{\textbf{Totale}} \\
           \multicolumn{4}{c}{${A_{lettura}}$ = 41, ${A_{scrittura}}$ = 0} \\
           \hline
 	\end{tabular}
@@ -758,8 +785,8 @@ Indichiamo con:
 	    ${C_{tot} = {O_{settimana}}\cdot{A_{lettura}}= 205}$
 	    \end{center}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
 	\item \textbf{Visualizzazione incassi dati dalle convalide per una linea} \label{op9} \\
     \[ {O_{settimana} = 10} \]
@@ -773,9 +800,9 @@ Indichiamo con:
     \hline
     \textbf{Nome} & \textbf{Tipo} & \textbf{Numero accessi} & \textbf{S/L} \\
     \hline
-    LINEA & E & 1 & L \\ 
+    LINEA & E & 1 & L \\
     \hline
-    ORARIO LINEA & E & 20 & L \\ 
+    ORARIO LINEA & E & 20 & L \\
     \hline
     ATTUAZIONE CORSA & E & 167 & L \\
     \hline
@@ -785,7 +812,7 @@ Indichiamo con:
     \hline
     TARIFFA BIGLIETTO & E & 209 & L \\
     \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 815, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
@@ -794,8 +821,8 @@ Indichiamo con:
     ${C_{tot} = {O_{settimana}}\cdot {A_{lettura}} = 8.150}$
     \end{center}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
 
     \item\textbf{Estrazione degli incassi per tipo di tariffa dei biglietti in periodo definito} \label{op10} \\
@@ -822,7 +849,7 @@ Indichiamo con:
     \hline
     CONVALIDA & A & 20.000 & L \\
     \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 50.001, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
@@ -831,8 +858,8 @@ Indichiamo con:
     ${C_{tot} = {O_{settimana}}\cdot{A_{lettura}}= 250.005}$
     \end{center}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
     \item\textbf{Estrazione delle linee con più multe negli ultimi 3 mesi} \label{op11} \\
 	\[{O_{settimana} = 2}\]
@@ -861,7 +888,7 @@ Indichiamo con:
 	\hline
 	MULTA & E & 0.04 $\times$ 75 & L \\
 	    \hline
-	    \multicolumn{4}{c}{\textbf{Totale}} \\    
+	    \multicolumn{4}{c}{\textbf{Totale}} \\
 	    \multicolumn{4}{c}{${A_{lettura}}$ = 251.850, ${A_{scrittura}}$ = 0} \\
 	    \hline
 	\end{tabular}
@@ -871,8 +898,8 @@ Indichiamo con:
 	    \end{center}
 
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
 	\item \textbf{Estrazione delle 5 linee con manutenzioni più gravose (in termini di linee sostitutive e durata)} \label{op12} \\
 	    \[ {O_{settimana} = 2} \]
@@ -891,13 +918,13 @@ Indichiamo con:
 	    \hline
 	    \textbf{Nome} & \textbf{Tipo} & \textbf{Numero accessi} & \textbf{S/L} \\
 	    \hline
-	    MANUTENZIONE LINEA & E & 10 & L \\ 
+	    MANUTENZIONE LINEA & E & 10 & L \\
 	    \hline
-	    SOSTITUZIONE & A & 10 & L \\ 
+	    SOSTITUZIONE & A & 10 & L \\
 	    \hline
 	    LINEA ORDINARIA & E & 5 & L \\
 	    \hline
-	    \multicolumn{4}{c}{\textbf{Totale}} \\    
+	    \multicolumn{4}{c}{\textbf{Totale}} \\
 	    \multicolumn{4}{c}{${A_{lettura}}$ = 25, ${A_{scrittura}}$ = 0} \\
 	    \hline
 	    \end{tabular}
@@ -906,8 +933,8 @@ Indichiamo con:
 	    ${C_{tot} = {O_{settimana}}\cdot {A_{lettura}} = 100}$
 	    \end{center}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 	\item \textbf{Estrazione delle linee con $>5$ controlli/giorno e $\leq 10$ multe/giorno} \label{op13} \\
 	\[{O_{settimana} = 3}\]
 	Questa operazione deve poter essere effettuata dall'amministratore di sistema.\\
@@ -915,11 +942,11 @@ Indichiamo con:
 	\[
 	\text{controllo} > 5/\text{giorno} \cap \text{multe} \leq 10/\text{giorno}
 	\]
-	
+
 	\begin{center}
 	\includegraphics[width=0.7\textwidth]{VisualLineeMulteControlli}
 	\end{center}
-	
+
 	\begin{table}[H]
 	\centering
 	\begin{tabular}{|l|c|c|c|}
@@ -934,7 +961,7 @@ Indichiamo con:
 	\hline
 	CONTROLLO & A & 0.2 $\times$ 75 & L \\
 	    \hline
-	    \multicolumn{4}{c}{\textbf{Totale}} \\    
+	    \multicolumn{4}{c}{\textbf{Totale}} \\
 	    \multicolumn{4}{c}{${A_{lettura}}$ = 251.700, ${A_{scrittura}}$ = 0} \\
 	    \hline
 	\end{tabular}
@@ -943,8 +970,8 @@ Indichiamo con:
 	    ${C_{tot} = {O_{settimana}}\cdot {A_{lettura}} = 755.100}$
 	    \end{center}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
     \item \textbf{Visualizzazione delle linee con il maggior tempo di percorrenza} \label{op14} \\
             \[ {O_{settimana} = 2} \]
@@ -957,9 +984,9 @@ Indichiamo con:
         \hline
         \textbf{Nome} & \textbf{Tipo} & \textbf{Numero accessi} & \textbf{S/L} \\
         \hline
-        LINEA & E & 75 & L \\ 
+        LINEA & E & 75 & L \\
         \hline
-        \multicolumn{4}{c}{\textbf{Totale}} \\    
+        \multicolumn{4}{c}{\textbf{Totale}} \\
         \multicolumn{4}{c}{${A_{lettura}}$ = 75, ${A_{scrittura}}$ = 0} \\
         \hline
         \end{tabular}
@@ -979,26 +1006,26 @@ Indichiamo con:
         \hline
         \textbf{Nome} & \textbf{Tipo} & \textbf{Numero accessi} & \textbf{S/L} \\
         \hline
-        LINEA & E & 75 & L \\ 
+        LINEA & E & 75 & L \\
         \hline
         TRAGITTO & A & 1.500 & L \\
         \hline
         TRATTA & E & 1.500 & L \\
         \hline
-        \multicolumn{4}{c}{\textbf{Totale}} \\    
+        \multicolumn{4}{c}{\textbf{Totale}} \\
         \multicolumn{4}{c}{${A_{lettura}}$ = 3.075, ${A_{scrittura}}$ = 0} \\
         \hline
         \end{tabular}
         \end{table}
         \begin{center}
         ${C_{tot} = {O_{settimana}}\cdot {A_{lettura}} = 6.150}$
-        \end{center}     
+        \end{center}
 
 	\end{itemize}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-   
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+
     \item\textbf{Estrazione delle linee con più hub mobilità lungo il percorso} \label{op15} \\
     \[ {O_{settimana} = 3} \]
     A fini statistici si vuole scoprire qual è la linea che contiene più Hub Mobilità, dati dalla somma di tutte gli Hub che stanno nelle varie fermate. \\
@@ -1027,7 +1054,7 @@ Indichiamo con:
     \hline
     PRESENZA & A & 165 & L \\
     \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 3.190, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
@@ -1036,13 +1063,13 @@ Indichiamo con:
     ${C_{tot} = {O_{settimana}}\cdot{A_{lettura}}= 9.570}$
     \end{center}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
          \item\textbf{Media di soldi spesi in multe per persona} \label{op16} \\
 	\[{O_{settimana} = 1}\]
 	Questa operazione deve poter essere effettuata dall'amministratore di sistema.\\
-	Deve essere estratto un unico numero, ovvero la media del prezzo totale pagato per persona.	
+	Deve essere estratto un unico numero, ovvero la media del prezzo totale pagato per persona.
 	\begin{table}[H]
 	\centering
 	\begin{tabular}{|l|c|c|c|}
@@ -1053,7 +1080,7 @@ Indichiamo con:
 	\hline
 	CAUSALE MULTA & E & 10000 & L \\
 	    \hline
-	    \multicolumn{4}{c}{\textbf{Totale}} \\    
+	    \multicolumn{4}{c}{\textbf{Totale}} \\
 	    \multicolumn{4}{c}{${A_{lettura}}$ = 20.000, ${A_{scrittura}}$ = 0} \\
 	    \hline
 	    \end{tabular}
@@ -1062,8 +1089,8 @@ Indichiamo con:
 	    ${C_{tot} = {O_{settimana}}\cdot{A_{lettura}}= 20.000}$
 	    \end{center}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
 	\item \textbf{Visualizzazione delle aziende che non hanno effettuato nessuna manutenzione nell’ultimo mese} \label{op17} \\
     \[ {O_{settimana} = 4} \]
@@ -1076,11 +1103,11 @@ Indichiamo con:
     \hline
     \textbf{Nome} & \textbf{Tipo} & \textbf{Numero accessi} & \textbf{S/L} \\
     \hline
-    MANUTENZIONE & E & 50 & L \\ 
+    MANUTENZIONE & E & 50 & L \\
     \hline
-    AZIENDA & E & x & L \\ 
+    AZIENDA & E & x & L \\
     \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 50 + x, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
@@ -1089,12 +1116,12 @@ Indichiamo con:
     ${C_{tot} = {O_{settimana}}\cdot {A_{lettura}} = 200 + 4x}$
     \end{center}
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
     \item\textbf{Visualizzazione delle fermate in cui è presente almeno un hub mobilità contenente tutti i tipi di servizi green} \label{op18} \\
     \[ {O_{settimana} = 1} \]
-    Questa operazione punta a ricercare le fermate più eco-friendly, ovvero che fanno riferimento ad almeno un hub mobilità che contenga TUTTI i tipi di servizi possibili. Si tratta quindi di un'operazione di divisione. \\    
+    Questa operazione punta a ricercare le fermate più eco-friendly, ovvero che fanno riferimento ad almeno un hub mobilità che contenga TUTTI i tipi di servizi possibili. Si tratta quindi di un'operazione di divisione. \\
     Si vuole quindi visualizzare:
     \begin{itemize}
 	\renewcommand\labelitemi{--}
@@ -1117,7 +1144,7 @@ Indichiamo con:
     \hline
     CONTENUTO HUB & E & 4 & L \\
     \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 1.129, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
@@ -1127,8 +1154,8 @@ Indichiamo con:
     \end{center}
 
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
     \item\textbf{Inserimento di una variazione di servizio} \label{op19} \\
 	\[{O_{settimana} = 1}\]
 	Questa operazione deve poter essere effettuata dall'amministratore di sistema.\\
@@ -1136,7 +1163,7 @@ Indichiamo con:
 	Alla manuntenzione va indicata la linea che viene modificata, e le eventuali linee che la sostituiscono.\\
 	Inoltre se l'inizio della manuntenzione è immediato, allora la linea coinvolta va disattivata.\\
 	\textbf{OSS: va calcolato l'impatto di avere o no l'attributo ridondante \texttt{ATTIVA}}
-          
+
 	 \begin{itemize}
             \item \textbf{Analisi con attributo ridondante \texttt{attiva} su \texttt{LINEA}} \\
 	\begin{center}
@@ -1156,7 +1183,7 @@ Indichiamo con:
 	\hline
 	SOSTITUZIONE & A & 1 & S \\
 	\hline
-	    \multicolumn{4}{c}{\textbf{Totale}} \\    
+	    \multicolumn{4}{c}{\textbf{Totale}} \\
 	    \multicolumn{4}{c}{${A_{lettura}}$ = 1, ${A_{scrittura}}$ = 3} \\
 	    \hline
 	    \end{tabular}
@@ -1179,7 +1206,7 @@ Indichiamo con:
 	\hline
 	SOSTITUZIONE & A & 1 & S \\
 	\hline
-	    \multicolumn{4}{c}{\textbf{Totale}} \\    
+	    \multicolumn{4}{c}{\textbf{Totale}} \\
 	    \multicolumn{4}{c}{${A_{lettura}}$ = 0, ${A_{scrittura}}$ = 2} \\
 	    \hline
 	    \end{tabular}
@@ -1187,17 +1214,17 @@ Indichiamo con:
 	    \begin{center}
 	    ${C_{tot} = {O_{settimana}}\cdot({A_{lettura}} + {2A_{scrittura}})= 4}$
 	    \end{center}
-	
-	\end{itemize}
-	
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+	\end{itemize}
+
+
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
     \item\textbf{Aggiunta di una tratta a una linea esistente} \label{op20} \\
     \[ {O_{settimana} = 1} \]
     Questa operazione serve per aggiornare una linea, aggiungendo una fermata al suo tragitto. Nell'analisi terremo conto che la fermata va aggiunta dopo il capolinea, ovvero è necessario solo aggiungere la tratta per poi aggiungerla al traggito. Visto che il tempo di percorrenza di una linea è calcolabile anche come la somma dei tempi di percorrenza delle tratte, si rende necessaria l'analisi differenziata per la presenza dell'attributo \texttt{tempo percorrenza} su \texttt{LINEA}, poiché in caso di ridondanza sarà necessario rieseguire il calcolo del tempo totale per poi aggiornare l'attributo.
-    
+
     \begin{itemize}
     \item \textbf{Analisi con attributo ridondante \texttt{tempo percorrenza} su \texttt{LINEA}}
     \begin{center}
@@ -1217,7 +1244,7 @@ Indichiamo con:
     \hline
     LINEA & E & 1 & S + L \\
     \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 22, ${A_{scrittura}}$ = 3} \\
     \hline
     \end{tabular}
@@ -1239,7 +1266,7 @@ Indichiamo con:
     \hline
     TRAGITTO & A & 1 & S \\
     \hline
-    \multicolumn{4}{c}{\textbf{Totale}} \\    
+    \multicolumn{4}{c}{\textbf{Totale}} \\
     \multicolumn{4}{c}{${A_{lettura}}$ = 0, ${A_{scrittura}}$ = 2} \\
     \hline
     \end{tabular}
@@ -1250,8 +1277,8 @@ Indichiamo con:
     \end{itemize}
 
 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
-  % ------------------------------------------------------------------------------------------------------------------------------------------- 
+  % -------------------------------------------------------------------------------------------------------------------------------------------
+  % -------------------------------------------------------------------------------------------------------------------------------------------
 
     \item\textbf{Creazione di una nuova linea} \label{op21} \\
 	\[{O_{settimana} = 1}\]
@@ -1276,7 +1303,7 @@ Indichiamo con:
 	\hline
 	TRATTA & E & 20 & L \\
 	\hline
-	    \multicolumn{4}{c}{\textbf{Totale}} \\    
+	    \multicolumn{4}{c}{\textbf{Totale}} \\
 	    \multicolumn{4}{c}{${A_{lettura}}$ = 21, ${A_{scrittura}}$ = 20} \\
 	    \hline
 	    \end{tabular}
@@ -1299,7 +1326,7 @@ Indichiamo con:
 	\hline
 	TRAGITTO & A & 20 & S \\
 	\hline
-	    \multicolumn{4}{c}{\textbf{Totale}} \\    
+	    \multicolumn{4}{c}{\textbf{Totale}} \\
 	    \multicolumn{4}{c}{${A_{lettura}}$ = 1, ${A_{scrittura}}$ = 20} \\
 	    \hline
 	    \end{tabular}
@@ -1427,7 +1454,7 @@ Aggiungiamo quindi il prefisso \texttt{indirizzo\textunderscore} a ogni suo comp
 
 \subsubsection{Biglietto}
 La gerarchia su biglietto è di tipo Totale ed Esclusiva.
-Poiché non ci sono attributi diversi nelle due entità figlie e \texttt{BIGLIETTO DIGITALE} ha l'associazione \texttt{acquisto} di cardinalità (1,1), scegliamo di effettuare un \textbf{collasso vero l'alto}. 
+Poiché non ci sono attributi diversi nelle due entità figlie e \texttt{BIGLIETTO DIGITALE} ha l'associazione \texttt{acquisto} di cardinalità (1,1), scegliamo di effettuare un \textbf{collasso vero l'alto}.
 L'associazione \texttt{aquisto} diventa quindi a cardinalità (0, 1). \\
 Sarà possibile riconoscere i biglietti digitali dai fisici perché questi ultimi non avranno l'associazione \texttt{acquisto} con l'entità \texttt{UTENTE}.
 
@@ -1452,7 +1479,7 @@ Come per Persona e Utente il subset è stato sostituito dall'associazione \textt
 \subsubsection{Dipendente}
 La gerarchia sui vari tipi di dipendente (\texttt{AMMINISTRATIVO}, \texttt{AUTISTA}, \texttt{CONTROLLORE}) è di tipo Totale ed Esclusiva.
 Visto che le sottoentità non hanno attributi diversificati, scegliamo di fare un \textbf{collasso verso l'alto}.
-Introduciamo un selettore di tipo chiamato \texttt{ruolo} che potrà assumere solo i valori di Amministrativo, Autista o Controllore. 
+Introduciamo un selettore di tipo chiamato \texttt{ruolo} che potrà assumere solo i valori di Amministrativo, Autista o Controllore.
 Visto che le associazioni specifiche per ogni ruolo ora fanno riferimento al generico dipendente sarà necessario porre attenzione ad eseguire dei controlli per verificare che si possano aggiungere delle associazioni solo se coerenti con il ruolo del dipendente coinvolto.
 
 \begin{figure}[H]
@@ -1463,7 +1490,7 @@ Visto che le associazioni specifiche per ogni ruolo ora fanno riferimento al gen
 
 \subsubsection{Manutenzione}
 La gerarchia su \texttt{MANUTENZIONE} è di tipo Totale ed Esclusiva.
-Poiché le due entità figlie si riferiscono a due concetti differenti, quindi hanno anche associazioni diverse, scegliamo di effettuare un \textbf{collasso verso il basso} per mantenere i vincoli sulle associazioni. 
+Poiché le due entità figlie si riferiscono a due concetti differenti, quindi hanno anche associazioni diverse, scegliamo di effettuare un \textbf{collasso verso il basso} per mantenere i vincoli sulle associazioni.
 Importiamo quindi sui due figli gli attributi comuni e l'associazione comune \texttt{incarico}.
 
 \subsubsection{Linea}
@@ -1501,5 +1528,279 @@ Riportiamo l'elenco delle entità in cui è stata effettuata quest'aggiunta:
 
 \section{Schema relazionale finale}
 A questo punto tutti i problemi sono stati risolti, e il nostro schema ristrutturato è direttamente traducibile in delle relazioni.
+
+\section{Traduzione delle operazioni in query SQL}
+\begin{itemize}
+    \item operazione 1:\\
+        \begin{lstlisting}[style=sqlstyle, caption=SQL Query operation 1]
+SELECT *
+FROM LINEE L
+JOIN TIPOLOGIE_MEZZI M ON L.codice_tipo_mezzo = M.codice_tipo_mezzo
+JOIN TRAGITTI TRA1 ON TRA1.codice_linea = L.codice_linea
+JOIN TRATTE TR1 ON TRA1.partenza_codice_fermata = TR1.partenza_codice_fermata
+               AND TRA1.arrivo_codice_fermata = TR1.arrivo_codice_fermata
+JOIN FERMATE F1 ON F1.codice_fermata = TR1.partenza_codice_fermata
+JOIN TRAGITTI TRA2 ON TRA2.codice_linea = L.codice_linea
+JOIN TRATTE TR2 ON TRA2.partenza_codice_fermata = TR2.partenza_codice_fermata
+               AND TRA2.arrivo_codice_fermata = TR2.arrivo_codice_fermata
+JOIN FERMATE F2 ON F2.codice_fermata = TR2.arrivo_codice_fermata
+WHERE TRA1.ordine = 1
+  AND TRA2.ordine = (
+    SELECT MAX(T1.ordine)
+    FROM LINEE L1
+    JOIN TRAGITTI T1 ON L1.codice_linea = T1.codice_linea
+    WHERE L1.codice_linea = L.codice_linea
+  )
+  AND (L.attiva IS TRUE
+       OR (CURDATE() BETWEEN L.inizio_validita AND L.fine_validita))
+ORDER BY L.codice_linea;
+\end{lstlisting}
+    \item operazione 2\\
+    \begin{lstlisting}[style=sqlstyle, caption=Query for Fermate Details by Linea]
+SELECT t.codice_linea,
+       t.arrivo_codice_fermata,
+       t.partenza_codice_fermata,
+       t.ordine,
+       f.nome,
+       f.indirizzo_via,
+       f.indirizzo_civico,
+       f.indirizzo_comune,
+       f.indirizzo_cap,
+       tr.tempo_percorrenza
+FROM TRAGITTI t
+JOIN TRATTE tr
+  ON t.partenza_codice_fermata = tr.partenza_codice_fermata
+ AND t.arrivo_codice_fermata = tr.arrivo_codice_fermata
+JOIN FERMATE f
+  ON t.arrivo_codice_fermata = f.codice_fermata
+WHERE t.codice_linea = ?;
+\end{lstlisting}
+\begin{lstlisting}[style=sqlstyle, caption=Query for Orari Linee with Attuazioni Corse]
+SELECT ol.codice_orario,
+       ol.codice_linea,
+       ol.orario_partenza,
+       ol.giorno_settimanale,
+       ac.data
+FROM ORARI_LINEE ol
+JOIN ATTUAZIONI_CORSE ac
+  ON ol.codice_orario = ac.codice_orario
+WHERE ol.codice_linea = ?;
+\end{lstlisting}
+
+    \item operazione 3
+    \begin{lstlisting}[style=sqlstyle, caption=Query for Hub Mobilità with Contenuti and Fermate]
+SELECT h.codice_hub,
+       h.nome AS nome_hub,
+       h.indirizzo_via,
+       h.indirizzo_civico,
+       h.indirizzo_comune,
+       h.indirizzo_cap,
+       h.longitudine,
+       h.latitudine,
+       h.codice_fermata,
+       f.nome AS nome_fermata,
+       ch.descrizione AS tipo_contenuto,
+       c.posti_disponibili
+FROM HUB_MOBILITA h
+LEFT JOIN FERMATE f
+       ON h.codice_fermata = f.codice_fermata
+JOIN CONTENUTI c
+       ON c.codice_hub = h.codice_hub
+JOIN CONTENUTI_HUB ch
+       ON c.codice_contenuto = ch.codice_contenuto;
+\end{lstlisting}
+
+    \item operazione 4
+    \begin{lstlisting}[style=sqlstyle, caption=Query for Corse Attuate by User]
+SELECT ol.codice_linea,
+       ol.orario_partenza,
+       ol.giorno_settimanale,
+       ol.codice_orario,
+       ac.data
+FROM ORARIO_LINEE ol
+JOIN ATTUAZIONI_CORSE ac
+  ON ol.codice_orario = ac.codice_orario
+WHERE ac.username = ?
+ORDER BY ol.codice_linea,
+         ol.orario_partenza,
+         ol.giorno_settimanale;
+\end{lstlisting}
+
+\item operazione 6
+    \begin{lstlisting}[style=sqlstyle, caption=Query for Number of Validations per Linea]
+SELECT COUNT(*) AS numero_convalide
+FROM LINEE l
+JOIN ORARI_LINEE ol
+  ON l.codice_linea = ol.codice_linea
+JOIN ATTUAZIONI_CORSE ac
+  ON ol.codice_orario = ac.codice_orario
+JOIN CONVALIDE c
+  ON ac.codice_corsa = c.codice_corsa
+GROUP BY codice_linea
+ORDER BY COUNT(*) DESC;
+\end{lstlisting}
+
+\item operazione 7
+\begin{lstlisting}[style=sqlstyle, caption=Query for Manutenzioni by Numero Immatricolazione]
+SELECT *
+FROM MANUTENZIONI_MEZZI mm
+WHERE mm.n_immatricolazione = ?;
+\end{lstlisting}
+
+\item operazione 8
+\begin{lstlisting}[style=sqlstyle, caption=Query for Linee in Manutenzione and Their Sostituzioni]
+SELECT l.codice_linea AS codice_linea_in_manutenzione,
+       m.data_inizio,
+       m.data_fine,
+       m.nome,
+       m.descrizione,
+       a.p_iva,
+       a.email,
+       a.telefono,
+       a.ragione_sociale,
+       ls.codice_linea AS codice_linea_sostituta
+FROM LINEE l
+JOIN MANUTENZIONI_LINEE m
+  ON m.codice_linea = l.codice_linea
+LEFT JOIN AZIENDE a
+  ON m.p_iva = a.p_iva
+JOIN SOSTITUZIONI s
+  ON m.codice_linea = s.sost_manut_codice_linea
+ AND m.data_inizio = s.sost_manut_data_inizio
+JOIN LINEE ls
+  ON ls.codice_linea = s.codice_linea
+WHERE l.codice_linea = ?;
+\end{lstlisting}
+
+\item operazione 9
+\begin{lstlisting}[style=sqlstyle, caption=Query for Total Revenue (Incassi) by Linea]
+SELECT SUM(tb.prezzo) AS incassi
+FROM ORARI_LINEE ol
+JOIN ATTUAZIONI_CORSE ac
+  ON ol.codice_linea = ac.codice_linea
+JOIN CONVALIDE c
+  ON ac.codice_corsa = c.codice_corsa
+JOIN BIGLIETTI b
+  ON c.codice_biglietto = b.codice_biglietto
+JOIN TARIFFE_BIGLIETTI tb
+  ON b.durata = tb.durata
+WHERE ol.codice_linea = ?;
+\end{lstlisting}
+
+\item operazione 11
+\begin{lstlisting}[style=sqlstyle, caption=Query for Number of Fines per Linea Between Two Dates]
+SELECT l.codice_linea, COUNT(*) AS numero_multe
+FROM LINEE l, ORARI_LINEE ol, ATTUAZIONI_CORSE ac, MULTE m
+WHERE l.codice_linea = ol.codice_linea
+  AND ol.codice_orario = ac.codice_orario
+  AND ac.codice_corsa = m.codice_corsa
+  AND ac.data BETWEEN ? AND ?
+GROUP BY l.codice_linea
+ORDER BY numero_multe DESC;
+\end{lstlisting}
+
+\item operazione 12
+\begin{lstlisting}[style=sqlstyle, caption=Query for Duration of Maintenance and Substitute Lines Count]
+SELECT ml.codice_linea,
+       ml.nome,
+       DATEDIFF(ml.data_inizio, ml.data_fine) AS durata_lavoro,
+       COUNT(*) AS num_linee_sostitutive
+FROM MANUTENZIONI_LINEE ml
+JOIN SOSTITUZIONI s
+  ON ml.codice_linea = s.sost_manut_codice_linea
+GROUP BY ml.codice_linea, ml.data_inizio, ml.nome;
+\end{lstlisting}
+
+\item operazione 13
+\begin{lstlisting}[style=sqlstyle, caption=Query to Find Lines Matching Fine/Control Conditions on All Trips]
+SELECT l.codice_linea
+FROM LINEE l
+JOIN ORARI_LINEE ol
+  ON l.codice_linea = ol.codice_linea
+JOIN ATTUAZIONI_CORSE ac
+  ON ol.codice_orario = ac.codice_orario
+GROUP BY l.codice_linea
+HAVING COUNT(*) = (
+    SELECT COUNT(DISTINCT ac1.codice_corsa)
+    FROM LINEE l1
+    JOIN ORARI_LINEE ol1
+      ON l1.codice_linea = ol1.codice_linea
+    JOIN ATTUAZIONI_CORSE ac1
+      ON ol1.codice_orario = ac1.codice_orario
+    WHERE l1.codice_linea = l.codice_linea
+      AND ac1.codice_corsa IN (
+        SELECT ac2.codice_corsa
+        FROM ATTUAZIONI_CORSE ac2
+        LEFT JOIN CONTROLLI c
+          ON c.codice_corsa = ac2.codice_corsa
+        LEFT JOIN MULTE m
+          ON m.codice_corsa = ac2.codice_corsa
+        GROUP BY ac2.data
+        HAVING COUNT(m.codice_multa) <= 10
+           AND COUNT(c.codice_corsa) > 5
+    )
+);
+\end{lstlisting}
+
+\item operazione 14
+\begin{lstlisting}[style=sqlstyle, caption=Query for Line with Maximum Tempo Percorrenza]
+SELECT codice_linea, tempo_percorrenza
+FROM LINEE
+ORDER BY tempo_percorrenza DESC
+LIMIT 1;
+\end{lstlisting}
+
+\item operazione 16
+
+\begin{lstlisting}[style=sqlstyle, caption=Query for Average Fine Amount Grouped by Documento]
+SELECT AVG(m.importo)
+FROM MULTE m, PERSONE p
+WHERE p.documento = m.codice_multa
+GROUP BY p.documento;
+\end{lstlisting}
+
+\item operazione 17
+\begin{lstlisting}[style=sqlstyle, caption=Query for Companies Without Maintenance in Last Month]
+SELECT a.*
+FROM AZIENDE a
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM MANUTENZIONI_MEZZI mm
+    WHERE mm.p_iva = a.p_iva
+      AND mm.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
+)
+AND NOT EXISTS (
+    SELECT 1
+    FROM MANUTENZIONI_LINEE ml
+    WHERE ml.p_iva = a.p_iva
+      AND ml.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
+);
+\end{lstlisting}
+
+\item operazione 19
+\begin{lstlisting}[style=sqlstyle, caption=Insert into SOSTITUZIONI and Update LINEE status]
+INSERT INTO SOSTITUZIONI (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea)
+VALUES (?, ?, ?);
+
+UPDATE LINEE
+SET attiva = FALSE
+WHERE codice_linea = ?
+  AND EXISTS (
+      SELECT 1
+      FROM manutenzioni_linee
+      WHERE CURDATE() BETWEEN inizio_validita AND fine_validita
+        AND codice_linea = ?
+  );
+\end{lstlisting}
+
+\item operazione 21
+\begin{lstlisting}[style=sqlstyle, caption=Insert Statement for LINEE]
+INSERT INTO LINEE (codice_linea, inizio_validita, fine_validita, attiva, codice_tipo_mezzo)
+VALUES (?, ?, ?, ?, ?);
+\end{lstlisting}
+
+\end{itemize}
+
 \chapter{Progettazione dell'Applicazione}
+
 \end{document}
