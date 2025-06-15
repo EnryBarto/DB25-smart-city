@@ -127,9 +127,11 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
                 if (utente.getCodiceFiscale().isPresent()) insertPersona.setString(4, utente.getCodiceFiscale().get());
                 else insertPersona.setNull(4, java.sql.Types.CHAR);
 
-                if (PersonaImpl.DAO.byDocument(connection, utente.getDocumento()) == null) insertPersona.executeUpdate();
+                if (PersonaImpl.DAO.byDocument(connection, utente.getDocumento()) == null) {
+                    insertPersona.executeUpdate();
+                    insertUtente.executeUpdate();
+                }
 
-                insertUtente.executeUpdate();
                 insertDipendente.executeUpdate();
             } catch (Exception e) {
                 throw new DAOException("Failed to add dipendente", e);
@@ -144,6 +146,32 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
             } catch (Exception e) {
                 throw new DAOException("Failed to remove dipendente", e);
             }
+        }
+
+        public static List<Dipendente> listAutisti(Connection connection) {
+            List<Dipendente> dipendenti = new LinkedList<>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_AUTISTI);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var dip = new DipendenteImpl(
+                        rs.getString("p.cognome"),
+                        rs.getString("p.nome"),
+                        rs.getString("p.documento"),
+                        rs.getString("p.codice_fiscale"),
+                        rs.getString("u.username"),
+                        rs.getString("u.email"),
+                        rs.getString("u.telefono"),
+                        rs.getString("u.password"),
+                        Dipendente.Ruolo.valueOf(rs.getString("ruolo").toUpperCase())
+                        );
+                        dipendenti.add(dip);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Failed to list autisti:\n" + e.getMessage(), e);
+            }
+            return dipendenti;
         }
     }
 }

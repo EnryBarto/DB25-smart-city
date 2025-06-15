@@ -1,7 +1,9 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
@@ -60,8 +62,8 @@ public class MezzoImpl implements Mezzo {
 
     public static final class DAO {
 
-        public static ArrayList<MezzoConNome> list(Connection connection) {
-            var mezzi = new ArrayList<MezzoConNome>();
+        public static List<MezzoConNome> list(Connection connection) {
+            var mezzi = new LinkedList<MezzoConNome>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_MEZZI);
                 var rs = statement.executeQuery();
@@ -71,6 +73,26 @@ public class MezzoImpl implements Mezzo {
                         rs.getString("n_immatricolazione"),
                         rs.getString("nome")
                         );
+                    mezzi.add(mezzo);
+                }
+
+            } catch (Exception e) {
+                throw new DAOException("Failed to list Mezzi", e);
+            }
+            return mezzi;
+        }
+
+        public static List<Mezzo> listDisponibiliByCodiceLineaData(Connection connection, String codLinea, LocalDate data) {
+            var mezzi = new LinkedList<Mezzo>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_MEZZI_ATTIVI_PER_LINEA, codLinea, data.toString());
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var mezzo = new MezzoImpl(
+                        rs.getString("n_immatricolazione"),
+                        rs.getInt("codice_tipo_mezzo")
+                    );
                     mezzi.add(mezzo);
                 }
 

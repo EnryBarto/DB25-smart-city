@@ -1,7 +1,6 @@
 package it.unibo.smartcity.view.api;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,6 +21,7 @@ import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
+import it.unibo.smartcity.model.api.Mezzo;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.TariffaBiglietto;
 import it.unibo.smartcity.model.api.Persona;
@@ -74,7 +74,7 @@ public interface View {
 
     void updateAziendeNoManut(List<AziendaImpl> extracAziendeNoManut);
 
-    void updateManutPerMezzo(ArrayList<MezzoConNome> mezzi);
+    void updateManutPerMezzo(List<MezzoConNome> mezzi);
 
     void updateListsManagementLinee(List<Linea> daAggiungere, List<Tragitto> daRimuovere);
 
@@ -82,7 +82,7 @@ public interface View {
 
     void updateTipoMezzi(Set<TipologiaMezzo> list);
 
-    void updateBuyTicket(ArrayList<TariffaBiglietto> list);
+    void updateBuyTicket(List<TariffaBiglietto> list);
 
     void updateValidateTicket(List<Biglietto> biglietti, List<AttuazioneCorsa> corse);
 
@@ -109,4 +109,10 @@ public interface View {
     void updateVariazioniServizio(Set<ListVariazioniServizi> list);
 
     void updateLineeAttuazioneCorsa(List<Linea> lineeAttive);
+
+    void updateOrariLineaAttuazioneCorse(List<OrarioLinea> orari);
+
+    void updateMezziAttuazioneCorse(List<Mezzo> mezzi);
+
+    void updateAutistiAttuazioneCorse(List<Dipendente> autisti);
 }

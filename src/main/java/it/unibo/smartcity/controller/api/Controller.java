@@ -177,4 +177,12 @@ public interface Controller {
     void updateVariazioniServizio(Linea selectedLinea);
 
     void updateLineeAttuazioneCorse(LocalDate data);
+
+    void updateOrariLineaAttuazioneCorse(String codLinea, LocalDate data);
+
+    void updateMezziAttuazioneCorse(String codLinea, LocalDate data);
+
+    void updateAutistiListCreazioneCorsa();
+
+    void addAttuazioneCorsa(LocalDate data, OrarioLinea orario, Dipendente dipendente, String codMezzo);
 }

@@ -5,7 +5,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,6 +40,7 @@ import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
+import it.unibo.smartcity.model.api.Mezzo;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Persona;
 import it.unibo.smartcity.model.api.TariffaBiglietto;
@@ -229,6 +229,9 @@ public class SwingView implements View {
                     case "Variazioni di servizio":
                         controller.updateLinesList();
                         break;
+                    case "Gest. Att. Corse":
+                        controller.updateAutistiListCreazioneCorsa();
+                        break;
                 }
             }
         });
@@ -306,7 +309,7 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateManutPerMezzo(ArrayList<MezzoConNome> mezzi) {
+    public void updateManutPerMezzo(List<MezzoConNome> mezzi) {
         ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutPerMezzoPanel(mezzi);
         ((StatisticsPanel)this.tabs.get("Statistiche")).showManutPerMezzoPanel(mezzi);
     }
@@ -327,7 +330,7 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateBuyTicket(ArrayList<TariffaBiglietto> tariffe) {
+    public void updateBuyTicket(List<TariffaBiglietto> tariffe) {
         ((TicketManagerPanel)this.tabs.get("Biglietti")).updateBuyTicketPanel(tariffe);
     }
 
@@ -393,5 +396,20 @@ public class SwingView implements View {
     @Override
     public void updateLineeAttuazioneCorsa(List<Linea> lineeAttive) {
         ((AttuazioneCorseManagementPanel)this.tabs.get("Gest. Att. Corse")).updateLineeList(lineeAttive);
+    }
+
+    @Override
+    public void updateOrariLineaAttuazioneCorse(List<OrarioLinea> orari) {
+        ((AttuazioneCorseManagementPanel)this.tabs.get("Gest. Att. Corse")).updateOrariList(orari);
+    }
+
+    @Override
+    public void updateMezziAttuazioneCorse(List<Mezzo> mezzi) {
+        ((AttuazioneCorseManagementPanel)this.tabs.get("Gest. Att. Corse")).updateMezziList(mezzi);
+    }
+
+    @Override
+    public void updateAutistiAttuazioneCorse(List<Dipendente> autisti) {
+        ((AttuazioneCorseManagementPanel)this.tabs.get("Gest. Att. Corse")).updateAutistiList(autisti);
     }
 }

@@ -28,7 +28,7 @@ create table ABBONAMENTI (
      constraint ID_ABBONAMENTO primary key (codice_abbonamento));
 
 create table ATTUAZIONI_CORSE (
-     codice_corsa bigint not null,
+     codice_corsa bigint auto_increment not null,
      data date not null,
      codice_orario bigint not null,
      n_immatricolazione varchar(20) not null,

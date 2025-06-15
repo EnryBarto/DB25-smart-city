@@ -21,7 +21,6 @@ import javax.swing.table.TableCellRenderer;
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
-import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.data.MediaSoldiMulte;
 import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;

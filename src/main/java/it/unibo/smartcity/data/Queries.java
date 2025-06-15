@@ -159,11 +159,11 @@ public final class Queries {
     //OPERAZIONE 4
     public static final String LIST_ORARIO_LINEE_ASSEGN =
     """
-        SELECT ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale, ol.codice_orario, ac.data
-        FROM ORARIO_LINEE ol
+        SELECT ol.codice_linea, ol.ora_partenza, ol.giorno_settimanale, ol.codice_orario, ac.data
+        FROM ORARI_LINEE ol
         JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
         WHERE ac.username = ?
-        ORDER BY ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale;
+        ORDER BY ol.codice_linea, ol.ora_partenza, ol.giorno_settimanale;
     """;
     //OPERAZIONE 6
     public static final String ESTRAZ_LINEE_PIU_CONVALIDE =
@@ -428,5 +428,41 @@ public final class Queries {
 		WHERE t.codice_linea = ?
         ORDER BY t.ordine ASC
         ;
+    """;
+
+    public static final String LIST_MEZZI_ATTIVI_PER_LINEA =
+    """
+        SELECT M.*
+        FROM  MEZZI M
+        LEFT JOIN MANUTENZIONI_MEZZI MM ON M.n_immatricolazione = MM.n_immatricolazione
+        WHERE M.codice_tipo_mezzo = (SELECT codice_tipo_mezzo FROM LINEE WHERE codice_linea = ?)
+            AND NOT EXISTS (SELECT *
+                            FROM MANUTENZIONI_MEZZI MM1
+                            WHERE MM1.n_immatricolazione = M.n_immatricolazione
+                            AND ? BETWEEN MM1.data_inizio AND MM1.data_fine)
+    """;
+
+    public static final String LIST_AUTISTI =
+    """
+        SELECT *
+        FROM DIPENDENTI D
+        JOIN UTENTI U ON D.username = U.username
+        JOIN PERSONE P ON P.documento = U.documento
+        WHERE D.ruolo = "Autista"
+        ORDER BY P.cognome
+    """;
+
+    public static final String LIST_ORARI_NON_ATTUATI =
+    """
+        SELECT *
+        FROM ORARI_LINEE O
+        WHERE codice_linea = ?
+            AND giorno_settimanale LIKE ?
+            AND NOT EXISTS (SELECT 1
+                            FROM ATTUAZIONI_CORSE
+                            WHERE codice_linea = ?
+                                AND data = ?
+                                AND codice_orario = O.codice_orario)
+        ORDER BY ora_partenza
     """;
 }

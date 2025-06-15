@@ -55,7 +55,7 @@ public class TicketManagerPanel extends JPanel{
         createNorthPanel();
     }
 
-    public void updateBuyTicketPanel(ArrayList<TariffaBiglietto> tariffe) {
+    public void updateBuyTicketPanel(List<TariffaBiglietto> tariffe) {
         clearContentExceptNorth();
         buyPanel.removeAll();
         buyPanel.setLayout(new BoxLayout(buyPanel, BoxLayout.Y_AXIS));

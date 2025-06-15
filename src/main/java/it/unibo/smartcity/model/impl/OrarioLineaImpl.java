@@ -1,15 +1,19 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
+import it.unibo.smartcity.data.Queries;
 import it.unibo.smartcity.model.api.OrarioLinea;
 
 public class OrarioLineaImpl implements OrarioLinea {
@@ -112,6 +116,27 @@ public class OrarioLineaImpl implements OrarioLinea {
                 }
             } catch (Exception e) {
                 throw new DAOException("Errore nell'estrazione degli orari delle linee.", e);
+            }
+            return orari;
+        }
+
+        public static List<OrarioLinea> listNonAttuate(Connection connection, String codLinea, LocalDate data) {
+            var orari = new LinkedList<OrarioLinea>();
+            var giorno = data.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.forLanguageTag("it-IT"));
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_ORARI_NON_ATTUATI, codLinea, giorno + "%", codLinea, data);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var codiceOrario = rs.getInt("codice_orario");
+                    var oraPartenza = rs.getString("ora_partenza");
+                    var giornoSettimanale = rs.getString("giorno_settimanale");
+                    var codiceLinea = rs.getString("codice_linea");
+
+                    orari.add(new OrarioLineaImpl(codiceOrario, oraPartenza, giornoSettimanale, codiceLinea));
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione degli orari delle linee:\n" + e.getMessage(), e);
             }
             return orari;
         }

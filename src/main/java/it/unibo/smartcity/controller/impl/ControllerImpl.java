@@ -9,7 +9,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -313,7 +312,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public ArrayList<MezzoConNome> getMezzi() {
+    public List<MezzoConNome> getMezzi() {
         checkState(this.currentUserLevel == UserLevel.ADMIN || this.currentUserLevel == UserLevel.DRIVER);
         return MezzoImpl.DAO.list(connection);
     }
@@ -581,5 +580,28 @@ public class ControllerImpl implements Controller {
     public void updateLineeAttuazioneCorse(LocalDate data) {
         var lineeAttive = LineaImpl.DAO.listAttiveByDate(connection, data);
         views.forEach(v -> v.updateLineeAttuazioneCorsa(lineeAttive));
+    }
+
+    @Override
+    public void updateOrariLineaAttuazioneCorse(String codLinea, LocalDate data) {
+        var orari = OrarioLineaImpl.DAO.listNonAttuate(connection, codLinea, data);
+        views.forEach(v -> v.updateOrariLineaAttuazioneCorse(orari));
+    }
+
+    @Override
+    public void updateMezziAttuazioneCorse(String codLinea, LocalDate data) {
+        var mezzi = MezzoImpl.DAO.listDisponibiliByCodiceLineaData(connection, codLinea, data);
+        views.forEach(v -> v.updateMezziAttuazioneCorse(mezzi));
+    }
+
+    @Override
+    public void updateAutistiListCreazioneCorsa() {
+        var autisti = DipendenteImpl.DAO.listAutisti(connection);
+        views.forEach(v -> v.updateAutistiAttuazioneCorse(autisti));
+    }
+
+    @Override
+    public void addAttuazioneCorsa(LocalDate data, OrarioLinea orario, Dipendente dipendente, String codMezzo) {
+        AttuazioneCorsaImpl.DAO.insert(connection, data, orario, dipendente, codMezzo);
     }
 }
