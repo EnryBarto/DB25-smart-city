@@ -19,7 +19,7 @@ public class HubMobilitaImpl implements HubMobilita {
     private final Optional<Integer> codiceFermata;
 
     public HubMobilitaImpl(int codiceHub, String longitudine, String latitudine, String nome, String via,
-            String civico, String comune, int cap, int codiceFermata) {
+            String civico, String comune, int cap, Integer codiceFermata) {
         this.codiceHub = codiceHub;
         this.longitudine = longitudine;
         this.latitudine = latitudine;
@@ -49,8 +49,8 @@ public class HubMobilitaImpl implements HubMobilita {
     }
 
     @Override
-    public String getIndirizzo() {
-        return this.indirizzo.toString();
+    public Indirizzo getIndirizzo() {
+        return indirizzo;
     }
 
     public Optional<Integer> getCodiceFermata() {
@@ -84,17 +84,37 @@ public class HubMobilitaImpl implements HubMobilita {
         }
 
         public static void insert(Connection connection, HubMobilita hub) {
-            var query = "INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo, codice_fermata) VALUES (?, ?, ?, ?, ?)";
-            try (
-                    var statement = DAOUtils.prepare(connection, query);) {
-                statement.setString(1, hub.getLongitudine());
-                statement.setString(2, hub.getLatitudine());
-                statement.setString(3, hub.getNome());
-                statement.setString(4, hub.getIndirizzo());
-                statement.setInt(5, hub.getCodiceFermata().orElse(null));
-                statement.executeUpdate();
-            } catch (Exception e) {
-                throw new DAOException("Errore nell'inserimento dell'hub di mobilità.", e);
+            if (hub.getCodiceFermata().isPresent()) {
+                    var query = "INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico, codice_fermata) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    try (
+                            var statement = DAOUtils.prepare(connection, query);) {
+                        statement.setString(1, hub.getLongitudine());
+                        statement.setString(2, hub.getLatitudine());
+                        statement.setString(3, hub.getNome());
+                        statement.setString(4, hub.getIndirizzo().via());
+                        statement.setString(5, hub.getIndirizzo().comune());
+                        statement.setInt(6, hub.getIndirizzo().cap());
+                        statement.setString(7, hub.getIndirizzo().civico());
+                        statement.setInt(8, hub.getCodiceFermata().get());
+                        statement.executeUpdate();
+                    } catch (Exception e) {
+                        throw new DAOException("Errore nell'inserimento dell'hub di mobilità." + e.getMessage(), e);
+                    }
+            } else {
+                var query = "INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                try (
+                        var statement = DAOUtils.prepare(connection, query);) {
+                    statement.setString(1, hub.getLongitudine());
+                    statement.setString(2, hub.getLatitudine());
+                    statement.setString(3, hub.getNome());
+                    statement.setString(4, hub.getIndirizzo().via());
+                    statement.setString(5, hub.getIndirizzo().comune());
+                    statement.setInt(6, hub.getIndirizzo().cap());
+                    statement.setString(7, hub.getIndirizzo().civico());
+                    statement.executeUpdate();
+                } catch (Exception e) {
+                    throw new DAOException("Errore nell'inserimento dell'hub di mobilità." + e.getMessage(), e);
+                }
             }
         }
 

@@ -106,9 +106,9 @@ public class HubMobilitaManagePanel extends JPanel {
         aggiungiBtn.setAlignmentX(CENTER_ALIGNMENT);
         aggiungiBtn.addActionListener(e -> {
             try {
-                Fermata selectedFermata = null;
+                Integer codice_fermata = null;
                 if (fermataCombo.getSelectedIndex() > 0) {
-                    selectedFermata = fermataMap.get(fermataCombo.getSelectedItem());
+                    codice_fermata = fermataMap.get(fermataCombo.getSelectedItem()).getCodiceFermata();
                 }
                 var hub = new HubMobilitaImpl(
                     0,
@@ -119,7 +119,7 @@ public class HubMobilitaManagePanel extends JPanel {
                     indirizzoCivicoField.getText(),
                     indirizzoComuneField.getText(),
                     Integer.parseInt(indirizzoCapField.getText()),
-                    selectedFermata.getCodiceFermata()
+                    codice_fermata
                 );
                 controller.addHub(hub);
                 nomeField.setText("");
