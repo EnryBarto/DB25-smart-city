@@ -397,7 +397,7 @@ public final class Queries {
 							WHERE L1.codice_linea = L.codice_linea)
     """;
 
-     public static final String LIST_TRATTE_POSSIBILI_LINEA =
+    public static final String LIST_TRATTE_POSSIBILI_LINEA =
      """
         SELECT *
         FROM TRATTE
@@ -410,4 +410,14 @@ public final class Queries {
                 FROM TRAGITTI WHERE codice_linea = ? LIMIT 1) IS NULL
     ; """;
 
+    public static final String LIST_TRATTE_PER_LINEA =
+    """
+        SELECT t.arrivo_codice_fermata, t.partenza_codice_fermata, t.ordine, tr.tempo_percorrenza
+        FROM TRAGITTI t
+        JOIN TRATTE tr ON tr.arrivo_codice_fermata = t.arrivo_codice_fermata
+        AND tr.partenza_codice_fermata = t.partenza_codice_fermata
+		WHERE t.codice_linea = ?
+        ORDER BY t.ordine ASC
+        ;
+    """;
 }

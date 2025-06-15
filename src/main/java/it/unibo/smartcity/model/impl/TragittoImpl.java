@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,8 @@ import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 
 public class TragittoImpl implements Tragitto {
+
+    public record TragittiConTempo(Tragitto tragitto, int tempoPercorrenza){}
 
     private final int partenzaCodiceFermata;
     private final int arrivoCodiceFermata;
@@ -125,7 +128,7 @@ public class TragittoImpl implements Tragitto {
                 }
                 throw new DAOException(e.getMessage(), e);
             } catch (Exception e) {
-                throw new DAOException("Errore nell'inserimento della linea.", e);
+                throw new DAOException("Errore nell'inserimento del tragitto.\n" + e.getMessage(), e);
             }
         }
 
@@ -186,5 +189,27 @@ public class TragittoImpl implements Tragitto {
 
         }
 
+        public static List<TragittiConTempo> tragittiByLinea(Connection connection, String codiceLinea) {
+            var tragitti = new ArrayList<TragittiConTempo>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_TRATTE_PER_LINEA, codiceLinea);
+                var rs = statement.executeQuery();
+            ){
+                while (rs.next()) {
+                    var tragitto = new TragittiConTempo(
+                        new TragittoImpl(
+                            rs.getInt("partenza_codice_fermata"),
+                            rs.getInt("arrivo_codice_fermata"),
+                            codiceLinea,
+                            rs.getInt("ordine")),
+                        rs.getInt("tempo_percorrenza")
+                    );
+                    tragitti.add(tragitto);
+                }
+            } catch (Exception e) {
+                throw new DAOException("failed to list tragitti by linea", e);
+            }
+            return tragitti;
+        }
     }
 }

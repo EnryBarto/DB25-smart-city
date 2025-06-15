@@ -239,7 +239,7 @@ public class LineaImpl implements Linea {
         }
 
         public static void updateTempoPercorrenza(Connection connection, String codLinea, int tempoPercorrenza) {
-            var query = "UPDATE linee SET tempo_percorrenza = ? WHERE codice_linea = ?";
+            var query = "UPDATE LINEE SET tempo_percorrenza = ? WHERE codice_linea = ?";
             try (
                 var statement = DAOUtils.prepare(connection, query, tempoPercorrenza, codLinea);
             ) {

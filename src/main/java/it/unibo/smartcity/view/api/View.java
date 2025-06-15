@@ -33,6 +33,7 @@ import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
+import it.unibo.smartcity.model.impl.TragittoImpl.TragittiConTempo;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 
 public interface View {
@@ -45,7 +46,7 @@ public interface View {
 
     void updateTimetableLinesList(List<Linea> list);
 
-    void showLineTimetable(String codLinea);
+    void showLineTimetable(String codLinea, List<TragittiConTempo> tragitti, List<OrarioLinea> orariLinea);
 
     void updateHubsList(Set<ListHubMobilita> set);
 
