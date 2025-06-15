@@ -24,7 +24,7 @@ public record InfoLinea(Linea linea, TipologiaMezzo mezzo, Fermata partenza, Fer
 
     public static final class DAO {
         public static List<InfoLinea> list(Connection connection) {
-            var query = Queries.LIST_LINEE_ATTIVE;
+            var query = "SELECT * FROM VW_LINEE_ATTIVE_OGGI"; //Queries.LIST_LINEE_ATTIVE;
             var lines = new LinkedList<InfoLinea>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
@@ -33,33 +33,33 @@ public record InfoLinea(Linea linea, TipologiaMezzo mezzo, Fermata partenza, Fer
                 while (rs.next()) {
                     lines.add(new InfoLinea(
                         new LineaImpl(
-                            rs.getString("L.codice_linea"),
-                            rs.getInt("L.tempo_percorrenza"),
-                            rs.getDate("L.inizio_validita"),
-                            rs.getDate("L.fine_validita"),
-                            rs.getBoolean("L.attiva"),
-                            rs.getInt("L.codice_tipo_mezzo")),
+                            rs.getString("codice_linea"),
+                            rs.getInt("tempo_percorrenza"),
+                            rs.getDate("inizio_validita"),
+                            rs.getDate("fine_validita"),
+                            rs.getBoolean("attiva"),
+                            rs.getInt("codice_tipo_mezzo")),
                         new TipologiaMezzoImpl(
-                            rs.getInt("M.codice_tipo_mezzo"),
-                            rs.getString("M.nome")),
+                            rs.getInt("codice_tipo_mezzo"),
+                            rs.getString("tipo_mezzo")),
                         new FermataImpl(
-                            rs.getInt("F1.codice_fermata"),
-                            rs.getString("F1.nome"),
-                            rs.getString("F1.indirizzo_via"),
-                            rs.getString("F1.indirizzo_civico"),
-                            rs.getString("F1.indirizzo_comune"),
-                            rs.getInt("F1.indirizzo_cap"),
-                            rs.getString("F1.longitudine"),
-                            rs.getString("F1.latitudine")),
+                            rs.getInt("part_codice_fermata"),
+                            rs.getString("part_nome"),
+                            rs.getString("part_via"),
+                            rs.getString("part_civico"),
+                            rs.getString("part_comune"),
+                            rs.getInt("part_cap"),
+                            rs.getString("part_long"),
+                            rs.getString("part_lat")),
                         new FermataImpl(
-                            rs.getInt("F2.codice_fermata"),
-                            rs.getString("F2.nome"),
-                            rs.getString("F2.indirizzo_via"),
-                            rs.getString("F2.indirizzo_civico"),
-                            rs.getString("F2.indirizzo_comune"),
-                            rs.getInt("F2.indirizzo_cap"),
-                            rs.getString("F2.longitudine"),
-                            rs.getString("F2.latitudine"))
+                            rs.getInt("arr_codice_fermata"),
+                            rs.getString("arr_nome"),
+                            rs.getString("arr_via"),
+                            rs.getString("arr_civico"),
+                            rs.getString("arr_comune"),
+                            rs.getInt("arr_cap"),
+                            rs.getString("arr_long"),
+                            rs.getString("arr_lat"))
                     ));
                 }
             } catch (Exception e) {
