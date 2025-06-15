@@ -325,11 +325,10 @@ public final class Queries {
     """
         UPDATE LINEE
         SET tempo_percorrenza = (SELECT SUM(trt.tempo_percorrenza)
-                                FROM TRATTE trt, TRAGITTI trg, LINEE l
-                                WHERE l.codice_linea = trg.codice_linea
-                                AND trg.partenza_codice_fermata = trt.partenza_codice_fermata
+                                FROM TRATTE trt, TRAGITTI trg
+                                WHERE trg.partenza_codice_fermata = trt.partenza_codice_fermata
                                 AND trg.arrivo_codice_fermata = trt.arrivo_codice_fermata
-                                AND l.codice_linea = ?)
+                                AND trg.codice_linea = ?)
         WHERE codice_linea = ?;
     """;
 

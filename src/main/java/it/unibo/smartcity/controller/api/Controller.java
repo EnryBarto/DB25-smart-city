@@ -187,4 +187,8 @@ public interface Controller {
     void addAttuazioneCorsa(LocalDate data, OrarioLinea orario, Dipendente dipendente, String codMezzo);
 
     List<Linea> getLinee();
+
+	void addControllo(AttuazioneCorsa c, Dipendente d);
+
+    void updateControllori();
 }
