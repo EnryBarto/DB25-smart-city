@@ -234,20 +234,20 @@ public final class Queries {
     // OPERAZIONE 13
     public static final String LINEE_CINQUE_CONTROL_DIECI_MULT =
     """
-            SELECT l.codice_linea
-            FROM LINEE l JOIN ORARI_LINEE ol ON (l.codice_linea = ol.codice_linea)
-            JOIN ATTUAZIONI_CORSE ac ON (ol.codice_orario = ac.codice_orario)
-            GROUP BY l.codice_linea
-            HAVING COUNT(*) = (SELECT COUNT(DISTINCT ac1.codice_corsa)									# conto attuazioni corsa
-                                FROM LINEE l1 JOIN ORARI_LINEE ol1 ON (l1.codice_linea = ol1.codice_linea)
-                                JOIN ATTUAZIONI_CORSE ac1 ON (ol1.codice_orario = ac1.codice_orario)
-                                WHERE l1.codice_linea = l.codice_linea
-                                AND ac1.codice_corsa IN (SELECT ac2.codice_corsa							# seleziono i giorni in cui ho quelle condizioni
-                                            FROM attuazioni_corse ac2
-                                            LEFT JOIN controlli c ON (c.codice_corsa = ac2.codice_corsa)
-                                            LEFT JOIN multe m ON (m.codice_corsa = ac2.codice_corsa)
-                                            GROUP BY ac2.data
-                                            HAVING COUNT(m.codice_multa) <= 10 AND COUNT(c.codice_corsa) > 5));
+    SELECT l.codice_linea
+    FROM LINEE l JOIN ORARI_LINEE ol ON (l.codice_linea = ol.codice_linea)
+    JOIN ATTUAZIONI_CORSE ac ON (ol.codice_orario = ac.codice_orario)
+    GROUP BY l.codice_linea
+    HAVING COUNT(*) = (SELECT COUNT(DISTINCT ac1.codice_corsa)									# conto attuazioni corsa
+                        FROM LINEE l1 JOIN ORARI_LINEE ol1 ON (l1.codice_linea = ol1.codice_linea)
+                        JOIN ATTUAZIONI_CORSE ac1 ON (ol1.codice_orario = ac1.codice_orario)
+                        WHERE l1.codice_linea = l.codice_linea
+                        AND ac1.data IN (SELECT ac2.data							# seleziono i giorni in cui ho quelle condizioni
+                                    FROM attuazioni_corse ac2
+                                    LEFT JOIN controlli c ON (c.codice_corsa = ac2.codice_corsa)
+                                    LEFT JOIN multe m ON (m.codice_corsa = ac2.codice_corsa)
+                                    GROUP BY ac2.data
+                                    HAVING COUNT(m.codice_multa) <= 10 AND COUNT(c.codice_corsa) > 5));
             """;
 
     //OPERAZIONE 14
