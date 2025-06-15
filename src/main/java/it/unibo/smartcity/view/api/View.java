@@ -116,4 +116,6 @@ public interface View {
     void updateAutistiAttuazioneCorse(List<Dipendente> autisti);
 
     void updateAttivaLineePanel(List<Linea> linee);
+
+    void updateControllori(List<Dipendente> controllori);
 }

@@ -191,4 +191,8 @@ public interface Controller {
     void updateAttivaLineePanel();
 
     void attivaLinea(String codiceLinea);
+
+	void addControllo(AttuazioneCorsa c, Dipendente d);
+
+    void updateControllori();
 }

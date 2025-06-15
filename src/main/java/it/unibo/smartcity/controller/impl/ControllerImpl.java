@@ -54,6 +54,7 @@ import it.unibo.smartcity.model.impl.ConvalidaImpl;
 import it.unibo.smartcity.model.impl.CausaleMultaImpl;
 import it.unibo.smartcity.model.impl.ContenutoHubImpl;
 import it.unibo.smartcity.model.impl.ContenutoImpl;
+import it.unibo.smartcity.model.impl.ControlloImpl;
 import it.unibo.smartcity.model.impl.DipendenteImpl;
 import it.unibo.smartcity.model.impl.FermataImpl;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
@@ -628,5 +629,18 @@ public class ControllerImpl implements Controller {
     public void attivaLinea(String codiceLinea) {
         checkNotNull(codiceLinea);
         LineaImpl.DAO.attivaLinea(connection, codiceLinea);
+    }
+
+    public void addControllo(AttuazioneCorsa c, Dipendente d) {
+        ControlloImpl.DAO.insert(connection, new ControlloImpl(d.getUsername(), c.getCodiceCorsa()));
+    }
+
+    @Override
+    public void updateControllori() {
+        var dipendenti = DipendenteImpl.DAO.list(connection);
+        var controllori = dipendenti.stream()
+            .filter(d -> d.getRuolo() == Ruolo.CONTROLLORE)
+            .toList();
+        views.forEach(v -> v.updateControllori(controllori));
     }
 }
