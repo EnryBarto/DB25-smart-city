@@ -276,5 +276,16 @@ public class LineaImpl implements Linea {
             }
             return lines;
         }
+
+        public static void changeAttiva(Connection connection, String codiceLinea, int value) {
+
+            try(
+                var statement = DAOUtils.prepare(connection, Queries.UPDATE_LINEA_ATTIVA, value, codiceLinea);
+            ) {
+                statement.executeUpdate();
+            } catch (Exception e) {
+                throw new DAOException("Errore nella modifica dell'attivita della linea", e);
+            }
+        }
     }
 }

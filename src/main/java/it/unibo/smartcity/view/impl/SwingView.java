@@ -4,7 +4,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,6 +29,7 @@ import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
 import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.data.MediaSoldiMulte;
+import it.unibo.smartcity.data.OrarioLavoro;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.Biglietto;
 import it.unibo.smartcity.model.api.CausaleMulta;
@@ -88,7 +88,7 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateOrariLavoro(Map<Date, OrarioLinea> orariLavoro) {
+    public void updateOrariLavoro(List<OrarioLavoro> orariLavoro) {
         ((OrariLavoroPanel)tabs.get("Lavoro")).updateOrariLavoro(orariLavoro);
     }
 

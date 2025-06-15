@@ -1,9 +1,7 @@
 package it.unibo.smartcity.view.impl;
 
 import java.awt.BorderLayout;
-import java.sql.Date;
-import java.util.Map;
-
+import java.util.List;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -14,7 +12,7 @@ import javax.swing.table.TableCellEditor;
 import com.google.common.base.Preconditions;
 
 import it.unibo.smartcity.controller.api.Controller;
-import it.unibo.smartcity.model.api.OrarioLinea;
+import it.unibo.smartcity.data.OrarioLavoro;
 
 public class OrariLavoroPanel extends JPanel {
 
@@ -30,17 +28,17 @@ public class OrariLavoroPanel extends JPanel {
         this.controller = controller;
     }
 
-    public void updateOrariLavoro(final Map<Date, OrarioLinea> orariLavoro) {
+    public void updateOrariLavoro(final List<OrarioLavoro> orariLavoro) {
         if (this.tableArea != null) this.remove(tableArea);
-        Object[][] righe = orariLavoro.entrySet().stream().
+        Object[][] righe = orariLavoro.stream().
             map(e -> {
                 var row = new Object[5];
-                row[0] = e.getKey();
-                row[1] = e.getValue().getGiornoSettimanale();
-                row[2] = e.getValue().getCodiceLinea();
-                row[3] = e.getValue().getOraPartenza();
+                row[0] = e.data();
+                row[1] = e.orarioLinea().getGiornoSettimanale();
+                row[2] = e.orarioLinea().getCodiceLinea();
+                row[3] = e.orarioLinea().getOraPartenza();
                 var b = new JButton("Visualizza");
-                b.addActionListener(e1 -> controller.showTimetable(e.getValue().getCodiceLinea()));
+                b.addActionListener(e1 -> controller.showTimetable(e.orarioLinea().getCodiceLinea()));
                 row[4] = b;
                 return row;
             }).toArray(Object[][]::new);

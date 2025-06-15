@@ -1,19 +1,16 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
+import it.unibo.smartcity.data.OrarioLavoro;
 import it.unibo.smartcity.data.Queries;
 import java.util.Optional;
 
 import it.unibo.smartcity.model.api.Dipendente;
-import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Utente;
 
 public class DipendenteImpl extends UtenteImpl implements Dipendente {
@@ -33,21 +30,24 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
 
     public static final class DAO {
 
-        public static Map<Date, OrarioLinea> listOrari(Connection connection, String username) {
-            var orari = new HashMap<Date, OrarioLinea>();
+        public static List<OrarioLavoro> listOrari(Connection connection, String username) {
+            var orari = new ArrayList<OrarioLavoro>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_ORARIO_LINEE_ASSEGN, username);
                 var rs = statement.executeQuery();
             ) {
                 while (rs.next()) {
-                    var orarioLavoro = new OrarioLineaImpl(
-                        rs.getInt("codice_orario"),
-                        rs.getString("ora_partenza"),
-                        rs.getString("giorno_settimanale"),
-                        rs.getString("codice_linea")
+                    var orarioLavoro = new OrarioLavoro(
+                        rs.getDate("data"),
+                        new OrarioLineaImpl(
+                            rs.getInt("codice_orario"),
+                            rs.getString("ora_partenza"),
+                            rs.getString("giorno_settimanale"),
+                            rs.getString("codice_linea")
+                        )
                     );
-                    var data = rs.getDate("data");
-                    orari.put(data, orarioLavoro);
+
+                    orari.add(orarioLavoro);
                 }
             } catch (Exception e) {
                 throw new DAOException("Errore nell'estrazione degli orari di lavoro.", e);

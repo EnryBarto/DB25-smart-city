@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -350,6 +351,13 @@ public class ControllerImpl implements Controller {
     public void addManutenzioneLinea(ManutenzioneLineaImpl manut) {
         checkNotNull(manut, "Manutenzione cannot be null");
         checkState(this.currentUserLevel == UserLevel.ADMIN);
+
+        LocalDate localDate = LocalDate.now();
+        java.util.Date today = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        if (manut.getDataFine().after(today)) LineaImpl.DAO.changeAttiva(connection, manut.getCodiceLinea(), 1);
+        else LineaImpl.DAO.changeAttiva(connection, manut.getCodiceLinea(), 0);
+
         ManutenzioneLineaImpl.DAO.insert(connection, manut);
     }
 

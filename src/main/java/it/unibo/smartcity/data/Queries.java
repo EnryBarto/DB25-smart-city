@@ -465,4 +465,11 @@ public final class Queries {
                                 AND codice_orario = O.codice_orario)
         ORDER BY ora_partenza
     """;
+
+    public static final String UPDATE_LINEA_ATTIVA =
+    """
+        UPDATE LINEE
+        SET attiva = ?
+        WHERE codice_linea = ?
+    """;
 }

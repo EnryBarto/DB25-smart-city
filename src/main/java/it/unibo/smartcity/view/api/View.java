@@ -1,8 +1,6 @@
 package it.unibo.smartcity.view.api;
 
-import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import it.unibo.smartcity.data.InfoLinea;
@@ -13,6 +11,7 @@ import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
 import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.data.MediaSoldiMulte;
+import it.unibo.smartcity.data.OrarioLavoro;
 import it.unibo.smartcity.model.api.CausaleMulta;
 import it.unibo.smartcity.model.api.Contenuto;
 import it.unibo.smartcity.model.api.ContenutoHub;
@@ -40,7 +39,7 @@ public interface View {
 
     void showMainMenu();
 
-    void updateOrariLavoro(Map<Date, OrarioLinea> orariLavoro);
+    void updateOrariLavoro(List<OrarioLavoro> orariLavoro);
 
     void updateLinesList(List<InfoLinea> linee);
 
