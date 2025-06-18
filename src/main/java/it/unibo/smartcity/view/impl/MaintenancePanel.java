@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -37,6 +39,7 @@ import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
+import raven.datetime.DatePicker;
 
 public class MaintenancePanel extends JPanel {
 
@@ -240,8 +243,8 @@ public class MaintenancePanel extends JPanel {
     // Helper record to pass form data
     public record FormFields(
         String comboValue,
-        String dataInizio,
-        String dataFine,
+        LocalDate dataInizio,
+        LocalDate dataFine,
         String nome,
         String descrizione,
         String partitaIva
@@ -368,12 +371,15 @@ public class MaintenancePanel extends JPanel {
         mezzoPanel.add(partenzaLabel);
         mezzoPanel.add(combo);
 
-        var istruz = new JLabel("data: YYYY-MM-DD");
-
         var dataPanel = new JPanel();
         dataPanel.setBackground(Color.WHITE);
-        var dataInizio = new JTextField(10);
-        var dataFine = new JTextField(10);
+        var dataInizio = new JFormattedTextField(10);
+        var dataFine = new JFormattedTextField(10);
+        DatePicker datePickerInizio = new DatePicker();
+        datePickerInizio.setEditor(dataInizio);
+        DatePicker datePickerFine = new DatePicker();
+        datePickerFine.setEditor(dataFine);
+
         dataPanel.add(new JLabel("data inizio:"));
         dataPanel.add(dataInizio);
         dataPanel.add(Box.createHorizontalStrut(10)); // Spazio tra i due field
@@ -424,8 +430,8 @@ public class MaintenancePanel extends JPanel {
                 String id = selected.split("-")[0];
                 var formFields = new FormFields(
                     id,
-                    dataInizio.getText(),
-                    dataFine.getText(),
+                    datePickerInizio.getSelectedDate(),
+                    datePickerFine.getSelectedDate(),
                     nomeField.getText(),
                     descField.getText(),
                     pIvaField.getText().isBlank() ? null : pIvaField.getText()
@@ -446,7 +452,6 @@ public class MaintenancePanel extends JPanel {
         leftPanel.add(addTitle);
         leftPanel.add(Box.createVerticalStrut(15));
         leftPanel.add(mezzoPanel);
-        leftPanel.add(istruz);
         leftPanel.add(dataPanel);
         leftPanel.add(nomePanel);
         leftPanel.add(descriptionPanel);

@@ -27,6 +27,7 @@ import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.InsertLineaComplete;
+import it.unibo.smartcity.data.LineaPiuHubMobilita;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
@@ -569,8 +570,10 @@ public class ControllerImpl implements Controller {
     public void updateStatistics() {
         var lineeMulteControlli = ListLineeCinqueContrDiecMul.DAO.get(connection);
         var mediaSoldiMulte = MediaSoldiMulte.DAO.get(connection);
+        var lineaPiuHub = LineaPiuHubMobilita.DAO.get(connection);
         views.forEach(v -> v.updateLineeControlliMulte(lineeMulteControlli));
         views.forEach(v -> v.updateMediaSoldiMulte(mediaSoldiMulte));
+        views.forEach(v -> v.updateLineaPiuHubMobilita(lineaPiuHub));
     }
 
     @Override

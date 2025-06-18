@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import it.unibo.smartcity.data.InfoLinea;
+import it.unibo.smartcity.data.LineaPiuHubMobilita;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.Biglietto;
@@ -118,4 +119,6 @@ public interface View {
     void updateAttivaLineePanel(List<Linea> linee);
 
     void updateControllori(List<Dipendente> controllori);
+
+    void updateLineaPiuHubMobilita(LineaPiuHubMobilita lineaPiuHub);
 }

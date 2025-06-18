@@ -24,6 +24,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
 import it.unibo.smartcity.data.InfoLinea;
+import it.unibo.smartcity.data.LineaPiuHubMobilita;
 import it.unibo.smartcity.data.ListHubMobilita;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
@@ -428,5 +429,10 @@ public class SwingView implements View {
 
     public void updateControllori(List<Dipendente> controllori) {
         ((InsertControlloPanel)this.tabs.get("Assoc. Controllo")).updateControlloreMap(controllori);
+    }
+
+    @Override
+    public void updateLineaPiuHubMobilita(LineaPiuHubMobilita lineaPiuHub) {
+        ((StatisticsPanel)this.tabs.get("Statistiche")).updateLineaPiuHub(lineaPiuHub);
     }
 }

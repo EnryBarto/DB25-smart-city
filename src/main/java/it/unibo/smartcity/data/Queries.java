@@ -478,4 +478,22 @@ public final class Queries {
         FROM LINEE
         WHERE attiva IS FALSE;
     """;
+
+    // OPERAZIONE 15
+    public static final String LINEA_PIU_HUB_MOBILITA =
+    """
+        SELECT COUNT(DISTINCT H.codice_hub) AS num_hub, TRA.codice_linea
+        FROM HUB_MOBILITA H
+        JOIN FERMATE F ON H.codice_fermata = F.codice_fermata
+        JOIN TRAGITTI TRA ON (TRA.arrivo_codice_fermata = F.codice_fermata) OR (TRA.partenza_codice_fermata = F.codice_fermata)
+        WHERE F.codice_fermata IN (SELECT partenza_codice_fermata
+                                    FROM TRAGITTI
+                                    WHERE codice_linea = TRA.codice_linea)
+            OR F.codice_fermata IN (SELECT arrivo_codice_fermata
+                                    FROM TRAGITTI
+                                    WHERE codice_linea = TRA.codice_linea)
+        GROUP BY TRA.codice_linea
+        ORDER BY num_hub DESC
+        LIMIT 1;
+    """;
 }

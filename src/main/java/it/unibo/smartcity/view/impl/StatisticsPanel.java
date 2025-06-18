@@ -18,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.data.LineaPiuHubMobilita;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
 import it.unibo.smartcity.data.MediaSoldiMulte;
@@ -31,12 +32,13 @@ public class StatisticsPanel extends JPanel {
     private final static String[] columnNamesAziende = {"partita iva", "ragione sociale", "comune", "via", "civico", "telefono", "email"};
 
     private static final List<String> options = new ArrayList<>(List.of(
-        "estrai 5 manutenzioni più gravose",
-        "estrai aziende senza manutenzione nell'ultimo mese",
-        "estrai manutenzioni dato un mezzo",
-        "estrai le linee con più multe",
-        "estrai le linee con < di 5 controlli e più di 10 multe al giorno",
-        "estrai la media dei soldi guadagnati in multe per persona"
+        "5 manutenzioni più gravose",
+        "Aziende senza manutenzioni nell'ultimo mese",
+        "Manutenzioni dato un mezzo",
+        "Linee con più multe",
+        "Linee con < di 5 controlli e più di 10 multe al giorno",
+        "Media dei soldi spesi in multe per persona",
+        "Linea con più hub mobilità lungo il percorso"
     ));
 
     private final Controller controller;
@@ -45,6 +47,7 @@ public class StatisticsPanel extends JPanel {
     private LineePiuMultePanel lineePiuMultePanel;
     private LineeControlliMultePanel lineeMulteControlli;
     private MediaSoldiMultePanel mediaSoldiMultePanel = new MediaSoldiMultePanel();
+    private LineaMaggioriHubPanel lineaMaggioriHubPanel = new LineaMaggioriHubPanel();
 
     public StatisticsPanel(final Controller controller) {
         super(new BorderLayout());
@@ -68,21 +71,24 @@ public class StatisticsPanel extends JPanel {
         //selecting the option from the JComboBox and calling the appropriate method in the controller
         btn.addActionListener(e -> {
             switch ((String)this.optionList.getSelectedItem()) {
-                case "estrai 5 manutenzioni più gravose" -> controller.updateManutGravose();
-                case "estrai aziende senza manutenzione nell'ultimo mese" -> controller.updateAziendeNoManut();
-                case "estrai manutenzioni dato un mezzo" -> controller.updateManutPerMezzo();
-                case "estrai le linee con più multe" -> {
+                case "5 manutenzioni più gravose" -> controller.updateManutGravose();
+                case "Aziende senza manutenzioni nell'ultimo mese" -> controller.updateAziendeNoManut();
+                case "Manutenzioni dato un mezzo" -> controller.updateManutPerMezzo();
+                case "Linee con più multe" -> {
                     this.showPanel(lineePiuMultePanel);
                 }
-                case "estrai le linee con < di 5 controlli e più di 10 multe al giorno" -> {
+                case "Linee con < di 5 controlli e più di 10 multe al giorno" -> {
                     this.showPanel(lineeMulteControlli);
                     controller.updateStatistics();
                 }
-                case "estrai la media dei soldi guadagnati in multe per persona" -> {
+                case "Media dei soldi spesi in multe per persona" -> {
                     this.showPanel(mediaSoldiMultePanel);
                     controller.updateStatistics();
                 }
-
+                case "Linea con più hub mobilità lungo il percorso"-> {
+                    this.showPanel(lineaMaggioriHubPanel);
+                    controller.updateStatistics();
+                }
                 default -> throw new IllegalArgumentException("Opzione non valida: " + this.optionList.getSelectedItem());
             }
         });
@@ -159,6 +165,7 @@ public class StatisticsPanel extends JPanel {
         combo.setEditable(false);
 
         mezzi.forEach(m -> combo.addItem(m.nImmatricolazione() + "-" + m.nomeMezzo()));
+        combo.setSelectedIndex(-1);
         mezzoPanel.add(mezzoLabel);
         mezzoPanel.add(combo);
 
@@ -252,5 +259,9 @@ public class StatisticsPanel extends JPanel {
         this.add(panel, BorderLayout.CENTER);
         this.revalidate();
         this.repaint();
+    }
+
+    public void updateLineaPiuHub(LineaPiuHubMobilita lineaPiuHub) {
+        this.lineaMaggioriHubPanel.updateLineaPiuHub(lineaPiuHub);
     }
 }
