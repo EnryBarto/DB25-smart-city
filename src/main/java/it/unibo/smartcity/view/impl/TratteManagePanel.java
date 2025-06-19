@@ -84,7 +84,7 @@ public class TratteManagePanel extends JPanel {
                 arrivoCombo.setSelectedIndex(0);
                 tempoField.setText("");
             } catch (Exception ex) {
-                controller.showMessage("Errore inserimento tratta", ex.getMessage());
+                controller.showErrorMessage("Errore inserimento tratta", ex.getMessage());
             }
         });
 

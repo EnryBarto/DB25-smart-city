@@ -49,7 +49,7 @@ class LineePiuMultePanel extends JPanel {
                     return;
                 }
             }
-            c.showMessage("Errore", "Seleziona un intervallo di date valido");
+            c.showErrorMessage("Errore", "Seleziona un intervallo di date valido");
         });
         this.add(headerPanel, BorderLayout.NORTH);
     }

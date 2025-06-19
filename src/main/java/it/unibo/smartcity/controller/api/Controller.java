@@ -70,7 +70,7 @@ public interface Controller {
 
     void showLoginUser(String username);
 
-    void showMessage(String title, String message);
+    void showErrorMessage(String title, String message);
 
     void updateUserInfo();
 

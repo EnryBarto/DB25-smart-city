@@ -56,7 +56,7 @@ class LoginPanel extends JPanel {
                 // for security reasons, the controller will hash it.
                 controller.login(userField.getText(), psw);
             } catch (IllegalArgumentException | NullPointerException ec) {
-                controller.showMessage("Errore Login", ec.getMessage());
+                controller.showErrorMessage("Errore Login", ec.getMessage());
             } finally {
                 passwordField.setText("");
             }

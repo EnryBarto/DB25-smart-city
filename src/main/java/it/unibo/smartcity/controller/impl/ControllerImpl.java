@@ -198,7 +198,7 @@ public class ControllerImpl implements Controller {
             this.user = utente;
             views.forEach(v -> v.userLevelChanged(this.currentUserLevel));
         } else {
-            this.showMessage("Errore Login", "Username o Password errati");
+            this.showErrorMessage("Errore Login", "Username o Password errati");
         }
     }
 
@@ -216,7 +216,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void showMessage(String title, String message) {
+    public void showErrorMessage(String title, String message) {
         views.forEach(v -> v.showMessage(title, message));
     }
 

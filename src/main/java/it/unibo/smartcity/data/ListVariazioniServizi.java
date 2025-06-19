@@ -83,17 +83,23 @@ public record ListVariazioniServizi(ManutenzioneLinea manutenzione, Optional<Azi
             checkNotNull(m);
             checkNotNull(lineaSostituita);
             checkNotNull(connection);
-            final var query = Queries.AGGIUNGI_VARIAZIONE;
+            var query = Queries.AGGIUNGI_VARIAZIONE;
             try (var statement = DAOUtils.prepare(connection, query,
-                m.getCodiceLinea(),
                 m.getDataInizio(),
-                lineaSostituita.getCodiceLinea(),
+                m.getCodiceLinea(),
+                lineaSostituita.getCodiceLinea())) {
+                statement.executeUpdate();
+            } catch (final Exception e) {
+                throw new DAOException("Errore nell'inserimento della variazione di servizio:" + e.getMessage(), e);
+            }
+            query = Queries.UPDATE_LINEA_ATTIVA;
+            /* try (var statement = DAOUtils.prepare(connection, query, # TODO: fix this
                 m.getCodiceLinea(),
                 m.getCodiceLinea())) {
                 statement.executeUpdate();
             } catch (final Exception e) {
-                throw new DAOException("Errore nell'inserimento della variazione di servizio", e);
-            }
+                throw new DAOException("Errore nell'aggiornamento della linea attiva:" + e.getMessage(), e);
+            } */
         }
     }
 }

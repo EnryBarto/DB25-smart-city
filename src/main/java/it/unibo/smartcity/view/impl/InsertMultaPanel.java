@@ -53,12 +53,12 @@ public class InsertMultaPanel extends JPanel{
                 String codiceFiscale = codiceFiscaleField.getText();
 
                 if (cognome.isEmpty() || nome.isEmpty() || documento.isEmpty()) {
-                    controller.showMessage("Errore", "Tutti i campi devono essere compilati");
+                    controller.showErrorMessage("Errore", "Tutti i campi devono essere compilati");
                     return;
                 }
                 controller.addPersona(cognome, nome, documento, codiceFiscale);
             } catch (Exception ex) {
-                controller.showMessage("Errore inserimento persona", ex.getMessage());
+                controller.showErrorMessage("Errore inserimento persona", ex.getMessage());
             }
         });
         PanelFactory panelFactory = new PanelFactoryImpl();
@@ -87,23 +87,23 @@ public class InsertMultaPanel extends JPanel{
                 try {
                     importo = Double.parseDouble(importoField.getText());
                 } catch (NumberFormatException ex) {
-                    controller.showMessage("Errore", "Importo non valido");
+                    controller.showErrorMessage("Errore", "Importo non valido");
                     return;
                 }
 
                 if (selectedPersona == null || selectedCausale == null || selectedCorsa == null) {
-                    controller.showMessage("Errore", "Tutti i campi devono essere selezionati");
+                    controller.showErrorMessage("Errore", "Tutti i campi devono essere selezionati");
                     return;
                 }
 
                 if (importo < selectedCausale.prezzoBase() || importo > selectedCausale.prezzoMassimo()) {
-                    controller.showMessage("Errore", "L'importo deve essere compreso tra " + selectedCausale.prezzoBase() + " e " + selectedCausale.prezzoMassimo());
+                    controller.showErrorMessage("Errore", "L'importo deve essere compreso tra " + selectedCausale.prezzoBase() + " e " + selectedCausale.prezzoMassimo());
                     return;
                 }
 
                 controller.addMulta(selectedPersona, selectedCausale, selectedCorsa, importo);
             } catch (Exception ex) {
-                controller.showMessage("Errore inserimento multa", ex.getMessage());
+                controller.showErrorMessage("Errore inserimento multa", ex.getMessage());
             }
         });
         JPanel rightPanel = panelFactory.createRedPanel(

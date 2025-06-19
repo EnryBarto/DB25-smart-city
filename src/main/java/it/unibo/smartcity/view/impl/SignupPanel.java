@@ -157,7 +157,7 @@ class SignupPanel extends JPanel {
                 controller.showLoginUser(username);
 
             } catch (IllegalArgumentException | NullPointerException ex) {
-                controller.showMessage("Errore Registrazione", ex.getMessage());
+                controller.showErrorMessage("Errore Registrazione", ex.getMessage());
             }
         });
         this.add(signupButton, BorderLayout.SOUTH);

@@ -299,15 +299,17 @@ public final class Queries {
         """
             INSERT INTO SOSTITUZIONI (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea)
             VALUES (?, ?, ?);
-
-            UPDATE LINEE
-            SET attiva = False
-            WHERE codice_linea = ?
-            AND EXISTS (SELECT * FROM manutenzioni_linee
-                        WHERE CURDATE() BETWEEN inizio_validita AND fine_validita
-                        AND codice_linea = ?);
         """;
 
+    public static final String AGGIORNA_LINEA_ATTIVA =
+    """
+            UPDATE LINEE
+            SET attiva = 0
+            WHERE codice_linea = ?
+            AND EXISTS (SELECT * FROM manutenzioni_linee
+                        WHERE CURDATE() BETWEEN data_inizio AND data_fine
+                        AND codice_linea = ?);
+    """;
     // OPERAZIONE 21
     public static final String AGGIUNGI_LINEA =
     """

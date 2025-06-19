@@ -77,7 +77,7 @@ class TragittiManagePanel extends JPanel {
                     this.tratteMapper.get(this.tratte.getSelectedItem())
                 );
             } else {
-                controller.showMessage("Errore", "Seleziona una linea");
+                controller.showErrorMessage("Errore", "Seleziona una linea");
             }
         });
 
@@ -85,7 +85,7 @@ class TragittiManagePanel extends JPanel {
             if (this.tragittiFinali.getSelectedIndex() != -1) {
                 controller.removeTragitto(this.tragittiMapper.get(this.tragittiFinali.getSelectedItem()));
             } else {
-                controller.showMessage("Errore", "Seleziona un tragitto da rimuovere");
+                controller.showErrorMessage("Errore", "Seleziona un tragitto da rimuovere");
             }
         });
     }

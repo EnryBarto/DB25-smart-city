@@ -37,12 +37,12 @@ public class InsertControlloPanel extends JPanel {
                 AttuazioneCorsa c = attuazioneCorsaMapper.get(attuazioneCorsaComboBox.getSelectedItem());
                 Dipendente d = controlloreMapper.get(controlloreComboBox.getSelectedItem());
                 if (c == null || d == null) {
-                    controller.showMessage("Errore", "Nessun controllore o attuazione corsa selezionato");
+                    controller.showErrorMessage("Errore", "Nessun controllore o attuazione corsa selezionato");
                     return;
                 }
                 controller.addControllo(c, d);
             } catch (Exception ex) {
-                controller.showMessage("Errore inserimento controllo", ex.getMessage());
+                controller.showErrorMessage("Errore inserimento controllo", ex.getMessage());
             }
         });
         PanelFactory panelFactory = new PanelFactoryImpl();

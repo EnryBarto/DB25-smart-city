@@ -3,6 +3,7 @@ package it.unibo.smartcity.view.impl;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,29 +29,26 @@ public class InsertServiceVariationPanel extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         this.setBackground(new Color(245, 249, 255));
 
-        Map<String, JComponent> components = Map.of(
-            "manutenzione linea:",
-            manutenzioneLinea,
-            "Codice Linea sostituta:",
-            codeLineaSost
-        );
+        Map<String, JComponent> components = new LinkedHashMap<>();
+        components.put("manutenzione linea:", manutenzioneLinea);
+        components.put("Codice Linea sostituta:", codeLineaSost);
         JButton btnSubmit = new JButton("Aggiungi variazione");
         btnSubmit.addActionListener(e -> {
             try {
                 Linea selectedLinea = null;
                 ManutenzioneLinea selectedManutenzione = null;
-                if (codeLineaSost.getSelectedIndex() > 0) {
+                if (codeLineaSost.getSelectedIndex() >= 0) {
                     selectedLinea = lineaMap.get(codeLineaSost.getSelectedItem());
                 }
-                if (manutenzioneLinea.getSelectedIndex() > 0) {
+                if (manutenzioneLinea.getSelectedIndex() >= 0) {
                     selectedManutenzione = manutLineaMap.get(manutenzioneLinea.getSelectedItem());
                 }
                 if (selectedLinea == null || selectedManutenzione == null) {
-                    controller.showMessage("Errore", "Nessuna linea o manutenzione selezionata");
+                    controller.showErrorMessage("Errore", "Nessuna linea o manutenzione selezionata");
                     return;
                 }
                 if (selectedLinea.getCodiceLinea().equals(selectedManutenzione.getCodiceLinea() )) {
-                    controller.showMessage("Errore", "Le linee da sostituire e sostituta sono identiche");
+                    controller.showErrorMessage("Errore", "Le linee da sostituire e sostituta sono identiche");
                     return;
                 }
                 controller.addServiceVariation(
@@ -58,7 +56,7 @@ public class InsertServiceVariationPanel extends JPanel {
                     selectedLinea
                 );
             } catch (Exception ex) {
-                controller.showMessage("Errore inserimento variazione servizio", ex.getMessage());
+                controller.showErrorMessage("Errore inserimento variazione servizio", ex.getMessage());
             }
         });
         PanelFactory panelFactory = new PanelFactoryImpl();

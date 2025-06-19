@@ -49,20 +49,20 @@ class AssocContenutoToHubPanel extends JPanel {
                 try {
                     postiMassimi = Integer.parseInt(maxSlot.getText());
                 } catch (Exception ex) {
-                    controller.showMessage("Errore", "Inserire un numero valido per i posti massimi");
+                    controller.showErrorMessage("Errore", "Inserire un numero valido per i posti massimi");
                     return;
                 }
                 if (postiMassimi <= 0) {
-                    controller.showMessage("Errore", "I posti massimi devono essere maggiori di zero");
+                    controller.showErrorMessage("Errore", "I posti massimi devono essere maggiori di zero");
                     return;
                 }
                 if (selectedHub == null || selectedContenuto == null) {
-                    controller.showMessage("Errore", "Nessun hub o contenuto selezionato");
+                    controller.showErrorMessage("Errore", "Nessun hub o contenuto selezionato");
                     return;
                 }
                 controller.addContenutoToHub(selectedContenuto, selectedHub, postiMassimi);
             } catch (Exception ex) {
-                controller.showMessage("Errore inserimento contenuto", ex.getMessage());
+                controller.showErrorMessage("Errore inserimento contenuto", ex.getMessage());
             }
         });
         PanelFactory panelFactory = new PanelFactoryImpl();
@@ -80,12 +80,12 @@ class AssocContenutoToHubPanel extends JPanel {
             try {
                 Contenuto selectedContenutoHub = contenutoMapper.get(contenutoComboBox.getSelectedItem());
                 if (selectedContenutoHub == null) {
-                    controller.showMessage("Errore", "Nessun contenuto-hub selezionato");
+                    controller.showErrorMessage("Errore", "Nessun contenuto-hub selezionato");
                     return;
                 }
                 controller.deleteContenutoHub(selectedContenutoHub);
             } catch (Exception ex) {
-                controller.showMessage("Errore eliminazione contenuto-hub", ex.getMessage());
+                controller.showErrorMessage("Errore eliminazione contenuto-hub", ex.getMessage());
             }
         });
         var rightPanel = panelFactory.createRedPanel(

@@ -60,7 +60,7 @@ class AttuazioneCorseManagementPanel extends JPanel {
                 );
                 controller.updateLineeAttuazioneCorse(datePicker.getSelectedDate());
             } else {
-                controller.showMessage("Errore", "Imposta tutti i campi");
+                controller.showErrorMessage("Errore", "Imposta tutti i campi");
             }
         });
 

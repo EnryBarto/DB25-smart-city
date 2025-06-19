@@ -131,7 +131,7 @@ public class HubMobilitaManagePanel extends JPanel {
                 lonField.setText("");
                 fermataCombo.setSelectedIndex(0);
             } catch (Exception ex) {
-                controller.showMessage("Errore inserimento hub", ex.getMessage());
+                controller.showErrorMessage("Errore inserimento hub", ex.getMessage());
             }
         });
 

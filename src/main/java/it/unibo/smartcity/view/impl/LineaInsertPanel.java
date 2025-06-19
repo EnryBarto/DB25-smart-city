@@ -97,7 +97,7 @@ public class LineaInsertPanel extends JPanel {
             if (selectableTratte.getSelectedIndex() >= 0) {
                 selectedTratta = tratteMapper.get(selectableTratte.getSelectedItem());
             } else {
-                c.showMessage("Errore", "Seleziona una tratta valida.");
+                c.showErrorMessage("Errore", "Seleziona una tratta valida.");
                 return;
             }
             selectedTratte.add(selectedTratta);
@@ -123,7 +123,7 @@ public class LineaInsertPanel extends JPanel {
             Date inizioValidita;
             Date fineValidita;
             if (codiceLinea.isEmpty() || mezzo == null || selectedTratte.isEmpty()) {
-                c.showMessage("Errore", "Compila tutti i campi obbligatori e seleziona almeno una tratta.");
+                c.showErrorMessage("Errore", "Compila tutti i campi obbligatori e seleziona almeno una tratta.");
                 return;
             }
             if (straordinaria) {

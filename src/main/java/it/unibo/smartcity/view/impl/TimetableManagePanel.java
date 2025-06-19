@@ -80,13 +80,13 @@ class TimetableManagePanel extends JPanel {
                     controller.addOrarioLinea((String)lineeAggiunta.getSelectedItem(), giorno, timePicker.getSelectedTime());
                 } catch (DAOException ex) {
                     if (ex.getCause() instanceof SQLIntegrityConstraintViolationException) {
-                        controller.showMessage("Errore", "Orario già presente per la linea e il giorno selezionato");
+                        controller.showErrorMessage("Errore", "Orario già presente per la linea e il giorno selezionato");
                     }
                 }
                 timePicker.clearSelectedTime();
                 controller.updateLineeInOrari();
             } else {
-                controller.showMessage("Errore", "Seleziona un giorno e un'orario");
+                controller.showErrorMessage("Errore", "Seleziona un giorno e un'orario");
             }
         });
 
@@ -101,7 +101,7 @@ class TimetableManagePanel extends JPanel {
                 controller.updateLineeInOrari();
                 this.orarioRimozione.removeAllItems();
             } else {
-                controller.showMessage("Errore", "Seleziona una linea e un orario");
+                controller.showErrorMessage("Errore", "Seleziona una linea e un orario");
             }
         });
 

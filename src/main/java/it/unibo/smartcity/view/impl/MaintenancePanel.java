@@ -445,7 +445,7 @@ public class MaintenancePanel extends JPanel {
                 nomeField.setText("");
                 JOptionPane.showMessageDialog(this, "manutenione inserita correttamente");
             } catch (Exception ex) {
-                controller.showMessage("Errore inserimento manutenzione", ex.getMessage());
+                controller.showErrorMessage("Errore inserimento manutenzione", ex.getMessage());
             }
         });
 

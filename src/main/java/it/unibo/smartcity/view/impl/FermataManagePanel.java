@@ -102,7 +102,7 @@ public class FermataManagePanel extends JPanel {
                 latField.setText("");
                 lonField.setText("");
             } catch (Exception ex) {
-                controller.showMessage("Errore inserimento fermata", ex.getMessage());
+                controller.showErrorMessage("Errore inserimento fermata", ex.getMessage());
             }
         });
 
