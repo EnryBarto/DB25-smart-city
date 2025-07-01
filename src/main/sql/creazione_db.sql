@@ -177,7 +177,7 @@ create table SOSTITUZIONI (
      sost_manut_data_inizio date not null,
      sost_manut_codice_linea varchar(30) not null,
      codice_linea varchar(30) not null,
-     constraint FKsostituto_ID primary key (sost_manut_data_inizio, sost_manut_codice_linea));
+     constraint FKsostituto_ID primary key (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea));
 
 create table TARIFFE_ABBONAMENTI (
      nome varchar(30) not null,
