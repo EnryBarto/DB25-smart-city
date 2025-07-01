@@ -515,8 +515,9 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateContenuti() {
-        var list = ContenutoImpl.DAO.list(connection);
-        views.forEach(v -> v.updateContenuti(list));
+        var listContenuti = ContenutoImpl.DAO.list(connection);
+        var listContenutiHub = ContenutoHubImpl.DAO.list(connection);
+        views.forEach(v -> v.updateContenuti(listContenuti, listContenutiHub.stream().toList()));
     }
 
     @Override

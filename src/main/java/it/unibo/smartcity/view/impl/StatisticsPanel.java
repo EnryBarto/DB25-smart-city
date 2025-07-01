@@ -27,7 +27,7 @@ import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
 
 public class StatisticsPanel extends JPanel {
-    private final static String[] columnNamesManutGravose = {"Codice Linea", "Nome", "Durata Lavoro", "Num Linee Sostitutive", "visualizza"};
+    private final static String[] columnNamesManutGravose = {"Codice Linea", "Nome", "Durata Lavoro", "Num Linee Sostitutive"};
     private final static String[] columnNamesMezzi = {"Num immatricolazione", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
     private final static String[] columnNamesAziende = {"partita iva", "ragione sociale", "comune", "via", "civico", "telefono", "email"};
 
@@ -117,9 +117,6 @@ public class StatisticsPanel extends JPanel {
                 row[1] = m.nome();
                 row[2] = m.durata_lavoro();
                 row[3] = m.numLineeSostitutive();
-                var b = new JButton("Visualizza");
-                b.addActionListener(e -> controller.showTimetable(m.codiceLinea()));
-                row[4] = b;
                 return row;
             }
         );

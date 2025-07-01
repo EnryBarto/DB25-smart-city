@@ -276,7 +276,6 @@ public class SwingView implements View {
 
     @Override
     public void updateManutGravose(List<ManutenzioneGravosa> manutenzioneGravose) {
-        ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutGravose(manutenzioneGravose);
         ((StatisticsPanel)this.tabs.get("Statistiche")).showManutGravose(manutenzioneGravose);
     }
 
@@ -312,13 +311,11 @@ public class SwingView implements View {
 
     @Override
     public void updateAziendeNoManut(List<AziendaImpl> aziende) {
-        ((MaintenancePanel)this.tabs.get("Manutenzioni")).showAziendeNoManut(aziende);
         ((StatisticsPanel)this.tabs.get("Statistiche")).showAziendeNoManut(aziende);
     }
 
     @Override
     public void updateManutPerMezzo(List<MezzoConNome> mezzi) {
-        ((MaintenancePanel)this.tabs.get("Manutenzioni")).showManutPerMezzoPanel(mezzi);
         ((StatisticsPanel)this.tabs.get("Statistiche")).showManutPerMezzoPanel(mezzi);
     }
 
@@ -362,8 +359,8 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateContenuti(List<Contenuto> contenuti) {
-        ((AssocContenutoToHubPanel)this.tabs.get("Assoc. Hub-Contenuto")).updateContenutoList(contenuti.stream().toList());
+    public void updateContenuti(List<Contenuto> contenuti, List<ContenutoHub> contenutiHub) {
+        ((AssocContenutoToHubPanel)this.tabs.get("Assoc. Hub-Contenuto")).updateContenutoList(contenuti, contenutiHub);
     }
 
     @Override

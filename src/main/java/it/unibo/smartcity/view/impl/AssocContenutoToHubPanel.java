@@ -67,7 +67,7 @@ class AssocContenutoToHubPanel extends JPanel {
         });
         PanelFactory panelFactory = new PanelFactoryImpl();
         var leftPanel = panelFactory.createLeftPanel(
-                "Aggiunta contenuto a hub",
+                "Aggiunta associazione contenuto a hub",
                 components,
                 btnSubmit);
         this.add(leftPanel);
@@ -89,7 +89,7 @@ class AssocContenutoToHubPanel extends JPanel {
             }
         });
         var rightPanel = panelFactory.createRedPanel(
-                "Seleziona contenuto da associare",
+                "Rimozione associazione contenuto a hub",
                 componentsRight,
                 btnDelete);
         this.add(rightPanel);
@@ -102,7 +102,7 @@ class AssocContenutoToHubPanel extends JPanel {
         hubMapper.clear();
         hubComboBox.removeAllItems();
         hubList.forEach(h -> {
-            String key = h.getNome();
+            String key = h.getNome() + " (" + h.getCodiceHub() + ")";
             hubMapper.put(key, h);
             hubComboBox.addItem(key);
         });
@@ -121,11 +121,15 @@ class AssocContenutoToHubPanel extends JPanel {
         });
     }
 
-    public void updateContenutoList(final List<Contenuto> contenuti) {
+    public void updateContenutoList(final List<Contenuto> contenuti, final List<ContenutoHub> contenutiHub) {
         contenutoMapper.clear();
         contenutoComboBox.removeAllItems();
         contenuti.forEach(c -> {
-            String key = c.getCodiceContenuto() + " - " + c.getCodiceHub(); // TODO: format better
+            String key = contenutiHub.stream()
+                .filter(ch -> ch.getCodiceContenuto() == c.getCodiceContenuto())
+                .findFirst()
+                .map(ContenutoHub::getDescrizione)
+                .orElse("Unknown") + " - " + c.getCodiceHub();
             contenutoMapper.put(key, c);
             contenutoComboBox.addItem(key);
         });

@@ -102,3 +102,7 @@ INSERT INTO LINEE (codice_linea, tempo_percorrenza, inizio_validita, fine_validi
 ('L008', 70, '2025-04-01', NULL, TRUE, 4),
 ('L009', 25, '2025-05-15', '2025-10-15', FALSE, 3),
 ('L010', 80, '2025-06-01', NULL, TRUE, 1);
+INSERT INTO CONTENUTI_HUB (`codice_contenuto`,`descrizione`) VALUES (1,'monopattini');
+INSERT INTO CONTENUTI_HUB (`codice_contenuto`,`descrizione`) VALUES (2,'bici');
+INSERT INTO CONTENUTI_HUB (`codice_contenuto`,`descrizione`) VALUES (3,'macchine elettriche');
+INSERT INTO CONTENUTI_HUB (`codice_contenuto`,`descrizione`) VALUES (4,'scooter elettrici');

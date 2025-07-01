@@ -92,7 +92,7 @@ public interface View {
 
     void updateContenutiHub(Set<ContenutoHub> list);
 
-    void updateContenuti(List<Contenuto> list);
+    void updateContenuti(List<Contenuto> list, List<ContenutoHub> listContenutiHub);
 
     void updatePersone(List<Persona> list);
 

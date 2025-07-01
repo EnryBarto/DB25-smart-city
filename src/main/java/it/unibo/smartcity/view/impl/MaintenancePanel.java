@@ -35,19 +35,14 @@ import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.model.impl.ManutenzioneMezzoImpl;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
-import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
-import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
-import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
 import raven.datetime.DatePicker;
 
 public class MaintenancePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private final static String[] columnNamesManutGravose = {"Codice Linea", "Nome", "Durata Lavoro", "Num Linee Sostitutive", "visualizza"};
     private final static String[] columnNamesLinee = {"Codice Linea", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
     private final static String[] columnNamesMezzi = {"Num immatricolazione", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
-    private final static String[] columnNamesAziende = {"partita iva", "ragione sociale", "comune", "via", "civico", "telefono", "email"};
     private static final List<String> options = new ArrayList<>(List.of(
         "estrai 5 manutenzioni più gravose",
         "estrai aziende senza manutenzione nell'ultimo mese",
@@ -249,96 +244,6 @@ public class MaintenancePanel extends JPanel {
         String descrizione,
         String partitaIva
     ) {}
-
-    public void showManutGravose(List<ManutenzioneGravosa> manutenzioneGravose) {
-        clearContentExceptNorth();
-        updateVisualPanel(
-            this,
-            manutenzioneGravose,
-            columnNamesManutGravose,
-            m -> {
-                var row = new Object[columnNamesManutGravose.length];
-                row[0] = m.codiceLinea();
-                row[1] = m.nome();
-                row[2] = m.durata_lavoro();
-                row[3] = m.numLineeSostitutive();
-                var b = new JButton("Visualizza");
-                b.addActionListener(e -> controller.showTimetable(m.codiceLinea()));
-                row[4] = b;
-                return row;
-            }
-        );
-        this.repaint();
-        this.revalidate();
-    }
-
-    public void showAziendeNoManut(List<AziendaImpl> aziende) {
-        clearContentExceptNorth();
-        updateVisualPanel(
-            this,
-            aziende,
-            columnNamesAziende,
-            a -> {
-                var row = new Object[columnNamesAziende.length];
-                row[0] = a.getPartitaIva();
-                row[1] = a.getRagioneSociale();
-                row[2] = a.getIndirizzoComune();
-                row[3] = a.getIndirizzoVia();
-                row[4] = a.getIndirizzoCivico();
-                row[5] = a.getTelefono();
-                row[6] = a.getEmail();
-                return row;
-            });
-        this.repaint();
-        this.revalidate();
-    }
-
-    public void showManutPerMezzoPanel(List<MezzoConNome> mezzi) {
-        clearContentExceptNorth();
-
-        var mezzoPanel = new JPanel(new BorderLayout());
-        mezzoPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(52, 152, 219), 2),
-            BorderFactory.createEmptyBorder(60, 30, 20, 30)
-        ));
-        mezzoPanel.setBackground(Color.WHITE);
-
-        JLabel mezzoLabel = new JLabel("mezzo :");
-        JComboBox<String> combo = new JComboBox<>();
-        combo.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        combo.setMaximumSize(combo.getPreferredSize());
-        combo.setEditable(false);
-
-        mezzi.forEach(m -> combo.addItem(m.nImmatricolazione() + "-" + m.nomeMezzo()));
-        mezzoPanel.add(mezzoLabel);
-        mezzoPanel.add(combo);
-
-        this.add(mezzoPanel, BorderLayout.NORTH);
-
-        combo.addActionListener(e -> {
-            String choice = (String)combo.getSelectedItem();
-            choice = choice.split("-")[0];
-            var manutenioni = controller.getManutPerMezzo(choice);
-            if (this.getComponentCount() > 2) this.remove(2);
-            updateVisualPanel(
-                this,
-                manutenioni,
-                columnNamesMezzi,
-                m -> {
-                    var row = new Object[columnNamesMezzi.length];
-                    row[0] = m.getnImmatricolazione();
-                    row[1] = m.getNome();
-                    row[2] = m.getDataInzio();
-                    row[3] = m.getDataFine();
-                    row[4] = m.getDescrizione();
-                    row[5] = m.getpIva();
-                    return row;
-                }
-            );
-            this.revalidate();
-            this.repaint();
-        });
-    }
 
     // Generic left panel creation
     private <T> void createLeftPanel(
