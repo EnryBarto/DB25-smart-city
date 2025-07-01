@@ -44,12 +44,9 @@ public class MaintenancePanel extends JPanel {
     private final static String[] columnNamesLinee = {"Codice Linea", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
     private final static String[] columnNamesMezzi = {"Num immatricolazione", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
     private static final List<String> options = new ArrayList<>(List.of(
-        "estrai 5 manutenzioni più gravose",
-        "estrai aziende senza manutenzione nell'ultimo mese",
-        "estrai manutenzioni dato un mezzo",
-        "manutenzione mezzi",
-        "manutenzione linee",
-        "attiva linee"
+        "Mezzi",
+        "Linee"
+        //"attiva linee" Da utilizzare se non presenti gli automatismi nel DB
     ));
 
     private final Controller controller;
@@ -80,12 +77,9 @@ public class MaintenancePanel extends JPanel {
         //selecting the option from the JComboBox and calling the appropriate method in the controller
         btn.addActionListener(e -> {
             switch ((String)this.optionList.getSelectedItem()) {
-                case "estrai 5 manutenzioni più gravose" -> controller.updateManutGravose();
-                case "estrai aziende senza manutenzione nell'ultimo mese" -> controller.updateAziendeNoManut();
-                case "estrai manutenzioni dato un mezzo" -> controller.updateManutPerMezzo();
-                case "manutenzione mezzi" -> controller.updateManutMezziPanel();
-                case "manutenzione linee" -> controller.updateManutLineePanel();
-                case "attiva linee" -> controller.updateAttivaLineePanel();
+                case "Mezzi" -> controller.updateManutMezziPanel();
+                case "Linee" -> controller.updateManutLineePanel();
+                //case "attiva linee" -> controller.updateAttivaLineePanel();
                 default -> throw new IllegalArgumentException("Opzione non valida: " + this.optionList.getSelectedItem());
             }
         });

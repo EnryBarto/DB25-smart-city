@@ -183,7 +183,7 @@ create table SOSTITUZIONI (
      sost_manut_data_inizio date not null,
      sost_manut_codice_linea varchar(30) not null,
      codice_linea varchar(30) not null,
-     constraint FKsostituto_ID primary key (sost_manut_data_inizio, sost_manut_codice_linea));
+     constraint FKsostituto_ID primary key (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea));
 
 create table TARIFFE_ABBONAMENTI (
      nome varchar(30) not null,
@@ -381,3 +381,123 @@ alter table UTENTI add constraint FKutenza_FK
 create unique index ID_TRAGITTO_IND
      on TRAGITTI (codice_linea, partenza_codice_fermata, arrivo_codice_fermata);
 
+
+-- View Section
+-- _____________
+
+CREATE VIEW VW_LINEE_ATTIVE_OGGI AS
+SELECT L.*, M.nome AS tipo_mezzo, F1.codice_fermata AS part_codice_fermata, F1.nome AS part_nome, F1.indirizzo_via AS part_via, F1.indirizzo_civico AS part_civico, F1.indirizzo_comune AS part_comune, F1.indirizzo_cap AS part_cap, F1.longitudine AS part_long, F1.latitudine AS part_lat, F2.codice_fermata AS arr_codice_fermata, F2.nome AS arr_nome, F2.indirizzo_via AS arr_via, F2.indirizzo_civico AS arr_civico, F2.indirizzo_comune AS arr_comune, F2.indirizzo_cap AS arr_cap, F2.longitudine AS arr_long, F2.latitudine AS arr_lat
+FROM LINEE L
+JOIN TIPOLOGIE_MEZZI M ON L.codice_tipo_mezzo = M.codice_tipo_mezzo
+JOIN TRAGITTI TRA1 on TRA1.codice_linea = L.codice_linea
+JOIN TRATTE TR1 ON TRA1.partenza_codice_fermata = TR1.partenza_codice_fermata AND TRA1.arrivo_codice_fermata = TR1.arrivo_codice_fermata
+JOIN FERMATE F1 ON F1.codice_fermata = TR1.partenza_codice_fermata
+JOIN TRAGITTI TRA2 on TRA2.codice_linea = L.codice_linea
+JOIN TRATTE TR2 ON TRA2.partenza_codice_fermata = TR2.partenza_codice_fermata AND TRA2.arrivo_codice_fermata = TR2.arrivo_codice_fermata
+JOIN FERMATE F2 ON F2.codice_fermata = TR2.arrivo_codice_fermata
+WHERE TRA1.ordine = 1 AND TRA2.ordine =	(SELECT MAX(T1.ordine)
+										FROM LINEE L1 JOIN TRAGITTI T1 ON L1.codice_linea = T1.codice_linea
+										WHERE L1.codice_linea = L.codice_linea)
+	AND (L.attiva IS TRUE OR (CURDATE() BETWEEN L.inizio_validita AND L.fine_validita))
+ORDER BY L.codice_linea;
+
+
+-- Stored Procedure Section
+-- _____________
+
+DELIMITER //
+
+CREATE PROCEDURE aggiorna_attivazione_linea(IN cod_linea VARCHAR(30))
+BEGIN
+	-- Aggiornamento dello stato della linea
+	UPDATE linee L
+	SET attiva = NOT EXISTS (SELECT 1
+							FROM manutenzioni_linee
+							WHERE codice_linea = cod_linea AND CURDATE() BETWEEN data_inizio AND data_fine)
+	WHERE codice_linea = cod_linea;
+
+END //
+
+CREATE PROCEDURE aggiorna_attivazione_linee()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE cur_cod_linea VARCHAR(30);
+
+    DECLARE cur CURSOR FOR
+        SELECT codice_linea FROM linee WHERE attiva IS NOT NULL;
+
+    -- Gestione della fine del cursore
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    -- Apertura del cursore
+    OPEN cur;
+
+    -- Ciclo sui risultati
+    read_loop: LOOP
+        FETCH cur INTO cur_cod_linea;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        -- Aggiornamento dello stato della linea in esame
+        CALL aggiorna_attivazione_linea(cur_cod_linea);
+
+    END LOOP;
+
+    CLOSE cur;
+END //
+
+DELIMITER ;
+
+
+-- Trigger Section
+-- _____________
+
+DELIMITER //
+
+CREATE TRIGGER dopo_insert_manut_linea
+AFTER INSERT ON manutenzioni_linee
+FOR EACH ROW
+BEGIN
+    CALL aggiorna_attivazione_linea(NEW.codice_linea);
+END//
+
+CREATE TRIGGER dopo_update_manut_linea
+AFTER UPDATE ON manutenzioni_linee
+FOR EACH ROW
+BEGIN
+    CALL aggiorna_attivazione_linea(NEW.codice_linea);
+END//
+
+CREATE TRIGGER dopo_delete_manut_linea
+AFTER DELETE ON manutenzioni_linee
+FOR EACH ROW
+BEGIN
+    CALL aggiorna_attivazione_linea(OLD.codice_linea);
+END//
+
+DELIMITER ;
+
+
+-- Event Section
+-- _____________
+
+CREATE EVENT aggiorna_linee_event
+ON SCHEDULE EVERY 1 DAY
+DO
+  CALL aggiorna_attivazione_linee();
+
+
+-- Basic data Insert
+-- _____________
+
+-- Admin User
+INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('admin', 'admin', 'Amm91332AA', NULL);
+INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('admin', 'Amm91332AA', 'admin@smartcity.it', '123456789', '$2a$10$u43PXOBQkSbOwUtbrNeot./Qk1qAf0EAnNT5KDwYgBEnuxtTk8J5q');
+INSERT INTO DIPENDENTI (username, ruolo) VALUES ('admin', 'amministrativo');
+
+-- Tipi mezzi
+INSERT INTO TIPOLOGIE_MEZZI (nome) VALUES ('autobus'), ('treno'), ('tram'), ('metro');
+
+-- Contenuti hub
+INSERT INTO CONTENUTI_HUB (`descrizione`) VALUES ('monopattini'), ('bici'), ('macchine elettriche'), ('scooter elettrici');
