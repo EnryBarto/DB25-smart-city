@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -31,7 +30,7 @@ public class StatisticsPanel extends JPanel {
     private final static String[] columnNamesMezzi = {"Num immatricolazione", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
     private final static String[] columnNamesAziende = {"partita iva", "ragione sociale", "comune", "via", "civico", "telefono", "email"};
 
-    private static final List<String> options = new ArrayList<>(List.of(
+    private static final List<String> options = List.of(
         "5 manutenzioni più gravose",
         "Aziende senza manutenzioni nell'ultimo mese",
         "Manutenzioni dato un mezzo",
@@ -39,7 +38,7 @@ public class StatisticsPanel extends JPanel {
         "Linee con < di 5 controlli e più di 10 multe al giorno",
         "Media dei soldi spesi in multe per persona",
         "Linea con più hub mobilità lungo il percorso"
-    ));
+    );
 
     private final Controller controller;
     private final JPanel northPanel = new JPanel(new FlowLayout());

@@ -467,13 +467,6 @@ public final class Queries {
         ORDER BY ora_partenza
     """;
 
-    public static final String UPDATE_LINEA_ATTIVA =
-    """
-        UPDATE LINEE
-        SET attiva = FALSE
-        WHERE codice_linea = ?
-    """;
-
     public static final String LIST_LINEE_NON_ATTIVE =
     """
         SELECT *

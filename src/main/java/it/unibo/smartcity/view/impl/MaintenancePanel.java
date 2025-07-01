@@ -7,7 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Date;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -43,11 +43,11 @@ public class MaintenancePanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private final static String[] columnNamesLinee = {"Codice Linea", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
     private final static String[] columnNamesMezzi = {"Num immatricolazione", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
-    private static final List<String> options = new ArrayList<>(List.of(
+    private static final List<String> options = List.of(
         "Mezzi",
         "Linee"
         //"attiva linee" Da utilizzare se non presenti gli automatismi nel DB
-    ));
+    );
 
     private final Controller controller;
     private final JPanel northPanel = new JPanel(new FlowLayout());
@@ -183,7 +183,8 @@ public class MaintenancePanel extends JPanel {
                 fields.descrizione(),
                 fields.partitaIva()
             ),
-            manut -> controller.addManutenzioneMezzo(manut)
+            manut -> controller.addManutenzioneMezzo(manut),
+            controller.getPIvaAziendeManut()
         );
         this.repaint();
         this.revalidate();
@@ -223,7 +224,8 @@ public class MaintenancePanel extends JPanel {
                 fields.descrizione(),
                 fields.partitaIva()
             ),
-            manut -> controller.addManutenzioneLinea(manut)
+            manut -> controller.addManutenzioneLinea(manut),
+            controller.getPIvaAziendeManut()
         );
         this.repaint();
         this.revalidate();
@@ -244,7 +246,8 @@ public class MaintenancePanel extends JPanel {
         String title,
         Supplier<List<String>> itemsSupplier,
         java.util.function.Function<FormFields, T> buildManutenzione,
-        Consumer<T> addAction
+        Consumer<T> addAction,
+        List<String> pIvaList
     ) {
         leftPanel.removeAll();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
@@ -302,7 +305,9 @@ public class MaintenancePanel extends JPanel {
         var pIvaPanel = new JPanel();
         pIvaPanel.setBackground(Color.WHITE);
         JLabel pIvaLabel = new JLabel("partita iva (opzionale):");
-        JTextField pIvaField = new JTextField(10);
+        JComboBox<String> pIvaField = new JComboBox<>();
+        pIvaField.addItem("");
+        pIvaList.forEach(pIvaField::addItem);
         pIvaPanel.add(pIvaLabel);
         pIvaPanel.add(pIvaField);
 
@@ -324,7 +329,6 @@ public class MaintenancePanel extends JPanel {
                 checkArgument(!nomeField.getText().isEmpty(), "Il nome della manutenzione non può essere vuoto");
                 checkNotNull(descField.getText(), "Inserire descrizione manutenzione");
                 checkArgument(!descField.getText().isEmpty(), "La descrizione della manutenzione non può essere vuota");
-                if (!pIvaField.getText().isEmpty()) checkArgument(pIvaField.getText().matches("\\d{11}"), "La partita IVA deve essere un numero di 11 cifre");
                 var selected = (String) combo.getSelectedItem();
                 String id = selected.split("-")[0];
                 var formFields = new FormFields(
@@ -333,7 +337,7 @@ public class MaintenancePanel extends JPanel {
                     datePickerFine.getSelectedDate(),
                     nomeField.getText(),
                     descField.getText(),
-                    pIvaField.getText().isBlank() ? null : pIvaField.getText()
+                    ((String)pIvaField.getSelectedItem()).isBlank() ? null : (String)pIvaField.getSelectedItem()
                 );
                 T manut = buildManutenzione.apply(formFields);
                 addAction.accept(manut);
@@ -401,7 +405,7 @@ public class MaintenancePanel extends JPanel {
         visualBtn.addActionListener(e -> {
             if(manutList.getSelectedIndex() != -1) {
                 if (rightPanel.getComponentCount() > 6) rightPanel.remove(6);
-                var items = new ArrayList<T>();
+                var items = new LinkedList<T>();
                 items.add(manutenzioni.get(manutList.getSelectedIndex()));
                 visualAction.accept(items);
                 this.revalidate();

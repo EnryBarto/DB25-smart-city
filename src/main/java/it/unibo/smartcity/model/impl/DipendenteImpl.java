@@ -1,7 +1,6 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import it.unibo.smartcity.data.DAOException;
@@ -31,7 +30,7 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
     public static final class DAO {
 
         public static List<OrarioLavoro> listOrari(Connection connection, String username) {
-            var orari = new ArrayList<OrarioLavoro>();
+            var orari = new LinkedList<OrarioLavoro>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_ORARIO_LINEE_ASSEGN, username);
                 var rs = statement.executeQuery();

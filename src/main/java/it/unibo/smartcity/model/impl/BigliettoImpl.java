@@ -1,6 +1,6 @@
 package it.unibo.smartcity.model.impl;
 import java.sql.Connection;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -67,7 +67,7 @@ public class BigliettoImpl implements Biglietto {
         }
 
         public static List<Biglietto> byUser(Connection connection, String username) {
-            var biglietti = new ArrayList<Biglietto>();
+            var biglietti = new LinkedList<Biglietto>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.ESTRAZ_BIGLIETTI_BYUSER, username);
                 var rs = statement.executeQuery();

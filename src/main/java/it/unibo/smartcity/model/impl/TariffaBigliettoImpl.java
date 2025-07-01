@@ -1,7 +1,7 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
@@ -91,8 +91,8 @@ public class TariffaBigliettoImpl implements TariffaBiglietto {
 
     public static final class DAO {
 
-        public static ArrayList<TariffaBiglietto> list(Connection connection) {
-            var tariffe = new ArrayList<TariffaBiglietto>();
+        public static List<TariffaBiglietto> list(Connection connection) {
+            var tariffe = new LinkedList<TariffaBiglietto>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_TARIFFE_BIGLIETTI);
                 var rs = statement.executeQuery();

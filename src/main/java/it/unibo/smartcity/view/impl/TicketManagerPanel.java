@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -32,10 +31,10 @@ public class TicketManagerPanel extends JPanel{
 
     private static final long serialVersionUID = 1L;
     private static final String[] columnTariffe = {"nome", "durata", "prezzo"};
-    private static final List<String> options = new ArrayList<>(List.of(
+    private static final List<String> options = List.of(
         "acquisto biglietti",
         "convalida biglietti"
-    ));
+    );
 
     private final JPanel northPanel = new JPanel(new FlowLayout());
     private final JComboBox<String> optionList = new JComboBox<>();

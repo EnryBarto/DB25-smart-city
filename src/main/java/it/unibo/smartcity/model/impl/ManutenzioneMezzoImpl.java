@@ -1,7 +1,7 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -134,7 +134,7 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
     public static final class DAO {
 
         public static List<ManutenzioneMezzoImpl> list(Connection connection) {
-            var manutenzioniMezzi = new ArrayList<ManutenzioneMezzoImpl>();
+            var manutenzioniMezzi = new LinkedList<ManutenzioneMezzoImpl>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_MANUTENZIONI_MEZZI);
                 var rs = statement.executeQuery();
@@ -190,7 +190,7 @@ public class ManutenzioneMezzoImpl implements ManutenzioneMezzo {
         }
 
         public static List<ManutenzioneMezzoImpl> listByMezzo(Connection connection, String nImmatricolazione) {
-            var manutenzioniMezzi = new ArrayList<ManutenzioneMezzoImpl>();
+            var manutenzioniMezzi = new LinkedList<ManutenzioneMezzoImpl>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_MANUT_PER_MEZZO, nImmatricolazione);
                 var rs = statement.executeQuery();

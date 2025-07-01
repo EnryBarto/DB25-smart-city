@@ -137,17 +137,17 @@ public class SwingView implements View {
         this.tabs.put("Gest. Tratte", new TratteManagePanel(controller));
         this.tabs.put("Gest. Hub", new HubMobilitaManagePanel(controller));
         this.tabs.put("Ins. Var. Servizio", new InsertServiceVariationPanel(controller));
-        this.tabs.put("Gest. Att. Corse", new AttuazioneCorseManagementPanel(controller));
+        this.tabs.put("Ins. Attua. Corsa", new AttuazioneCorseManagementPanel(controller));
         this.tabs.put("Ins. Linea", new LineaInsertPanel(controller));
         this.tabs.put("Assoc. Hub-Contenuto", new AssocContenutoToHubPanel(controller));
         this.tabs.put("Ins. Multa", new InsertMultaPanel(controller));
         this.tabs.put("Statistiche", new StatisticsPanel(controller));
         this.tabs.put("Variazioni di servizio", new VariazioniServizioPanel(controller));
-        this.tabs.put("Assoc. Controllo", new InsertControlloPanel(controller));
+        this.tabs.put("Assegna Controllore", new InsertControlloPanel(controller));
         this.tabs.put("Biglietti", new TicketManagerPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Variazioni di servizio", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub", "Gest. Dipendenti", "Gest. Fermate", "Gest. Tratte", "Ins. Linea", "Gest. Tragitti", "Gest. Orari Linee", "Gest. Att. Corse", "Manutenzioni", "Ins. Var. Servizio", "Gest. Hub", "Assoc. Hub-Contenuto", "Assoc. Controllo", "Statistiche", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub", "Gest. Dipendenti", "Gest. Fermate", "Gest. Tratte", "Ins. Linea", "Gest. Tragitti", "Gest. Orari Linee", "Ins. Attua. Corsa", "Manutenzioni", "Ins. Var. Servizio", "Gest. Hub", "Assoc. Hub-Contenuto", "Assegna Controllore", "Statistiche", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Biglietti", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo", "Ins. Multa"));
@@ -232,10 +232,10 @@ public class SwingView implements View {
                     case "Variazioni di servizio":
                         controller.updateLinesList();
                         break;
-                    case "Gest. Att. Corse":
+                    case "Ins. Attua. Corsa":
                         controller.updateAutistiListCreazioneCorsa();
                         break;
-                    case "Assoc. Controllo":
+                    case "Assegna Controllore":
                         controller.updateControllori();
                         controller.updateCorse();
                         controller.updateCorse();
@@ -376,7 +376,7 @@ public class SwingView implements View {
     @Override
     public void updateCorse(List<AttuazioneCorsa> list) {
         ((InsertMultaPanel)this.tabs.get("Ins. Multa")).updateCorsaList(list);
-        ((InsertControlloPanel)this.tabs.get("Assoc. Controllo")).updateAttuazioneCorsaMap(list);
+        ((InsertControlloPanel)this.tabs.get("Assegna Controllore")).updateAttuazioneCorsaMap(list);
     }
 
     @Override
@@ -401,22 +401,22 @@ public class SwingView implements View {
 
     @Override
     public void updateLineeAttuazioneCorsa(List<Linea> lineeAttive) {
-        ((AttuazioneCorseManagementPanel)this.tabs.get("Gest. Att. Corse")).updateLineeList(lineeAttive);
+        ((AttuazioneCorseManagementPanel)this.tabs.get("Ins. Attua. Corsa")).updateLineeList(lineeAttive);
     }
 
     @Override
     public void updateOrariLineaAttuazioneCorse(List<OrarioLinea> orari) {
-        ((AttuazioneCorseManagementPanel)this.tabs.get("Gest. Att. Corse")).updateOrariList(orari);
+        ((AttuazioneCorseManagementPanel)this.tabs.get("Ins. Attua. Corsa")).updateOrariList(orari);
     }
 
     @Override
     public void updateMezziAttuazioneCorse(List<Mezzo> mezzi) {
-        ((AttuazioneCorseManagementPanel)this.tabs.get("Gest. Att. Corse")).updateMezziList(mezzi);
+        ((AttuazioneCorseManagementPanel)this.tabs.get("Ins. Attua. Corsa")).updateMezziList(mezzi);
     }
 
     @Override
     public void updateAutistiAttuazioneCorse(List<Dipendente> autisti) {
-        ((AttuazioneCorseManagementPanel)this.tabs.get("Gest. Att. Corse")).updateAutistiList(autisti);
+        ((AttuazioneCorseManagementPanel)this.tabs.get("Ins. Attua. Corsa")).updateAutistiList(autisti);
     }
 
     @Override
@@ -425,7 +425,7 @@ public class SwingView implements View {
     }
 
     public void updateControllori(List<Dipendente> controllori) {
-        ((InsertControlloPanel)this.tabs.get("Assoc. Controllo")).updateControlloreMap(controllori);
+        ((InsertControlloPanel)this.tabs.get("Assegna Controllore")).updateControlloreMap(controllori);
     }
 
     @Override

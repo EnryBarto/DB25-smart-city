@@ -9,7 +9,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -348,12 +347,6 @@ public class ControllerImpl implements Controller {
         checkNotNull(manut, "Manutenzione cannot be null");
         checkState(this.currentUserLevel == UserLevel.ADMIN);
 
-        LocalDate localDate = LocalDate.now();
-        java.util.Date today = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-        if (manut.getDataFine().after(today)) LineaImpl.DAO.changeAttiva(connection, manut.getCodiceLinea(), 1);
-        else LineaImpl.DAO.changeAttiva(connection, manut.getCodiceLinea(), 0);
-
         ManutenzioneLineaImpl.DAO.insert(connection, manut);
     }
 
@@ -623,12 +616,6 @@ public class ControllerImpl implements Controller {
         views.forEach(v -> v.updateAttivaLineePanel(linee));
     }
 
-    @Override
-    public void attivaLinea(String codiceLinea) {
-        checkNotNull(codiceLinea);
-        LineaImpl.DAO.attivaLinea(connection, codiceLinea);
-    }
-
     public void addControllo(AttuazioneCorsa c, Dipendente d) {
         ControlloImpl.DAO.insert(connection, new ControlloImpl(d.getUsername(), c.getCodiceCorsa()));
     }
@@ -640,5 +627,16 @@ public class ControllerImpl implements Controller {
             .filter(d -> d.getRuolo() == Ruolo.CONTROLLORE)
             .toList();
         views.forEach(v -> v.updateControllori(controllori));
+    }
+
+    @Override
+    public List<String> getPIvaAziendeManut() {
+        return AziendaImpl.DAO.listPIva(connection);
+    }
+
+    @Override
+    public void attivaLinea(String selectedItem) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'attivaLinea'");
     }
 }

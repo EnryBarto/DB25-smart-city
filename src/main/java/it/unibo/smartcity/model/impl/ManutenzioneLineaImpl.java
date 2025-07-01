@@ -3,7 +3,7 @@ package it.unibo.smartcity.model.impl;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
@@ -138,7 +138,7 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
     public static final class DAO {
 
         public static List<ManutenzioneLinea> list(Connection connection) {
-            var manutenzioniLinee = new ArrayList<ManutenzioneLinea>();
+            var manutenzioniLinee = new LinkedList<ManutenzioneLinea>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_MANUTENZIONI_LINEE);
                 var rs = statement.executeQuery();
@@ -191,7 +191,7 @@ public class ManutenzioneLineaImpl implements ManutenzioneLinea {
         }
 
         public static List<ManutenzioneGravosa> estrazManutPiuGravose(Connection connection) {
-            var manutenzioni = new ArrayList<ManutenzioneGravosa>();
+            var manutenzioni = new LinkedList<ManutenzioneGravosa>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.CINQUE_MANUT_PIU_GRAVOSE);
                 var rs = statement.executeQuery();

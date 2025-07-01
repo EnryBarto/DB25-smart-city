@@ -6,9 +6,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -128,7 +127,7 @@ public class LineaImpl implements Linea {
         }
 
         public static List<FermataLinea> listFermate(Connection connection, String codiceLinea) {
-            var fermateLinea = new ArrayList<FermataLinea>();
+            var fermateLinea = new LinkedList<FermataLinea>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_FERMATE_UNA_LINEA, codiceLinea);
                 var rs = statement.executeQuery();
@@ -277,18 +276,8 @@ public class LineaImpl implements Linea {
             return lines;
         }
 
-        public static void changeAttiva(Connection connection, String codiceLinea, int value) {
-            try(
-                var statement = DAOUtils.prepare(connection, Queries.UPDATE_LINEA_ATTIVA, value, codiceLinea);
-            ) {
-                statement.executeUpdate();
-            } catch (Exception e) {
-                throw new DAOException("Errore nella modifica dell'attivita della linea", e);
-            }
-        }
-
         public static List<Linea> listLineeNonAttive (Connection connection) {
-            var linee = new ArrayList<Linea>();
+            var linee = new LinkedList<Linea>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_LINEE_NON_ATTIVE);
                 var rs = statement.executeQuery();
@@ -310,14 +299,5 @@ public class LineaImpl implements Linea {
             return linee;
         }
 
-        public static void attivaLinea(Connection connection, String codiceLinea) {
-            try (
-                var statement = DAOUtils.prepare(connection, Queries.UPDATE_LINEA_ATTIVA, 1, codiceLinea)
-            ) {
-                statement.executeUpdate();
-            } catch (Exception e) {
-                throw new DAOException("Errore nell'attivazione della linea'", e);
-            }
-        }
     }
 }

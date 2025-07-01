@@ -1,7 +1,7 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
@@ -81,7 +81,7 @@ public class AziendaImpl implements Azienda {
     public static final class DAO {
 
         public static List<AziendaImpl> extracAziendeNoManut(Connection connection) {
-            var aziende = new ArrayList<AziendaImpl>();
+            var aziende = new LinkedList<AziendaImpl>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.AZIENDE_NO_MANUT_ULTIMO_MESE);
                 var rs = statement.executeQuery();
@@ -98,6 +98,21 @@ public class AziendaImpl implements Azienda {
                         rs.getString("email")
                     );
                     aziende.add(azienda);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Failed to list Aziende no manut", e);
+            }
+            return aziende;
+        }
+
+        public static List<String> listPIva(Connection connection) {
+            var aziende = new LinkedList<String>();
+            try (
+                var statement = DAOUtils.prepare(connection, "SELECT * FROM AZIENDE");
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    aziende.add(rs.getString("p_iva"));
                 }
             } catch (Exception e) {
                 throw new DAOException("Failed to list Aziende no manut", e);

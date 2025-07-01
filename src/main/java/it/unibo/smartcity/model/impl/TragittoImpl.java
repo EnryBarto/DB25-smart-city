@@ -5,9 +5,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -189,7 +188,7 @@ public class TragittoImpl implements Tragitto {
         }
 
         public static List<TragittoConTempo> tragittiByLinea(Connection connection, String codiceLinea) {
-            var tragitti = new ArrayList<TragittoConTempo>();
+            var tragitti = new LinkedList<TragittoConTempo>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_TRATTE_PER_LINEA, codiceLinea);
                 var rs = statement.executeQuery();

@@ -1,9 +1,9 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Date;
 
 import com.google.common.base.Preconditions;
 
@@ -114,8 +114,8 @@ public final class AbbonamentoImpl implements Abbonamento {
 
     public static final class DAO {
 
-        public static ArrayList<AbbonamentoImpl> list(Connection connection) {
-            var abbonamenti = new ArrayList<AbbonamentoImpl>();
+        public static List<AbbonamentoImpl> list(Connection connection) {
+            var abbonamenti = new LinkedList<AbbonamentoImpl>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_ABBONAMENTI);
                 var rs = statement.executeQuery();
