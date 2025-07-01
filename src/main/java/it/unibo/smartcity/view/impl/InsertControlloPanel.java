@@ -47,7 +47,7 @@ public class InsertControlloPanel extends JPanel {
         });
         PanelFactory panelFactory = new PanelFactoryImpl();
         JPanel leftPanel = panelFactory.createLeftPanel(
-            "Assegna Orario al Controllore",
+            "Assegnazione Orario al Controllore",
             componentsInsert,
             btnInsertOrario
         );
