@@ -168,7 +168,7 @@ public class FermataManagePanel extends JPanel {
         fermateList.removeAllItems();
         fermateMap.clear();
         fermate.forEach(f -> {
-            String key = f.getNome() + "-" + f.getCodiceFermata();
+            String key = f.getNome() + " - " + f.getCodiceFermata();
             fermateMap.put(key, f);
             fermateList.addItem(key);
         });

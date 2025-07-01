@@ -148,15 +148,9 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void signup(final Utente user, final String ruolo) {
+    public void signup(final Utente user) {
         Preconditions.checkNotNull(user);
-        Preconditions.checkNotNull(ruolo);
-        if (ruolo.equalsIgnoreCase("utente")) {
-            UtenteImpl.DAO.insert(connection, user);
-        } else {
-            DipendenteImpl.DAO.insert(connection, user, Ruolo.valueOf(ruolo.toUpperCase()));
-        }
-
+        UtenteImpl.DAO.insert(connection, user);
     }
 
     @Override

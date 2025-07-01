@@ -30,7 +30,7 @@ INSERT INTO DIPENDENTI (username, ruolo) VALUES ('admin', 'amministrativo');
 INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (1, 'autobus');
 INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (2, 'treno');
 INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (3, 'tram');
-INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (4, 'pollicino');
+INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (4, 'metro');
 INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0000', 1);
 INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0001', 4);
 INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0002', 3);

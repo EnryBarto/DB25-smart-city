@@ -56,7 +56,7 @@ public interface Controller {
 
     void updateOrariLavoro();
 
-    void signup(Utente user, String ruolo);
+    void signup(Utente user);
 
     void updateTimetableLinesList();
 

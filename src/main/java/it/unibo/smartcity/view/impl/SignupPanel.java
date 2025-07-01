@@ -71,11 +71,6 @@ class SignupPanel extends JPanel {
         passwordPanel.add(new JLabel("Password: "));
         passwordPanel.add(passwordField);
 
-        var ruoloPanel = new JPanel();
-        var ruoloField = new JTextField(TEXT_WIDTH);
-        ruoloPanel.add(new JLabel("Ruolo: "));
-        ruoloPanel.add(ruoloField);
-
         var centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.add(Box.createVerticalGlue());
@@ -87,7 +82,6 @@ class SignupPanel extends JPanel {
         centerPanel.add(emailPanel);
         centerPanel.add(userNamePanel);
         centerPanel.add(passwordPanel);
-        centerPanel.add(ruoloPanel);
         centerPanel.add(Box.createVerticalGlue());
         this.add(centerPanel, BorderLayout.CENTER);
 
@@ -125,16 +119,6 @@ class SignupPanel extends JPanel {
                     "Email is invalid"
                 );
 
-                String ruolo = checkNotNull(ruoloField.getText());
-                checkArgument(!ruolo.isEmpty(), "Ruolo cannot be empty");
-                checkArgument(
-                    ruolo.equalsIgnoreCase("utente") ||
-                    ruolo.equalsIgnoreCase("controllore")||
-                    ruolo.equalsIgnoreCase("amministrativo")||
-                    ruolo.equalsIgnoreCase("autista"),
-                    "Ruolo must be either 'utente', 'controllore', 'amministrativo' or 'autista'"
-                );
-
                 String username = checkNotNull(userField.getText());
                 checkArgument(!username.isEmpty(), "Username cannot be empty");
                 checkArgument(passwordField.getPassword().length != 0);
@@ -142,7 +126,7 @@ class SignupPanel extends JPanel {
                 checkArgument(!password.isEmpty(), "Password cannot be empty");
 
                 Utente newUser = new UtenteImpl(surname, name, documento, cf,username, email, tel, BCrypt.hashpw(password, BCrypt.gensalt()));
-                this.controller.signup(newUser, ruolo);
+                this.controller.signup(newUser);
 
                 nameField.setText("");
                 surnameField.setText("");
@@ -152,7 +136,6 @@ class SignupPanel extends JPanel {
                 emailField.setText("");
                 userField.setText("");
                 passwordField.setText("");
-                ruoloField.setText("");
 
                 controller.showLoginUser(username);
 

@@ -147,7 +147,7 @@ public class SwingView implements View {
         this.tabs.put("Biglietti", new TicketManagerPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Variazioni di servizio", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub","Gest. Dipendenti", "Manutenzioni", "Profilo", "Ins. Linea", "Gest. Fermate", "Gest. Tragitti", "Gest. Orari Linee", "Gest. Att. Corse", "Gest. Hub", "Gest. Tratte", "Ins. Var. Servizio", "Assoc. Hub-Contenuto", "Assoc. Controllo", "Statistiche"));
+        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub", "Gest. Dipendenti", "Gest. Fermate", "Gest. Tratte", "Ins. Linea", "Gest. Tragitti", "Gest. Orari Linee", "Gest. Att. Corse", "Manutenzioni", "Ins. Var. Servizio", "Gest. Hub", "Assoc. Hub-Contenuto", "Assoc. Controllo", "Statistiche", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Biglietti", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo", "Ins. Multa"));

@@ -497,7 +497,11 @@ INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('adm
 INSERT INTO DIPENDENTI (username, ruolo) VALUES ('admin', 'amministrativo');
 
 -- Tipi mezzi
-INSERT INTO TIPOLOGIE_MEZZI (nome) VALUES ('autobus'), ('treno'), ('tram'), ('metro');
+INSERT INTO TIPOLOGIE_MEZZI (nome) VALUES ('Autobus'), ('Treno'), ('Tram'), ('Metro');
 
 -- Contenuti hub
-INSERT INTO CONTENUTI_HUB (`descrizione`) VALUES ('monopattini'), ('bici'), ('macchine elettriche'), ('scooter elettrici');
+INSERT INTO CONTENUTI_HUB (`descrizione`) VALUES ('Monopattini'), ('Bici'), ('Macchine elettriche'), ('Scooter elettrici');
+
+-- Tariffe
+INSERT INTO TARIFFE_ABBONAMENTI (nome, num_giorni, prezzo) VALUES ('Mensile', 31, 39.50), ('Semestrale', 183, 200.00), ('Annuale', 365, 330.00), ('Quinquennale', 1827, 1320.00);
+INSERT INTO TARIFFE_BIGLIETTI (nome, durata, prezzo) VALUES ('90min', 90, 2.20), ('Giornaliero', 1440, 7.60), ('Tre giorni', 4320, 15.50);
