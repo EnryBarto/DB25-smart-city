@@ -470,7 +470,7 @@ public final class Queries {
     public static final String UPDATE_LINEA_ATTIVA =
     """
         UPDATE LINEE
-        SET attiva = ?
+        SET attiva = FALSE
         WHERE codice_linea = ?
     """;
 
