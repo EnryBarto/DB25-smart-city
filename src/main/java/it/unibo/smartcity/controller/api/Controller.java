@@ -197,4 +197,6 @@ public interface Controller {
     List<String> getPIvaAziendeManut();
 
     void attivaLinea(String selectedItem);
+
+    void updateLineeStraordinarie();
 }

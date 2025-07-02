@@ -69,12 +69,13 @@ public class InsertServiceVariationPanel extends JPanel {
     }
 
     /**
-     * Aggiorna la lista delle linee disponibili per la selezione.
+     * Updates the line list available for selection. Only ordinary lines are shown.
      */
     public void updateLineList(final List<Linea> linee) {
         lineaMap.clear();
         codeLineaSost.removeAllItems();
         linee.forEach(l -> {
+            System.out.println(l.getCodiceLinea());
             String key = l.getCodiceLinea();
             lineaMap.put(key, l);
             codeLineaSost.addItem(key);

@@ -611,6 +611,12 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
+    public void updateLineeStraordinarie() {
+        var lineeStraordinarie = LineaImpl.DAO.listExtraordinary(connection);
+        views.forEach(v -> v.updateLineeStraordinarie(lineeStraordinarie));
+    }
+
+    @Override
     public void updateAttivaLineePanel() {
         var linee = LineaImpl.DAO.listLineeNonAttive(connection);
         views.forEach(v -> v.updateAttivaLineePanel(linee));

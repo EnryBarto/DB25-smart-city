@@ -102,6 +102,8 @@ public interface View {
 
     void updateLineeControlliMulte(Set<ListLineeCinqueContrDiecMul> lineeMulteControlli);
 
+    void updateLineeStraordinarie(List<Linea> lineeStraordinarie);
+
     void updateMediaSoldiMulte(MediaSoldiMulte mediaSoldiMulte);
 
     void updateLineeMulte(List<ListLineeMulte> lineeMulte);

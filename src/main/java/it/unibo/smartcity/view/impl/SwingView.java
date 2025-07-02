@@ -101,7 +101,6 @@ public class SwingView implements View {
     @Override
     public void updateTimetableLinesList(List<Linea> list) {
         ((TimetablePanel)this.tabs.get("Orari")).updateLinesList(list);
-        ((InsertServiceVariationPanel)this.tabs.get("Ins. Var. Servizio")).updateLineList(list);
         ((VariazioniServizioPanel)this.tabs.get("Variazioni di servizio")).updateLinee(list);
     }
 
@@ -204,7 +203,7 @@ public class SwingView implements View {
                         break;
                     case "Ins. Var. Servizio":
                         controller.updateManutLineePanel();
-                        controller.updateTimetableLinesList();
+                        controller.updateLineeStraordinarie();
                         break;
                     case "Gest. Tragitti":
                         controller.updateListsManagementLinee();
@@ -431,5 +430,10 @@ public class SwingView implements View {
     @Override
     public void updateLineaPiuHubMobilita(LineaPiuHubMobilita lineaPiuHub) {
         ((StatisticsPanel)this.tabs.get("Statistiche")).updateLineaPiuHub(lineaPiuHub);
+    }
+
+    @Override
+    public void updateLineeStraordinarie(List<Linea> lineeStraordinarie) {
+        ((InsertServiceVariationPanel)this.tabs.get("Ins. Var. Servizio")).updateLineList(lineeStraordinarie);
     }
 }

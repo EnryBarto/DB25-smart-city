@@ -104,6 +104,30 @@ public class LineaImpl implements Linea {
             return lines;
         }
 
+        public static List<Linea> listExtraordinary(Connection connection) {
+            var query = "SELECT * FROM LINEE WHERE attiva IS NULL ORDER BY codice_linea";
+            var lines = new LinkedList<Linea>();
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var linea = new LineaImpl(
+                        rs.getString("codice_linea"),
+                        rs.getInt("tempo_percorrenza"),
+                        null,
+                        null,
+                        false,
+                        rs.getInt("codice_tipo_mezzo")
+                    );
+                    lines.add(linea);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione delle linee straordinarie.", e);
+            }
+            return lines;
+        }
+
         public static Map<Date, OrarioLineaImpl> listOrari(Connection connection, String codiceLinea) {
             var orari = new HashMap<Date, OrarioLineaImpl>();
             try (
