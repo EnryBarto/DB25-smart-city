@@ -436,4 +436,9 @@ public class SwingView implements View {
     public void updateLineeStraordinarie(List<Linea> lineeStraordinarie) {
         ((InsertServiceVariationPanel)this.tabs.get("Ins. Var. Servizio")).updateLineList(lineeStraordinarie);
     }
+
+    @Override
+    public void showSuccessMessage(String title, String message) {
+        JOptionPane.showMessageDialog(this.frame, message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
 }

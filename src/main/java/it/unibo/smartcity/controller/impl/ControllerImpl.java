@@ -645,4 +645,9 @@ public class ControllerImpl implements Controller {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'attivaLinea'");
     }
+
+    @Override
+    public void showSuccessMessage(String title, String message) {
+        views.forEach(v -> v.showSuccessMessage(title, message));
+    }
 }

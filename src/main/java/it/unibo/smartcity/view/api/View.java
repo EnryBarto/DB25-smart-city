@@ -123,4 +123,6 @@ public interface View {
     void updateControllori(List<Dipendente> controllori);
 
     void updateLineaPiuHubMobilita(LineaPiuHubMobilita lineaPiuHub);
+
+    void showSuccessMessage(String title, String message);
 }

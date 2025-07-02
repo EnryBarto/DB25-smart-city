@@ -199,4 +199,6 @@ public interface Controller {
     void attivaLinea(String selectedItem);
 
     void updateLineeStraordinarie();
+
+    void showSuccessMessage(String title, String message);
 }
