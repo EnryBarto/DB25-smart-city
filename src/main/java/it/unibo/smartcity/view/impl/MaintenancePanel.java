@@ -38,7 +38,7 @@ import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl;
 import raven.datetime.DatePicker;
 
-public class MaintenancePanel extends JPanel {
+class MaintenancePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private final static String[] columnNamesLinee = {"Codice Linea", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};

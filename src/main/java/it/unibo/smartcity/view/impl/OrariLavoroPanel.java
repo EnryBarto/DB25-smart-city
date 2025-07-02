@@ -14,7 +14,7 @@ import com.google.common.base.Preconditions;
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.data.OrarioLavoro;
 
-public class OrariLavoroPanel extends JPanel {
+class OrariLavoroPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 

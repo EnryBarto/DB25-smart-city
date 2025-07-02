@@ -26,7 +26,7 @@ import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.Biglietto;
 import it.unibo.smartcity.model.api.TariffaBiglietto;
 
-public class TicketManagerPanel extends JPanel{
+class TicketManagerPanel extends JPanel{
 
 
     private static final long serialVersionUID = 1L;

@@ -14,7 +14,7 @@ import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.impl.TrattaImpl;
 
-public class TratteManagePanel extends JPanel {
+class TratteManagePanel extends JPanel {
     private final JComboBox<String> trattaList = new JComboBox<>();
     private Map<String, Tratta> trattaMap = new HashMap<>();
     private final JComboBox<String> partenzaCombo = new JComboBox<>();

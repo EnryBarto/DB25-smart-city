@@ -19,7 +19,7 @@ import it.unibo.smartcity.model.api.CausaleMulta;
 import it.unibo.smartcity.model.api.Persona;
 import it.unibo.smartcity.view.api.PanelFactory;
 
-public class InsertMultaPanel extends JPanel{
+class InsertMultaPanel extends JPanel{
     private final Map<String, Persona> personaMapper = new LinkedHashMap<>();
     private final Map<String, CausaleMulta> causaleMapper = new LinkedHashMap<>();
     private final Map<String, AttuazioneCorsa> corsaMapper = new LinkedHashMap<>();

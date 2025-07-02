@@ -21,7 +21,7 @@ import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
 
-public class HubMobilitaManagePanel extends JPanel {
+class HubMobilitaManagePanel extends JPanel {
     private static final String NONE_OPTION = "-- nessuna --";
     private final JComboBox<String> hubList = new JComboBox<>();
     private Map<String, HubMobilita> hubMap = new HashMap<>();

@@ -10,16 +10,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.data.DAOException;
@@ -33,7 +31,7 @@ class TimetableManagePanel extends JPanel {
     private final static String SELECT_LABEL = "--- SELEZIONA ---";
 
     private final TimePicker timePicker;
-    private final List<JRadioButton> days = new LinkedList<>();
+    private final List<JCheckBox> days = new LinkedList<>();
     private final JComboBox<String> lineeAggiunta = new JComboBox<>();
     private final JComboBox<String> lineeRimozione = new JComboBox<>();
     private final JComboBox<String> orarioRimozione = new JComboBox<>();
@@ -50,13 +48,10 @@ class TimetableManagePanel extends JPanel {
         timePicker.setEditor(timeArea);
         timePicker.now();
 
-        // Usa radio button invece di checkbox per i giorni
-        ButtonGroup daysGroup = new ButtonGroup();
         String[] giorni = {"Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"};
         for (String giorno : giorni) {
-            JRadioButton radio = new JRadioButton(giorno);
-            days.add(radio);
-            daysGroup.add(radio);
+            JCheckBox check = new JCheckBox(giorno);
+            days.add(check);
         }
 
         var daysPanel = new JPanel();
@@ -70,22 +65,25 @@ class TimetableManagePanel extends JPanel {
         var btnAggiungi = new JButton("Aggiungi Orario");
 
         btnAggiungi.addActionListener(e -> {
-            String giorno = null;
-            for (var buttons = daysGroup.getElements(); buttons.hasMoreElements();) {
-                AbstractButton button = buttons.nextElement();
-                if (button.isSelected()) giorno = button.getText();
-            }
-            if (giorno != null && timePicker.getSelectedTime() != null) {
-                try {
-                    controller.addOrarioLinea((String)lineeAggiunta.getSelectedItem(), giorno, timePicker.getSelectedTime());
-                } catch (DAOException ex) {
-                    if (ex.getCause() instanceof SQLIntegrityConstraintViolationException) {
-                        controller.showErrorMessage("Errore", "Orario già presente per la linea e il giorno selezionato");
+            boolean eseguito = false;
+            var time = timePicker.getSelectedTime();
+            for (var giorno: days) {
+                if (giorno.isSelected() && time != null) {
+                    eseguito = true;
+                    try {
+                        controller.addOrarioLinea((String)lineeAggiunta.getSelectedItem(), giorno.getText(), time);
+                        controller.showSuccessMessage("Aggiunta orario", "Orario aggiunto con successo:\n" + giorno.getText() + " " + time);
+                        giorno.setSelected(false);
+                    } catch (DAOException ex) {
+                        if (ex.getCause() instanceof SQLIntegrityConstraintViolationException) {
+                            controller.showErrorMessage("Errore", "Orario già presente per la linea e il giorno selezionato");
+                        }
                     }
                 }
+            }
+            if (eseguito) {
                 timePicker.clearSelectedTime();
                 controller.updateLineeInOrari();
-                controller.showSuccessMessage("Aggiunta orario", "Orario aggiunto con successo");
             } else {
                 controller.showErrorMessage("Errore", "Seleziona un giorno e un'orario");
             }

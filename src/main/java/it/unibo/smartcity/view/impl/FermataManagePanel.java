@@ -10,7 +10,7 @@ import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.model.impl.FermataImpl;
 import it.unibo.smartcity.model.api.Fermata;
 
-public class FermataManagePanel extends JPanel {
+class FermataManagePanel extends JPanel {
 
     private final JComboBox<String> fermateList = new JComboBox<>();
     private Map<String, Fermata> fermateMap = new HashMap<>();

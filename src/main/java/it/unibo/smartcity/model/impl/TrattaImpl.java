@@ -3,10 +3,8 @@ package it.unibo.smartcity.model.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.sql.Connection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
@@ -44,9 +42,9 @@ public class TrattaImpl implements Tratta {
 
     public static final class DAO {
 
-        public static Set<Tratta> list(Connection connection) {
-            var query = "SELECT * FROM TRATTE";
-            var tratte = new HashSet<Tratta>();
+        public static List<Tratta> list(Connection connection) {
+            var query = "SELECT * FROM TRATTE ORDER BY partenza_codice_fermata, arrivo_codice_fermata";
+            var tratte = new LinkedList<Tratta>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
                 var rs = statement.executeQuery();

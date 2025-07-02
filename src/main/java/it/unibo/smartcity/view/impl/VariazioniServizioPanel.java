@@ -17,7 +17,7 @@ import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.model.api.Linea;
 
-public class VariazioniServizioPanel extends JPanel {
+class VariazioniServizioPanel extends JPanel {
 
     private JScrollPane tableArea;
     private JComboBox<String> lineeBox = new JComboBox<>();

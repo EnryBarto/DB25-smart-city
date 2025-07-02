@@ -30,7 +30,7 @@ import it.unibo.smartcity.model.impl.LineaImpl;
 import it.unibo.smartcity.view.api.PanelFactory;
 import raven.datetime.DatePicker;
 
-public class LineaInsertPanel extends JPanel {
+class LineaInsertPanel extends JPanel {
     private final JComboBox<String> mezzi = new JComboBox<>();
     private final JComboBox<String> selectableTratte = new JComboBox<>();
     private final Map<String, Tratta> tratteMapper = new HashMap<>();

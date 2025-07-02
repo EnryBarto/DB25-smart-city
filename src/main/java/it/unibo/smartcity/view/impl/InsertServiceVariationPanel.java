@@ -18,7 +18,7 @@ import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.view.api.PanelFactory;
 
-public class InsertServiceVariationPanel extends JPanel {
+class InsertServiceVariationPanel extends JPanel {
     private final JComboBox<String> manutenzioneLinea = new JComboBox<>();
     private final Map<String, ManutenzioneLinea> manutLineaMap = new HashMap<>();
     private final Map<String, Linea> lineaMap = new HashMap<>();

@@ -1,8 +1,8 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
@@ -48,9 +48,9 @@ public class FermataImpl implements Fermata {
     }
 
     public static final class DAO {
-        public static Set<Fermata> list(Connection connection) {
-            var query = "SELECT * FROM FERMATE";
-            var fermate = new HashSet<Fermata>();
+        public static List<Fermata> list(Connection connection) {
+            var query = "SELECT * FROM FERMATE ORDER BY codice_fermata";
+            var fermate = new LinkedList<Fermata>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
                 var rs = statement.executeQuery();

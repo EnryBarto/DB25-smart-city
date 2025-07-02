@@ -16,7 +16,7 @@ import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.view.api.PanelFactory;
 
-public class InsertControlloPanel extends JPanel {
+class InsertControlloPanel extends JPanel {
     private final Map<String, Dipendente> controlloreMapper = new LinkedHashMap<>();
     private final Map<String, AttuazioneCorsa> attuazioneCorsaMapper = new LinkedHashMap<>();
     private final JComboBox<String> controlloreComboBox = new JComboBox<>();

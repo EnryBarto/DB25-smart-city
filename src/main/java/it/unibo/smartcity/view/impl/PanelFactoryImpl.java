@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 
 import it.unibo.smartcity.view.api.PanelFactory;
 
-public class PanelFactoryImpl implements PanelFactory {
+class PanelFactoryImpl implements PanelFactory {
 
     @Override
     public JPanel createLeftPanel(
