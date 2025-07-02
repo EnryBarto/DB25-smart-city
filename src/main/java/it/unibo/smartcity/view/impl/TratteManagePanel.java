@@ -163,12 +163,12 @@ public class TratteManagePanel extends JPanel {
     /**
      * Aggiorna la lista delle tratte disponibili per la rimozione.
      */
-    public void updateTratteList(final List<Tratta> tratte) {
+    public void updateTratteList(final List<Tratta> tratte, final List<Fermata> fermate) {
         trattaMap.clear();
         trattaList.removeAllItems();
         tratte.forEach(t -> {
-            int partenza = t.getPartenzaCodiceFermata();
-            int arrivo = t.getArrivoCodiceFermata();
+            String partenza = fermate.stream().filter(f -> f.getCodiceFermata() == t.getPartenzaCodiceFermata()).findFirst().get().getNome();
+            String arrivo = fermate.stream().filter(f -> f.getCodiceFermata() == t.getArrivoCodiceFermata()).findFirst().get().getNome();
             String key = partenza
                 + " → "
                 + arrivo

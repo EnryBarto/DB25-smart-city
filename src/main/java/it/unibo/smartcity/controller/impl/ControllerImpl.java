@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -290,8 +291,9 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateTratte() {
-        var list = TrattaImpl.DAO.list(connection);
-        views.forEach(v -> v.updateTratte(list));
+        var listTratte = TrattaImpl.DAO.list(connection);
+        var listFermate = FermataImpl.DAO.list(connection).stream().collect(Collectors.toSet());
+        views.forEach(v -> v.updateTratte(listTratte, listFermate));
     }
 
     @Override

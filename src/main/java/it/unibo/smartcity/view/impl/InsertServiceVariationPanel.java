@@ -76,7 +76,6 @@ public class InsertServiceVariationPanel extends JPanel {
         lineaMap.clear();
         codeLineaSost.removeAllItems();
         linee.forEach(l -> {
-            System.out.println(l.getCodiceLinea());
             String key = l.getCodiceLinea();
             lineaMap.put(key, l);
             codeLineaSost.addItem(key);

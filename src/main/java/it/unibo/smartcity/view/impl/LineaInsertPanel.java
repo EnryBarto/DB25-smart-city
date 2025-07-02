@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.TipologiaMezzo;
 import it.unibo.smartcity.model.api.Tratta;
@@ -152,12 +153,13 @@ public class LineaInsertPanel extends JPanel {
         this.add(btnAggiungiLinea, BorderLayout.SOUTH);
     }
 
-    void updateTratteList(List<Tratta> tratte) {
+    void updateTratteList(List<Tratta> tratte, List<Fermata> fermate) {
         this.selectableTratte.removeAllItems();
         this.tratteMapper.clear();
         tratte.forEach(t -> {
-            var key = t.getPartenzaCodiceFermata() + " → " + t.getArrivoCodiceFermata() + " [" + t.getTempoPercorrenza()
-                    + "min]";
+            String partenza = fermate.stream().filter(f -> f.getCodiceFermata() == t.getPartenzaCodiceFermata()).findFirst().get().getNome();
+            String arrivo = fermate.stream().filter(f -> f.getCodiceFermata() == t.getArrivoCodiceFermata()).findFirst().get().getNome();
+            var key = partenza + " → " + arrivo + " [" + t.getTempoPercorrenza() + "min]";
             tratteMapper.put(key, t);
         });
         this.updateTratte();

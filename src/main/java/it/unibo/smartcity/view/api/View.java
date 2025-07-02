@@ -66,7 +66,7 @@ public interface View {
 
     void updateHubs(List<HubMobilita> hubs);
 
-    void updateTratte(Set<Tratta> list);
+    void updateTratte(Set<Tratta> list, Set<Fermata> fermate);
 
     void updateManutMezziPanel(List<ManutenzioneMezzoImpl> list);
 

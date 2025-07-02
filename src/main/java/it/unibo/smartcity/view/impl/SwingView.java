@@ -292,9 +292,9 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateTratte(Set<Tratta> set) {
-        ((TratteManagePanel)this.tabs.get("Gest. Tratte")).updateTratteList(set.stream().toList());
-        ((LineaInsertPanel)this.tabs.get("Ins. Linea")).updateTratteList(set.stream().toList());
+    public void updateTratte(Set<Tratta> set, Set<Fermata> fermate) {
+        ((TratteManagePanel)this.tabs.get("Gest. Tratte")).updateTratteList(set.stream().toList(), fermate.stream().toList());
+        ((LineaInsertPanel)this.tabs.get("Ins. Linea")).updateTratteList(set.stream().toList(), fermate.stream().toList());
     }
 
     @Override
