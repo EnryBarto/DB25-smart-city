@@ -41,6 +41,7 @@ public class InsertControlloPanel extends JPanel {
                     return;
                 }
                 controller.addControllo(c, d);
+                controller.showSuccessMessage("Assegnazione Orario", "Orario assegnato con successo");
             } catch (Exception ex) {
                 controller.showErrorMessage("Errore inserimento controllo", ex.getMessage());
             }

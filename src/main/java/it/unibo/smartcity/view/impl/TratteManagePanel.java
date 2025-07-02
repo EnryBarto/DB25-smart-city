@@ -83,6 +83,7 @@ public class TratteManagePanel extends JPanel {
                 partenzaCombo.setSelectedIndex(0);
                 arrivoCombo.setSelectedIndex(0);
                 tempoField.setText("");
+                controller.showSuccessMessage("Aggiunta tratta", "Tratta aggiunta con successo");
             } catch (Exception ex) {
                 controller.showErrorMessage("Errore inserimento tratta", ex.getMessage());
             }
@@ -124,7 +125,12 @@ public class TratteManagePanel extends JPanel {
             if (trattaList.getSelectedIndex() != -1) {
                 Tratta t = trattaMap.get(trattaList.getSelectedItem());
                 if (t != null) {
-                    controller.removeTratta(t);
+                    try {
+                        controller.removeTratta(t);
+                        controller.showSuccessMessage("Rimozione tratta", "Tratta rimossa con successo");
+                    } catch (Exception e1) {
+                        controller.showErrorMessage("Errore rimozione tratta", e1.getMessage());
+                    }
                 }
             }
         });

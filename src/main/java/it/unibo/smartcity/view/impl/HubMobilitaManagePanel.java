@@ -130,6 +130,7 @@ public class HubMobilitaManagePanel extends JPanel {
                 latField.setText("");
                 lonField.setText("");
                 fermataCombo.setSelectedIndex(0);
+                controller.showSuccessMessage("Aggiunta hub", "Hub aggiunto con successo");
             } catch (Exception ex) {
                 controller.showErrorMessage("Errore inserimento hub", ex.getMessage());
             }
@@ -176,7 +177,12 @@ public class HubMobilitaManagePanel extends JPanel {
             if (hubList.getSelectedIndex() != -1) {
                 HubMobilita h = hubMap.get(hubList.getSelectedItem());
                 if (h != null) {
-                    controller.removeHub(h);
+                    try {
+                        controller.removeHub(h);
+                        controller.showSuccessMessage("Rimozione hub", "Hub rimosso con successo");
+                    } catch (Exception e1) {
+                        controller.showErrorMessage("Errore rimozione hub", e1.getMessage());
+                    }
                 }
             }
         });

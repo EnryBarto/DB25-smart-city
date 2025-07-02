@@ -72,10 +72,15 @@ class TragittiManagePanel extends JPanel {
 
         btnAggiungiTragitto.addActionListener(e -> {
             if (!this.linee.getSelectedItem().toString().equals(SELECT_LABEL)) {
-                controller.addTragitto(
-                    (String)this.linee.getSelectedItem(),
-                    this.tratteMapper.get(this.tratte.getSelectedItem())
-                );
+                try {
+                    controller.addTragitto(
+                        (String)this.linee.getSelectedItem(),
+                        this.tratteMapper.get(this.tratte.getSelectedItem())
+                    );
+                    controller.showSuccessMessage("Aggiunta tratta", "Tratta aggiunta con successo");
+                } catch (Exception e1) {
+                    controller.showErrorMessage("Errore aggiunta tratta", e1.getMessage());
+                }
             } else {
                 controller.showErrorMessage("Errore", "Seleziona una linea");
             }
@@ -83,7 +88,12 @@ class TragittiManagePanel extends JPanel {
 
         btnRimuoviTragitto.addActionListener(e -> {
             if (this.tragittiFinali.getSelectedIndex() != -1) {
-                controller.removeTragitto(this.tragittiMapper.get(this.tragittiFinali.getSelectedItem()));
+                try {
+                    controller.removeTragitto(this.tragittiMapper.get(this.tragittiFinali.getSelectedItem()));
+                    controller.showSuccessMessage("Rimozione tratta", "Tratta rimossa con successo");
+                } catch (Exception e1) {
+                    controller.showErrorMessage("Errore rimozione tratta", e1.getMessage());
+                }
             } else {
                 controller.showErrorMessage("Errore", "Seleziona un tragitto da rimuovere");
             }

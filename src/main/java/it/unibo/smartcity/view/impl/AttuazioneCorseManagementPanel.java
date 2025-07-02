@@ -59,6 +59,7 @@ class AttuazioneCorseManagementPanel extends JPanel {
                     (String)this.mezzi.getSelectedItem()
                 );
                 controller.updateLineeAttuazioneCorse(datePicker.getSelectedDate());
+                controller.showSuccessMessage("Aggiunta attuazione corsa", "Attuazione corsa aggiunta con successo");
             } else {
                 controller.showErrorMessage("Errore", "Imposta tutti i campi");
             }

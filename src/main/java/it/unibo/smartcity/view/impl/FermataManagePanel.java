@@ -101,6 +101,7 @@ public class FermataManagePanel extends JPanel {
                 capField.setText("");
                 latField.setText("");
                 lonField.setText("");
+                controller.showSuccessMessage("Aggiunta fermata", "Fermata aggiunta con successo");
             } catch (Exception ex) {
                 controller.showErrorMessage("Errore inserimento fermata", ex.getMessage());
             }
@@ -146,7 +147,13 @@ public class FermataManagePanel extends JPanel {
             if (fermateList.getSelectedIndex() != -1) {
                 Fermata f = fermateMap.get(fermateList.getSelectedItem());
                 if (f != null) {
-                    controller.removeFermata(f);
+                    try {
+                        controller.removeFermata(f);
+                        controller.showSuccessMessage("Rimozione fermata", "Fermata rimossa con successo");
+                    } catch (Exception ex) {
+                        controller.showErrorMessage("Errore rimozione fermata", ex.getMessage());
+                        return;
+                    }
                 }
             }
         });

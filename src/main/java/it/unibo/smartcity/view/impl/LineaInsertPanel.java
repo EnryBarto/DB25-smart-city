@@ -138,7 +138,12 @@ public class LineaInsertPanel extends JPanel {
             }
             Linea linea = new LineaImpl(codiceLinea, 0, inizioValidita, fineValidita, true,
                     mezzo.getCodiceTipoMezzo());
-            c.addLinea(linea, selectedTratte, straordinaria);
+            try {
+                c.addLinea(linea, selectedTratte, straordinaria);
+                c.showSuccessMessage("Aggiunta linea", "Linea aggiunta con successo");
+            } catch (Exception e1) {
+                c.showErrorMessage("Errore aggiunta linea", e1.getMessage());
+            }
         });
 
         innerPanel.add(leftPanel);

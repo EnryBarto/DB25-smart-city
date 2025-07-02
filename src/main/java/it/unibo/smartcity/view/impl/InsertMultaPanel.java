@@ -57,6 +57,7 @@ public class InsertMultaPanel extends JPanel{
                     return;
                 }
                 controller.addPersona(cognome, nome, documento, codiceFiscale);
+                controller.showSuccessMessage("Aggiunta persona", "Persona aggiunta con successo");
             } catch (Exception ex) {
                 controller.showErrorMessage("Errore inserimento persona", ex.getMessage());
             }
@@ -102,6 +103,7 @@ public class InsertMultaPanel extends JPanel{
                 }
 
                 controller.addMulta(selectedPersona, selectedCausale, selectedCorsa, importo);
+                controller.showSuccessMessage("Aggiunta multa", "Multa aggiunta con successo");
             } catch (Exception ex) {
                 controller.showErrorMessage("Errore inserimento multa", ex.getMessage());
             }

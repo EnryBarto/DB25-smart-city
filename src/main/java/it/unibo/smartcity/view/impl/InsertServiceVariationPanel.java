@@ -55,6 +55,7 @@ public class InsertServiceVariationPanel extends JPanel {
                     selectedManutenzione,
                     selectedLinea
                 );
+                controller.showSuccessMessage("Aggiunta variazione servizio", "Variazione servizio aggiunta con successo");
             } catch (Exception ex) {
                 controller.showErrorMessage("Errore inserimento variazione servizio", ex.getMessage());
             }

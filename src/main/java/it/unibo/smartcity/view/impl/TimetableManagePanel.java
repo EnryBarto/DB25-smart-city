@@ -85,6 +85,7 @@ class TimetableManagePanel extends JPanel {
                 }
                 timePicker.clearSelectedTime();
                 controller.updateLineeInOrari();
+                controller.showSuccessMessage("Aggiunta orario", "Orario aggiunto con successo");
             } else {
                 controller.showErrorMessage("Errore", "Seleziona un giorno e un'orario");
             }
@@ -100,6 +101,7 @@ class TimetableManagePanel extends JPanel {
                 controller.removeOrario(this.orarioMapper.get(this.orarioRimozione.getSelectedItem()));
                 controller.updateLineeInOrari();
                 this.orarioRimozione.removeAllItems();
+                controller.showSuccessMessage("Rimozione orario", "Orario rimosso con successo");
             } else {
                 controller.showErrorMessage("Errore", "Seleziona una linea e un orario");
             }

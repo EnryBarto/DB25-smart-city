@@ -61,6 +61,7 @@ class AssocContenutoToHubPanel extends JPanel {
                     return;
                 }
                 controller.addContenutoToHub(selectedContenuto, selectedHub, postiMassimi);
+                controller.showSuccessMessage("Aggiunta riuscita", "Contenuto aggiunto con successo all'hub");
             } catch (Exception ex) {
                 controller.showErrorMessage("Errore inserimento contenuto", ex.getMessage());
             }
@@ -84,6 +85,7 @@ class AssocContenutoToHubPanel extends JPanel {
                     return;
                 }
                 controller.deleteContenutoHub(selectedContenutoHub);
+                controller.showSuccessMessage("Eliminazione riuscita", "Contenuto-hub eliminato con successo");
             } catch (Exception ex) {
                 controller.showErrorMessage("Errore eliminazione contenuto-hub", ex.getMessage());
             }
