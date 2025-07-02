@@ -13,7 +13,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,6 +21,7 @@ import javax.swing.table.TableCellRenderer;
 import com.google.common.base.Preconditions;
 
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.Biglietto;
 import it.unibo.smartcity.model.api.TariffaBiglietto;
@@ -90,7 +90,7 @@ class TicketManagerPanel extends JPanel{
         buyBtn.addActionListener(e -> {
             if (tariffeList.getSelectedIndex() != -1) {
                 this.controller.addBiglietto((Integer)tariffeList.getSelectedItem());
-                JOptionPane.showMessageDialog(this, "Biglietto acquistato con successo");
+                controller.showSuccessMessage("Acquisto biglietto", "Biglietto acquistato con successo");
             }
         });
 
@@ -152,6 +152,7 @@ class TicketManagerPanel extends JPanel{
         JLabel bigliettoLabel = new JLabel("Scegli il biglietto:");
         bigliettoLabel.setAlignmentX(LEFT_ALIGNMENT);
 
+        bigliettiList.removeAllItems();
         biglietti.forEach(b -> bigliettiList.addItem(b.getCodice()));
         bigliettiList.setMaximumSize(new Dimension(250, 30));
         bigliettiList.setAlignmentX(LEFT_ALIGNMENT);
@@ -175,8 +176,12 @@ class TicketManagerPanel extends JPanel{
             if (bigliettiList.getSelectedIndex() != -1 && corseList.getSelectedIndex() != -1) {
                 int selectedBiglietto = (Integer)bigliettiList.getSelectedItem();
                 int selectedCorsa = (Integer)corseList.getSelectedItem();
-                this.controller.validateBiglietto(selectedBiglietto, selectedCorsa);
-                JOptionPane.showMessageDialog(this, "Biglietto convalidato con successo");
+                try {
+                    this.controller.validateBiglietto(selectedBiglietto, selectedCorsa);
+                    controller.showSuccessMessage("Convalida biglietto", "Biglietto convalidato con successo");
+                } catch (DAOException ex) {
+                    controller.showErrorMessage("Errore convalida", "Biglietto già convalidato\n" + ex.getCause().getMessage());
+                }
             }
         });
 
@@ -211,6 +216,7 @@ class TicketManagerPanel extends JPanel{
         JButton btn = new JButton("OK");
         //selecting the option from the JComboBox and calling the appropriate method in the controller
         btn.addActionListener(e -> {
+            controller.updateValidateTicket();
             switch ((String)this.optionList.getSelectedItem()) {
                 case "acquisto biglietti" -> controller.updateBuyTicket();
                 case "convalida biglietti" -> controller.updateValidateTicket();

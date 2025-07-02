@@ -7,9 +7,9 @@ import static com.google.common.base.Preconditions.checkState;
 import java.sql.Connection;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -437,7 +437,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void updateValidateTicket() {
         views.forEach(v -> v.updateValidateTicket(
-            BigliettoImpl.DAO.byUser(connection, this.user.getUsername()),
+            BigliettoImpl.DAO.byUserNotValidated(connection, this.user.getUsername()),
             AttuazioneCorsaImpl.DAO.list(connection)
         ));
     }
@@ -451,13 +451,9 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void validateBiglietto(int codiceBiglietto, int codice_corsa) {
+    public void validateBiglietto(int codiceBiglietto, int codiceCorsa) {
         checkNotNull(codiceBiglietto);
-        var today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 0);
-        today.set(Calendar.MINUTE, 0);
-        today.set(Calendar.SECOND, 0);
-        ConvalidaImpl.DAO.insert(connection, codiceBiglietto, today.getTime().toString(), codiceBiglietto);
+        ConvalidaImpl.DAO.insert(connection, codiceBiglietto, LocalDateTime.now(), codiceCorsa);
     }
 
     public void updateLineeInOrari() {
@@ -532,7 +528,7 @@ public class ControllerImpl implements Controller {
         checkNotNull(causale, "Causale cannot be null");
         checkNotNull(corsa, "Corsa cannot be null");
         checkArgument(importo >= causale.prezzoBase() && importo <= causale.prezzoMassimo(), "Importo must be within the valid range");
-        var multa = new MultaImpl(0, Date.valueOf(LocalDate.now()), importo, causale.codice(), corsa.getCodiceCorsa(), persona.getDocumento(),
+        var multa = new MultaImpl(0, LocalDateTime.now(), importo, causale.codice(), corsa.getCodiceCorsa(), persona.getDocumento(),
                 this.user.getUsername());
         MultaImpl.DAO.insert(multa, connection);
     }

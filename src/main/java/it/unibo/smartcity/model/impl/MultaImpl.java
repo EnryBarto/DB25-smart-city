@@ -2,6 +2,7 @@ package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import com.google.common.base.Preconditions;
@@ -13,7 +14,7 @@ import it.unibo.smartcity.model.api.Multa;
 public class MultaImpl implements Multa {
 
     private final int codice;
-    private final Date dataOraEmissione;
+    private final LocalDateTime dataOraEmissione;
     private final double importo;
     private Optional<Date> dataPagamento;
     private final int codiceCausale;
@@ -21,7 +22,7 @@ public class MultaImpl implements Multa {
     private final String documentoIntestatario;
     private final String usernameControllore;
 
-    public MultaImpl(final int codice, final Date dataOraEmissione, final double importo, final Date dataPagamento, final int codiceCausale,
+    public MultaImpl(final int codice, final LocalDateTime dataOraEmissione, final double importo, final Date dataPagamento, final int codiceCausale,
             final int codiceCorsa, final String documentoIntestatario, final String usernameControllore) {
         this.codice = codice;
         this.dataOraEmissione = dataOraEmissione;
@@ -33,7 +34,7 @@ public class MultaImpl implements Multa {
         this.usernameControllore = usernameControllore;
     }
 
-    public MultaImpl(final int codice, final Date dataOraEmissione, final double importo, final int codiceCausale, final int codiceCorsa,
+    public MultaImpl(final int codice, final LocalDateTime dataOraEmissione, final double importo, final int codiceCausale, final int codiceCorsa,
             final String documentoIntestatario, final String usernameControllore) {
         this(codice, dataOraEmissione, importo, null, codiceCausale, codiceCorsa, documentoIntestatario, usernameControllore);
     }
@@ -50,7 +51,7 @@ public class MultaImpl implements Multa {
     }
 
     @Override
-    public Date getDataOraEmissione() {
+    public LocalDateTime getDataOraEmissione() {
         return dataOraEmissione;
     }
 

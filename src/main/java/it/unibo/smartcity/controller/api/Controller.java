@@ -142,7 +142,7 @@ public interface Controller {
 
     void addBiglietto(int biglietto);
 
-    void validateBiglietto(int codiceBiglietto, int codice_corsa);
+    void validateBiglietto(int codiceBiglietto, int codiceCorsa);
 
     void updateLineeInOrari();
 

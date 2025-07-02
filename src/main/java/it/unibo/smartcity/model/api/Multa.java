@@ -1,6 +1,7 @@
 package it.unibo.smartcity.model.api;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface Multa {
@@ -9,7 +10,7 @@ public interface Multa {
 
     int getCodice();
 
-    Date getDataOraEmissione();
+    LocalDateTime getDataOraEmissione();
 
     double getImporto();
 

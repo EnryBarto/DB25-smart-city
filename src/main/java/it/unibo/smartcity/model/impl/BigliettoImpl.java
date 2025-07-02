@@ -66,10 +66,10 @@ public class BigliettoImpl implements Biglietto {
             }
         }
 
-        public static List<Biglietto> byUser(Connection connection, String username) {
+        public static List<Biglietto> byUserNotValidated(Connection connection, String username) {
             var biglietti = new LinkedList<Biglietto>();
             try (
-                var statement = DAOUtils.prepare(connection, Queries.ESTRAZ_BIGLIETTI_BYUSER, username);
+                var statement = DAOUtils.prepare(connection, Queries.ESTRAZ_BIGLIETTI_BYUSER_NON_CONVAL, username);
                 var rs = statement.executeQuery();
             ){
                 while (rs.next()) {

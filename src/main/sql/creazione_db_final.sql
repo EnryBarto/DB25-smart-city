@@ -516,3 +516,8 @@ INSERT INTO AZIENDE (p_iva, ragione_sociale, indirizzo_civico, indirizzo_via, in
 	('30732476298', 'Serao, Malacarne e Gasperi s.r.l.', '49', 'Contrada Nico', 'Corrado ligure', 45382, '207735989', 'laura61@tele2.it'),
 	('41233010444', 'Trussardi Group', '82', 'Rotonda Gigli', 'Orengo ligure', 83000, '6966652368', 'giustino28@bondumier.com'),
 	('80997108159', 'Carli-Riccardi Group', '28', 'Canale Augusto', 'San Umberto umbro', 84341, '6848820571', 'marco85@carosone.com');
+
+-- Causali Multe
+INSERT INTO CAUSALI_MULTE(codice_causale, reato, prezzo_base, prezzo_massimo) VALUES
+     (1, "Mancanza titolo di viaggio", 20, 500),
+     (2, "Deturpazione mezzi di trasporto", 50, 1000);

@@ -42,11 +42,12 @@ public final class Queries {
         VALUES (?, ?, ?)
     """;
 
-    public static final String ESTRAZ_BIGLIETTI_BYUSER =
+    public static final String ESTRAZ_BIGLIETTI_BYUSER_NON_CONVAL =
     """
         SELECT *
-        FROM BIGLIETTI
-        WHERE username = ?
+        FROM BIGLIETTI B
+        LEFT JOIN CONVALIDE C ON B.codice_biglietto = C.codice_biglietto
+        WHERE username = ? AND C.codice_corsa IS NULL
     """;
 
     public static final String INSERT_CONVALIDA =
