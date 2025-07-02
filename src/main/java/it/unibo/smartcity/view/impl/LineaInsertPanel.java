@@ -2,7 +2,10 @@ package it.unibo.smartcity.view.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -196,9 +199,12 @@ class LineaInsertPanel extends JPanel {
     private void updateSelectedTratteArea(JTextArea selectedTratteArea) {
         StringBuilder sb = new StringBuilder();
         selectedTratte.forEach(t -> {
-            sb.append(t.getPartenzaCodiceFermata())
-                    .append(" → ")
-                    .append(t.getArrivoCodiceFermata())
+            sb.append(this.tratteMapper.entrySet().stream()
+                    .filter(e -> e.getValue().getPartenzaCodiceFermata() == t.getPartenzaCodiceFermata()
+                            && e.getValue().getArrivoCodiceFermata() == t.getArrivoCodiceFermata())
+                    .map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse("Tratta non trovata"))
                     .append("\n");
         });
         selectedTratteArea.setText(sb.toString());
@@ -211,14 +217,14 @@ class LineaInsertPanel extends JPanel {
             button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
             button.setFont(button.getFont().deriveFont(16f));
             button.setOpaque(true);
-            button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-            button.addMouseListener(new java.awt.event.MouseAdapter() {
+            button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            button.addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                public void mouseEntered(MouseEvent evt) {
                     button.setBackground(new Color(56, 142, 60));
                 }
                 @Override
-                public void mouseExited(java.awt.event.MouseEvent evt) {
+                public void mouseExited(MouseEvent evt) {
                     button.setBackground(new Color(76, 175, 80));
                 }
             });
