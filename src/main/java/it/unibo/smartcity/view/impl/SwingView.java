@@ -23,6 +23,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
+import it.unibo.smartcity.data.IncassiTariffa;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.LineaPiuHubMobilita;
 import it.unibo.smartcity.data.ListHubMobilita;
@@ -440,5 +441,10 @@ public class SwingView implements View {
     @Override
     public void showSuccessMessage(String title, String message) {
         JOptionPane.showMessageDialog(this.frame, message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public void updateIncassiTariffa(IncassiTariffa inc) {
+        ((StatisticsPanel)this.tabs.get("Statistiche")).updateIncassiTariffa(inc);
     }
 }

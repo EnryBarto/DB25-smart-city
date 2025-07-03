@@ -3,6 +3,7 @@ package it.unibo.smartcity.view.api;
 import java.util.List;
 import java.util.Set;
 
+import it.unibo.smartcity.data.IncassiTariffa;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.LineaPiuHubMobilita;
 import it.unibo.smartcity.data.ListHubMobilita;
@@ -125,4 +126,6 @@ public interface View {
     void updateLineaPiuHubMobilita(LineaPiuHubMobilita lineaPiuHub);
 
     void showSuccessMessage(String title, String message);
+
+    void updateIncassiTariffa(IncassiTariffa inc);
 }

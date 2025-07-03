@@ -17,6 +17,7 @@ import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Persona;
+import it.unibo.smartcity.model.api.TariffaBiglietto;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
@@ -201,4 +202,8 @@ public interface Controller {
     void updateLineeStraordinarie();
 
     void showSuccessMessage(String title, String message);
+
+    List<TariffaBiglietto> getTariffeBiglietti();
+
+    void updateIncassiTariffa(TariffaBiglietto tariffa, Date dateFrom, Date dateTo);
 }

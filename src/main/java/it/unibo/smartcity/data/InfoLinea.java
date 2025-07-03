@@ -24,10 +24,9 @@ public record InfoLinea(Linea linea, TipologiaMezzo mezzo, Fermata partenza, Fer
 
     public static final class DAO {
         public static List<InfoLinea> list(Connection connection) {
-            var query = "SELECT * FROM VW_LINEE_ATTIVE_OGGI"; //Queries.LIST_LINEE_ATTIVE;
             var lines = new LinkedList<InfoLinea>();
             try (
-                var statement = DAOUtils.prepare(connection, query);
+                var statement = DAOUtils.prepare(connection, Queries.LIST_LINEE_ATTIVE);
                 var rs = statement.executeQuery();
             ) {
                 while (rs.next()) {

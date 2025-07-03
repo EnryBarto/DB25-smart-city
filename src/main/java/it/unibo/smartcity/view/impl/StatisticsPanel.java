@@ -17,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.data.IncassiTariffa;
 import it.unibo.smartcity.data.LineaPiuHubMobilita;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
@@ -37,7 +38,8 @@ class StatisticsPanel extends JPanel {
         "Linee con più multe",
         "Linee con < di 5 controlli e più di 10 multe al giorno",
         "Media dei soldi spesi in multe per persona",
-        "Linea con più hub mobilità lungo il percorso"
+        "Linea con più hub mobilità lungo il percorso",
+        "Incassi per titolo di viaggio in periodo definito"
     );
 
     private final Controller controller;
@@ -47,6 +49,7 @@ class StatisticsPanel extends JPanel {
     private LineeControlliMultePanel lineeMulteControlli;
     private MediaSoldiMultePanel mediaSoldiMultePanel = new MediaSoldiMultePanel();
     private LineaMaggioriHubPanel lineaMaggioriHubPanel = new LineaMaggioriHubPanel();
+    private IncassiTipoTariffaPanel incassiTipoTariffaPanel;
 
     public StatisticsPanel(final Controller controller) {
         super(new BorderLayout());
@@ -57,6 +60,7 @@ class StatisticsPanel extends JPanel {
         this.controller = controller;
         this.lineeMulteControlli = new LineeControlliMultePanel(controller);
         this.lineePiuMultePanel = new LineePiuMultePanel(controller);
+        this.incassiTipoTariffaPanel = new IncassiTipoTariffaPanel(controller);
         this.add(northPanel, BorderLayout.NORTH);
 
         JLabel lbl = new JLabel("Scegli una opzione");
@@ -87,6 +91,9 @@ class StatisticsPanel extends JPanel {
                 case "Linea con più hub mobilità lungo il percorso"-> {
                     this.showPanel(lineaMaggioriHubPanel);
                     controller.updateStatistics();
+                }
+                case "Incassi per titolo di viaggio in periodo definito" -> {
+                    this.showPanel(incassiTipoTariffaPanel);
                 }
                 default -> throw new IllegalArgumentException("Opzione non valida: " + this.optionList.getSelectedItem());
             }
@@ -259,5 +266,9 @@ class StatisticsPanel extends JPanel {
 
     public void updateLineaPiuHub(LineaPiuHubMobilita lineaPiuHub) {
         this.lineaMaggioriHubPanel.updateLineaPiuHub(lineaPiuHub);
+    }
+
+    public void updateIncassiTariffa(IncassiTariffa inc) {
+        this.incassiTipoTariffaPanel.updateIncassiTariffa(inc);
     }
 }

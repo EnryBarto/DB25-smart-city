@@ -24,6 +24,7 @@ import com.google.common.base.Preconditions;
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
+import it.unibo.smartcity.data.IncassiTariffa;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.InsertLineaComplete;
 import it.unibo.smartcity.data.LineaPiuHubMobilita;
@@ -45,6 +46,7 @@ import it.unibo.smartcity.model.api.Linea;
 import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Persona;
+import it.unibo.smartcity.model.api.TariffaBiglietto;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
@@ -652,5 +654,16 @@ public class ControllerImpl implements Controller {
     @Override
     public void showSuccessMessage(String title, String message) {
         views.forEach(v -> v.showSuccessMessage(title, message));
+    }
+
+    @Override
+    public List<TariffaBiglietto> getTariffeBiglietti() {
+        return TariffaBigliettoImpl.DAO.list(connection);
+    }
+
+    @Override
+    public void updateIncassiTariffa(TariffaBiglietto tariffa, Date dateFrom, Date dateTo) {
+        var inc = IncassiTariffa.DAO.selectByDate(connection, dateFrom, dateTo, tariffa);
+        views.forEach(v -> v.updateIncassiTariffa(inc));
     }
 }
