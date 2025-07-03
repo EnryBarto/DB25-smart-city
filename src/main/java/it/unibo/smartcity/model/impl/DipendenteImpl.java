@@ -29,10 +29,10 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
 
     public static final class DAO {
 
-        public static List<OrarioLavoro> listOrari(Connection connection, String username) {
+        public static List<OrarioLavoro> listOrariAutista(Connection connection, String username) {
             var orari = new LinkedList<OrarioLavoro>();
             try (
-                var statement = DAOUtils.prepare(connection, Queries.LIST_ORARIO_LINEE_ASSEGN, username);
+                var statement = DAOUtils.prepare(connection, Queries.LIST_ORARIO_AUTISTA_LINEE_ASSEGN, username);
                 var rs = statement.executeQuery();
             ) {
                 while (rs.next()) {
@@ -43,7 +43,36 @@ public class DipendenteImpl extends UtenteImpl implements Dipendente {
                             rs.getString("ora_partenza"),
                             rs.getString("giorno_settimanale"),
                             rs.getString("codice_linea")
-                        )
+                        ),
+                        rs.getInt("tempo_percorrenza"),
+                        rs.getString("n_immatricolazione")
+                    );
+
+                    orari.add(orarioLavoro);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione degli orari di lavoro.", e);
+            }
+            return orari;
+        }
+
+        public static List<OrarioLavoro> listOrariControllore(Connection connection, String username) {
+            var orari = new LinkedList<OrarioLavoro>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_ORARIO_CONTROLLORE_LINEE_ASSEGN, username);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var orarioLavoro = new OrarioLavoro(
+                        rs.getDate("A.data"),
+                        new OrarioLineaImpl(
+                            rs.getInt("O.codice_orario"),
+                            rs.getString("O.ora_partenza"),
+                            rs.getString("O.giorno_settimanale"),
+                            rs.getString("O.codice_linea")
+                        ),
+                        rs.getInt("L.tempo_percorrenza"),
+                        rs.getString("A.n_immatricolazione")
                     );
 
                     orari.add(orarioLavoro);

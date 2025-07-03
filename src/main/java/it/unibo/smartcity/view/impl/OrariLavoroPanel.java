@@ -19,7 +19,7 @@ class OrariLavoroPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private JScrollPane tableArea;
-    private final static String[] columnNames = {"Data", "Giorno", "Linea", "Ora Partenza", "Visualizza"};
+    private final static String[] columnNames = {"Data", "Linea", "Ora Partenza", "Ora Arrivo", "Mezzo", "Visualizza"};
     private final Controller controller;
 
     public OrariLavoroPanel(final Controller controller) {
@@ -32,25 +32,26 @@ class OrariLavoroPanel extends JPanel {
         if (this.tableArea != null) this.remove(tableArea);
         Object[][] righe = orariLavoro.stream().
             map(e -> {
-                var row = new Object[5];
+                var row = new Object[6];
                 row[0] = e.data();
-                row[1] = e.orarioLinea().getGiornoSettimanale();
-                row[2] = e.orarioLinea().getCodiceLinea();
-                row[3] = e.orarioLinea().getOraPartenza();
+                row[1] = e.orarioLinea().getCodiceLinea();
+                row[2] = e.orarioLinea().getOraPartenza();
+                row[3] = e.orarioLinea().getOraPartenza().plusMinutes(e.tempoPercorrenza());
+                row[4] = e.mezzo();
                 var b = new JButton("Visualizza");
                 b.addActionListener(e1 -> controller.showTimetable(e.orarioLinea().getCodiceLinea()));
-                row[4] = b;
+                row[5] = b;
                 return row;
             }).toArray(Object[][]::new);
 
         var tabella = new JTable(righe, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 4; // La colonna dei pulsanti è l'unica modificabile
+                return column == 5; // La colonna dei pulsanti è l'unica modificabile
             }
         };
         // Renderer per la colonna dei pulsanti (colonna 5)
-        tabella.getColumnModel().getColumn(4).setCellRenderer((table, value, isSelected, hasFocus, row, column) -> {
+        tabella.getColumnModel().getColumn(5).setCellRenderer((table, value, isSelected, hasFocus, row, column) -> {
             return (JButton) value;
         });
 
@@ -65,7 +66,7 @@ class OrariLavoroPanel extends JPanel {
                 return (JButton) value;
             }
         }
-        tabella.getColumnModel().getColumn(4).setCellEditor(new MyCellEditor());
+        tabella.getColumnModel().getColumn(5).setCellEditor(new MyCellEditor());
 
         this.tableArea = new JScrollPane(tabella);
         this.add(tableArea, BorderLayout.CENTER);

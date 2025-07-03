@@ -159,13 +159,25 @@ public final class Queries {
         ORDER BY h.codice_hub;
     """;
     //OPERAZIONE 4
-    public static final String LIST_ORARIO_LINEE_ASSEGN =
+    public static final String LIST_ORARIO_AUTISTA_LINEE_ASSEGN =
     """
-        SELECT ol.codice_linea, ol.ora_partenza, ol.giorno_settimanale, ol.codice_orario, ac.data
+        SELECT ol.codice_linea, ol.ora_partenza, ol.giorno_settimanale, ol.codice_orario, ac.data, l.tempo_percorrenza, ac.n_immatricolazione
         FROM ORARI_LINEE ol
         JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
+        JOIN LINEE l ON ol.codice_linea = l.codice_linea
         WHERE ac.username = ?
-        ORDER BY ol.codice_linea, ol.ora_partenza, ol.giorno_settimanale;
+        ORDER BY ac.data, ol.ora_partenza;
+    """;
+    //OPERAZIONE 5
+    public static final String LIST_ORARIO_CONTROLLORE_LINEE_ASSEGN =
+    """
+        SELECT A.data, O.codice_orario, O.ora_partenza, O.giorno_settimanale, O.codice_linea, L.tempo_percorrenza, A.n_immatricolazione
+        FROM CONTROLLI C
+        JOIN ATTUAZIONI_CORSE A ON C.codice_corsa = A.codice_corsa
+        JOIN ORARI_LINEE O ON A.codice_orario = O.codice_orario
+        JOIN LINEE L ON O.codice_linea = L.codice_linea
+        WHERE C.username = ?
+        ORDER BY A.data, O.ora_partenza;
     """;
     //OPERAZIONE 6
     public static final String ESTRAZ_LINEE_PIU_CONVALIDE =

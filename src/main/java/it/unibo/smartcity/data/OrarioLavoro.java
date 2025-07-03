@@ -4,6 +4,6 @@ import java.util.Date;
 
 import it.unibo.smartcity.model.api.OrarioLinea;
 
-public record OrarioLavoro(Date data, OrarioLinea orarioLinea) {
+public record OrarioLavoro(Date data, OrarioLinea orarioLinea, int tempoPercorrenza, String mezzo) {
 
 }

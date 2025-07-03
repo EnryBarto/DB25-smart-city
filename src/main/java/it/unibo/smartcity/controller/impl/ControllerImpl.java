@@ -32,6 +32,7 @@ import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
 import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.data.MediaSoldiMulte;
+import it.unibo.smartcity.data.OrarioLavoro;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.CausaleMulta;
 import it.unibo.smartcity.model.api.Contenuto;
@@ -142,8 +143,13 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateOrariLavoro() {
-        var list = DipendenteImpl.DAO.listOrari(connection, user.getUsername());
-        views.forEach(v -> v.updateOrariLavoro(list));
+        List<OrarioLavoro> orari = null;
+        if (this.currentUserLevel == UserLevel.DRIVER) {
+            orari = DipendenteImpl.DAO.listOrariAutista(connection, user.getUsername());
+        } else if (this.currentUserLevel == UserLevel.CONTROLLER) {
+            orari = DipendenteImpl.DAO.listOrariControllore(connection, user.getUsername());
+        }
+        for (var v: views) v.updateOrariLavoro(orari);
     }
 
     @Override
