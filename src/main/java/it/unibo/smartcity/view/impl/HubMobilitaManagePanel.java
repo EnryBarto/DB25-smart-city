@@ -112,8 +112,8 @@ class HubMobilitaManagePanel extends JPanel {
                 }
                 var hub = new HubMobilitaImpl(
                     0,
-                    lonField.getText(),
                     latField.getText(),
+                    lonField.getText(),
                     nomeField.getText(),
                     indirizzoViaField.getText(),
                     indirizzoCivicoField.getText(),

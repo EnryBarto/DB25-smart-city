@@ -1,9 +1,9 @@
 package it.unibo.smartcity.model.impl;
 
 import java.sql.Connection;
-import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
@@ -18,7 +18,7 @@ public class HubMobilitaImpl implements HubMobilita {
     private final Indirizzo indirizzo;
     private final Optional<Integer> codiceFermata;
 
-    public HubMobilitaImpl(int codiceHub, String longitudine, String latitudine, String nome, String via,
+    public HubMobilitaImpl(int codiceHub, String latitudine, String longitudine, String nome, String via,
             String civico, String comune, int cap, Integer codiceFermata) {
         this.codiceHub = codiceHub;
         this.longitudine = longitudine;
@@ -58,9 +58,9 @@ public class HubMobilitaImpl implements HubMobilita {
     }
 
     public static final class DAO {
-        public static Set<HubMobilita> list(Connection connection) {
-            var query = "SELECT * FROM HUB_MOBILITA";
-            var hubs = new HashSet<HubMobilita>();
+        public static List<HubMobilita> list(Connection connection) {
+            var query = "SELECT * FROM HUB_MOBILITA ORDER BY codice_hub";
+            var hubs = new LinkedList<HubMobilita>();
             try (
                     var statement = DAOUtils.prepare(connection, query);
                     var rs = statement.executeQuery();) {
@@ -75,7 +75,7 @@ public class HubMobilitaImpl implements HubMobilita {
                     var cap = rs.getInt("indirizzo_cap");
                     var codiceFermata = rs.getInt("codice_fermata");
 
-                    hubs.add(new HubMobilitaImpl(codiceHub, longitudine, latitudine, nome, via, civico, comune, cap, codiceFermata));
+                    hubs.add(new HubMobilitaImpl(codiceHub, latitudine, longitudine, nome, via, civico, comune, cap, codiceFermata));
                 }
             } catch (Exception e) {
                 throw new DAOException("Errore nell'estrazione degli hub di mobilità.", e);

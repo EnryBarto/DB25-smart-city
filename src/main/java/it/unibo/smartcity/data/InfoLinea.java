@@ -49,8 +49,8 @@ public record InfoLinea(Linea linea, TipologiaMezzo mezzo, Fermata partenza, Fer
                             rs.getString("part_civico"),
                             rs.getString("part_comune"),
                             rs.getInt("part_cap"),
-                            rs.getString("part_long"),
-                            rs.getString("part_lat")),
+                            rs.getString("part_lat"),
+                            rs.getString("part_long")),
                         new FermataImpl(
                             rs.getInt("arr_codice_fermata"),
                             rs.getString("arr_nome"),
@@ -58,8 +58,8 @@ public record InfoLinea(Linea linea, TipologiaMezzo mezzo, Fermata partenza, Fer
                             rs.getString("arr_civico"),
                             rs.getString("arr_comune"),
                             rs.getInt("arr_cap"),
-                            rs.getString("arr_long"),
-                            rs.getString("arr_lat"))
+                            rs.getString("arr_lat"),
+                            rs.getString("arr_long"))
                     ));
                 }
             } catch (Exception e) {

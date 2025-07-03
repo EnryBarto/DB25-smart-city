@@ -208,8 +208,8 @@ public class TragittoImpl implements Tragitto {
                             rs.getString("f_par.indirizzo_civico"),
                             rs.getString("f_par.indirizzo_comune"),
                             rs.getInt("f_par.indirizzo_cap"),
-                            rs.getString("f_par.longitudine"),
-                            rs.getString("f_par.latitudine")
+                            rs.getString("f_par.latitudine"),
+                            rs.getString("f_par.longitudine")
                         ),
                         new FermataImpl(
                             rs.getInt("f_arr.codice_fermata"),
@@ -218,8 +218,8 @@ public class TragittoImpl implements Tragitto {
                             rs.getString("f_arr.indirizzo_civico"),
                             rs.getString("f_arr.indirizzo_comune"),
                             rs.getInt("f_arr.indirizzo_cap"),
-                            rs.getString("f_arr.longitudine"),
-                            rs.getString("f_arr.latitudine")
+                            rs.getString("f_arr.latitudine"),
+                            rs.getString("f_arr.longitudine")
                         )
                     );
                     tragitti.add(tragitto);

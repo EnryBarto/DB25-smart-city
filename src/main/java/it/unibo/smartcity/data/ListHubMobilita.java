@@ -3,9 +3,9 @@ package it.unibo.smartcity.data;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
-import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import it.unibo.smartcity.model.api.HubMobilita;
 import it.unibo.smartcity.model.impl.HubMobilitaImpl;
@@ -20,9 +20,9 @@ public record ListHubMobilita(HubMobilita hub, Optional<String> nomeFermata, Str
     }
 
     public static final class DAO {
-        public static Set<ListHubMobilita> get(final Connection connection) {
+        public static List<ListHubMobilita> get(final Connection connection) {
             final var query = Queries.LIST_HUB_MOBILITA;
-            final var hubs = new HashSet<ListHubMobilita>();
+            final var hubs = new LinkedList<ListHubMobilita>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
                 var rs = statement.executeQuery();
@@ -31,8 +31,8 @@ public record ListHubMobilita(HubMobilita hub, Optional<String> nomeFermata, Str
                     hubs.add(new ListHubMobilita(
                         new HubMobilitaImpl(
                             rs.getInt("codice_hub"),
-                            rs.getString("longitudine"),
                             rs.getString("latitudine"),
+                            rs.getString("longitudine"),
                             rs.getString("nome_hub"),
                             rs.getString("indirizzo_via"),
                             rs.getString("indirizzo_civico"),

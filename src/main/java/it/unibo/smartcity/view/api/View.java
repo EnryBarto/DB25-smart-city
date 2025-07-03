@@ -48,7 +48,7 @@ public interface View {
 
     void showLineTimetable(String codLinea, List<TragittoConTempo> tragitti, List<OrarioLinea> orariLinea);
 
-    void updateHubsList(Set<ListHubMobilita> set);
+    void updateHubsList(List<ListHubMobilita> set);
 
     void userLevelChanged(UserLevel newLevel);
 

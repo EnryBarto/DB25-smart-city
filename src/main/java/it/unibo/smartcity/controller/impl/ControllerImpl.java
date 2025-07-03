@@ -168,7 +168,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void updateHubsList() {
         var list1 = ListHubMobilita.DAO.get(connection);
-        var list2 = HubMobilitaImpl.DAO.list(connection).stream().toList();
+        var list2 = HubMobilitaImpl.DAO.list(connection);
         views.forEach(v -> v.updateHubsList(list1));
         views.forEach(v -> v.updateHubs(list2));
     }

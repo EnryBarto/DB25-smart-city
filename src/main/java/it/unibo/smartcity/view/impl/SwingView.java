@@ -111,7 +111,7 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateHubsList(Set<ListHubMobilita> set) {
+    public void updateHubsList(List<ListHubMobilita> set) {
         ((HubMobilityPanel)this.tabs.get("Hub")).updateHubs(set);
     }
 

@@ -17,7 +17,7 @@ public class FermataImpl implements Fermata {
     private final String longitudine;
     private final String latitudine;
 
-    public FermataImpl(int codiceFermata, String nome, String via, String civico, String comune, int cap, String longitudine, String latitudine) {
+    public FermataImpl(int codiceFermata, String nome, String via, String civico, String comune, int cap, String latitudine, String longitudine) {
         this.codiceFermata = codiceFermata;
         this.nome = nome;
         this.indirizzo = new Indirizzo(via, civico, comune, cap);
@@ -63,8 +63,8 @@ public class FermataImpl implements Fermata {
                         rs.getString("indirizzo_civico"),
                         rs.getString("indirizzo_comune"),
                         rs.getInt("indirizzo_cap"),
-                        rs.getString("longitudine"),
-                        rs.getString("latitudine")
+                        rs.getString("latitudine"),
+                        rs.getString("longitudine")
                     );
                     fermate.add(fermata);
                 }
