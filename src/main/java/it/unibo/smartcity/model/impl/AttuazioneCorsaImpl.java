@@ -3,7 +3,6 @@ package it.unibo.smartcity.model.impl;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
@@ -115,28 +114,6 @@ public class AttuazioneCorsaImpl implements AttuazioneCorsa {
     }
 
     public static final class DAO {
-
-        public static List<AttuazioneCorsa> list(Connection connection) {
-            var attuazioni_corse = new LinkedList<AttuazioneCorsa>();
-            try (
-                var statement = DAOUtils.prepare(connection, Queries.LIST_ATTUAZIONI_CORSE);
-                var resultSet = statement.executeQuery();
-            ) {
-                while (resultSet.next()) {
-                    var codice_corsa = resultSet.getInt("codice_corsa");
-                    var data = resultSet.getDate("data");
-                    var codice_orario = resultSet.getInt("codice_orario");
-                    var n_immatricolazione = resultSet.getString("n_immatricolazione");
-                    var username = resultSet.getString("username");
-                    var attuazione_corsa = new AttuazioneCorsaImpl(codice_corsa, data, codice_orario, n_immatricolazione, username);
-                    attuazioni_corse.add(attuazione_corsa);
-                }
-
-            } catch (Exception e) {
-                throw new DAOException("Failed to list attuazioni corse");
-            }
-            return attuazioni_corse;
-        }
 
         public static void insert(Connection connection, LocalDate data, OrarioLinea orario, Dipendente dipendente, String codMezzo) {
             var query = "INSERT INTO ATTUAZIONI_CORSE (data, codice_orario, n_immatricolazione, username) VALUES (?, ?, ?, ?)";

@@ -22,6 +22,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.google.common.base.Preconditions;
 
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.data.AttuazioneCorsaConLineaOrario;
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
 import it.unibo.smartcity.data.IncassiTariffa;
@@ -446,7 +447,7 @@ public class ControllerImpl implements Controller {
     public void updateValidateTicket() {
         views.forEach(v -> v.updateValidateTicket(
             BigliettoImpl.DAO.byUserNotValidated(connection, this.user.getUsername()),
-            AttuazioneCorsaImpl.DAO.list(connection)
+            AttuazioneCorsaConLineaOrario.DAO.list(connection)
         ));
     }
 
@@ -555,7 +556,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updateCorse() {
-        var list = AttuazioneCorsaImpl.DAO.list(connection);
+        var list = AttuazioneCorsaConLineaOrario.DAO.list(connection);
         views.forEach(v -> v.updateCorse(list));
     }
 

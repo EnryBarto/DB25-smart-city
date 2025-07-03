@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.data.AttuazioneCorsaConLineaOrario;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.Dipendente;
 import it.unibo.smartcity.view.api.PanelFactory;
@@ -65,12 +66,12 @@ class InsertControlloPanel extends JPanel {
         });
     }
 
-    public void updateAttuazioneCorsaMap(List<AttuazioneCorsa> attuazioni) {
+    public void updateAttuazioneCorsaMap(List<AttuazioneCorsaConLineaOrario> attuazioni) {
         attuazioneCorsaMapper.clear();
         attuazioneCorsaComboBox.removeAllItems();
         attuazioni.forEach(a -> {
-            var str = a.getData().toString() + " - " + a.getCodiceCorsa();
-            attuazioneCorsaMapper.put(str, a);
+            var str = a.attuazioneCorsa().getData().toString() + " - " + a.linea().getCodiceLinea() + " - " + a.orario().getOraPartenza();
+            attuazioneCorsaMapper.put(str, a.attuazioneCorsa());
             attuazioneCorsaComboBox.addItem(str);
         });
     }

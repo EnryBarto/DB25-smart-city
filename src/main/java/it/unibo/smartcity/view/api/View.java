@@ -3,11 +3,11 @@ package it.unibo.smartcity.view.api;
 import java.util.List;
 import java.util.Set;
 
+import it.unibo.smartcity.data.AttuazioneCorsaConLineaOrario;
 import it.unibo.smartcity.data.IncassiTariffa;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.LineaPiuHubMobilita;
 import it.unibo.smartcity.data.ListHubMobilita;
-import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.Biglietto;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
@@ -85,7 +85,7 @@ public interface View {
 
     void updateBuyTicket(List<TariffaBiglietto> list);
 
-    void updateValidateTicket(List<Biglietto> biglietti, List<AttuazioneCorsa> corse);
+    void updateValidateTicket(List<Biglietto> biglietti, List<AttuazioneCorsaConLineaOrario> corse);
 
     void updateLineeListInOrari(List<Linea> list);
 
@@ -99,7 +99,7 @@ public interface View {
 
     void updateCausaliMulta(List<CausaleMulta> list);
 
-    void updateCorse(List<AttuazioneCorsa> list);
+    void updateCorse(List<AttuazioneCorsaConLineaOrario> list);
 
     void updateLineeControlliMulte(Set<ListLineeCinqueContrDiecMul> lineeMulteControlli);
 

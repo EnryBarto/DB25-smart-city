@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.data.AttuazioneCorsaConLineaOrario;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.CausaleMulta;
 import it.unibo.smartcity.model.api.Persona;
@@ -143,12 +144,12 @@ class InsertMultaPanel extends JPanel{
         });
     }
 
-    public void updateCorsaList(final List<AttuazioneCorsa> corse) {
+    public void updateCorsaList(final List<AttuazioneCorsaConLineaOrario> corse) {
         corsaMapper.clear();
         corsaComboBox.removeAllItems();
         corse.forEach(c -> {
-            String key = c.getData().toString() + " - " + c.getCodiceCorsa();
-            corsaMapper.put(key, c);
+            String key = c.attuazioneCorsa().getData() + " - " + c.linea().getCodiceLinea() + " - " + c.orario().getOraPartenza();
+            corsaMapper.put(key, c.attuazioneCorsa());
             corsaComboBox.addItem(key);
         });
     }

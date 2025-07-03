@@ -23,6 +23,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.controller.api.Controller.UserLevel;
+import it.unibo.smartcity.data.AttuazioneCorsaConLineaOrario;
 import it.unibo.smartcity.data.IncassiTariffa;
 import it.unibo.smartcity.data.InfoLinea;
 import it.unibo.smartcity.data.LineaPiuHubMobilita;
@@ -32,7 +33,6 @@ import it.unibo.smartcity.data.ListLineeMulte;
 import it.unibo.smartcity.data.ListVariazioniServizi;
 import it.unibo.smartcity.data.MediaSoldiMulte;
 import it.unibo.smartcity.data.OrarioLavoro;
-import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.Biglietto;
 import it.unibo.smartcity.model.api.CausaleMulta;
 import it.unibo.smartcity.model.api.Contenuto;
@@ -340,7 +340,7 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateValidateTicket(List<Biglietto> biglietti, List<AttuazioneCorsa> corse) {
+    public void updateValidateTicket(List<Biglietto> biglietti, List<AttuazioneCorsaConLineaOrario> corse) {
         ((TicketManagerPanel)this.tabs.get("Biglietti")).updateValidateTicketPanel(biglietti, corse);
     }
 
@@ -374,7 +374,7 @@ public class SwingView implements View {
     }
 
     @Override
-    public void updateCorse(List<AttuazioneCorsa> list) {
+    public void updateCorse(List<AttuazioneCorsaConLineaOrario> list) {
         ((InsertMultaPanel)this.tabs.get("Ins. Multa")).updateCorsaList(list);
         ((InsertControlloPanel)this.tabs.get("Assegna Controllore")).updateAttuazioneCorsaMap(list);
     }

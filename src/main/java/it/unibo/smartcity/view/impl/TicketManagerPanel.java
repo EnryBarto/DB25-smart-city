@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,6 +23,7 @@ import javax.swing.table.TableCellRenderer;
 import com.google.common.base.Preconditions;
 
 import it.unibo.smartcity.controller.api.Controller;
+import it.unibo.smartcity.data.AttuazioneCorsaConLineaOrario;
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.model.api.AttuazioneCorsa;
 import it.unibo.smartcity.model.api.Biglietto;
@@ -44,7 +47,8 @@ class TicketManagerPanel extends JPanel{
     private JPanel validatePanel = new JPanel();
     private JComboBox<Integer> tariffeList = new JComboBox<>();
     private JComboBox<Integer> bigliettiList = new JComboBox<>();
-    private JComboBox<Integer> corseList = new JComboBox<>();
+    private JComboBox<String> corseList = new JComboBox<>();
+    private final Map<String, AttuazioneCorsa> corsaMapper = new LinkedHashMap<>();
 
     public TicketManagerPanel(Controller controller) {
         this.controller = controller;
@@ -130,7 +134,7 @@ class TicketManagerPanel extends JPanel{
         this.repaint();
     }
 
-    public void updateValidateTicketPanel(List<Biglietto> biglietti, List<AttuazioneCorsa> corse) {
+    public void updateValidateTicketPanel(List<Biglietto> biglietti, List<AttuazioneCorsaConLineaOrario> corse) {
         clearContentExceptNorth();
         validatePanel.removeAll();
         validatePanel.setLayout(new BoxLayout(validatePanel, BoxLayout.Y_AXIS));
@@ -161,7 +165,11 @@ class TicketManagerPanel extends JPanel{
         corsaLabel.setAlignmentX(LEFT_ALIGNMENT);
 
         corseList.removeAllItems();
-        corse.forEach(c -> corseList.addItem(c.getCodiceCorsa()));
+        corse.forEach(c -> {
+            String key = c.attuazioneCorsa().getData() + " - " + c.linea().getCodiceLinea() + " - " + c.orario().getOraPartenza();
+            corsaMapper.put(key, c.attuazioneCorsa());
+            corseList.addItem(key);
+        });
         corseList.setMaximumSize(new Dimension(250, 30));
         corseList.setAlignmentX(LEFT_ALIGNMENT);
 
@@ -176,7 +184,7 @@ class TicketManagerPanel extends JPanel{
         validateBtn.addActionListener(e -> {
             if (bigliettiList.getSelectedIndex() != -1 && corseList.getSelectedIndex() != -1) {
                 int selectedBiglietto = (Integer)bigliettiList.getSelectedItem();
-                int selectedCorsa = (Integer)corseList.getSelectedItem();
+                int selectedCorsa = corsaMapper.get(corseList.getSelectedItem()).getCodiceCorsa();
                 try {
                     this.controller.validateBiglietto(selectedBiglietto, selectedCorsa);
                     controller.showSuccessMessage("Convalida biglietto", "Biglietto convalidato con successo");

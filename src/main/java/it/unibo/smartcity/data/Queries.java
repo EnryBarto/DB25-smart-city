@@ -293,10 +293,13 @@ public final class Queries {
         """;
 
     public static final String LIST_ATTUAZIONI_CORSE =
-        """
+    """
         SELECT *
-        FROM ATTUAZIONI_CORSE;
-        """;
+        FROM ATTUAZIONI_CORSE A
+        JOIN ORARI_LINEE O ON A.codice_orario = O.codice_orario
+        JOIN LINEE L ON L.codice_linea = O.codice_linea
+        ORDER BY A.data, L.codice_linea;
+    """;
 
     public static final String SELECT_UTENTE =
         """
