@@ -206,4 +206,6 @@ public interface Controller {
     List<TariffaBiglietto> getTariffeBiglietti();
 
     void updateIncassiTariffa(TariffaBiglietto tariffa, Date dateFrom, Date dateTo);
+
+    void updateFermateHubTuttiContenuti();
 }

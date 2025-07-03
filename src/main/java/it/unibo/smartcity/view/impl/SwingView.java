@@ -447,4 +447,9 @@ public class SwingView implements View {
     public void updateIncassiTariffa(IncassiTariffa inc) {
         ((StatisticsPanel)this.tabs.get("Statistiche")).updateIncassiTariffa(inc);
     }
+
+    @Override
+    public void updateFermateHubTuttiContenuti(List<Fermata> list) {
+        ((StatisticsPanel)this.tabs.get("Statistiche")).showFermateHubTuttiContenuti(list);
+    }
 }

@@ -128,4 +128,6 @@ public interface View {
     void showSuccessMessage(String title, String message);
 
     void updateIncassiTariffa(IncassiTariffa inc);
+
+    void  updateFermateHubTuttiContenuti(List<Fermata> list);
 }

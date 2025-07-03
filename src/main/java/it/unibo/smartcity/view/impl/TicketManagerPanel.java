@@ -160,6 +160,7 @@ class TicketManagerPanel extends JPanel{
         JLabel corsaLabel = new JLabel("Scegli la corsa:");
         corsaLabel.setAlignmentX(LEFT_ALIGNMENT);
 
+        corseList.removeAllItems();
         corse.forEach(c -> corseList.addItem(c.getCodiceCorsa()));
         corseList.setMaximumSize(new Dimension(250, 30));
         corseList.setAlignmentX(LEFT_ALIGNMENT);

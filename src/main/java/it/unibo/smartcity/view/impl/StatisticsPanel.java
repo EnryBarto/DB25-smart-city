@@ -22,6 +22,7 @@ import it.unibo.smartcity.data.LineaPiuHubMobilita;
 import it.unibo.smartcity.data.ListLineeCinqueContrDiecMul;
 import it.unibo.smartcity.data.ListLineeMulte;
 import it.unibo.smartcity.data.MediaSoldiMulte;
+import it.unibo.smartcity.model.api.Fermata;
 import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.ManutenzioneLineaImpl.ManutenzioneGravosa;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
@@ -30,6 +31,7 @@ class StatisticsPanel extends JPanel {
     private final static String[] columnNamesManutGravose = {"Codice Linea", "Nome", "Durata Lavoro", "Num Linee Sostitutive"};
     private final static String[] columnNamesMezzi = {"Num immatricolazione", "Nome", "data inizio", "data fine", "descrizione", "partita iva"};
     private final static String[] columnNamesAziende = {"partita iva", "ragione sociale", "comune", "via", "civico", "telefono", "email"};
+    private final static String[] columnNamesFermate = {"Codice", "Nome", "Indirizzo", "Latitudine", "Longitudine"};
 
     private static final List<String> options = List.of(
         "5 manutenzioni più gravose",
@@ -39,7 +41,8 @@ class StatisticsPanel extends JPanel {
         "Linee con < di 5 controlli e più di 10 multe al giorno",
         "Media dei soldi spesi in multe per persona",
         "Linea con più hub mobilità lungo il percorso",
-        "Incassi per titolo di viaggio in periodo definito"
+        "Incassi per titolo di viaggio in periodo definito",
+        "Fermate con almeno un hub contenente tutti i servizi green"
     );
 
     private final Controller controller;
@@ -95,6 +98,7 @@ class StatisticsPanel extends JPanel {
                 case "Incassi per titolo di viaggio in periodo definito" -> {
                     this.showPanel(incassiTipoTariffaPanel);
                 }
+                case "Fermate con almeno un hub contenente tutti i servizi green" -> controller.updateFermateHubTuttiContenuti();
                 default -> throw new IllegalArgumentException("Opzione non valida: " + this.optionList.getSelectedItem());
             }
         });
@@ -145,6 +149,25 @@ class StatisticsPanel extends JPanel {
                 row[4] = a.getIndirizzoCivico();
                 row[5] = a.getTelefono();
                 row[6] = a.getEmail();
+                return row;
+            });
+        this.repaint();
+        this.revalidate();
+    }
+
+    public void showFermateHubTuttiContenuti(List<Fermata> fermate) {
+        clearContentExceptNorth();
+        updateVisualPanel(
+            this,
+            fermate,
+            columnNamesFermate,
+            f -> {
+                var row = new Object[columnNamesFermate.length];
+                row[0] = f.getCodiceFermata();
+                row[1] = f.getNome();
+                row[2] = f.getIndirizzo().toString();
+                row[3] = f.getLatitudine();
+                row[4] = f.getLongitudine();
                 return row;
             });
         this.repaint();
@@ -271,4 +294,5 @@ class StatisticsPanel extends JPanel {
     public void updateIncassiTariffa(IncassiTariffa inc) {
         this.incassiTipoTariffaPanel.updateIncassiTariffa(inc);
     }
+
 }

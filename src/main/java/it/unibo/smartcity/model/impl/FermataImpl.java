@@ -6,6 +6,7 @@ import java.util.List;
 
 import it.unibo.smartcity.data.DAOException;
 import it.unibo.smartcity.data.DAOUtils;
+import it.unibo.smartcity.data.Queries;
 import it.unibo.smartcity.model.api.Fermata;
 
 
@@ -48,11 +49,37 @@ public class FermataImpl implements Fermata {
     }
 
     public static final class DAO {
+
         public static List<Fermata> list(Connection connection) {
             var query = "SELECT * FROM FERMATE ORDER BY codice_fermata";
             var fermate = new LinkedList<Fermata>();
             try (
                 var statement = DAOUtils.prepare(connection, query);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var fermata = new FermataImpl(
+                        rs.getInt("codice_fermata"),
+                        rs.getString("nome"),
+                        rs.getString("indirizzo_via"),
+                        rs.getString("indirizzo_civico"),
+                        rs.getString("indirizzo_comune"),
+                        rs.getInt("indirizzo_cap"),
+                        rs.getString("latitudine"),
+                        rs.getString("longitudine")
+                    );
+                    fermate.add(fermata);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione delle fermate.", e);
+            }
+            return fermate;
+        }
+
+        public static List<Fermata> listTuttiContenutiHub(Connection connection) {
+            var fermate = new LinkedList<Fermata>();
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.LIST_FERMATE_HUB_TUTTI_CONTENUTI);
                 var rs = statement.executeQuery();
             ) {
                 while (rs.next()) {

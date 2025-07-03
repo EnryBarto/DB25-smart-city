@@ -228,6 +228,20 @@ public final class Queries {
             );
     """;
 
+    // OPERAZIONE 18
+    public static final String LIST_FERMATE_HUB_TUTTI_CONTENUTI =
+    """
+        SELECT DISTINCT *
+        FROM FERMATE F
+        JOIN HUB_MOBILITA H ON F.codice_fermata = H.codice_fermata
+        WHERE H.codice_hub IN (SELECT H.codice_hub
+                                FROM HUB_MOBILITA H
+                                JOIN CONTENUTI C ON H.codice_hub = C.codice_hub
+                                GROUP BY H.codice_hub
+                                HAVING COUNT(DISTINCT C.codice_contenuto) = (SELECT COUNT(DISTINCT codice_contenuto) FROM CONTENUTI_HUB)
+                                );
+    """;
+
     // OPERAZIONE 19 - Da trattare come transaction
     public static final String AGGIUNGI_VARIAZIONE =
     """

@@ -666,4 +666,10 @@ public class ControllerImpl implements Controller {
         var inc = IncassiTariffa.DAO.selectByDate(connection, dateFrom, dateTo, tariffa);
         views.forEach(v -> v.updateIncassiTariffa(inc));
     }
+
+    @Override
+    public void updateFermateHubTuttiContenuti() {
+        var list = FermataImpl.DAO.listTuttiContenutiHub(connection);
+        views.forEach(v -> v.updateFermateHubTuttiContenuti(list));
+    }
 }
