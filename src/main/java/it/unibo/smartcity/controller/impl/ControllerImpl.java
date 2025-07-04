@@ -673,4 +673,10 @@ public class ControllerImpl implements Controller {
         var list = FermataImpl.DAO.listTuttiContenutiHub(connection);
         views.forEach(v -> v.updateFermateHubTuttiContenuti(list));
     }
+
+    @Override
+    public void updateOrdinaryLines() {
+        var list = LineaImpl.DAO.listOrdinary(connection);
+        views.forEach(v -> v.updateOrdinaryLines(list));
+    }
 }

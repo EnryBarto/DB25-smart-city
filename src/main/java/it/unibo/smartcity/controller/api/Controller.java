@@ -208,4 +208,6 @@ public interface Controller {
     void updateIncassiTariffa(TariffaBiglietto tariffa, Date dateFrom, Date dateTo);
 
     void updateFermateHubTuttiContenuti();
+
+    void updateOrdinaryLines();
 }

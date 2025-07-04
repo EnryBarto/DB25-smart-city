@@ -47,9 +47,9 @@ public record ListVariazioniServizi(ManutenzioneLinea manutenzione, Optional<Azi
                                 1,
                                 rs.getString("telefono"),
                                 rs.getString("email"))),
-                        Set.of(rs.getString("codice_linea_sostituita")));
+                        Set.of(rs.getString("codice_linea_sostituta")));
                     if (variazioni.stream()
-                        .anyMatch(v ->
+                        .noneMatch(v ->
                             v.manutenzione.getCodiceLinea().equals(manutenzione.manutenzione().getCodiceLinea())
                             && v.manutenzione.getDataInizio().equals(manutenzione.manutenzione().getDataInizio())
                         )) {
@@ -62,7 +62,7 @@ public record ListVariazioniServizi(ManutenzioneLinea manutenzione, Optional<Azi
                             ).findFirst().get();
                         final Set<String> codiciLineeSostituite = Stream.concat(
                             variazione.codiciLineeSostituite.stream(),
-                            Stream.of(rs.getString("codice_linea_sostituita"))
+                            Stream.of(rs.getString("codice_linea_sostituta"))
                         ).collect(Collectors.toSet());
                         final ListVariazioniServizi newVariazione = new ListVariazioniServizi(
                             variazione.manutenzione,
