@@ -130,4 +130,6 @@ public interface View {
     void updateIncassiTariffa(IncassiTariffa inc);
 
     void  updateFermateHubTuttiContenuti(List<Fermata> list);
+
+    void updateOrdinaryLines(List<Linea> list);
 }

@@ -198,10 +198,9 @@ public final class Queries {
     // OPERAZIONE 16
     public static final String MEDIA_SOLDI_MULTE =
     """
-        SELECT AVG(m.importo)
-        FROM MULTE m, PERSONE p
-        WHERE p.documento = m.codice_multa
-        GROUP BY p.documento;
+        SELECT AVG(COALESCE(m.importo, 0)) AS media_soldi
+        FROM PERSONE p
+        LEFT JOIN MULTE m ON p.documento = m.documento
     """;
 
     // OPERAZIONE 17

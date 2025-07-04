@@ -115,9 +115,33 @@ public class LineaImpl implements Linea {
                     var linea = new LineaImpl(
                         rs.getString("codice_linea"),
                         rs.getInt("tempo_percorrenza"),
-                        null,
-                        null,
+                        rs.getDate("inizio_validita"),
+                        rs.getDate("fine_validita"),
                         false,
+                        rs.getInt("codice_tipo_mezzo")
+                    );
+                    lines.add(linea);
+                }
+            } catch (Exception e) {
+                throw new DAOException("Errore nell'estrazione delle linee straordinarie.", e);
+            }
+            return lines;
+        }
+
+        public static List<Linea> listOrdinary(Connection connection) {
+            var query = "SELECT * FROM LINEE WHERE fine_validita IS NULL ORDER BY codice_linea";
+            var lines = new LinkedList<Linea>();
+            try (
+                var statement = DAOUtils.prepare(connection, query);
+                var rs = statement.executeQuery();
+            ) {
+                while (rs.next()) {
+                    var linea = new LineaImpl(
+                        rs.getString("codice_linea"),
+                        rs.getInt("tempo_percorrenza"),
+                        null,
+                        null,
+                        rs.getBoolean("attiva"),
                         rs.getInt("codice_tipo_mezzo")
                     );
                     lines.add(linea);
@@ -322,6 +346,5 @@ public class LineaImpl implements Linea {
             }
             return linee;
         }
-
     }
 }
