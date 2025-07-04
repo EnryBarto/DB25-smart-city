@@ -39,7 +39,7 @@ public record ListVariazioniServizi(ManutenzioneLinea manutenzione, Optional<Azi
                                 rs.getString("descrizione"),
                                 rs.getString("p_iva")),
                         rs.getString("p_iva") == null ? Optional.empty() : Optional.of(new AziendaImpl(
-                                rs.getString("partita_iva"),
+                                rs.getString("p_iva"),
                                 rs.getString("ragione_sociale"),
                                 "",
                                 "",

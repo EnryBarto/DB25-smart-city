@@ -1,108 +1,286 @@
-use smart_city;
-INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Acerbi', 'Luciana', 'RN099529AA', 'oGIGdLDZxwxyeGEr');
-INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Albertini', 'Alessandro', 'jB857186AA', 'UpOpKvBFzLRBKIfy');
-INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Luzi', 'Michelotto', 'QB954597AA', 'krOvQhTAHjILUdzI');
-INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Falcone', 'Rossana', 'Cw797006AA', 'CIIDWQMMPRdEvHFz');
-INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Casalodi', 'Ivan', 'ft623654AA', 'WTJzzMVcbJLhtUbD');
-INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Maderno', 'Livia', 'PX271349AA', 'VedABedjpjFggnWQ');
-INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Columbo', 'Rocco', 'NQ203412AA', 'oHWniLtmxQCbBeIY');
-INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Polani', 'Annibale', 'MM790278AA', 'gLUtcwSCoqXrDwbe');
-INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Trincavelli', 'Natalia', 'dQ994531AA', 'lcEFyvNoXqNIEzNf');
-INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('Piccio', 'Lamberto', 'Wr384506AA', 'RhnWEphWSpSmChVk');
-INSERT INTO PERSONE (cognome, nome, documento, codice_fiscale) VALUES ('admin', 'admin', 'Amm91332AA', NULL);
-INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('nico', 'RN099529AA', 'rpalombi@argento.net', '3456503582', '$2a$12$1qwIWDXeO47MR8bglBL2ZuB6z8SEzF08CqkPvZM3F/2M.T.BKhv8K');
-INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user1', 'jB857186AA', 'antonelloungaretti@live.com', '3453524521', '$2a$12$.RuAc9vq9hlEQDQW1Z5GY.wnnahTZSva9ManxToj9uyfKrRY.IBwe');
-INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user2', 'QB954597AA', 'qossani@vodafone.it', '3486012374', '$2a$12$pEsEeAH6l5UpqE1.RXANzOgqVRiH5cC7TEZybfApH4Qb4o8QrBkui');
-INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user3', 'Cw797006AA', 'stradivarisante@mercadante-missoni.net', '3485013376', '$2a$12$l5s05QPs/2L1x56ilccpa.HxweRGoVqQ3YiSwkz385Ajxcb9dBpJC');
-INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user4', 'ft623654AA', 'ottavio03@mascheroni.net', '3452011596', '$2a$12$V/WmX3A8u/0H/OHt2n94M.MjfScLGAKKxOpo/nCVOXZWLFZ0Bhfai');
-INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user5', 'PX271349AA', 'clelialucciano@fastwebnet.it', '3458769532', '$2a$12$4c02U/MO1ecsrRSTyNNks.WNS1p1rZFjRdtdPzmGtYabsgtWF9QqO');
-INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user6', 'NQ203412AA', 'deperonicoletta@outlook.com', '3487119865', '$2a$12$z69RtNKUMRw2con6pP5mMO4cnGef8G.74nE4rZzI1/o.KAPs6Ufau');
-INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user7', 'MM790278AA', 'mazzeoeugenia@tiscali.it', '3452087961', '$2a$12$vzV792pkBogOKhkqLcYOrOza0ct/ZC1iIPmrYqR1PDvQhsdbZ8aoi');
-INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user8', 'dQ994531AA', 'fernanda48@hotmail.it', '3485631752', '$2a$12$l1PQOP8ADFSQ1yzVShfQ6O3C6zLDOy9rojIdbJesq/LRl4iBtGmRW');
-INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('user9', 'Wr384506AA', 'marianaccari@gmail.com', '3456503892', '$2a$12$vaR/Hfa3G01XoTS4iM2eHeUoBos1Xibkf.ys9X0tOqXYSsE7zUWT.');
-INSERT INTO UTENTI (username, documento, email, telefono, password) VALUES ('admin', 'Amm91332AA', 'admin@smartcity.it', '123456789', '$2a$10$u43PXOBQkSbOwUtbrNeot./Qk1qAf0EAnNT5KDwYgBEnuxtTk8J5q');
-INSERT INTO DIPENDENTI (username, ruolo) VALUES ('nico', 'amministrativo');
-INSERT INTO DIPENDENTI (username, ruolo) VALUES ('user1', 'controllore');
-INSERT INTO DIPENDENTI (username, ruolo) VALUES ('user2', 'amministrativo');
-INSERT INTO DIPENDENTI (username, ruolo) VALUES ('user3', 'controllore');
-INSERT INTO DIPENDENTI (username, ruolo) VALUES ('user4', 'amministrativo');
-INSERT INTO DIPENDENTI (username, ruolo) VALUES ('admin', 'amministrativo');
-INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (1, 'autobus');
-INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (2, 'treno');
-INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (3, 'tram');
-INSERT INTO TIPOLOGIE_MEZZI (codice_tipo_mezzo, nome) VALUES (4, 'metro');
-INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0000', 1);
-INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0001', 4);
-INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0002', 3);
-INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0003', 2);
-INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0004', 2);
-INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0005', 4);
-INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0006', 1);
-INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0007', 3);
-INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0008', 4);
-INSERT INTO MEZZI (n_immatricolazione, codice_tipo_mezzo) VALUES ('MEZZO0009', 1);
-INSERT INTO FERMATE (nome, indirizzo_via, indirizzo_comune, indirizzo_civico, indirizzo_cap, longitudine, latitudine) VALUES ('Viale Luisa', 'Vicolo Mirko', 'Settimo Edoardo calabro', '36', 30379, '154.216666', '14.414258');
-INSERT INTO FERMATE (nome, indirizzo_via, indirizzo_comune, indirizzo_civico, indirizzo_cap, longitudine, latitudine) VALUES ('Rotonda Gualtieri', 'Strada Iannuzzi', 'San Ermenegildo', '28', 54118, '24.255935', '31.600090');
-INSERT INTO FERMATE (nome, indirizzo_via, indirizzo_comune, indirizzo_civico, indirizzo_cap, longitudine, latitudine) VALUES ('Piazza Saffi', 'Borgo Michelangelo', 'Quarto Rembrandt', '14', 22156, '93.924769', '64.296773');
-INSERT INTO FERMATE (nome, indirizzo_via, indirizzo_comune, indirizzo_civico, indirizzo_cap, longitudine, latitudine) VALUES ('Piazza Turci', 'Viale Carosone', 'Virgilio sardo', '49', 22676, '104.950356', '-44.948290');
-INSERT INTO FERMATE (nome, indirizzo_via, indirizzo_comune, indirizzo_civico, indirizzo_cap, longitudine, latitudine) VALUES ('Piazza Coluccio', 'Piazza Contrafatto', 'Valerio ligure', '46', 55082, '54.333364', '67.126381');
-INSERT INTO FERMATE (nome, indirizzo_via, indirizzo_comune, indirizzo_civico, indirizzo_cap, longitudine, latitudine) VALUES ('Contrada Dionigi', 'Incrocio Licia', 'Pirelli sardo', '78', 44671, '-118.435510', '-89.246693');
-INSERT INTO FERMATE (nome, indirizzo_via, indirizzo_comune, indirizzo_civico, indirizzo_cap, longitudine, latitudine) VALUES ('Canale Lucrezia', 'Contrada Rodolfo', 'Sesto Fabia', '6', 70217, '-39.659408', '60.757050');
-INSERT INTO FERMATE (nome, indirizzo_via, indirizzo_comune, indirizzo_civico, indirizzo_cap, longitudine, latitudine) VALUES ('Incrocio Broschi', 'Incrocio Fabio', 'Claudia terme', '69', 26361, '49.780065', '85.596144');
-INSERT INTO FERMATE (nome, indirizzo_via, indirizzo_comune, indirizzo_civico, indirizzo_cap, longitudine, latitudine) VALUES ('Piazza Manunta', 'Incrocio Sante', 'Settimo Stefani', '49', 20328, '-13.652697', '-6.664619');
-INSERT INTO FERMATE (nome, indirizzo_via, indirizzo_comune, indirizzo_civico, indirizzo_cap, longitudine, latitudine) VALUES ('Viale Casellati', 'Viale Burcardo', 'Settimo Fiorenzo veneto', '71', 48427, '59.945995', '-42.369764');
-INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico, codice_fermata) VALUES ('-104.157981', '85.244772', 'Minus', 'Borgo Borsellino', 'Settimo Cassandra calabro', 92397, '80', 6);
-INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico, codice_fermata) VALUES ('163.235535', '-48.802245', 'Harum', 'Vicolo Longhena', 'Quarto Salvi sardo', 85674, '25', 2);
-INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico, codice_fermata) VALUES ('116.405225', '88.195650', 'Dolore', 'Canale Giunti', 'Nolcini nell emilia', 16006, '85', 4);
-INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico, codice_fermata) VALUES ('-102.962329', '22.079695', 'Dolore', 'Stretto Angiolello', 'San Annunziata', 47930, '11', 4);
-INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico, codice_fermata) VALUES ('157.670994', '58.839210', 'Eum', 'Vicolo Tiziano', 'San Gastone', 23238, '49', 5);
-INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico, codice_fermata) VALUES ('158.669748', '-55.519629', 'Incidunt', 'Borgo Mauro', 'Ivo veneto', 69429, '82', 6);
-INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico, codice_fermata) VALUES ('-80.506922', '69.826461', 'Vel', 'Via Dovara', 'Maria nell emilia', 31319, '48', 6);
-INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico, codice_fermata) VALUES ('-9.868611', '-66.070690', 'Quisquam', 'Vicolo Teresa', 'Sesto Liberto', 37460, '86', 5);
-INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico, codice_fermata) VALUES ('73.011574', '-9.643581', 'Explicabo', 'Borgo Alfio', 'Orazio salentino', 99593, '83', 2);
-INSERT INTO HUB_MOBILITA (longitudine, latitudine, nome, indirizzo_via, indirizzo_comune, indirizzo_cap, indirizzo_civico, codice_fermata) VALUES ('96.874255', '-7.980940', 'Rerum', 'Strada Rubbia', 'Cianciolo terme', 89840, '82', 3);
-INSERT INTO AZIENDE (p_iva, ragione_sociale, indirizzo_civico, indirizzo_via, indirizzo_comune, indirizzo_cap, telefono, email) VALUES ('66108967019', 'Gentileschi, Beccaria e Castellitto SPA', '69', 'Piazza Bellò', 'Borgo Melina a mare', 42087, '4951477040', 'ltreccani@borghese.com');
-INSERT INTO AZIENDE (p_iva, ragione_sociale, indirizzo_civico, indirizzo_via, indirizzo_comune, indirizzo_cap, telefono, email) VALUES ('73908386852', 'Galeati, Trillini e Iannuzzi SPA', '21', 'Via Ligorio', 'Borgo Arnulfo', 70589, '8343897493', 'clattuada@gigli.com');
-INSERT INTO AZIENDE (p_iva, ragione_sociale, indirizzo_civico, indirizzo_via, indirizzo_comune, indirizzo_cap, telefono, email) VALUES ('30732476298', 'Serao, Malacarne e Gasperi s.r.l.', '49', 'Contrada Nico', 'Corrado ligure', 45382, '207735989', 'laura61@tele2.it');
-INSERT INTO AZIENDE (p_iva, ragione_sociale, indirizzo_civico, indirizzo_via, indirizzo_comune, indirizzo_cap, telefono, email) VALUES ('41233010444', 'Trussardi Group', '82', 'Rotonda Gigli', 'Orengo ligure', 83000, '6966652368', 'giustino28@bondumier.com');
-INSERT INTO AZIENDE (p_iva, ragione_sociale, indirizzo_civico, indirizzo_via, indirizzo_comune, indirizzo_cap, telefono, email) VALUES ('40510816806', 'Botticelli-Salata SPA', '29', 'Piazza Dina', 'Ottone sardo', 99733, '66009998621', 'smigliaccio@outlook.com');
-INSERT INTO AZIENDE (p_iva, ragione_sociale, indirizzo_civico, indirizzo_via, indirizzo_comune, indirizzo_cap, telefono, email) VALUES ('09961224285', 'Toscani e figli', '42', 'Strada Galuppi', 'San Concetta a mare', 17331, '96468232920', 'barbarasordi@vodafone.it');
-INSERT INTO AZIENDE (p_iva, ragione_sociale, indirizzo_civico, indirizzo_via, indirizzo_comune, indirizzo_cap, telefono, email) VALUES ('94390260841', 'Guglielmi, Gibilisco e Liguori SPA', '30', 'Canale Castellitto', 'Erika salentino', 14207, '11782378193', 'camilla69@ricci-pareto.it');
-INSERT INTO AZIENDE (p_iva, ragione_sociale, indirizzo_civico, indirizzo_via, indirizzo_comune, indirizzo_cap, telefono, email) VALUES ('07519070282', 'Disdero-Oliboni s.r.l.', '41', 'Canale Michela', 'Cesarotti umbro', 62581, '0684034738', 'salvatoregianetti@virgilio.it');
-INSERT INTO AZIENDE (p_iva, ragione_sociale, indirizzo_civico, indirizzo_via, indirizzo_comune, indirizzo_cap, telefono, email) VALUES ('05485580912', 'Cannizzaro, Briccialdi e Ceravolo SPA', '35', 'Viale Benussi', 'San Calcedonio lido', 18675, '027321115', 'flavio91@vodafone.it');
-INSERT INTO AZIENDE (p_iva, ragione_sociale, indirizzo_civico, indirizzo_via, indirizzo_comune, indirizzo_cap, telefono, email) VALUES ('80997108159', 'Carli-Riccardi Group', '28', 'Canale Augusto', 'San Umberto umbro', 84341, '6848820571', 'marco85@carosone.com');
-INSERT INTO TARIFFE_ABBONAMENTI (nome, num_giorni, prezzo) VALUES ('Aliquam', 1, 45.05);
-INSERT INTO TARIFFE_ABBONAMENTI (nome, num_giorni, prezzo) VALUES ('Dolorem', 2, 22.59);
-INSERT INTO TARIFFE_ABBONAMENTI (nome, num_giorni, prezzo) VALUES ('Natus', 3, 36.22);
-INSERT INTO TARIFFE_ABBONAMENTI (nome, num_giorni, prezzo) VALUES ('Harum', 4, 25.83);
-INSERT INTO TARIFFE_ABBONAMENTI (nome, num_giorni, prezzo) VALUES ('Molestias', 5, 46.58);
-INSERT INTO TARIFFE_ABBONAMENTI (nome, num_giorni, prezzo) VALUES ('Tempore', 6, 28.35);
-INSERT INTO TARIFFE_ABBONAMENTI (nome, num_giorni, prezzo) VALUES ('Eum', 7, 20.60);
-INSERT INTO TARIFFE_ABBONAMENTI (nome, num_giorni, prezzo) VALUES ('Facilis', 8, 19.87);
-INSERT INTO TARIFFE_ABBONAMENTI (nome, num_giorni, prezzo) VALUES ('Unde', 9, 32.45);
-INSERT INTO TARIFFE_ABBONAMENTI (nome, num_giorni, prezzo) VALUES ('Dolorem', 10, 20.51);
-INSERT INTO TARIFFE_BIGLIETTI (nome, durata, prezzo) VALUES ('Vero', 1, 3.34);
-INSERT INTO TARIFFE_BIGLIETTI (nome, durata, prezzo) VALUES ('Maxime', 2, 4.59);
-INSERT INTO TARIFFE_BIGLIETTI (nome, durata, prezzo) VALUES ('Adipisci', 3, 2.60);
-INSERT INTO TARIFFE_BIGLIETTI (nome, durata, prezzo) VALUES ('Eaque', 4, 1.88);
-INSERT INTO TARIFFE_BIGLIETTI (nome, durata, prezzo) VALUES ('Exercitationem', 5, 4.99);
-INSERT INTO TARIFFE_BIGLIETTI (nome, durata, prezzo) VALUES ('Ratione', 6, 3.04);
-INSERT INTO TARIFFE_BIGLIETTI (nome, durata, prezzo) VALUES ('Non', 7, 1.36);
-INSERT INTO TARIFFE_BIGLIETTI (nome, durata, prezzo) VALUES ('Dolores', 8, 1.19);
-INSERT INTO TARIFFE_BIGLIETTI (nome, durata, prezzo) VALUES ('Nemo', 9, 1.44);
-INSERT INTO TARIFFE_BIGLIETTI (nome, durata, prezzo) VALUES ('Vero', 10, 3.51);
-INSERT INTO LINEE (codice_linea, tempo_percorrenza, inizio_validita, fine_validita, attiva, codice_tipo_mezzo) VALUES
-('L001', 35, '2025-01-01', '2025-12-31', TRUE, 1),
-('L002', 50, '2025-02-01', '2025-11-30', TRUE, 2),
-('L003', 40, '2025-03-01', NULL, TRUE, 3),
-('L004', 60, '2024-05-01', '2025-05-01', FALSE, 4),
-('L005', 45, '2025-06-01', '2025-12-01', TRUE, 1),
-('L006', 55, '2025-01-15', NULL, TRUE, 2),
-('L007', 30, '2024-09-01', '2025-09-01', TRUE, 3),
-('L008', 70, '2025-04-01', NULL, TRUE, 4),
-('L009', 25, '2025-05-15', '2025-10-15', FALSE, 3),
-('L010', 80, '2025-06-01', NULL, TRUE, 1);
-INSERT INTO CONTENUTI_HUB (`codice_contenuto`,`descrizione`) VALUES (1,'monopattini');
-INSERT INTO CONTENUTI_HUB (`codice_contenuto`,`descrizione`) VALUES (2,'bici');
-INSERT INTO CONTENUTI_HUB (`codice_contenuto`,`descrizione`) VALUES (3,'macchine elettriche');
-INSERT INTO CONTENUTI_HUB (`codice_contenuto`,`descrizione`) VALUES (4,'scooter elettrici');
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: smart_city
+-- ------------------------------------------------------
+-- Server version	8.0.42
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Dumping data for table `abbonamenti`
+--
+
+LOCK TABLES `abbonamenti` WRITE;
+/*!40000 ALTER TABLE `abbonamenti` DISABLE KEYS */;
+/*!40000 ALTER TABLE `abbonamenti` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `attuazioni_corse`
+--
+
+LOCK TABLES `attuazioni_corse` WRITE;
+/*!40000 ALTER TABLE `attuazioni_corse` DISABLE KEYS */;
+INSERT INTO `attuazioni_corse` VALUES (5,'2025-07-03',4,'METRO000','Autista1'),(6,'2025-07-03',23,'METRO001','Autista1'),(8,'2025-07-03',50,'BUS000','Autista2'),(10,'2025-07-03',57,'BUS002','Autista2'),(11,'2025-07-03',65,'TRENO000','Autista1'),(12,'2025-07-03',72,'TRENO001','Autista1'),(15,'2025-07-03',43,'TRAM001','Autista2');
+/*!40000 ALTER TABLE `attuazioni_corse` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `aziende`
+--
+
+LOCK TABLES `aziende` WRITE;
+/*!40000 ALTER TABLE `aziende` DISABLE KEYS */;
+INSERT INTO `aziende` VALUES ('30732476298','Serao, Malacarne e Gasperi s.r.l.','49','Contrada Nico','Corrado ligure',45382,'207735989','laura61@tele2.it'),('41233010444','Trussardi Group','82','Rotonda Gigli','Orengo ligure',83000,'6966652368','giustino28@bondumier.com'),('66108967019','Gentileschi, Beccaria e Castellitto SPA','69','Piazza Bellò','Borgo Melina a mare',42087,'4951477040','ltreccani@borghese.com'),('73908386852','Galeati, Trillini e Iannuzzi SPA','21','Via Ligorio','Borgo Arnulfo',70589,'8343897493','clattuada@gigli.com'),('80997108159','Carli-Riccardi Group','28','Canale Augusto','San Umberto umbro',84341,'6848820571','marco85@carosone.com');
+/*!40000 ALTER TABLE `aziende` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `biglietti`
+--
+
+LOCK TABLES `biglietti` WRITE;
+/*!40000 ALTER TABLE `biglietti` DISABLE KEYS */;
+INSERT INTO `biglietti` VALUES (10,'2025-07-03',90,'Utente1');
+/*!40000 ALTER TABLE `biglietti` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `causali_multe`
+--
+
+LOCK TABLES `causali_multe` WRITE;
+/*!40000 ALTER TABLE `causali_multe` DISABLE KEYS */;
+INSERT INTO `causali_multe` VALUES (1,'Mancanza titolo di viaggio',20.00,500.00),(2,'Deturpazione mezzi di trasporto',50.00,1000.00);
+/*!40000 ALTER TABLE `causali_multe` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `contenuti`
+--
+
+LOCK TABLES `contenuti` WRITE;
+/*!40000 ALTER TABLE `contenuti` DISABLE KEYS */;
+INSERT INTO `contenuti` VALUES (1,1,30,30),(1,2,25,25),(2,2,20,20),(2,3,7,7),(2,4,10,10),(3,1,15,15),(3,2,30,30),(3,3,10,10),(3,4,20,20);
+/*!40000 ALTER TABLE `contenuti` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `contenuti_hub`
+--
+
+LOCK TABLES `contenuti_hub` WRITE;
+/*!40000 ALTER TABLE `contenuti_hub` DISABLE KEYS */;
+INSERT INTO `contenuti_hub` VALUES (1,'Monopattini'),(2,'Bici'),(3,'Macchine elettriche'),(4,'Scooter elettrici');
+/*!40000 ALTER TABLE `contenuti_hub` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `controlli`
+--
+
+LOCK TABLES `controlli` WRITE;
+/*!40000 ALTER TABLE `controlli` DISABLE KEYS */;
+INSERT INTO `controlli` VALUES ('Controllore1',5),('Controllore1',6),('Controllore2',8),('Controllore2',10),('Controllore2',11),('Controllore2',12),('Controllore1',15);
+/*!40000 ALTER TABLE `controlli` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `convalide`
+--
+
+LOCK TABLES `convalide` WRITE;
+/*!40000 ALTER TABLE `convalide` DISABLE KEYS */;
+INSERT INTO `convalide` VALUES (10,'2025-07-03 23:39:14',5);
+/*!40000 ALTER TABLE `convalide` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `dipendenti`
+--
+
+LOCK TABLES `dipendenti` WRITE;
+/*!40000 ALTER TABLE `dipendenti` DISABLE KEYS */;
+INSERT INTO `dipendenti` VALUES ('admin','amministrativo'),('Autista1','autista'),('Autista2','autista'),('Controllore1','controllore'),('Controllore2','controllore');
+/*!40000 ALTER TABLE `dipendenti` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `fermate`
+--
+
+LOCK TABLES `fermate` WRITE;
+/*!40000 ALTER TABLE `fermate` DISABLE KEYS */;
+INSERT INTO `fermate` VALUES (1,'San Bartolo','Via San Bartolo','Terre Roveresche','1',61038,'12.9095371','43.692148'),(2,'Vergineto','Via Vergineto Alto','Terre Roveresche','1',61038,'12.9109262','43.6946103'),(3,'Villa del Monte (Vasai)','Via Vergineto Campagna','Terre Roveresche','8',61038,'12.9070632','43.6878786'),(4,'Passo Pian di Rose','Via Schieppe Angelica','Terre Roveresche','27',61038,'12.8966309','43.711126'),(5,'Schieppe Rotatoria','Via dell\'Industria','Terre Roveresche','1',61038,'12.8984922','43.7187093'),(6,'Tavernelle (Chiesa)','Via Flaminia','Colli al Metauro','49',61036,'12.88364','43.7325936'),(7,'Pianventena (Centro)','Morciano','San Giovanni in Marignano','2080',47842,'12.6867276','43.9272198'),(8,'S. G. in Marignano 6 (C.Sportivo)','Pianventena','San Giovanni in Marignano','6',47842,'12.7020643','43.936031'),(9,'S. G. in Marignano 4 (Comune)','Roma','San Giovanni in Marignano','4',47842,'12.7133298','43.9390542'),(10,'Morciano (Centro Studi)','Largo Centro Studi','Morciano di Romagna','6',47833,'12.6490851','43.9161903'),(11,'S. Angelo in Vado','Via Nazionale Nord','Sant\'Angelo in Vado','21',61048,'12.412138','43.666995'),(12,'Urbania (Ospedale)','Via Roma','Urbania','59',61049,'12.519487','43.669936'),(13,'Urbania (Centro)','Via Fosso del Maltempo','Urbania','1',61049,'12.522018','43.666164'),(14,'Fermignano (M. L. King)','Via Martin Luther King','Fermignano','74',61033,'12.642649','43.681967'),(15,'Urbino Park S.Lucia','Viale Giuseppe di Vittorio','Urbino','30',61029,'12.635021','43.730304'),(16,'Cesena (Università)','Via dell\'Università','Cesena','50',47522,'12.236238','44.147750');
+/*!40000 ALTER TABLE `fermate` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `hub_mobilita`
+--
+
+LOCK TABLES `hub_mobilita` WRITE;
+/*!40000 ALTER TABLE `hub_mobilita` DISABLE KEYS */;
+INSERT INTO `hub_mobilita` VALUES (1,'12.9091025','43.6921713','Hub Acli','Via San Bartolo','Terre Roveresche',61038,'1',1),(2,'12.8836289','43.7326982','Hub Tavernelle','Via Flaminia','Colli al Metauro',61036,'49',6),(3,'12.236650  ','44.147444','Hub Università','Via dell\'Università','Cesena',47522,'50',16);
+/*!40000 ALTER TABLE `hub_mobilita` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `linee`
+--
+
+LOCK TABLES `linee` WRITE;
+/*!40000 ALTER TABLE `linee` DISABLE KEYS */;
+INSERT INTO `linee` VALUES ('15A',43,NULL,NULL,1,1),('15R',43,NULL,NULL,1,1),('26A',16,NULL,NULL,0,4),('26R',18,NULL,NULL,1,4),('26STR/A',11,'2025-07-04','2025-07-19',NULL,1),('3906',91,NULL,NULL,1,2),('3925',91,NULL,NULL,1,2),('C1A',15,NULL,NULL,1,3),('C1R',15,NULL,NULL,1,3);
+/*!40000 ALTER TABLE `linee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `manutenzioni_linee`
+--
+
+LOCK TABLES `manutenzioni_linee` WRITE;
+/*!40000 ALTER TABLE `manutenzioni_linee` DISABLE KEYS */;
+INSERT INTO `manutenzioni_linee` VALUES ('26A','2025-07-04','2025-07-19','Manutenzione rotaie','Sostituzione rotaie linea metropolitana','73908386852');
+/*!40000 ALTER TABLE `manutenzioni_linee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `manutenzioni_mezzi`
+--
+
+LOCK TABLES `manutenzioni_mezzi` WRITE;
+/*!40000 ALTER TABLE `manutenzioni_mezzi` DISABLE KEYS */;
+INSERT INTO `manutenzioni_mezzi` VALUES ('METRO001','2025-07-04','2025-07-10','Manut. metro 1','Manutenzione straordinaria','30732476298'),('BUS002','2025-07-08','2025-07-22','Manut. metro 2','Manutenzione impianto frenante',NULL),('METRO001','2025-07-27','2025-07-31','Manut. metro 1','Manutenzione pantografi',NULL);
+/*!40000 ALTER TABLE `manutenzioni_mezzi` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `mezzi`
+--
+
+LOCK TABLES `mezzi` WRITE;
+/*!40000 ALTER TABLE `mezzi` DISABLE KEYS */;
+INSERT INTO `mezzi` VALUES ('BUS000',1),('BUS001',1),('BUS002',1),('TRENO000',2),('TRENO001',2),('TRAM000',3),('TRAM001',3),('METRO000',4),('METRO001',4),('METRO002',4);
+/*!40000 ALTER TABLE `mezzi` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `multe`
+--
+
+LOCK TABLES `multe` WRITE;
+/*!40000 ALTER TABLE `multe` DISABLE KEYS */;
+INSERT INTO `multe` VALUES (4,'2025-07-03 23:29:54',27.60,NULL,1,5,'Amm91332AA','Controllore1');
+/*!40000 ALTER TABLE `multe` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `orari_linee`
+--
+
+LOCK TABLES `orari_linee` WRITE;
+/*!40000 ALTER TABLE `orari_linee` DISABLE KEYS */;
+INSERT INTO `orari_linee` VALUES (50,'06:55','Giovedì','15A'),(47,'06:55','Lunedì','15A'),(48,'06:55','Martedì','15A'),(49,'06:55','Mercoledì','15A'),(52,'06:55','Sabato','15A'),(51,'06:55','Venerdì','15A'),(53,'09:30','Domenica','15A'),(57,'15:15','Giovedì','15R'),(54,'15:15','Lunedì','15R'),(55,'15:15','Martedì','15R'),(56,'15:15','Mercoledì','15R'),(59,'15:15','Sabato','15R'),(58,'15:15','Venerdì','15R'),(61,'17:00','Domenica','15R'),(4,'06:25','Giovedì','26A'),(1,'06:25','Lunedì','26A'),(2,'06:25','Martedì','26A'),(3,'06:25','Mercoledì','26A'),(7,'06:25','Sabato','26A'),(5,'06:25','Venerdì','26A'),(25,'09:30','Domenica','26A'),(23,'13:40','Giovedì','26R'),(8,'13:40','Lunedì','26R'),(15,'13:40','Martedì','26R'),(24,'13:40','Mercoledì','26R'),(21,'13:40','Sabato','26R'),(20,'13:40','Venerdì','26R'),(26,'16:00','Domenica','26R'),(68,'07:20','Domenica','3906'),(65,'07:20','Giovedì','3906'),(62,'07:20','Lunedì','3906'),(63,'07:20','Martedì','3906'),(64,'07:20','Mercoledì','3906'),(67,'07:20','Sabato','3906'),(66,'07:20','Venerdì','3906'),(75,'15:42','Domenica','3925'),(72,'15:42','Giovedì','3925'),(69,'15:42','Lunedì','3925'),(70,'15:42','Martedì','3925'),(71,'15:42','Mercoledì','3925'),(74,'15:42','Sabato','3925'),(73,'15:42','Venerdì','3925'),(43,'08:00','Giovedì','C1A'),(40,'08:00','Lunedì','C1A'),(41,'08:00','Martedì','C1A'),(42,'08:00','Mercoledì','C1A'),(44,'08:00','Venerdì','C1A'),(46,'10:00','Domenica','C1A'),(45,'10:00','Sabato','C1A'),(36,'07:30','Giovedì','C1R'),(33,'07:30','Lunedì','C1R'),(34,'07:30','Martedì','C1R'),(35,'07:30','Mercoledì','C1R'),(37,'07:30','Venerdì','C1R'),(39,'09:30','Domenica','C1R'),(38,'09:30','Sabato','C1R');
+/*!40000 ALTER TABLE `orari_linee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `persone`
+--
+
+LOCK TABLES `persone` WRITE;
+/*!40000 ALTER TABLE `persone` DISABLE KEYS */;
+INSERT INTO `persone` VALUES ('admin','admin','Amm91332AA',NULL),('Autista','Primo','AUT001',NULL),('Autista','Secondo','AUT002',NULL),('Controllore','Primo','CONT001',NULL),('Controllore','Secondo','CONT002',NULL),('Rossi','Mario','USER001',NULL),('Verdi','Luigi','USER002',NULL);
+/*!40000 ALTER TABLE `persone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `sostituzioni`
+--
+
+LOCK TABLES `sostituzioni` WRITE;
+/*!40000 ALTER TABLE `sostituzioni` DISABLE KEYS */;
+INSERT INTO `sostituzioni` VALUES ('2025-07-04','26A','26STR/A');
+/*!40000 ALTER TABLE `sostituzioni` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `tariffe_abbonamenti`
+--
+
+LOCK TABLES `tariffe_abbonamenti` WRITE;
+/*!40000 ALTER TABLE `tariffe_abbonamenti` DISABLE KEYS */;
+INSERT INTO `tariffe_abbonamenti` VALUES ('Mensile',31,39.50),('Semestrale',183,200.00),('Annuale',365,330.00),('Quinquennale',1827,1320.00);
+/*!40000 ALTER TABLE `tariffe_abbonamenti` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `tariffe_biglietti`
+--
+
+LOCK TABLES `tariffe_biglietti` WRITE;
+/*!40000 ALTER TABLE `tariffe_biglietti` DISABLE KEYS */;
+INSERT INTO `tariffe_biglietti` VALUES ('90min',90,2.20),('Giornaliero',1440,7.60),('Tre giorni',4320,15.50);
+/*!40000 ALTER TABLE `tariffe_biglietti` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `tipologie_mezzi`
+--
+
+LOCK TABLES `tipologie_mezzi` WRITE;
+/*!40000 ALTER TABLE `tipologie_mezzi` DISABLE KEYS */;
+INSERT INTO `tipologie_mezzi` VALUES (1,'Autobus'),(2,'Treno'),(3,'Tram'),(4,'Metro');
+/*!40000 ALTER TABLE `tipologie_mezzi` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `tragitti`
+--
+
+LOCK TABLES `tragitti` WRITE;
+/*!40000 ALTER TABLE `tragitti` DISABLE KEYS */;
+INSERT INTO `tragitti` VALUES (11,12,'15A',1),(12,13,'15A',2),(13,14,'15A',3),(14,15,'15A',4),(12,11,'15R',4),(13,12,'15R',3),(14,13,'15R',2),(15,14,'15R',1),(1,2,'26A',2),(2,4,'26A',3),(3,1,'26A',1),(4,5,'26A',4),(5,6,'26A',5),(1,3,'26R',5),(2,1,'26R',4),(4,2,'26R',3),(5,4,'26R',2),(6,5,'26R',1),(2,4,'26STR/A',1),(4,5,'26STR/A',2),(5,6,'26STR/A',3),(2,8,'3906',2),(8,16,'3906',3),(13,2,'3906',1),(2,13,'3925',3),(8,2,'3925',2),(16,8,'3925',1),(7,10,'C1A',3),(8,7,'C1A',2),(9,8,'C1A',1),(7,8,'C1R',2),(8,9,'C1R',3),(10,7,'C1R',1);
+/*!40000 ALTER TABLE `tragitti` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `tratte`
+--
+
+LOCK TABLES `tratte` WRITE;
+/*!40000 ALTER TABLE `tratte` DISABLE KEYS */;
+INSERT INTO `tratte` VALUES (2,1,2),(3,1,3),(1,2,3),(4,2,4),(8,2,32),(13,2,25),(1,3,3),(2,4,5),(5,4,1),(4,5,1),(6,5,6),(5,6,6),(8,7,5),(10,7,7),(2,8,32),(7,8,5),(9,8,3),(16,8,34),(8,9,3),(7,10,7),(12,11,11),(11,12,11),(13,12,3),(2,13,25),(12,13,3),(14,13,15),(13,14,15),(15,14,14),(14,15,14),(8,16,34);
+/*!40000 ALTER TABLE `tratte` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `utenti`
+--
+
+LOCK TABLES `utenti` WRITE;
+/*!40000 ALTER TABLE `utenti` DISABLE KEYS */;
+INSERT INTO `utenti` VALUES ('admin','Amm91332AA','admin@smartcity.it','123456789','$2a$10$u43PXOBQkSbOwUtbrNeot./Qk1qAf0EAnNT5KDwYgBEnuxtTk8J5q'),('Autista1','AUT001','autista1@smartcity.it','321654987','$2a$10$TGAuH/Re1jzHa3NHdwykpu60fMKc2Ghy4Vmbor/Nsh4b/KdZT8i42'),('Autista2','AUT002','autista2@smartcity.it','984984615','$2a$10$BU1gZmInantLswAm20IgWeTuHoRLPDrd6Y5PMPJi21U4WvYJi88i.'),('Controllore1','CONT001','controllore1@smartcity.it','984950656','$2a$10$zUus5ZzuXwp79NUr4KZw4.hejUoQGfpvpZFQUGLlIsFiHAV1Sm0G2'),('Controllore2','CONT002','controllore2@smartcity.it','29842899','$2a$10$VdyFKvVTqXyu7w1LHgmAveP5XNfvrMSGODEW/1rYoPaRDtxLjfBHq'),('Utente1','USER001','mario@smartcity.it','9871654655','$2a$10$GyKtq8CYLJE8ZcQUNqsH3OanopqfsnI.ZK9O3v5WI1fpooMYdsPB.'),('Utente2','USER002','utente2@smartcity.it','658498465','$2a$10$fQllAz5PXB.v9jQc1rhd.eKFxQYDFGCfgPnYOjjGa3wbRKM.V9GtS');
+/*!40000 ALTER TABLE `utenti` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-07-04  9:31:29
