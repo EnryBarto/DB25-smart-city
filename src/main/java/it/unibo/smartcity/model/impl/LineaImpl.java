@@ -275,7 +275,7 @@ public class LineaImpl implements Linea {
         public static int getTempoPercorrenza(Connection connection, String codiceLinea) {
             var tempoPercorrenza = 0;
             try (
-                var statement = DAOUtils.prepare(connection, "SELECT tempo_percorrenza FROM LINEE WHERE codice_linea = ?", codiceLinea);
+                var statement = DAOUtils.prepare(connection, Queries.SELECT_TEMPO_PERCORRENZA, codiceLinea);
                 var rs = statement.executeQuery();
             ) {
                 if (rs.next()) {
@@ -288,9 +288,8 @@ public class LineaImpl implements Linea {
         }
 
         public static void updateTempoPercorrenza(Connection connection, String codLinea, int tempoPercorrenza) {
-            var query = "UPDATE LINEE SET tempo_percorrenza = ? WHERE codice_linea = ?";
             try (
-                var statement = DAOUtils.prepare(connection, query, tempoPercorrenza, codLinea);
+                var statement = DAOUtils.prepare(connection, Queries.UPDATE_TEMPO_PERCORRENZA, tempoPercorrenza, codLinea);
             ) {
                 statement.executeUpdate();
             } catch (Exception e) {

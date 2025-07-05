@@ -96,15 +96,14 @@ public class TragittoImpl implements Tragitto {
         public static void insert(Connection connection, String codLinea, Tratta tratta) {
             int ordine = DAO.getLastOrdine(connection, codLinea);
             ordine++;
-            var query = "INSERT INTO TRAGITTI (codice_linea, partenza_codice_fermata, arrivo_codice_fermata, ordine) VALUES (?, ?, ?, ?)";
             try (
-                var statement = DAOUtils.prepare(connection, query);
+                var statement = DAOUtils.prepare(connection, Queries.AGGIUNGI_TRAGITTO);
             ) {
                 connection.setAutoCommit(false);
 
-                statement.setString(1, codLinea);
-                statement.setInt(2, tratta.getPartenzaCodiceFermata());
-                statement.setInt(3, tratta.getArrivoCodiceFermata());
+                statement.setInt(1, tratta.getPartenzaCodiceFermata());
+                statement.setInt(2, tratta.getArrivoCodiceFermata());
+                statement.setString(3, codLinea);
                 statement.setInt(4, ordine);
                 statement.executeUpdate();
 

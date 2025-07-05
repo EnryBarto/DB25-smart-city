@@ -248,22 +248,26 @@ public final class Queries {
         VALUES (?, ?, ?);
     """;
 
-    // OPERAZIONE 20
+    // OPERAZIONE 20 / 1
     public static final String AGGIUNGI_TRAGITTO =
     """
         INSERT INTO TRAGITTI (partenza_codice_fermata, arrivo_codice_fermata, codice_linea, ordine)
-        VALUES (?, ?, ?, ?); # And so on
+        VALUES (?, ?, ?, ?);
     """;
 
-    // OPERAZIONE 20bis
+    // Operazione 20 / 2
+    public static final String SELECT_TEMPO_PERCORRENZA =
+    """
+        SELECT tempo_percorrenza
+        FROM LINEE
+        WHERE codice_linea = ?;
+    """;
+
+    // OPERAZIONE 20 / 3
     public static final String UPDATE_TEMPO_PERCORRENZA =
     """
         UPDATE LINEE
-        SET tempo_percorrenza = (SELECT SUM(trt.tempo_percorrenza)
-                                FROM TRATTE trt, TRAGITTI trg
-                                WHERE trg.partenza_codice_fermata = trt.partenza_codice_fermata
-                                AND trg.arrivo_codice_fermata = trt.arrivo_codice_fermata
-                                AND trg.codice_linea = ?)
+        SET tempo_percorrenza = ?
         WHERE codice_linea = ?;
     """;
 
@@ -539,5 +543,16 @@ public final class Queries {
         AND EXISTS (SELECT * FROM manutenzioni_linee
                     WHERE CURDATE() BETWEEN data_inizio AND data_fine
                     AND codice_linea = ?);
+    """;
+
+    public static final String UPDATE_TEMPO_PERCORRENZA_COMPLETO =
+    """
+        UPDATE LINEE
+        SET tempo_percorrenza = (SELECT SUM(trt.tempo_percorrenza)
+                                FROM TRATTE trt, TRAGITTI trg
+                                WHERE trg.partenza_codice_fermata = trt.partenza_codice_fermata
+                                AND trg.arrivo_codice_fermata = trt.arrivo_codice_fermata
+                                AND trg.codice_linea = ?)
+        WHERE codice_linea = ?;
     """;
 }

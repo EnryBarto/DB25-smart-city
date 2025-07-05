@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import it.unibo.smartcity.controller.api.Controller;
@@ -48,13 +49,16 @@ class TragittiManagePanel extends JPanel {
             btnAggiungiTragitto
         );
 
+        Map<String, JComponent> components2 = new LinkedHashMap<>();
+        components2.put("NB: Per ogni linea è possibile rimuovere solo l'ultimo tragitto", new JLabel());
+        components2.put("Tragitto:", tragittiFinali);
         var btnRimuoviTragitto = new JButton("Rimuovi tratta");
 
         tragittiFinali.addItem("Ciao");
 
-        var rightPanel = panelFactory.createRightPanel(
+        var rightPanel = panelFactory.createRedPanel(
             "Rimozione tratta da linea",
-            tragittiFinali,
+            components2,
             btnRimuoviTragitto
         );
         this.add(leftPanel);

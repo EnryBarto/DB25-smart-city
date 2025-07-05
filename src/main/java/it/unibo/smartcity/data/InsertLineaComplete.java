@@ -76,7 +76,7 @@ public class InsertLineaComplete {
                     throw new DAOException("Errore nell'inserimento delle tratte", e);
                 }
             }
-            final var query = Queries.UPDATE_TEMPO_PERCORRENZA;
+            final var query = Queries.UPDATE_TEMPO_PERCORRENZA_COMPLETO;
             try (
                     var statement = DAOUtils.prepare(c, query);) {
                 statement.setString(1, l.getLinea().getCodiceLinea());
