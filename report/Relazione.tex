@@ -21,23 +21,28 @@
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
 \lstdefinestyle{sqlstyle}{
-    backgroundcolor=\color{backcolour},
-    commentstyle=\color{codegray},
-    keywordstyle=\color{blue},
-    numberstyle=\tiny\color{gray},
+    language=SQL,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codepurple},
+    numberstyle=\numberstyle,
     stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
+    basicstyle=\footnotesize\ttfamily,
     breakatwhitespace=false,
     breaklines=true,
     captionpos=b,
     keepspaces=true,
     numbers=left,
-    numbersep=5pt,
+    numbersep=10pt,
     showspaces=false,
     showstringspaces=false,
-    showtabs=false,
-    tabsize=2,
-    language=SQL
+    showtabs=false
+}
+\newcommand\numberstyle[1]{%
+    \footnotesize
+    \color{codegray}%
+    \ttfamily
+    \ifnum#1<10 0\fi#1 |%
 }
 
 \usepackage{newlfont}
@@ -1536,280 +1541,294 @@ Riportiamo l'elenco delle entità in cui è stata effettuata quest'aggiunta:
     \item Attuazione Corsa
 \end{itemize}
 
-\section{Schema relazionale finale}
+\section{Schema relazionale finale}\label{section:schema_relazionale}
 A questo punto tutti i problemi sono stati risolti, e il nostro schema ristrutturato è direttamente traducibile in delle relazioni.
 
-\section{Traduzione delle operazioni in query SQL}
-\begin{itemize}
-    \item operazione 1:\\
-        \begin{lstlisting}[style=sqlstyle, caption=SQL Query operation 1]
-SELECT *
+\chapter{Progettazione della Base di Dati}
+
+Abbiamo creato la base di dati per il nostro applicativo mappando le relazioni (vedi \autoref{section:schema_relazionale}) in tabelle, utilizzando il DBMS \textbf{MySQL}. Per eseguire la traduzione abbiamo sfruttato lo strumento messo a disposizione da \texttt{DB-Main}. \\
+Riportiamo in seguito il codice per eseguire ogni operazione indicata in \autoref{table:operazioni}, e le altre peculiarità relative alla creazione del database.
+
+\section{Check}	
+Nella creazione delle tabelle abbiamo inserito vari check, per poter definire meglio il dominio dei dati inseribili nel database. \\
+
+\begin{lstlisting}[style=sqlstyle, caption=Esempio di check utilizzato per definire gli attributi \texttt{prezzo} e \texttt{durata} come numeri positivi.]
+create table TARIFFE_BIGLIETTI (
+     nome varchar(30) not null,
+     durata int not null,
+     prezzo decimal(6,2) not null,
+     check (durata > 0 and prezzo > 0),
+     constraint ID_TARIFFA_BIGLIETTO primary key (durata));
+\end{lstlisting}
+
+\section{Viste}
+Visto che l'operazione di visualizzazione delle linee attive nel giorno corrente ricopre un ruolo centrale nel nostro applicativo, abbiamo deciso di creare una vista che estrae tutte le linee attive (sia ordinarie che straordinarie) riportando anche la prima e l'ultima fermata del tragitto complessivo. \\
+\begin{lstlisting}[style=sqlstyle, label=code:lines_view, caption=Codice SQL per la creazione della vista]
+CREATE VIEW VW_LINEE_ATTIVE_OGGI AS
+SELECT L.*, M.nome AS tipo_mezzo, F1.codice_fermata AS part_codice_fermata, F1.nome AS part_nome, F1.indirizzo_via AS part_via, F1.indirizzo_civico AS part_civico, F1.indirizzo_comune AS part_comune, F1.indirizzo_cap AS part_cap, F1.longitudine AS part_long, F1.latitudine AS part_lat, F2.codice_fermata AS arr_codice_fermata, F2.nome AS arr_nome, F2.indirizzo_via AS arr_via, F2.indirizzo_civico AS arr_civico, F2.indirizzo_comune AS arr_comune, F2.indirizzo_cap AS arr_cap, F2.longitudine AS arr_long, F2.latitudine AS arr_lat
 FROM LINEE L
 JOIN TIPOLOGIE_MEZZI M ON L.codice_tipo_mezzo = M.codice_tipo_mezzo
-JOIN TRAGITTI TRA1 ON TRA1.codice_linea = L.codice_linea
-JOIN TRATTE TR1 ON TRA1.partenza_codice_fermata = TR1.partenza_codice_fermata
-               AND TRA1.arrivo_codice_fermata = TR1.arrivo_codice_fermata
+JOIN TRAGITTI TRA1 on TRA1.codice_linea = L.codice_linea
+JOIN TRATTE TR1 ON (TRA1.partenza_codice_fermata = TR1.partenza_codice_fermata AND TRA1.arrivo_codice_fermata = TR1.arrivo_codice_fermata)
 JOIN FERMATE F1 ON F1.codice_fermata = TR1.partenza_codice_fermata
-JOIN TRAGITTI TRA2 ON TRA2.codice_linea = L.codice_linea
-JOIN TRATTE TR2 ON TRA2.partenza_codice_fermata = TR2.partenza_codice_fermata
-               AND TRA2.arrivo_codice_fermata = TR2.arrivo_codice_fermata
+JOIN TRAGITTI TRA2 on TRA2.codice_linea = L.codice_linea
+JOIN TRATTE TR2 ON (TRA2.partenza_codice_fermata = TR2.partenza_codice_fermata AND TRA2.arrivo_codice_fermata = TR2.arrivo_codice_fermata)
 JOIN FERMATE F2 ON F2.codice_fermata = TR2.arrivo_codice_fermata
 WHERE TRA1.ordine = 1
-  AND TRA2.ordine = (
-    SELECT MAX(T1.ordine)
-    FROM LINEE L1
-    JOIN TRAGITTI T1 ON L1.codice_linea = T1.codice_linea
-    WHERE L1.codice_linea = L.codice_linea
-  )
-  AND (L.attiva IS TRUE
-       OR (CURDATE() BETWEEN L.inizio_validita AND L.fine_validita))
+    AND TRA2.ordine =
+        (SELECT MAX(T1.ordine)
+        FROM LINEE L1 JOIN TRAGITTI T1 ON L1.codice_linea = T1.codice_linea
+        WHERE L1.codice_linea = L.codice_linea)
+            AND (L.attiva IS TRUE OR (CURDATE() BETWEEN L.inizio_validita AND L.fine_validita)
+        )
 ORDER BY L.codice_linea;
 \end{lstlisting}
-    \item operazione 2\\
-    \begin{lstlisting}[style=sqlstyle, caption=Query for Fermate Details by Linea]
-SELECT t.codice_linea,
-       t.arrivo_codice_fermata,
-       t.partenza_codice_fermata,
-       t.ordine,
-       f.nome,
-       f.indirizzo_via,
-       f.indirizzo_civico,
-       f.indirizzo_comune,
-       f.indirizzo_cap,
-       tr.tempo_percorrenza
-FROM TRAGITTI t
-JOIN TRATTE tr
-  ON t.partenza_codice_fermata = tr.partenza_codice_fermata
- AND t.arrivo_codice_fermata = tr.arrivo_codice_fermata
-JOIN FERMATE f
-  ON t.arrivo_codice_fermata = f.codice_fermata
-WHERE t.codice_linea = ?;
+
+\section{Stored Procedures}
+L'introduzione della ridondanza sull'attributo \texttt{attiva} delle linee ordinarie ne rende necessaria la sua gestione (attivazione e disattivazione). Per rendere più semplice questa operazione, abbiamo creato due stored procedures:
+\begin{itemize}
+	\item La prima prende il codice di una linea e controlla che non ci sia attualmente nessuna manutenzione per la linea data
+	\item La seconda esegue l'operazione per tutte le linee ordinarie, sfruttando la procedura precedente
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle]
+DELIMITER //
+
+CREATE PROCEDURE aggiorna_attivazione_linea(IN cod_linea VARCHAR(30))
+BEGIN
+    UPDATE linee L
+    SET attiva = NOT EXISTS
+        (SELECT 1
+	FROM manutenzioni_linee
+	WHERE codice_linea = cod_linea AND CURDATE() BETWEEN data_inizio AND data_fine)
+    WHERE codice_linea = cod_linea;
+END //
+
+DELIMITER ;
 \end{lstlisting}
+
+\begin{lstlisting}[style=sqlstyle]
+DELIMITER //
+
+CREATE PROCEDURE aggiorna_attivazione_linee()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE cur_cod_linea VARCHAR(30);
+
+    DECLARE cur CURSOR FOR
+        SELECT codice_linea FROM linee WHERE attiva IS NOT NULL;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO cur_cod_linea;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        CALL aggiorna_attivazione_linea(cur_cod_linea);
+    END LOOP;
+
+    CLOSE cur;
+END //
+
+DELIMITER ;
+\end{lstlisting}
+
+\section{Trigger}
+Per rendere automatica la gestione della ridondanza dell'attributo \texttt{attiva}, ogni volta che viene effettuata un'operazione che modifica la tabella \texttt{MANUTENZIONI{\textunderscore}LINEE} viene richiamata la stored procedure per aggiornare l'attributo della linea modificata sfruttando dei trigger. Questo permette agli utilizzatori del database di gestire le manutenzioni senza preoccuparsi di tenere aggiornato l'attributo \texttt{attiva}. \\
+\begin{lstlisting}[style=sqlstyle]
+DELIMITER //
+
+CREATE TRIGGER dopo_insert_manut_linea
+AFTER INSERT ON manutenzioni_linee
+FOR EACH ROW
+BEGIN
+    CALL aggiorna_attivazione_linea(NEW.codice_linea);
+END//
+
+CREATE TRIGGER dopo_update_manut_linea
+AFTER UPDATE ON manutenzioni_linee
+FOR EACH ROW
+BEGIN
+    CALL aggiorna_attivazione_linea(NEW.codice_linea);
+END//
+
+CREATE TRIGGER dopo_delete_manut_linea
+AFTER DELETE ON manutenzioni_linee
+FOR EACH ROW
+BEGIN
+    CALL aggiorna_attivazione_linea(OLD.codice_linea);
+END//
+
+DELIMITER ;
+\end{lstlisting}
+
+\section{Eventi}
+Le manutenzioni delle linee possono terminare in una data qualasiasi registrata al momento dell'inserimento della manutenzione stessa: ad esempio oggi potrebbe essere terminata la manutenzione della linea 2, ma nessuno potrebbe essersi ricordato di riattivare la linea. Diventa quindi necessario eseguire ogni giorno il "refresh" di tutte le linee attive nel giorno corrente. Questa operazione viene eseguita sfruttando un evento MySQL, che invoca una volta al giorno la stored procedure adibita all'aggiornamento dell'attributo \texttt{attiva} su tutte le linee ordinarie. \\
+\begin{lstlisting}[style=sqlstyle]
+CREATE EVENT aggiorna_linee_event
+ON SCHEDULE EVERY 1 DAY
+DO
+  CALL aggiorna_attivazione_linee();
+\end{lstlisting}
+
+\section{Traduzione delle operazioni in query SQL}
+Nelle query potrebbero apparire dei simboli \texttt{?}: questo perché abbiamo utilizzato i prepared statement per poter adattare le clausole where ai filtri imposti dagli utenti.
+
+\begin{enumerate}[label=\textbf{\arabic*)}]
+    
+\item \textbf{Visualizzazione di tutte le linee attive} \\
+Quest'operazione corrisponde alla visualizzazione delle informazioni estratte dalla vista indicata in \autoref{code:lines_view}. Sfruttiamo quindi la vista senza dover riscrivere la query.\\
+\begin{lstlisting}[style=sqlstyle]
+SELECT *
+FROM VW_LINEE_ATTIVE_OGGI;
+\end{lstlisting}
+
+\item \textbf{Visualizzazione fermate e orari di una linea} \\
+\begin{lstlisting}[style=sqlstyle, caption=Query for Fermate Details by Linea]
+\end{lstlisting}
+
 \begin{lstlisting}[style=sqlstyle, caption=Query for Orari Linee with Attuazioni Corse]
-SELECT ol.codice_orario,
-       ol.codice_linea,
-       ol.orario_partenza,
-       ol.giorno_settimanale,
-       ac.data
-FROM ORARI_LINEE ol
-JOIN ATTUAZIONI_CORSE ac
-  ON ol.codice_orario = ac.codice_orario
-WHERE ol.codice_linea = ?;
 \end{lstlisting}
 
-    \item operazione 3
-    \begin{lstlisting}[style=sqlstyle, caption=Query for Hub Mobilità with Contenuti and Fermate]
-SELECT h.codice_hub,
-       h.nome AS nome_hub,
-       h.indirizzo_via,
-       h.indirizzo_civico,
-       h.indirizzo_comune,
-       h.indirizzo_cap,
-       h.longitudine,
-       h.latitudine,
-       h.codice_fermata,
-       f.nome AS nome_fermata,
-       ch.descrizione AS tipo_contenuto,
-       c.posti_disponibili
-FROM HUB_MOBILITA h
-LEFT JOIN FERMATE f
-       ON h.codice_fermata = f.codice_fermata
-JOIN CONTENUTI c
-       ON c.codice_hub = h.codice_hub
-JOIN CONTENUTI_HUB ch
-       ON c.codice_contenuto = ch.codice_contenuto;
+\item \textbf{Visualizzazione degli hub mobilità} \\
+\begin{lstlisting}[style=sqlstyle, caption=Query for Hub Mobilità with Contenuti and Fermate]
 \end{lstlisting}
 
-    \item operazione 4
-    \begin{lstlisting}[style=sqlstyle, caption=Query for Corse Attuate by User]
-SELECT ol.codice_linea,
-       ol.orario_partenza,
-       ol.giorno_settimanale,
-       ol.codice_orario,
-       ac.data
-FROM ORARIO_LINEE ol
-JOIN ATTUAZIONI_CORSE ac
-  ON ol.codice_orario = ac.codice_orario
-WHERE ac.username = ?
-ORDER BY ol.codice_linea,
-         ol.orario_partenza,
-         ol.giorno_settimanale;
+\item \textbf{Visualizzazione orario e linee assegnate agli autisti} \\
+\begin{lstlisting}[style=sqlstyle, caption=Query for Corse Attuate by User]
 \end{lstlisting}
 
-\item operazione 6
-    \begin{lstlisting}[style=sqlstyle, caption=Query for Number of Validations per Linea]
-SELECT COUNT(*) AS numero_convalide
-FROM LINEE l
-JOIN ORARI_LINEE ol
-  ON l.codice_linea = ol.codice_linea
-JOIN ATTUAZIONI_CORSE ac
-  ON ol.codice_orario = ac.codice_orario
-JOIN CONVALIDE c
-  ON ac.codice_corsa = c.codice_corsa
-GROUP BY codice_linea
-ORDER BY COUNT(*) DESC;
+\item \textbf{Visualizzazione orario e linee assegnate ai controllori} \\
+\begin{lstlisting}[style=sqlstyle]
+SELECT A.data, O.codice_orario, O.ora_partenza, O.giorno_settimanale, O.codice_linea, L.tempo_percorrenza, A.n_immatricolazione
+FROM CONTROLLI C
+JOIN ATTUAZIONI_CORSE A ON C.codice_corsa = A.codice_corsa
+JOIN ORARI_LINEE O ON A.codice_orario = O.codice_orario
+JOIN LINEE L ON O.codice_linea = L.codice_linea
+WHERE C.username = ?
+ORDER BY A.data, O.ora_partenza;
 \end{lstlisting}
 
-\item operazione 7
-\begin{lstlisting}[style=sqlstyle, caption=Query for Manutenzioni by Numero Immatricolazione]
+\item \textbf{Estrazione delle linee con più convalide nell’ultimo mese} \\
+\begin{lstlisting}[style=sqlstyle, caption=Query for Number of Validations per Linea]
+\end{lstlisting}
+
+\item \textbf{Estrazione delle manuntenzioni che coinvolgono un determinato mezzo} \\
+\begin{lstlisting}[style=sqlstyle]
 SELECT *
 FROM MANUTENZIONI_MEZZI mm
-WHERE mm.n_immatricolazione = ?;
+WHERE mm.n_immatricolazione = ?
 \end{lstlisting}
 
-\item operazione 8
+\item \textbf{Estrazione delle manuntenzioni ed eventuali linee sostitutive che coinvolgono una linea (Variazioni di servizio)} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Linee in Manutenzione and Their Sostituzioni]
-SELECT l.codice_linea AS codice_linea_in_manutenzione,
-       m.data_inizio,
-       m.data_fine,
-       m.nome,
-       m.descrizione,
-       a.p_iva,
-       a.email,
-       a.telefono,
-       a.ragione_sociale,
-       ls.codice_linea AS codice_linea_sostituta
-FROM LINEE l
-JOIN MANUTENZIONI_LINEE m
-  ON m.codice_linea = l.codice_linea
-LEFT JOIN AZIENDE a
-  ON m.p_iva = a.p_iva
-JOIN SOSTITUZIONI s
-  ON m.codice_linea = s.sost_manut_codice_linea
- AND m.data_inizio = s.sost_manut_data_inizio
-JOIN LINEE ls
-  ON ls.codice_linea = s.codice_linea
-WHERE l.codice_linea = ?;
 \end{lstlisting}
 
-\item operazione 9
+\item \textbf{Visualizzazione incassi dati dalle convalide per una linea} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Total Revenue (Incassi) by Linea]
-SELECT SUM(tb.prezzo) AS incassi
-FROM ORARI_LINEE ol
-JOIN ATTUAZIONI_CORSE ac
-  ON ol.codice_linea = ac.codice_linea
-JOIN CONVALIDE c
-  ON ac.codice_corsa = c.codice_corsa
-JOIN BIGLIETTI b
-  ON c.codice_biglietto = b.codice_biglietto
-JOIN TARIFFE_BIGLIETTI tb
-  ON b.durata = tb.durata
-WHERE ol.codice_linea = ?;
 \end{lstlisting}
 
-\item operazione 11
+\item \textbf{Estrazione degli incassi per tipo di tariffa dei biglietti in periodo definito} \\
+Utilizziamo la funzione DATE() per trasformare l'attributo \texttt{data{\textunderscore}ora} da tipo DATETIME a tipo DATE. \\
+\begin{lstlisting}[style=sqlstyle]
+SELECT SUM(prezzo) as incasso
+FROM CONVALIDE C
+JOIN BIGLIETTI B ON C.codice_biglietto = B.codice_biglietto
+JOIN TARIFFE_BIGLIETTI T ON B.durata = T.durata
+WHERE B.durata = ? AND (DATE(C.data_ora) BETWEEN ? AND ?);
+\end{lstlisting}
+
+\item \textbf{Estrazione delle linee con più multe negli ultimi 3 mesi} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Number of Fines per Linea Between Two Dates]
-SELECT l.codice_linea, COUNT(*) AS numero_multe
-FROM LINEE l, ORARI_LINEE ol, ATTUAZIONI_CORSE ac, MULTE m
-WHERE l.codice_linea = ol.codice_linea
-  AND ol.codice_orario = ac.codice_orario
-  AND ac.codice_corsa = m.codice_corsa
-  AND ac.data BETWEEN ? AND ?
-GROUP BY l.codice_linea
-ORDER BY numero_multe DESC;
 \end{lstlisting}
 
-\item operazione 12
+\item \textbf{Estrazione delle 5 linee con manutenzioni più gravose (in termini di linee sostitutive e durata)} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Duration of Maintenance and Substitute Lines Count]
-SELECT ml.codice_linea,
-       ml.nome,
-       DATEDIFF(ml.data_inizio, ml.data_fine) AS durata_lavoro,
-       COUNT(*) AS num_linee_sostitutive
-FROM MANUTENZIONI_LINEE ml
-JOIN SOSTITUZIONI s
-  ON ml.codice_linea = s.sost_manut_codice_linea
-GROUP BY ml.codice_linea, ml.data_inizio, ml.nome;
 \end{lstlisting}
 
-\item operazione 13
+\item \textbf{Estrazione delle linee con \textgreater 5 controlli/giorno e \textless = 10 multe/giorno} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query to Find Lines Matching Fine/Control Conditions on All Trips]
-SELECT l.codice_linea
-FROM LINEE l
-JOIN ORARI_LINEE ol
-  ON l.codice_linea = ol.codice_linea
-JOIN ATTUAZIONI_CORSE ac
-  ON ol.codice_orario = ac.codice_orario
-GROUP BY l.codice_linea
-HAVING COUNT(*) = (
-    SELECT COUNT(DISTINCT ac1.codice_corsa)
-    FROM LINEE l1
-    JOIN ORARI_LINEE ol1
-      ON l1.codice_linea = ol1.codice_linea
-    JOIN ATTUAZIONI_CORSE ac1
-      ON ol1.codice_orario = ac1.codice_orario
-    WHERE l1.codice_linea = l.codice_linea
-      AND ac1.codice_corsa IN (
-        SELECT ac2.codice_corsa
-        FROM ATTUAZIONI_CORSE ac2
-        LEFT JOIN CONTROLLI c
-          ON c.codice_corsa = ac2.codice_corsa
-        LEFT JOIN MULTE m
-          ON m.codice_corsa = ac2.codice_corsa
-        GROUP BY ac2.data
-        HAVING COUNT(m.codice_multa) <= 10
-           AND COUNT(c.codice_corsa) > 5
-    )
-);
 \end{lstlisting}
 
-\item operazione 14
+\item \textbf{Visualizzazione delle linee con il maggior tempo di percorrenza} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Line with Maximum Tempo Percorrenza]
-SELECT codice_linea, tempo_percorrenza
-FROM LINEE
-ORDER BY tempo_percorrenza DESC
+\end{lstlisting}
+
+\item \textbf{Estrazione della linea con più hub mobilità lungo il percorso} \\
+\begin{lstlisting}[style=sqlstyle]
+SELECT COUNT(DISTINCT H.codice_hub) AS num_hub, TRA.codice_linea
+FROM HUB_MOBILITA H
+JOIN FERMATE F ON H.codice_fermata = F.codice_fermata
+JOIN TRAGITTI TRA ON (TRA.arrivo_codice_fermata = F.codice_fermata) OR (TRA.partenza_codice_fermata = F.codice_fermata)
+WHERE F.codice_fermata IN
+           (SELECT partenza_codice_fermata
+           FROM TRAGITTI
+           WHERE codice_linea = TRA.codice_linea)
+    OR F.codice_fermata IN
+           (SELECT arrivo_codice_fermata
+           FROM TRAGITTI
+           WHERE codice_linea = TRA.codice_linea)
+GROUP BY TRA.codice_linea
+ORDER BY num_hub DESC
 LIMIT 1;
 \end{lstlisting}
 
-\item operazione 16
-
+\item \textbf{Media di soldi spesi in multe per persona} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Average Fine Amount Grouped by Documento]
-SELECT AVG(m.importo)
-FROM MULTE m, PERSONE p
-WHERE p.documento = m.codice_multa
-GROUP BY p.documento;
 \end{lstlisting}
 
-\item operazione 17
+\item \textbf{Visualizzazione delle aziende che non hanno effettuato nessuna manutenzione nell’ultimo mese} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Companies Without Maintenance in Last Month]
-SELECT a.*
-FROM AZIENDE a
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM MANUTENZIONI_MEZZI mm
-    WHERE mm.p_iva = a.p_iva
-      AND mm.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
-)
-AND NOT EXISTS (
-    SELECT 1
-    FROM MANUTENZIONI_LINEE ml
-    WHERE ml.p_iva = a.p_iva
-      AND ml.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
-);
 \end{lstlisting}
 
-\item operazione 19
+\item \textbf{Visualizzazione delle fermate in cui è presente almeno un hub mobilità contenente tutti i tipi di servizi green} \\
+Quest'operazione corrisponde a una divisione: prendiamo gli hub che hanno un numero di servizi green pari al totale dei servizi green esistenti. \\
+Una volta estratti gli hub, scegliamo le fermate che sono connesse ad almeno uno di questi.
+\begin{lstlisting}[style=sqlstyle]
+SELECT DISTINCT *
+FROM FERMATE F
+JOIN HUB_MOBILITA H ON F.codice_fermata = H.codice_fermata
+WHERE H.codice_hub IN
+	(SELECT H.codice_hub
+	FROM HUB_MOBILITA H
+	JOIN CONTENUTI C ON H.codice_hub = C.codice_hub
+	GROUP BY H.codice_hub
+	HAVING COUNT(DISTINCT C.codice_contenuto) =
+		(SELECT COUNT(DISTINCT codice_contenuto) FROM CONTENUTI_HUB)
+           );
+\end{lstlisting}
+
+\item \textbf{Inserimento di una variazione di servizio} \\
 \begin{lstlisting}[style=sqlstyle, caption=Insert into SOSTITUZIONI and Update LINEE status]
-INSERT INTO SOSTITUZIONI (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea)
-VALUES (?, ?, ?);
+\end{lstlisting}
 
+\item \textbf{Aggiunta di una tratta a una linea esistente} \\
+Data la presenza dell'attributo ridondante \texttt{tempo{\textunderscore}percorrenza} su \texttt{LINEE}, una volta inserito il tragitto è necessario aggiornare il tempo di percorrenza totale della linea (leggendo quello vecchio e aumentandolo). Sarebbe ottimale eseguire le tre operazioni tramite una \textbf{transazione}, così da essere certi che il tempo di percorrenza rimane coerente con quello reale (ad esempio in caso di errore nell'aggiornamento del tempo, la transazione fallisce e il tragitto non viene aggiunto). \\
+\begin{lstlisting}[style=sqlstyle, caption=Inserimento del tragitto]
+INSERT INTO TRAGITTI (partenza_codice_fermata, arrivo_codice_fermata, codice_linea, ordine)
+VALUES (?, ?, ?, ?);
+\end{lstlisting}
+
+\begin{lstlisting}[style=sqlstyle, caption=Lettura vecchio tempo di percorrenza]
+SELECT tempo_percorrenza
+FROM LINEE
+WHERE codice_linea = ?;
+\end{lstlisting}
+
+\begin{lstlisting}[style=sqlstyle, caption=Aggiornamento del tempo di percorrenza]
 UPDATE LINEE
-SET attiva = FALSE
-WHERE codice_linea = ?
-  AND EXISTS (
-      SELECT 1
-      FROM manutenzioni_linee
-      WHERE CURDATE() BETWEEN inizio_validita AND fine_validita
-        AND codice_linea = ?
-  );
+SET tempo_percorrenza = ?
+WHERE codice_linea = ?;
 \end{lstlisting}
 
-\item operazione 21
+\item \textbf{Creazione di una nuova linea} \\
 \begin{lstlisting}[style=sqlstyle, caption=Insert Statement for LINEE]
-INSERT INTO LINEE (codice_linea, inizio_validita, fine_validita, attiva, codice_tipo_mezzo)
-VALUES (?, ?, ?, ?, ?);
 \end{lstlisting}
 
-\end{itemize}
+\end{enumerate}
 
 \chapter{Progettazione dell'Applicazione}
 
