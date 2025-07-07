@@ -91,13 +91,18 @@ public class ControllerImpl implements Controller {
         var fake = new JFrame();
         fake.setVisible(true);
         // Crea i campi di input
+        javax.swing.JTextField ipField = new javax.swing.JTextField(20);
+        javax.swing.JTextField portField = new javax.swing.JTextField(20);
         javax.swing.JTextField dbField = new javax.swing.JTextField(20);
         javax.swing.JTextField userField = new javax.swing.JTextField(20);
         javax.swing.JPasswordField passField = new javax.swing.JPasswordField(20);
+        ipField.setText("localhost");
+        portField.setText("3306");
         dbField.setText("smart_city");
-        userField.setText("root");
         Object[] message = {
-                "Database:", dbField,
+                "Indirizzo DB", ipField,
+                "Porta DB:", portField,
+                "Nome DB:", dbField,
                 "Utente:", userField,
                 "Password:", passField
         };
@@ -105,20 +110,24 @@ public class ControllerImpl implements Controller {
         int option = javax.swing.JOptionPane.showConfirmDialog(
                 fake, message, "Parametri connessione DB", javax.swing.JOptionPane.OK_CANCEL_OPTION);
 
-        String dbName, user, pass;
+        String ipAddr, port, dbName, user, pass;
         if (option == javax.swing.JOptionPane.OK_OPTION) {
+            ipAddr = ipField.getText();
+            port = portField.getText();
             dbName = dbField.getText();
             user = userField.getText();
             pass = new String(passField.getPassword());
         } else {
             // Default o chiudi applicazione
+            ipAddr = "";
+            port = "";
             dbName = "";
             user = "";
             pass = "";
             System.exit(0);
         }
         try {
-            this.connection = DAOUtils.localMySQLConnection(dbName, user, pass);
+            this.connection = DAOUtils.localMySQLConnection(ipAddr, port, dbName, user, pass);
         } catch (DAOException e) {
             JOptionPane.showMessageDialog(fake, "Connessione non riuscita!\n" + e.getMessage(), "Errore",
                     JOptionPane.ERROR_MESSAGE);

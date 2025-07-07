@@ -151,7 +151,7 @@ public class SwingView implements View {
         this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub", "Gest. Dipendenti", "Gest. Fermate", "Gest. Tratte", "Ins. Linea", "Gest. Tragitti", "Gest. Orari Linee", "Ins. Attua. Corsa", "Manutenzioni", "Ins. Var. Servizio", "Gest. Hub", "Assoc. Hub-Contenuto", "Assegna Controllore", "Statistiche", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Biglietti", "Abbonamenti", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
-        this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo", "Ins. Multa"));
+        this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Ins. Multa", "Profilo"));
     }
 
     private void setTabPane(UserLevel userLevel) {

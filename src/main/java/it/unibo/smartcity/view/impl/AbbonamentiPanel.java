@@ -25,7 +25,7 @@ import it.unibo.smartcity.controller.api.Controller;
 import it.unibo.smartcity.model.api.TariffaAbbonamento;
 import raven.datetime.DatePicker;
 
-public class AbbonamentiPanel extends JPanel {
+class AbbonamentiPanel extends JPanel {
 
     static private final String[] columnTariffe = { "Nome", "Durata", "Prezzo" };
     private final JPanel buyPanel = new JPanel();
@@ -71,7 +71,7 @@ public class AbbonamentiPanel extends JPanel {
         DatePicker datePickerInizio = new DatePicker();
         datePickerInizio.setEditor(dataInizio);
         dataPanel.add(new JLabel("Data Inizio:"));
-        dataPanel.add(datePickerInizio);
+        dataPanel.add(dataInizio);
 
         JButton buyBtn = new JButton("Acquista");
         buyBtn.setBackground(new Color(40, 167, 69));

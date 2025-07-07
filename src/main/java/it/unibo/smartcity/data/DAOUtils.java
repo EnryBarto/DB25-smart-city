@@ -9,10 +9,8 @@ public final class DAOUtils {
 
     // Establishes a connection to a MySQL daemon running locally at port 3306.
     //
-    public static Connection localMySQLConnection(String database, String username, String password) {
+    public static Connection localMySQLConnection(String host, String port, String database, String username, String password) {
         try {
-            var host = "localhost";
-            var port = "3306";
             var connectionString = "jdbc:mysql://" + host + ":" + port + "/" + database;
             return DriverManager.getConnection(connectionString, username, password);
         } catch (Exception e) {
