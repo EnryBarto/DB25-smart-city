@@ -1688,9 +1688,19 @@ FROM VW_LINEE_ATTIVE_OGGI;
 
 \item \textbf{Visualizzazione fermate e orari di una linea} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Fermate Details by Linea]
+SELECT t.codice_linea, t.arrivo_codice_fermata, t.partenza_codice_fermata, t.ordine, f.nome, f.indirizzo_via, f.indirizzo_civico, f.indirizzo_comune, f.indirizzo_cap, tr.tempo_percorrenza
+FROM TRAGITTI t
+JOIN TRATTE tr ON t.partenza_codice_fermata = tr.partenza_codice_fermata 
+AND t.arrivo_codice_fermata = tr.arrivo_codice_fermata
+JOIN FERMATE f ON t.arrivo_codice_fermata = f.codice_fermata
+WHERE t.codice_linea = ?
 \end{lstlisting}
 
 \begin{lstlisting}[style=sqlstyle, caption=Query for Orari Linee with Attuazioni Corse]
+SELECT ol.codice_orario, ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale, ac.data
+FROM ORARI_LINEE ol
+JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
+WHERE ol.codice_linea = ?
 \end{lstlisting}
 
 \item \textbf{Visualizzazione degli hub mobilità} \\
@@ -1704,6 +1714,12 @@ ORDER BY h.codice_hub;
 
 \item \textbf{Visualizzazione orario e linee assegnate agli autisti} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Corse Attuate by User]
+SELECT ol.codice_linea, ol.ora_partenza, ol.giorno_settimanale, ol.codice_orario, ac.data,l.tempo_percorrenza, ac.n_immatricolazione
+FROM ORARI_LINEE ol
+JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
+JOIN LINEE l ON ol.codice_linea = l.codice_linea
+WHERE ac.username = ?
+ORDER BY ac.data, ol.ora_partenza;
 \end{lstlisting}
 
 \item \textbf{Visualizzazione orario e linee assegnate ai controllori} \\
@@ -1719,6 +1735,13 @@ ORDER BY A.data, O.ora_partenza;
 
 \item \textbf{Estrazione delle linee con più convalide nell’ultimo mese} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Number of Validations per Linea]
+SELECT COUNT(*) AS numero_convalide
+FROM LINEE l
+JOIN ORARI_LINEE ol ON l.codice_linea = ol.codice_linea
+JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
+JOIN CONVALIDE c ON ac.codice_corsa = c.codice_corsa
+GROUP BY codice_linea
+ORDER BY COUNT(*) DESC
 \end{lstlisting}
 
 \item \textbf{Estrazione delle manuntenzioni che coinvolgono un determinato mezzo} \\
@@ -1740,6 +1763,13 @@ WHERE l.codice_linea = ?;
 
 \item \textbf{Visualizzazione incassi dati dalle convalide per una linea} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Total Revenue (Incassi) by Linea]
+SELECT sum(tb.prezzo) AS incassi
+FROM ORARI_LINEE ol
+JOIN ATTUAZIONI_CORSE ac ON ol.codice_linea = ac.codice_linea
+JOIN CONVALIDE c ON ac.codice_corsa = c.codice_corsa
+JOIN BIGLIETTI b ON c.codice_biglietto = b.codice_biglietto
+JOIN TARIFFE_BIGLIETTI tb ON b.durata = tb.durata
+WHERE ol.codice_linea = ?
 \end{lstlisting}
 
 \item \textbf{Estrazione degli incassi per tipo di tariffa dei biglietti in periodo definito} \\
@@ -1766,6 +1796,10 @@ ORDER BY numero_multe DESC;
 
 \item \textbf{Estrazione delle 5 linee con manutenzioni più gravose (in termini di linee sostitutive e durata)} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Duration of Maintenance and Substitute Lines Count]
+SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_fine, ml.data_inizio) AS durata_lavoro, COUNT(*) AS num_linee_sostitutive
+FROM MANUTENZIONI_LINEE ml
+JOIN SOSTITUZIONI s ON ml.codice_linea = s.sost_manut_codice_linea
+GROUP BY ml.codice_linea, ml.data_inizio, ml.nome
 \end{lstlisting}
 
 \item \textbf{Estrazione delle linee con \textgreater 5 controlli/giorno e \textless = 10 multe/giorno} \\
@@ -1795,6 +1829,10 @@ HAVING COUNT(DISTINCT ac.codice_corsa) = (SELECT COUNT(DISTINCT ac1.codice_corsa
 
 \item \textbf{Visualizzazione delle linee con il maggior tempo di percorrenza} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Line with Maximum Tempo Percorrenza]
+SELECT codice_linea, tempo_percorrenza
+FROM LINEE
+ORDER BY tempo_percorrenza DESC
+LIMIT 1
 \end{lstlisting}
 
 \item \textbf{Estrazione della linea con più hub mobilità lungo il percorso} \\
@@ -1826,6 +1864,20 @@ SELECT AVG(COALESCE(m.importo, 0)) AS media_soldi
 
 \item \textbf{Visualizzazione delle aziende che non hanno effettuato nessuna manutenzione nell’ultimo mese} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Companies Without Maintenance in Last Month]
+SELECT a.*
+FROM AZIENDE a
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM MANUTENZIONI_MEZZI mm
+    WHERE mm.p_iva = a.p_iva
+    AND mm.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
+    )
+AND NOT EXISTS (
+    SELECT 1
+    FROM MANUTENZIONI_LINEE ml
+    WHERE ml.p_iva = a.p_iva
+    AND ml.data_inizio >= CURRENT_DATE - INTERVAL 1 MONTH
+);
 \end{lstlisting}
 
 \item \textbf{Visualizzazione delle fermate in cui è presente almeno un hub mobilità contenente tutti i tipi di servizi green} \\
