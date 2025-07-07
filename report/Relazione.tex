@@ -14,6 +14,8 @@
 \usepackage{enumitem}
 \usepackage{amsmath}
 \usepackage{geometry}
+\usepackage{pdfpages}
+
 \geometry{margin=1in}
 
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -172,9 +174,15 @@ Si richiede anche la gestione dei \underline{\texttt{dipendenti}}. Essi si divid
 Dovranno essere gestiti i lavori di \underline{\texttt{manutenzione}}, che possono coinvolgere \underline{\texttt{linee}} e \underline{\texttt{mezzi di trasporto}}, per cui saranno specificati gli eventuali \underline{\texttt{enti privati}} che li svolgeranno. Per le manutenzioni sarà richiesto di specificare una data di inizio e fine lavori, ed eventuali \underline{\texttt{variazioni di servizio}} che coinvolgono linee dovranno essere visualizzate al pubblico.
 
 \chapter{Progettazione Concettuale}
+
 \section{Schema Scheletro}
+
 \section{Raffinamenti Proposti}
+
 \section{Schema Concettuale Finale}
+Nella pagina seguente è presente lo schema concettuale finale completo.
+\includepdf{src/pdf/Schema_ER.pdf}
+
 \subsection{Vincoli inespressi}
 In questa sezione discuteremo i vari vincoli inespressi dal nostro schema concettuale:
 \begin{itemize}
@@ -1544,6 +1552,7 @@ Riportiamo l'elenco delle entità in cui è stata effettuata quest'aggiunta:
 
 \section{Schema relazionale finale}\label{section:schema_relazionale}
 A questo punto tutti i problemi sono stati risolti, e il nostro schema ristrutturato è direttamente traducibile in delle relazioni.
+\includepdf{src/pdf/Schema_Logico.pdf}
 
 \chapter{Progettazione della Base di Dati}
 
