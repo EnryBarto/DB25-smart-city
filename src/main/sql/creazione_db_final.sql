@@ -21,7 +21,7 @@ use smart_city;
 
 create table ABBONAMENTI (
      data_inizio date not null,
-     codice_abbonamento int not null,
+     codice_abbonamento int auto_increment not null,
      data_acquisto date not null,
      num_giorni int not null,
      username varchar(30) not null,
@@ -410,9 +410,9 @@ DELIMITER //
 CREATE PROCEDURE aggiorna_attivazione_linea(IN cod_linea VARCHAR(30))
 BEGIN
 	-- Aggiornamento dello stato della linea
-	UPDATE linee L
+	UPDATE LINEE L
 	SET attiva = NOT EXISTS (SELECT 1
-							FROM manutenzioni_linee
+							FROM MANUTENZIONI_LINEE
 							WHERE codice_linea = cod_linea AND CURDATE() BETWEEN data_inizio AND data_fine)
 	WHERE codice_linea = cod_linea;
 
@@ -424,7 +424,7 @@ BEGIN
     DECLARE cur_cod_linea VARCHAR(30);
 
     DECLARE cur CURSOR FOR
-        SELECT codice_linea FROM linee WHERE attiva IS NOT NULL;
+        SELECT codice_linea FROM LINEE WHERE attiva IS NOT NULL;
 
     -- Gestione della fine del cursore
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
@@ -456,21 +456,21 @@ DELIMITER ;
 DELIMITER //
 
 CREATE TRIGGER dopo_insert_manut_linea
-AFTER INSERT ON manutenzioni_linee
+AFTER INSERT ON MANUTENZIONI_LINEE
 FOR EACH ROW
 BEGIN
     CALL aggiorna_attivazione_linea(NEW.codice_linea);
 END//
 
 CREATE TRIGGER dopo_update_manut_linea
-AFTER UPDATE ON manutenzioni_linee
+AFTER UPDATE ON MANUTENZIONI_LINEE
 FOR EACH ROW
 BEGIN
     CALL aggiorna_attivazione_linea(NEW.codice_linea);
 END//
 
 CREATE TRIGGER dopo_delete_manut_linea
-AFTER DELETE ON manutenzioni_linee
+AFTER DELETE ON MANUTENZIONI_LINEE
 FOR EACH ROW
 BEGIN
     CALL aggiorna_attivazione_linea(OLD.codice_linea);

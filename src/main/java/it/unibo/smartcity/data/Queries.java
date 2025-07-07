@@ -323,6 +323,11 @@ public final class Queries {
         FROM TARIFFE_BIGLIETTI
     """;
 
+    public static final String INSERT_ABBONAMENTO =
+    """
+        INSERT INTO ABBONAMENTI (num_giorni, data_inizio, data_acquisto, username)
+        VALUES (?, ?, ?, ?);
+    """;
     public static final String INSERT_BIGLIETTO =
     """
         INSERT INTO BIGLIETTI (data_acquisto, durata, username)

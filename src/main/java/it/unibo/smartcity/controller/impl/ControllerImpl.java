@@ -51,6 +51,7 @@ import it.unibo.smartcity.model.api.TariffaBiglietto;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.Tratta;
 import it.unibo.smartcity.model.api.Utente;
+import it.unibo.smartcity.model.impl.AbbonamentoImpl;
 import it.unibo.smartcity.model.impl.AttuazioneCorsaImpl;
 import it.unibo.smartcity.model.impl.AziendaImpl;
 import it.unibo.smartcity.model.impl.BigliettoImpl;
@@ -72,6 +73,7 @@ import it.unibo.smartcity.model.impl.TragittoImpl;
 import it.unibo.smartcity.model.impl.MezzoImpl.MezzoConNome;
 import it.unibo.smartcity.model.impl.MultaImpl;
 import it.unibo.smartcity.model.impl.PersonaImpl;
+import it.unibo.smartcity.model.impl.TariffaAbbonamentoImpl;
 import it.unibo.smartcity.model.impl.TipologiaMezzoImpl;
 import it.unibo.smartcity.model.impl.TrattaImpl;
 import it.unibo.smartcity.model.impl.UtenteImpl;
@@ -678,5 +680,20 @@ public class ControllerImpl implements Controller {
     public void updateOrdinaryLines() {
         var list = LineaImpl.DAO.listOrdinary(connection);
         views.forEach(v -> v.updateOrdinaryLines(list));
+    }
+
+    @Override
+    public void updateBuyAbbonamenti() {
+        var list = TariffaAbbonamentoImpl.DAO.list(connection);
+        views.forEach(v -> v.updateAbbonamentiPanel(list));
+    }
+
+    @Override
+    public void addAbbonamento(int numGiorni, LocalDate dataInizio) {
+        checkNotNull(numGiorni);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        var buyDate = LocalDate.now().format(formatter);
+        var dataInizioFormat = dataInizio.format(formatter);
+        AbbonamentoImpl.DAO.insert(connection, buyDate, dataInizioFormat, numGiorni, this.user.getUsername());
     }
 }

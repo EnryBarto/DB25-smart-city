@@ -210,4 +210,8 @@ public interface Controller {
     void updateFermateHubTuttiContenuti();
 
     void updateOrdinaryLines();
+
+    void updateBuyAbbonamenti();
+
+    void addAbbonamento(int numGiorni, LocalDate dataInizio);
 }

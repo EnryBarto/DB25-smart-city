@@ -136,6 +136,22 @@ public final class AbbonamentoImpl implements Abbonamento {
             }
             return abbonamenti;
         }
+
+        public static void insert(Connection connection, String buyDate, String dataInizioFormat, int numGiorni, String username) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.INSERT_ABBONAMENTO,
+                    numGiorni,
+                    java.sql.Date.valueOf(dataInizioFormat),
+                    java.sql.Date.valueOf(buyDate),
+                    username
+                )
+            ) {
+                statement.executeUpdate();
+            }
+            catch (Exception e) {
+                throw new DAOException("Failed to insert Abbonamento", e);
+            }
+        }
     }
 
 }

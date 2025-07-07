@@ -88,8 +88,8 @@ public class TariffaAbbonamentoImpl implements TariffaAbbonamento {
 
     public static final class DAO {
 
-        public static List<TariffaAbbonamentoImpl> list(Connection connection) {
-            var tariffe = new LinkedList<TariffaAbbonamentoImpl>();
+        public static List<TariffaAbbonamento> list(Connection connection) {
+            var tariffe = new LinkedList<TariffaAbbonamento>();
             try (
                 var statement = DAOUtils.prepare(connection, Queries.LIST_TARIFFE_ABBONAMENTI);
                 var rs = statement.executeQuery();

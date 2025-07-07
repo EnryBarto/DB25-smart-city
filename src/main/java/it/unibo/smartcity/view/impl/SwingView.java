@@ -45,6 +45,7 @@ import it.unibo.smartcity.model.api.ManutenzioneLinea;
 import it.unibo.smartcity.model.api.Mezzo;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.Persona;
+import it.unibo.smartcity.model.api.TariffaAbbonamento;
 import it.unibo.smartcity.model.api.TariffaBiglietto;
 import it.unibo.smartcity.model.api.TipologiaMezzo;
 import it.unibo.smartcity.model.api.Tragitto;
@@ -144,10 +145,11 @@ public class SwingView implements View {
         this.tabs.put("Variazioni di servizio", new VariazioniServizioPanel(controller));
         this.tabs.put("Assegna Controllore", new InsertControlloPanel(controller));
         this.tabs.put("Biglietti", new TicketManagerPanel(controller));
+        this.tabs.put("Abbonamenti", new AbbonamentiPanel(controller));
 
         this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Variazioni di servizio", "Login", "Registrati"));
         this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub", "Gest. Dipendenti", "Gest. Fermate", "Gest. Tratte", "Ins. Linea", "Gest. Tragitti", "Gest. Orari Linee", "Ins. Attua. Corsa", "Manutenzioni", "Ins. Var. Servizio", "Gest. Hub", "Assoc. Hub-Contenuto", "Assegna Controllore", "Statistiche", "Profilo"));
-        this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Biglietti", "Hub", "Profilo"));
+        this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Biglietti", "Abbonamenti", "Hub", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
         this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo", "Ins. Multa"));
     }
@@ -234,6 +236,12 @@ public class SwingView implements View {
                         break;
                     case "Ins. Attua. Corsa":
                         controller.updateAutistiListCreazioneCorsa();
+                        break;
+                    case "Biglietti":
+                        controller.updateBuyTicket();
+                        break;
+                    case "Abbonamenti":
+                        controller.updateBuyAbbonamenti();
                         break;
                     case "Assegna Controllore":
                         controller.updateControllori();
@@ -456,5 +464,10 @@ public class SwingView implements View {
     @Override
     public void updateOrdinaryLines(List<Linea> list) {
         ((VariazioniServizioPanel)this.tabs.get("Variazioni di servizio")).updateLinee(list);
+    }
+
+    @Override
+    public void updateAbbonamentiPanel(List<TariffaAbbonamento> list) {
+        ((AbbonamentiPanel)this.tabs.get("Abbonamenti")).updateBuyAbbonamentiPanel(list);
     }
 }

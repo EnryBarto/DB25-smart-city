@@ -26,6 +26,7 @@ import it.unibo.smartcity.model.api.Mezzo;
 import it.unibo.smartcity.model.api.OrarioLinea;
 import it.unibo.smartcity.model.api.TariffaBiglietto;
 import it.unibo.smartcity.model.api.Persona;
+import it.unibo.smartcity.model.api.TariffaAbbonamento;
 import it.unibo.smartcity.model.api.Tragitto;
 import it.unibo.smartcity.model.api.TipologiaMezzo;
 import it.unibo.smartcity.model.api.Tratta;
@@ -132,4 +133,6 @@ public interface View {
     void  updateFermateHubTuttiContenuti(List<Fermata> list);
 
     void updateOrdinaryLines(List<Linea> list);
+
+    void updateAbbonamentiPanel(List<TariffaAbbonamento> list);
 }
