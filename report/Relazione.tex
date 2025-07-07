@@ -178,12 +178,13 @@ Dovranno essere gestiti i lavori di \underline{\texttt{manutenzione}}, che posso
 \subsection{Vincoli inespressi}
 In questa sezione discuteremo i vari vincoli inespressi dal nostro schema concettuale:
 \begin{itemize}
-  \item Tutti i campi \texttt{prezzo} devono contenere valori $>$ 0
-  \item I campi \texttt{durata} e \texttt{num\_giorni} devono contenere valori $>$ 0
-  \item In un \texttt{TRAGITTO} la tratta $n$-esima deve avere la fermata di partenza che coincide con la fermata di arrivo della tratta $n-1$-esima
+  \item In un \texttt{TRAGITTO} la tratta $n$-esima deve avere la fermata di partenza che coincide con la fermata di arrivo della tratta ($n-1)$-esima
+  \item In una \texttt{TRATTA} le fermate di partenza e arrivo devono essere diverse
   \item In \texttt{CONTENUTO} \texttt{posti\_max} $ \geq $ \texttt{posti\_disponibili}
   \item In \texttt{CAUSALE\_MULTA} \texttt{prezzo\_base} $ \leq $ \texttt{prezzo\_massimo}
-  \item in \texttt{ATTUAZIONE\_CORSA} il giorno settimanale della data deve coincidere con il giorno settimanale in \texttt{ORARIO\_LINEA}
+  \item In \texttt{ATTUAZIONE\_CORSA} il giorno settimanale della data deve coincidere con il giorno settimanale in \texttt{ORARIO\_LINEA}
+  \item Il mezzo assegnato a un'\texttt{ATTUAZIONE\_CORSA} deve avere la stessa \texttt{TIPOLOGIA\_MEZZO} assegnata alla \texttt{LINEA} di riferimento
+  \item Nell'aggiunta di un \texttt{AUTISTA} a un'\texttt{ATTUAZIONE\_CORSA} bisogna controllare che durante tutta la durata della corsa l'autista non sia già stato assegnato ad altre linee (ovvero che non si sovrapponga l'orario di lavoro)
 \end{itemize}
 
 \chapter{Progettazione Logica}
