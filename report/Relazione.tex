@@ -177,17 +177,26 @@ Dovranno essere gestiti i lavori di \underline{\texttt{manutenzione}}, che posso
 In questo capitolo mostreremo la realizzazione dello schema ER. Partiamo da uno schema scheletro per poi, attraverso degli step di raffinamento, arrivare allo schema finale mantenendo un approccio top-down.
 \section{Schema Scheletro}
 In seguito all'analisi del dominio, abbiamo realizzato il seguente schema scheletro, contenente le principali entità e associazioni che andremo a raffinare nei prossimi step.\\
+\begin{centering}
 \includegraphics[width=1.0\textwidth]{prog_conc/Scheletro}
+\end{centering}
 
 \section{Raffinamenti Proposti}
 
 \subsection{Linee e Hub mobilità}
 Per la modellazione delle linee abbiamo deciso di creare una gerarchia totale ed esclusiva rappresentante una le linee ordinarie, una le linee straordinarie. Per modellare le varie tipologie di mezzi che possono operare in una linea abbiamo aggiunto l'entità \texttt{TIPOLOGIA MEZZO}. Per gestire le  fermate che una linea andrà ad effettuare abbiamo creato l'entità \texttt{TRATTA}, che date la fermata di partenza e quella di arrivo, memorizza il tempo di percorrenza tra le due. La linea verrà quindi intesa come sequenza ordinata di tratte, ciò è realizzato attraverso l'associazione tragitto, che memorizza al suo interno l'ordine con il quale è effettuata la tratta. Per gestire le varie tipologie di contenuti negli hub abbiamo creato l'entità \texttt{CONTENUTO HUB}; associata a uno specifico \texttt{HUB MOBILITA} memorizza il numero di posti massimi e quelli disponibili. Siccome non ci interessa storicizzare l'utilizzo degli hub mobilità, posti disponibili rimane un attributo dell'associazione contenuto. Infine per modellare l'eventuale presenza di una fermata vicino ad un hub abbiamo creato l'associazione opzionale \texttt{presenza}.
 Con questa modellazione rimangono dei vincoli inespressi da gestire, la cui discussione viene effettuata in \autoref{VincoliInespr}\\
+\begin{centering}
 \includegraphics[width=1.0\textwidth]{prog_conc/Linee}
+\end{centering}
 
 \subsection{Manutenzioni}
+Nel nostro dominio gli oggetti delle manutenzioni possono essere sia le \texttt{LINEE} che i \texttt{MEZZI}: per questo abbiamo raccolto gli attributi comuni nell'entità \texttt{MANUTENZIONE} e poi creato una gerarchia totale ed esclusiva per specificare il mezzo o la linea.
+Visto che una manutenzione può essere svolta sia internamente sia affidandola a un'\texttt{AZIENDA} terza, abbiamo inserito un'associazione opzionale tra la manutenzione e l'azienda. \\
+Per ridurre al minimo i disservizi, per ogni linea \texttt{ORDINARIA} posta in manutenzione si possono prevedere una serie di linee \texttt{STRAORDINARIE} che la rimpiazzano. \\
+\begin{centering}
 \includegraphics[width=1.0\textwidth]{prog_conc/Manutenzioni}
+\end{centering}
 
 \subsection{Persone}
 Per la modellazione delle persone abbiamo deciso di creare diversi livelli di gerarchia:
@@ -198,7 +207,9 @@ Per la modellazione delle persone abbiamo deciso di creare diversi livelli di ge
 \end{itemize}
 In questa maniera si riescono a modellare i diversi ruoli dei diversi dipendenti. Infatti evidenziamo che il controllore potrà controllare diverse linee e un autista potrà condurre un mezzo in diverse linee. Questa modellazione non è ottimale, poiché manca sia uno storico delle diverse corse e controlli effettuati, sia perché non è chiaro quando questi andranno effettuati, in ottica di modellare un orario di lavoro, però di questo aspetto verrà discusso nella prossima sezione.
 Per quanto riguarda le multe, è stata creata l'entità \texttt{MULTA}, associata al controllore che la emette, alla linea nella quale è stata commessa l'infrazione e alla persona che ha commesso il reato. Per gestire l'importo della multa è stata creata l'entità \texttt{CAUSALE MULTA} che dato un tipo di infrazione viene determinato un prezzo base e prezzo massimo alla multa (il cui importo sarà a discrezione del controllore). \\
+\begin{centering}
 \includegraphics[width=1.0\textwidth]{prog_conc/Persone}
+\end{centering}
 
 \subsection{Attuazioni Linee}
 \includegraphics[width=1.0\textwidth]{prog_conc/AttuazioniLinee}
