@@ -16,3 +16,5 @@ report/*.toc
 
 # Other files
 *.tmp
+report/Relazione.fls
+report/Relazione.fdb_latexmk
