@@ -1624,7 +1624,27 @@ Di seguito lo schema logico del database:\\
 }
 \item\texttt{
     \textbf{TRATTE}((\underline{partenza\_codice\_fermata}: FERMATA,\underline{arrivo\_codice\_fermata}: FERMATA), tempo\_percorrenza)
-}
+\tem
+    TARIFFE\_BIGLIETTI(\underline{durata}, nome, prezzo)
+\item
+    BIGLIETTI(\underline{codice\_biglietto}, data\_acquisto, durata: TARIFFE\_BIGLIETTI, username*: UTENTI)
+\item
+    TARIFFE\_ABBONAMENTI(\underline{num\_giorni}, nome, prezzo)
+\item
+    ABBONAMENTI(\underline{codice\_abbonamento}, num\_giorni: TARIFFE\_BIGLIETTI, data\_inizio, data\_acquisto, username: UTENTI)
+\item
+    UTENTI(\underline{username}, documento: PERSONE, email, telefono, password)
+\item
+    PERSONE(\underline{documento}, cognome, nome, codice\_fiscale*)
+\item
+    DIPENDENTI(\underline{username}: UTENTI, ruolo)
+\item
+    CONVALIDE(\underline{codice\_biglietto}: BIGLIETTI, data\_ora, codice\_corsa: ATTUAZIONI\_CORSE)}
+\item
+    MULTE(\underline{codice\_multa}, data\_ora\_emissione, importo, data\_pagamento*, codice\_causale: CAUSALI\_MULTE, codice\_corsa: ATTUAZIONI\_CORSE,
+         documento: PERSONE, username: DIPENDENTI)
+\item
+    CONTROLLI(\underline{username}: DIPENDENTI, \underline{codice\_corsa}: ATTUAZIONI\_CORSE)
 \end{itemize}
 
 \chapter{Progettazione della Base di Dati}
