@@ -1596,44 +1596,36 @@ A questo punto tutti i problemi sono stati risolti, e il nostro schema ristruttu
 \includepdf{src/pdf/Schema_Logico.pdf}
 
 Di seguito lo schema logico del database:\\
-\texttt{
-\textbf{FERMATE}(\underline{codice\_fermata}, nome, via, CAP, longitudine, latitudine)\\
-UNIQUE: (longitudine, latitudine)
+\begin{itemize}
+
+\item\texttt{
+     \textbf{FERMATE}(\underline{codice\_fermata}, nome, via, CAP, longitudine, latitudine) \\
+     UNIQUE: (longitudine, latitudine)
 }
-\\
-\texttt {
-\textbf{LINEE}(\underline{codice\_linea}, tempo\_percorrenza, inizio\_validita*, fine\_validita*, attiva*, codice\_tipo\_mezzo)
+\item\texttt{
+    \textbf{LINEE}(\underline{codice\_linea}, tempo\_percorrenza, inizio\_validita*, fine\_validita*, attiva*, codice\_tipo\_mezzo)
 }
-\\
-\texttt{
+\item\texttt{
     \textbf{ORARI\_LINEE}(\underline{codice\_orario}, ora\_partenza, giorno\_settimanale, codice\_linea)\\
     UNIQUE: (codice\_linea, ora\_partenza, giorno\_settimanale)
 }
-\\
-\texttt{
-    \textbf{HUB\_MOBILITA}(\underline{codice\_hub}, longitudine, latitudine, nome, indirizzo, codice\_fermata*)\\
+\item\texttt{
+    \textbf{HUB\_MOBILITA}(\underline{codice\_hub}, longitudine, latitudine, nome, indirizzo,\\codice\_fermata*)\\
     UNIQUE: (longitudine, latutudine)
 }
-\\
-\texttt{
-    \textbf{CONTENUTI\_HUB}(\underline{codice\_contenuto}, descrizione) 
+\item\texttt{
+    \textbf{SOSTITUZIONI}(\\(\underline{sost\_manut\_data\_inizio}, \underline{sost\_manut\_codice\_linea}): MANUNTENZIONI\_LINEE, codice\_linea: LINEE)
 }
-\\
-\texttt{
-    \textbf{SOSTITUZIONI}((\underline{sost\_manut\_data\_inizio}, \underline{sost\_manut\_codice\_linea}): MANUNTENZIONI\_LINEE, codice\_linea: LINEE)
-}
-\\
-\texttt{
+\item\texttt{
     \textbf{TIPOLOGIE\_MEZZI}(\underline{codice\_tipo\_mezzo}, nome)
 }
-\\
-\texttt{
+\item\texttt{
     \textbf{TRAGITTI}((\underline{partenza\_codice\_fermata}: FERMATA,\underline{arrivo\_codice\_fermata}: FERMATA, \underline{codice\_linea}:LINEE), ordine)
 }
-\\
-\texttt{
+\item\texttt{
     \textbf{TRATTE}((\underline{partenza\_codice\_fermata}: FERMATA,\underline{arrivo\_codice\_fermata}: FERMATA), tempo\_percorrenza)
 }
+\end{itemize}
 
 \chapter{Progettazione della Base di Dati}
 
