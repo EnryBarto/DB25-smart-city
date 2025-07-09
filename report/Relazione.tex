@@ -1157,6 +1157,7 @@ Indichiamo con:
 
 	\item \textbf{Visualizzazione delle aziende che non hanno effettuato nessuna manutenzione nell’ultimo mese} \label{op17} \\
     \[ {O_{settimana} = 4} \]
+    Questa operazione serve a estrarre le aziende che non hanno effettuato nessuna manutenzione nell'ultimo mese.
     \begin{center}
 	\includegraphics[width=0.7\textwidth]{op_17}
 	\end{center}
@@ -1777,6 +1778,7 @@ FROM VW_LINEE_ATTIVE_OGGI;
 \end{lstlisting}
 
 \item \textbf{Visualizzazione fermate e orari di una linea} \\
+Questa operazione è stata divisa in 2 parti dato che sulla UI non mostreremo mai tutte le fermate con i relativi orari di ogni linea; ma mostreremo tutte le linee poi l'utente potrà visualizzare le fermate e gli orari della linea desiderata.
 \begin{lstlisting}[style=sqlstyle, caption=Query for Fermate Details by Linea]
 SELECT t.codice_linea, t.arrivo_codice_fermata, t.partenza_codice_fermata, t.ordine, f.nome, f.indirizzo_via, f.indirizzo_civico, f.indirizzo_comune, f.indirizzo_cap, tr.tempo_percorrenza
 FROM TRAGITTI t
@@ -1803,6 +1805,7 @@ ORDER BY h.codice_hub;
 \end{lstlisting}
 
 \item \textbf{Visualizzazione orario e linee assegnate agli autisti} \\
+Con questa operazione andiamo a visualizzare l'orario di lavoro di un autista e il mezzo che gli è stato assegnato per le linee che dovrà percorrere. Le ore effettive di lavoro potranno essere visualizzare tramite il tempo di percorrenza delle linee che dovrà percorrere. 
 \begin{lstlisting}[style=sqlstyle, caption=Query for Corse Attuate by User]
 SELECT ol.codice_linea, ol.ora_partenza, ol.giorno_settimanale, ol.codice_orario, ac.data,l.tempo_percorrenza, ac.n_immatricolazione
 FROM ORARI_LINEE ol
@@ -1824,6 +1827,7 @@ ORDER BY A.data, O.ora_partenza;
 \end{lstlisting}
 
 \item \textbf{Estrazione delle linee con più convalide nell’ultimo mese} \\
+Con questa operazione andremo ad estrarre il numero di convalide per linea in ordine decrescente.
 \begin{lstlisting}[style=sqlstyle, caption=Query for Number of Validations per Linea]
 SELECT COUNT(*) AS numero_convalide
 FROM LINEE l
@@ -1885,6 +1889,12 @@ ORDER BY numero_multe DESC;
 \end{lstlisting}
 
 \item \textbf{Estrazione delle 5 linee con manutenzioni più gravose (in termini di linee sostitutive e durata)} \\
+Dobbiamo visualizzare le linee con le manutenzioni più gravose; la gravità verrà calcolata tramite un punteggio che indicherà quanto siano "pesanti" le manutenzioni:
+	    \begin{itemize}
+		\renewcommand\labelitemi{--}
+	        \item +5 pti ogni linea straordinaria dovuta alla manutenzione
+	        \item +1 pto ogni 3 giorni di lavoro sulla  linea.
+	    \end{itemize}
 \begin{lstlisting}[style=sqlstyle, caption=Query for Duration of Maintenance and Substitute Lines Count]
 SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_fine, ml.data_inizio) AS durata_lavoro, COUNT(*) AS num_linee_sostitutive
 FROM MANUTENZIONI_LINEE ml
