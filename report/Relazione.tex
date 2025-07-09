@@ -176,7 +176,8 @@ Dovranno essere gestiti i lavori di \underline{\texttt{manutenzione}}, che posso
 \chapter{Progettazione Concettuale}
 In questo capitolo mostreremo la realizzazione dello schema ER. Partiamo da uno schema scheletro per poi, attraverso degli step di raffinamento, arrivare allo schema finale mantenendo un approccio top-down.
 \section{Schema Scheletro}
-In seguito all'analisi del dominio, abbiamo realizzato il seguente schema scheletro, contenente le principali entità e associazioni che andremo a raffinare nei prossimi step.\\
+In seguito all'analisi del dominio abbiamo realizzato lo schema scheletro, contenente le principali entità e associazioni che andremo a raffinare nei prossimi step.\\
+
 \begin{centering}
 \includegraphics[width=1.0\textwidth]{prog_conc/Scheletro}
 \end{centering}
@@ -184,14 +185,14 @@ In seguito all'analisi del dominio, abbiamo realizzato il seguente schema schele
 \section{Raffinamenti Proposti}
 
 \subsection{Linee e Hub mobilità}
-Per la modellazione delle linee abbiamo deciso di creare una gerarchia totale ed esclusiva rappresentante una le linee ordinarie, una le linee straordinarie. Per modellare le varie tipologie di mezzi che possono operare in una linea abbiamo aggiunto l'entità \texttt{TIPOLOGIA MEZZO}. Per gestire le  fermate che una linea andrà ad effettuare abbiamo creato l'entità \texttt{TRATTA}, che date la fermata di partenza e quella di arrivo, memorizza il tempo di percorrenza tra le due. La linea verrà quindi intesa come sequenza ordinata di tratte, ciò è realizzato attraverso l'associazione tragitto, che memorizza al suo interno l'ordine con il quale è effettuata la tratta. Per gestire le varie tipologie di contenuti negli hub abbiamo creato l'entità \texttt{CONTENUTO HUB}; associata a uno specifico \texttt{HUB MOBILITA} memorizza il numero di posti massimi e quelli disponibili. Siccome non ci interessa storicizzare l'utilizzo degli hub mobilità, posti disponibili rimane un attributo dell'associazione contenuto. Infine per modellare l'eventuale presenza di una fermata vicino ad un hub abbiamo creato l'associazione opzionale \texttt{presenza}.
-Con questa modellazione rimangono dei vincoli inespressi da gestire, la cui discussione viene effettuata in \autoref{VincoliInespr}\\
+Per modellare le linee abbiamo creato una gerarchia totale ed esclusiva formata da due entità una rappresentante le linee ordinarie, una le linee straordinarie. Per modellare le varie tipologie di mezzi che possono operare in una linea abbiamo aggiunto l'entità \texttt{TIPOLOGIA MEZZO}. L'entità \texttt{TRATTA} modella l'esistenza di un percorso tra due fermate e ne memorizza il tempo di percorrenza. Una linea verrà quindi intesa come sequenza ordinata di tratte attraverso l'associazione \texttt{TRAGITTO}. Per gestire le varie tipologie di contenuti negli hub abbiamo creato l'entità \texttt{CONTENUTO HUB}: associata a uno specifico \texttt{HUB MOBILITA} ne memorizza il numero di posti massimi e quelli disponibili. Siccome non ci interessa storicizzare l'utilizzo degli hub mobilità, posti disponibili rimane un attributo dell'associazione contenuto che verrà incrementato / decrementato all'occorrenza (sempre rispettando il limite 0  {\textless}= disponibili {\textless}= massimi). Infine per modellare l'eventuale presenza di una fermata vicino ad un hub abbiamo creato l'associazione opzionale \texttt{presenza}.
+Con questa modellazione rimangono dei vincoli inespressi da gestire, la cui discussione viene effettuata in \autoref{VincoliInespr}.\\
 \begin{centering}
 \includegraphics[width=1.0\textwidth]{prog_conc/Linee}
 \end{centering}
 
 \subsection{Manutenzioni}
-Nel nostro dominio gli oggetti delle manutenzioni possono essere sia le \texttt{LINEE} che i \texttt{MEZZI}: per questo abbiamo raccolto gli attributi comuni nell'entità \texttt{MANUTENZIONE} e poi creato una gerarchia totale ed esclusiva per specificare il mezzo o la linea.
+Nel nostro dominio gli oggetti delle manutenzioni possono essere sia le \texttt{LINEE} che i \texttt{MEZZI}: per questo abbiamo raccolto gli attributi comuni nell'entità \texttt{MANUTENZIONE} e poi creato una gerarchia totale ed esclusiva per diversificare mezzi e linee.
 Visto che una manutenzione può essere svolta sia internamente sia affidandola a un'\texttt{AZIENDA} terza, abbiamo inserito un'associazione opzionale tra la manutenzione e l'azienda. \\
 Per ridurre al minimo i disservizi, per ogni linea \texttt{ORDINARIA} posta in manutenzione si possono prevedere una serie di linee \texttt{STRAORDINARIE} che la rimpiazzano. \\
 \begin{centering}
@@ -201,20 +202,25 @@ Per ridurre al minimo i disservizi, per ogni linea \texttt{ORDINARIA} posta in m
 \subsection{Persone}
 Per la modellazione delle persone abbiamo deciso di creare diversi livelli di gerarchia:
 \begin{itemize}
-  \item Utenti: che sono un subset di persone registrate al sistema (quindi con username e password)
-  \item Dipendenti: che sono un subset di utenti che lavorano al alla azienda TPL
-  \item Controllori-Autisti-Amministrativi: che sono categorie di dipendenti specifici
+  \item Persone: Raccoglie i dati anagrafici di una persona
+  \item Utenti: Subset di \texttt{PERSONA} registrate al sistema con username e password
+  \item Dipendenti: Subset di \texttt{UTENTE} che lavorano al alla azienda TPL
+  \item Controllori-Autisti-Amministrativi: Gerarchia totale ed esclusiva per specificare il ruolo del \texttt{DIPENDENTE} all'interno dell'azienda 
 \end{itemize}
-In questa maniera si riescono a modellare i diversi ruoli dei diversi dipendenti. Infatti evidenziamo che il controllore potrà controllare diverse linee e un autista potrà condurre un mezzo in diverse linee. Questa modellazione non è ottimale, poiché manca sia uno storico delle diverse corse e controlli effettuati, sia perché non è chiaro quando questi andranno effettuati, in ottica di modellare un orario di lavoro, però di questo aspetto verrà discusso nella prossima sezione.
-Per quanto riguarda le multe, è stata creata l'entità \texttt{MULTA}, associata al controllore che la emette, alla linea nella quale è stata commessa l'infrazione e alla persona che ha commesso il reato. Per gestire l'importo della multa è stata creata l'entità \texttt{CAUSALE MULTA} che dato un tipo di infrazione viene determinato un prezzo base e prezzo massimo alla multa (il cui importo sarà a discrezione del controllore). \\
+Grazie a questa modellazione evidenziamo che il controllore potrà controllare alcune linee e un autista potrà condurre diverse linee. Questa modellazione non è ottimale poiché manca sia uno storico delle corse e controlli svolti, sia perché non è chiaro quando questi andranno effettuati: nei prossimi step andremo a risolvere il problema della storicizzazione, così da modellare anche un orario di lavoro.
+Per quanto riguarda le multe, è stata creata l'entità \texttt{MULTA} associata al controllore che la emette, alla linea nella quale è stata commessa l'infrazione e alla persona che ha commesso il reato. Per gestire l'importo della multa è stata creata l'entità \texttt{CAUSALE MULTA} che dato un tipo di infrazione viene determinato un prezzo base e prezzo massimo alla multa (il cui importo sarà deciso a discrezione del controllore). \\
 \begin{centering}
 \includegraphics[width=1.0\textwidth]{prog_conc/Persone}
 \end{centering}
 
-\subsection{Attuazioni Linee}
+\subsection{Orari Linee e mezzi}
+Per la gestione degli orari delle linee abbiamo aggiunto un'entità \texttt{ORARIO LINEA} i cui attributi (giorno ed ora) fanno tutti parte della chiave. In questo modo per ogni linea si può specificare un giorno settimanale e più orari di partenza per lo stesso giorno. Per storicizzare le corse abbiamo aggiunto \texttt{ATTUAZIONE CORSA} che fa riferimento ad un orario di una linea effettuato in una certa data, da un certo autista, tramite uno specifico mezzo e su cui possono essere assegnati vari controllori (le cui multe saranno associate alla corsa su cui sono state emesse). Va però controllato che il giorno settimanale della data sia lo stesso di quello associato a \texttt{ORARIO LINEA}.
+In questa maniera è stato possibile modellare l'orario di lavoro dei dipenenti, che farà riferimento ad una specifica \texttt{ATTUAZIONE CORSA}. Un altro vincolo inespresso da rispettare è che la tipologia del mezzo associato all'attuazione corsa deve essere la stessa associata alla linea.\\
 \includegraphics[width=1.0\textwidth]{prog_conc/AttuazioniLinee}
 
 \subsection{Titolo di Viaggio}
+Per quanto riguarda la gestione dei titoli di viaggio, come da requisiti, abbiamo generalizzato il concetto e creato due sottoentità \texttt{BIGLIETTO} e \texttt{ABBONAMENTO}. Un abbonamento è sempre associato all'utente proprietario del titolo. Per quanto riguarda i tariffari abbiamo creato due entità separate: per i biglietti la durata in minuti definisce il nome e il prezzo, mentre per gli abbonamenti è il numero di giorni di validità a determinarli. Anche il concetto di biglietto è stato generalizzato, creando le sottoentità \texttt{BIGLIETTO FISICO} e \texttt{BIGLIETTO DIGITALE}; quest'ultimo è sempre associato all'utente proprietario del biglietto. Per gestire le convalide abbiamo aggiunto l'associazione opzionale \texttt{convalida} con un'attuazione corsa che contiene la data e l'ora della convalida. In questa maniera sarà possibile tenere traccia delle linee in cui verranno effettuate più convalide.
+\\
 \includegraphics[width=1.0\textwidth]{prog_conc/TitoliViaggio}
 
 \section{Schema Concettuale Finale}
@@ -1591,60 +1597,96 @@ Riportiamo l'elenco delle entità in cui è stata effettuata quest'aggiunta:
 \end{itemize}
 
 \section{Schema relazionale finale}\label{section:schema_relazionale}
-A questo punto tutti i problemi sono stati risolti, e il nostro schema ristrutturato è direttamente traducibile in delle relazioni.
+A questo punto la ristrutturazione è terminata, e il nostro schema è direttamente traducibile in delle relazioni.
+Riportiamo nelle pagine seguenti lo schema logico sia in formato grafico che testuale.
 
 \includepdf{src/pdf/Schema_Logico.pdf}
 
-Di seguito lo schema logico del database:\\
 \begin{itemize}
-
 \item\texttt{
-     \textbf{FERMATE}(\underline{codice\_fermata}, nome, via, CAP, longitudine, latitudine) \\
+    \textbf{PERSONE}(\underline{documento}, cognome, nome, codice\_fiscale*)
+}
+\item\texttt{
+    \textbf{UTENTI}(\underline{username}, documento: PERSONE, email, telefono, password)\\
+    UNIQUE: (documento)
+}
+\item\texttt{
+    \textbf{DIPENDENTI}(\underline{username}: UTENTI, ruolo)
+}
+\item\texttt{
+     \textbf{FERMATE}(\underline{codice\_fermata}, nome, indirizzo\_via, indirizzo\_cap, \\indirizzo\_civico, indirizzo\_comune, longitudine, latitudine) \\
      UNIQUE: (longitudine, latitudine)
 }
 \item\texttt{
-    \textbf{LINEE}(\underline{codice\_linea}, tempo\_percorrenza, inizio\_validita*, fine\_validita*, attiva*, codice\_tipo\_mezzo)
-}
-\item\texttt{
-    \textbf{ORARI\_LINEE}(\underline{codice\_orario}, ora\_partenza, giorno\_settimanale, codice\_linea)\\
-    UNIQUE: (codice\_linea, ora\_partenza, giorno\_settimanale)
-}
-\item\texttt{
-    \textbf{HUB\_MOBILITA}(\underline{codice\_hub}, longitudine, latitudine, nome, indirizzo,\\codice\_fermata*)\\
+    \textbf{HUB\_MOBILITA}(\underline{codice\_hub}, longitudine, latitudine, nome, indirizzo\_via, indirizzo\_comune, indirizzo\_cap,  indirizzo\_civico, codice\_fermata*: FERMATE)\\
     UNIQUE: (longitudine, latutudine)
 }
 \item\texttt{
-    \textbf{SOSTITUZIONI}(\\(\underline{sost\_manut\_data\_inizio}, \underline{sost\_manut\_codice\_linea}): MANUNTENZIONI\_LINEE, codice\_linea: LINEE)
+    \textbf{CONTENUTI\_HUB}(\underline{codice\_contenuto}, descrizione)
+}
+\item\texttt{
+    \textbf{CONTENUTI}(\underline{codice\_hub}: HUB\_MOBILITA, \underline{codice\_contenuto}: CONTENUTI\_HUB, posti\_max, posti\_disponibili)
+}
+\item\texttt{
+    \textbf{TRATTE}(\underline{partenza\_codice\_fermata}: FERMATE, \underline{arrivo\_codice\_fermata}: FERMATE, tempo\_percorrenza)
+}
+\item\texttt{
+    \textbf{TRAGITTI}((\underline{partenza\_codice\_fermata}, \underline{arrivo\_codice\_fermata}): TRATTE, \\\underline{codice\_linea}:LINEE, ordine)
 }
 \item\texttt{
     \textbf{TIPOLOGIE\_MEZZI}(\underline{codice\_tipo\_mezzo}, nome)
 }
 \item\texttt{
-    \textbf{TRAGITTI}((\underline{partenza\_codice\_fermata}: FERMATA,\underline{arrivo\_codice\_fermata}: FERMATA, \underline{codice\_linea}:LINEE), ordine)
+    \textbf{MEZZI}(\underline{n\_immatricolazione}, codice\_tipo\_mezzo: TIPOLOGIE\_MEZZI)
 }
 \item\texttt{
-    \textbf{TRATTE}((\underline{partenza\_codice\_fermata}: FERMATA,\underline{arrivo\_codice\_fermata}: FERMATA), tempo\_percorrenza)
-\tem
-    TARIFFE\_BIGLIETTI(\underline{durata}, nome, prezzo)
-\item
-    BIGLIETTI(\underline{codice\_biglietto}, data\_acquisto, durata: TARIFFE\_BIGLIETTI, username*: UTENTI)
-\item
-    TARIFFE\_ABBONAMENTI(\underline{num\_giorni}, nome, prezzo)
-\item
-    ABBONAMENTI(\underline{codice\_abbonamento}, num\_giorni: TARIFFE\_BIGLIETTI, data\_inizio, data\_acquisto, username: UTENTI)
-\item
-    UTENTI(\underline{username}, documento: PERSONE, email, telefono, password)
-\item
-    PERSONE(\underline{documento}, cognome, nome, codice\_fiscale*)
-\item
-    DIPENDENTI(\underline{username}: UTENTI, ruolo)
-\item
-    CONVALIDE(\underline{codice\_biglietto}: BIGLIETTI, data\_ora, codice\_corsa: ATTUAZIONI\_CORSE)}
-\item
-    MULTE(\underline{codice\_multa}, data\_ora\_emissione, importo, data\_pagamento*, codice\_causale: CAUSALI\_MULTE, codice\_corsa: ATTUAZIONI\_CORSE,
-         documento: PERSONE, username: DIPENDENTI)
-\item
+    \textbf{LINEE}(\underline{codice\_linea}, tempo\_percorrenza, inizio\_validita*, fine\_validita*, attiva*, codice\_tipo\_mezzo: TIPOLOGIE\_MEZZI)
+}
+\item\texttt{
+    \textbf{ORARI\_LINEE}(\underline{codice\_orario}, ora\_partenza, giorno\_settimanale, \\codice\_linea: LINEE) \\
+    UNIQUE: (codice\_linea, ora\_partenza, giorno\_settimanale)
+}
+\item\texttt{
+    \textbf{ATTUAZIONI\_CORSE}(\underline{codice\_corsa}, data, codice\_orario: ORARI\_LINEE, \\n\_immatricolazione: MEZZI, username: DIPENDENTI)\\
+    UNIQUE: (codice\_orario, data)
+}
+\item\texttt{
+    \textbf{CAUSALI\_MULTE}(\underline{codice\_causale}, reato, prezzo\_base, prezzo\_massimo)\\
+    UNIQUE: (reato)
+}
+\item\texttt{
+    \textbf{MULTE}(\underline{codice\_multa}, data\_ora\_emissione, importo, data\_pagamento*, \\codice\_causale: CAUSALI\_MULTE, codice\_corsa: ATTUAZIONI\_CORSE, \\documento: PERSONE, username: DIPENDENTI)
+}
+\item\texttt{
     CONTROLLI(\underline{username}: DIPENDENTI, \underline{codice\_corsa}: ATTUAZIONI\_CORSE)
+}
+\item\texttt{
+    \textbf{TARIFFE\_BIGLIETTI}(\underline{durata}, nome, prezzo)
+}
+\item\texttt{
+    \textbf{BIGLIETTI}(\underline{codice\_biglietto}, data\_acquisto, durata: TARIFFE\_BIGLIETTI, username*: UTENTI)
+}
+\item\texttt{
+    \textbf{CONVALIDE}(\underline{codice\_biglietto}: BIGLIETTI, data\_ora, \\codice\_corsa: ATTUAZIONI\_CORSE)
+}
+\item\texttt{
+    \textbf{TARIFFE\_ABBONAMENTI}(\underline{num\_giorni}, nome, prezzo)
+}
+\item\texttt{
+    \textbf{ABBONAMENTI}(\underline{codice\_abbonamento}, num\_giorni: TARIFFE\_ABBONAMENTI, \\data\_inizio, data\_acquisto, username: UTENTI)
+}
+\item\texttt{
+    \textbf{AZIENDE}(\underline{p\_iva}, ragione\_sociale, indirizzo\_civico, indirizzo\_via, \\indirizzo\_comune, indirizzo\_cap, telefono, email)
+}
+\item\texttt{
+    \textbf{MANUTENZIONE\_MEZZI}(\underline{n\_immatricolazione}: MEZZI, \underline{data\_inizio}, data\_fine, nome, descrizione, p\_iva*: AZIENDE)
+}
+\item\texttt{
+    \textbf{MANUTENZIONI\_LINEE}(\underline{codice\_linea}: LINEE, \underline{data\_inizio}, data\_fine, nome, descrione, p\_iva*: AZIENDE)
+}
+\item\texttt{
+    \textbf{SOSTITUZIONI}(\\(\underline{sost\_manut\_data\_inizio}, \underline{sost\_manut\_codice\_linea}): \ MANUNTENZIONI\_LINEE, \\\underline{codice\_linea}: LINEE)
+}
 \end{itemize}
 
 \chapter{Progettazione della Base di Dati}
