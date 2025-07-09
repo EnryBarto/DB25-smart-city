@@ -211,10 +211,13 @@ Per quanto riguarda le multe, è stata creata l'entità \texttt{MULTA}, associat
 \includegraphics[width=1.0\textwidth]{prog_conc/Persone}
 \end{centering}
 
-\subsection{Attuazioni Linee}
+\subsection{Orari Linee e mezzi}
+Per la gestione degli orari delle linee abbiamo aggiunto un'entità \texttt{ORARIO LINEA} i cui attributi fanno tutti parte della chiave. In questo modo per ogni linea si può specificare un giorno settimanale e più orari di partenza per lo stesso giorno. Per storicizzare le corse abbiamo aggiunto \texttt{ATTUAZIONE CORSA}, che fa riferimento ad un orario di una linea. Va però controllato che il giorno settimanale della data sia lo stesso di quello associato a \texttt{ORARIO LINEA}. Per ogni \texttt{ATTUAZIONE CORSA} va associato l'autista, che svolgerà la corsa nella sua interezza, il mezzo, eventuali controllori che dovranno entrare nella linea ed eventuali multe emesse. In questa maniera è stato possibile modellare l'orario di lavoro dei dipenenti, che farà riferimento ad una specifica \texttt{ATTUAZIONE CORSA}. Un altro vincolo inespresso da rispettare è che la tipologia del mezzo associato all'attuazione corsa deve essere la stessa associata alla linea.\\
 \includegraphics[width=1.0\textwidth]{prog_conc/AttuazioniLinee}
 
 \subsection{Titolo di Viaggio}
+Per quanto riguarda la gestione dei titoli di viaggio, come da requisiti, abbiamo generalizzato il concetto e creato due sottoentità \texttt{BIGLIETTO} e \texttt{ABBONAMENTO}. Un abbonamento è sempre associato all'utente proprietario del titolo. Per quanto riguarda i tariffari abbiamo creato due entità separate: per i biglietti la durata in minuti determina il nome e il prezzo, mentre per gli abbonamenti è il numero di giorni di validità che determina i due attributi. Anche il concetto di biglietto è stato generalizzato, creando le sottoentità \texttt{BIGLIETTO FISICO} E \texttt{BIGLIETTO DIGITALE}. Il secondo è sempre associato all'utente proprietario del biglietto. Per gestire le convalide abbiamo aggiunto l'associazione opzionale \texttt{convalida} con un'attuazione corsa che contiene la data e l'ora della convalida. In questa maniera sarà possibili tenere traccia delle linee in cui verranno effettuate più convalide.
+\\
 \includegraphics[width=1.0\textwidth]{prog_conc/TitoliViaggio}
 
 \section{Schema Concettuale Finale}
