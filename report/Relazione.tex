@@ -2100,5 +2100,51 @@ WHERE codice_linea = ?;
 \end{enumerate}
 
 \chapter{Progettazione dell'Applicazione}
+L'applicazione è stata creata in Java 21 e la base di dati è su MySQL. Per l'interfaccia grafica è stata utilizzata la libreria Swing, mentre per l'interfacciamento al DBMS abbiamo usato JDBC.
+Per migliorare l'interfaccia grafica, in particolare riguardo alla selezione delle date e delle ore, abbiamo usufruito della libreria FlatLaf \footnote{Link alla libreria, importata attraverso Gradle: \url{https://www.formdev.com/flatlaf/}}.
+
+\section{Funzionalità di base}
+Quando si entra nell'applicativo, vengono mostrate le funzionalità di base nella barra di navigazione posta sulla parte superiore della finestra.
+\\
+\begin{center}
+\includegraphics[width=0.6\textwidth]{app/Navbar}
+\end{center}
+
+\begin{itemize}
+    \item Linee: vengono mostrate le linee \textunderscore{attive} con fermata di partenza e arrivo, mezzo e tempo di percorrenza. Cliccando su visualizza sarà possibile visualizzare l'orario.
+    \item Orari: si deve scegliere una linea, alla pressione di OK vengono mostrate tutte le fermate con l'orario previsto di partenza in quella fermata e in un determinato giorno
+    \item Hub: Vengono mostrati i vari hub con i loro dati. Se sono presenti più contenuti per un hub, questi vengono ripetuti.
+    \item Variazioni di servizio: si deve scegliere una linea ordinaria. Cliccando su 'Visualizza variazione di servizio' verrà mostrata l'eventuale motivo della manuntenzione la data di inizio, la data di fine e una lista delle linee eventuali sostitutive.
+    \item Login: si può accedere come Utente, Controllore, Autista e Amministrativo.
+    \item Registrati: sarà possibile registrarsi come utente classico al sistema. Eventualmente un amministrativo potrà cambiare il ruolo dell'utente.
+\end{itemize}
+
+
+\section{Gestione utenti}
+---Parlare di registrazione, compreso il fatto che la password non è  in chiaro,
+
+\section{Amministrativo}
+All'utente amministrativo vengono abilitate le seguenti funzionalità:
+\begin{itemize}
+    \item Gestione Dipendenti: nel lato sinistro è possibile assegnare ad un utente registrato un nuovo ruolo, mentre nel lato sinistro è possibile declassare un dipendente a utente classico.
+    \item Gestione Fermate: nel lato sinistro è possibile aggiungere una fermata, compilando i dati nelle caselle e premendo su Aggiungi Fermata. Nel lato destro è possibile rimuovere una fermata selezionandola dal menù a tendina.
+    \item Gestione Tratte: nel lato sinistro è possibile aggiungere una tratta selezionando dai menu a tendina le fermate di partenza e arrivo e inserendo il tempo di percorrenza. Se la fermata di partenza è uguale a quella di arrivo, viene impedita l'aggiunta. Nel lato destro è possibile rimuovere una tratta.
+    \item Inserimento linea: nel lato sinistro è possibile inserire i dati di una linea, mentre sul lato destro è possibile aggiungere le sue tratte. Per eliminare una tratta inserita si deve premere su \textit{Elimina ultima tratta}, sul lato sinistro. Inserite compilati i dati di una linea e aggiunte le tratte, si potrà aggiungere la linea con il pulsante \textit{Aggiungi linea}. Da notare che mano a mano che si aggiungono le tratte, il menù a tendina suggerisce solo quelle che sono compatibili con la tratta precedente (stessa fermata di partenza della fermata di arrivo della tratta precedente)
+    \item Gestione tragitti:
+    \item Gestione orari linee:
+    \item Inserimento attuazione corsa:
+    \item Manutenzioni: - Svitol
+    \item Inserimento variazione di servizio:
+    \item Gestione hub:
+    \item Associazione Hub-Contenuto:
+    \item Assegna controllore:
+    \item Statistiche:
+    \item Profilo:
+\end{itemize}
+\section{Controllore}
+\section{Autista}
+- Svit
+\section{Utente}
+- Svit biglietti e abbonamenti
 
 \end{document}
