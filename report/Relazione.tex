@@ -51,7 +51,7 @@
 \usepackage{gensymb}
 
 \usepackage[italian]{babel}
-\usepackage[italian]{cleveref}
+\usepackage[capitalise, italian]{cleveref}
 
 \graphicspath{ {./src/img} }
 
@@ -186,7 +186,7 @@ In seguito all'analisi del dominio abbiamo realizzato lo schema scheletro, conte
 
 \subsection{Linee e Hub mobilità}
 Per modellare le linee abbiamo creato una gerarchia totale ed esclusiva formata da due entità una rappresentante le linee ordinarie, una le linee straordinarie. Per modellare le varie tipologie di mezzi che possono operare in una linea abbiamo aggiunto l'entità \texttt{TIPOLOGIA MEZZO}. L'entità \texttt{TRATTA} modella l'esistenza di un percorso tra due fermate e ne memorizza il tempo di percorrenza. Una linea verrà quindi intesa come sequenza ordinata di tratte attraverso l'associazione \texttt{TRAGITTO}. Per gestire le varie tipologie di contenuti negli hub abbiamo creato l'entità \texttt{CONTENUTO HUB}: associata a uno specifico \texttt{HUB MOBILITA} ne memorizza il numero di posti massimi e quelli disponibili. Siccome non ci interessa storicizzare l'utilizzo degli hub mobilità, posti disponibili rimane un attributo dell'associazione contenuto che verrà incrementato / decrementato all'occorrenza (sempre rispettando il limite 0  {\textless}= disponibili {\textless}= massimi). Infine per modellare l'eventuale presenza di una fermata vicino ad un hub abbiamo creato l'associazione opzionale \texttt{presenza}.
-Con questa modellazione rimangono dei vincoli inespressi da gestire, la cui discussione viene effettuata in \autoref{VincoliInespr}.\\
+Con questa modellazione rimangono dei vincoli inespressi da gestire, la cui discussione viene effettuata nella \cref{section:VincoliInespressi}.\\
 \begin{centering}
 \includegraphics[width=1.0\textwidth]{prog_conc/Linee}
 \end{centering}
@@ -227,8 +227,8 @@ Per quanto riguarda la gestione dei titoli di viaggio, come da requisiti, abbiam
 Nella pagina seguente è presente lo schema concettuale finale completo.
 \includepdf{src/pdf/Schema_ER.pdf}
 
-\label{VincoliInespr}
-\subsection{Vincoli inespressi}
+\subsection{Vincoli inespressi}\label{section:VincoliInespressi}
+
 In questa sezione discuteremo i vari vincoli inespressi dal nostro schema concettuale:
 \begin{itemize}
   \item In un \texttt{TRAGITTO} la tratta $n$-esima deve avere la fermata di partenza che coincide con la fermata di arrivo della tratta ($n-1)$-esima
@@ -1689,10 +1689,10 @@ Riportiamo nelle pagine seguenti lo schema logico sia in formato grafico che tes
 }
 \end{itemize}
 
-\chapter{Progettazione della Base di Dati}
+\chapter{Progettazione della Base di Dati}\label{chapter:db}
 
-Abbiamo creato la base di dati per il nostro applicativo mappando le relazioni (vedi \autoref{section:schema_relazionale}) in tabelle, utilizzando il DBMS \textbf{MySQL}. Per eseguire la traduzione abbiamo sfruttato lo strumento messo a disposizione da \texttt{DB-Main}. \\
-Riportiamo in seguito il codice per eseguire ogni operazione indicata in \autoref{table:operazioni}, e le altre peculiarità relative alla creazione del database.
+Abbiamo creato la base di dati per il nostro applicativo mappando le relazioni (vedi \cref{section:schema_relazionale}) in tabelle, utilizzando il DBMS \textbf{MySQL}. Per eseguire la traduzione abbiamo sfruttato lo strumento messo a disposizione da \texttt{DB-Main}. \\
+Riportiamo in seguito il codice per eseguire ogni operazione indicata in \cref{table:operazioni}, e le altre peculiarità relative alla creazione del database.
 
 \section{Check}	
 Nella creazione delle tabelle abbiamo inserito vari check, per poter definire meglio il dominio dei dati inseribili nel database. \\
@@ -1825,7 +1825,7 @@ Nelle query potrebbero apparire dei simboli \texttt{?}: questo perché abbiamo u
 \begin{enumerate}[label=\textbf{\arabic*)}]
     
 \item \textbf{Visualizzazione di tutte le linee attive} \\
-Quest'operazione corrisponde alla visualizzazione delle informazioni estratte dalla vista indicata in \autoref{code:lines_view}. Sfruttiamo quindi la vista senza dover riscrivere la query.\\
+Quest'operazione corrisponde alla visualizzazione delle informazioni estratte dalla vista indicata nel \autoref{code:lines_view}. Sfruttiamo quindi la vista senza dover riscrivere la query.\\
 \begin{lstlisting}[style=sqlstyle]
 SELECT *
 FROM VW_LINEE_ATTIVE_OGGI;
@@ -2100,15 +2100,17 @@ WHERE codice_linea = ?;
 \end{enumerate}
 
 \chapter{Progettazione dell'Applicazione}
-L'applicazione è stata creata in Java 21 e la base di dati è su MySQL. Per l'interfaccia grafica è stata utilizzata la libreria Swing, mentre per l'interfacciamento al DBMS abbiamo usato JDBC.
-Per migliorare l'interfaccia grafica, in particolare riguardo alla selezione delle date e delle ore, abbiamo usufruito della libreria FlatLaf \footnote{Link alla libreria, importata attraverso Gradle: \url{https://www.formdev.com/flatlaf/}}.
+L'applicazione è stata creata in \textbf{Java 21}, utilizzando la libreria Swing per la GUI. Tramite la libreria \textbf{JDBC}, l'app interagisce con la base di dati (descritta dettagliatamente nel \cref{chapter:db}) basata sul DBMS \textbf{MySQL}.
+Per migliorare l'interfaccia grafica abbiamo usufruito del look and feel offerto dalla libreria FlatLaf\footnote{Link alla libreria: \url{https://www.formdev.com/flatlaf/}}, e dei date/time picker offerti dalla librearia Swing Datetime Picker\footnote{Link alla libreria: \url{https://github.com/DJ-Raven/swing-datetime-picker}}, importati attraverso Gradle.
 
 \section{Funzionalità di base}
-Quando si entra nell'applicativo, vengono mostrate le funzionalità di base nella barra di navigazione posta sulla parte superiore della finestra.
+Quando si entra nell'applicativo, è possibile utilizzare le funzionalità di base disponibili per tutti gli utenti (anche se non loggati) nella barra di navigazione posta sulla parte superiore della finestra.
 \\
-\begin{center}
-\includegraphics[width=0.6\textwidth]{app/Navbar}
-\end{center}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{app/Navbar}
+  \caption{Dettaglio della barra di navigazione}
+\end{figure}
 
 \begin{itemize}
     \item Linee: vengono mostrate le linee \textunderscore{attive} con fermata di partenza e arrivo, mezzo e tempo di percorrenza. Cliccando su visualizza sarà possibile visualizzare l'orario.
