@@ -4,12 +4,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import java.awt.Image;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -72,6 +76,7 @@ public class SwingView implements View {
 
     public SwingView(final Controller controller) {
         checkNotNull(controller);
+        this.setFrameIconImg(this.frame);
         this.controller = controller;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -469,5 +474,15 @@ public class SwingView implements View {
     @Override
     public void updateAbbonamentiPanel(List<TariffaAbbonamento> list) {
         ((AbbonamentiPanel)this.tabs.get("Abbonamenti")).updateBuyAbbonamentiPanel(list);
+    }
+
+    public void setFrameIconImg(final JFrame frame) {
+        try {
+            final Image img;
+            img = ImageIO.read(getClass().getResource("/img/icon.png"));
+            frame.setIconImage(img);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(frame, "Can't load the application icon", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
