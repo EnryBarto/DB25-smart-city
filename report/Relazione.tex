@@ -2117,7 +2117,7 @@ Quando si entra nell'applicativo, è possibile utilizzare le funzionalità di ba
     \item Orari: si deve scegliere una linea, alla pressione di OK vengono mostrate tutte le fermate con l'orario previsto di partenza in quella fermata e in un determinato giorno
     \item Hub: Vengono mostrati i vari hub con i loro dati. Se sono presenti più contenuti per un hub, questi vengono ripetuti.
     \item Variazioni di servizio: si deve scegliere una linea ordinaria. Cliccando su 'Visualizza variazione di servizio' verrà mostrata l'eventuale motivo della manuntenzione la data di inizio, la data di fine e una lista delle linee eventuali sostitutive.
-    \item Login: si può accedere come Utente, Controllore, Autista e Amministrativo.
+    \item Login: si può accedere come Utente, Controllore, Autista o Amministrativo.
     \item Registrati: sarà possibile registrarsi come utente classico al sistema. Eventualmente un amministrativo potrà cambiare il ruolo dell'utente.
 \end{itemize}
 
@@ -2144,9 +2144,25 @@ All'utente amministrativo vengono abilitate le seguenti funzionalità:
     \item Profilo:
 \end{itemize}
 \section{Controllore}
+
 \section{Autista}
-- Svit
+\begin{itemize}
+    \item Linee: in questa scheda si possono vedere tutte le linee della nostra compagnia, in particolare: il codice della linea, il mezzo che la effettuerà, la fermata di partenza e arrivo, il tempo di percorrenza (in minuti) e nell'ultimo slot è presente un bottone che se cliccato ci porterà alla scheda Orari dove potremmo visualizzare gli orari della linea.
+    \item Orari:  troveremo in alto uno scroll pane dal quale potremmo selezionare la linea di nostro interesse, poi basterà cliccare il tasto "OK" per visualizzare nella zona sottostante la tabella con gli orari della linea selezionata; la tabella presenta nel primo slot le fermate che compongono la linea (in ordine), negli slot successivi troveremo i giorni della settimana seguiti dagli orari delle fermate.
+    \item Hub: qui possiamo vedere tutti gli hub e le loro caratteristiche come: codice identificativo, il nome, l'indirizzo, latitudine e longitudine, il nome della fermata a cui sono adiacenti, tipo di contenuto e i posti disponibili.
+    \item Lavoro: l'autista potrà visualizzare il proprio orario di lavoro, la tabella sarà organizzata in modo da avere nel primo slot la data, poi il codice della linea, l'orario di partenza e arrivo della linea che gli è stata assegnata, il mezzo e un tasto con il quale potrà visualizzare gli orari e le fermate della linea.
+    \item Profilo: in questa scheda potremmo visualizzare i dati relativi al nostro account come: nome, cognome, documento, codice fiscale (se presente), email, username, telefono e il livello (utente, autista, controllore o amministrativo).
+\end{itemize}
+
 \section{Utente}
-- Svit biglietti e abbonamenti
+\begin{itemize}
+    \item Linee: in questa scheda si possono vedere tutte le linee della nostra compagnia, in particolare: il codice della linea, il mezzo che la effettuerà, la fermata di partenza e arrivo, il tempo di percorrenza (in minuti) e nell'ultimo slot è presente un bottone che se cliccato ci porterà alla scheda Orari dove potremmo visualizzare gli orari della linea.
+    \item Orari:  troveremo in alto uno scroll pane dal quale potremmo selezionare la linea di nostro interesse, poi basterà cliccare il tasto "OK" per visualizzare nella zona sottostante la tabella con gli orari della linea selezionata; la tabella presenta nel primo slot le fermate che compongono la linea (in ordine), negli slot successivi troveremo i giorni della settimana seguiti dagli orari delle fermate.
+    \item Biglietti: troveremo nella parte alta uno scroll pane dal quale potremmo selezionare se vogliamo acquistare o validare un biglietto. Nel caso dell'acquisto avremo un'altro scroll pane dal quale potremmo scegliere la durata del biglietto, sotto troveremo due tasti: acquista e visualizza tariffe.\\ Invece nella pagina di convalida troveremo due scroll pane: in uno dovremmo scegliere il biglietto che vogliamo convalidare, nell'altro la linea sulla quale vogliamo convalidare il nostro biglietto.
+    \item Abbonamenti: in questa pagina abbiamo il primo scroll pane dove si potrà scegliere la durata del nostro abbonamento, subito sotto dovremmo scegliere la data di inizio validità dell'abbonamento,
+    poi troveremo due bottoni: acquista e visualizza tariffe.
+    \item Hub: qui possiamo vedere tutti gli hub e le loro caratteristiche come: codice identificativo, il nome, l'indirizzo, latitudine e longitudine, il nome della fermata a cui sono adiacenti, tipo di contenuto e i posti disponibili.
+    \item Profilo: in questa scheda potremmo visualizzare i dati relativi al nostro account come: nome, cognome, documento, codice fiscale (se presente), email, username, telefono e il livello (utente, autista, controllore o amministrativo).
+\end{itemize}
 
 \end{document}
