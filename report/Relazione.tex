@@ -2103,65 +2103,133 @@ WHERE codice_linea = ?;
 L'applicazione è stata creata in \textbf{Java 21}, utilizzando la libreria Swing per la GUI. Tramite la libreria \textbf{JDBC}, l'app interagisce con la base di dati (descritta dettagliatamente nel \cref{chapter:db}) basata sul DBMS \textbf{MySQL}.
 Per migliorare l'interfaccia grafica abbiamo usufruito del look and feel offerto dalla libreria FlatLaf\footnote{Link alla libreria: \url{https://www.formdev.com/flatlaf/}}, e dei date/time picker offerti dalla librearia Swing Datetime Picker\footnote{Link alla libreria: \url{https://github.com/DJ-Raven/swing-datetime-picker}}, importati attraverso Gradle.
 
-\section{Funzionalità di base}
-Quando si entra nell'applicativo, è possibile utilizzare le funzionalità di base disponibili per tutti gli utenti (anche se non loggati) nella barra di navigazione posta sulla parte superiore della finestra.
-\\
+
+\section{Gestione utenti}
+In seguito all'analisi dei requisiti sono stati individuati i seguenti livelli utente: \texttt{Utente base}, \texttt{Amministratore}, \texttt{Autista} e \texttt{Controllore}. \\
+All'interno dell'app è possibile effettuare il login oppure registrarsi tramite le apposite tab \textbf{Login} e \textbf{Registrati}. In particolare, a partire dalla registrazione, la password verrà criptata e poi salvata sul database, in modo che nulla giri in chiaro. Una volta registrati si assume in automatico il livello \texttt{Utente base}. \\
+La gestione degli utenti è un compito del livello \texttt{Amministratore}, che potranno cambiare il livello di ogni utente registrato al sistema nella pagina dedicata. \\
+Tutti i dati dell'utente loggato sono visibili nella pagina \textbf{Profilo}, da cui è anche possibile eseguire il logout.
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.9\textwidth]{app/Navbar}
-  \caption{Dettaglio della barra di navigazione}
+  \includegraphics[width=0.6\textwidth]{app/Profilo}
+  \caption{Visualizzazione del Profilo}
+\end{figure}
+
+
+\section{Funzionalità di base}
+Quando si entra nell'applicativo, è possibile accedere alle funzionalità di base disponibili \underline{per tutti i tipi di utente} (anche per i non loggati) tramite la barra di navigazione posta sulla parte superiore della finestra. \\
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\textwidth]{app/NavbarNonLoggato}
+  \caption{Barra di navigazione per utenti non loggati}
 \end{figure}
 
 \begin{itemize}
-    \item Linee: vengono mostrate le linee \textunderscore{attive} con fermata di partenza e arrivo, mezzo e tempo di percorrenza. Cliccando su visualizza sarà possibile visualizzare l'orario.
-    \item Orari: si deve scegliere una linea, alla pressione di OK vengono mostrate tutte le fermate con l'orario previsto di partenza in quella fermata e in un determinato giorno
-    \item Hub: Vengono mostrati i vari hub con i loro dati. Se sono presenti più contenuti per un hub, questi vengono ripetuti.
-    \item Variazioni di servizio: si deve scegliere una linea ordinaria. Cliccando su 'Visualizza variazione di servizio' verrà mostrata l'eventuale motivo della manuntenzione la data di inizio, la data di fine e una lista delle linee eventuali sostitutive.
-    \item Login: si può accedere come Utente, Controllore, Autista o Amministrativo.
-    \item Registrati: sarà possibile registrarsi come utente classico al sistema. Eventualmente un amministrativo potrà cambiare il ruolo dell'utente.
+    \item \textbf{Linee}: in questa scheda vengono visualizzate \textbf{tutte le linee} (sia ordinarie che straordinarie) \textbf{attive} al momento della consultazione della compagnia, in particolare: il codice della linea, il mezzo che la effettuerà, la fermata di partenza e arrivo, il tempo di percorrenza (in minuti) e un pulsante che aprirà in automatico la scheda \texttt{Orari} con la linea scelta.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{app/Linee}
+  \caption{Lista delle linee attive}
+\end{figure}
+    \item \textbf{Orari}: selezionando la linea di nostro interesse (scegliendola dal menù a tendina e cliccando il tasto "OK") verrà visualizzata nella zona sottostante la tabella con gli orari della linea selezionata. La tabella presenta nella prima colonna le fermate che compongono la linea (in ordine di percorrenza), mentre nelle colonne successive sono presenti gli orari per ogni fermata nel giorno della settimana di riferimento.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{app/Orari}
+  \caption{Visualizzazione dell'orario dettagliato di una linea}
+\end{figure}
+    \item \textbf{Hub}: Vengono mostrati i vari hub con i loro dati (nome, indirizzo, eventuale fermata di riferimento, posti disponibili, ecc...). Se sono presenti più contenuti per un hub, questi vengono ripetuti.
+    \item \textbf{Variazioni di servizio}: scegliendo una linea ordinaria dal menù a tendina, verranno mostrate le eventuali variazioni di servizio per la linea scelta, ovvero il motivo della manuntenzione, la data di inizio, la data di fine e una lista delle eventuali linee sostitutive.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{app/VariazioniServizio}
+  \caption{Visualizzazione delle variazioni di servizio per una linea}
+\end{figure}
 \end{itemize}
 
 
-\section{Gestione utenti}
-Appena entrati nell'app abbiamo due possibilità: fare il login oppure registrarci. la pagina di registrazione ci chiederà una serie di dati: nome, cognome, documento (con il quale saremo identificati), codice fiscale (opzionale), telefono, email, username e password; la password verrà criptata e poi salvata sul database, in modo che nulla possa girare in chiaro.
 \section{Amministrativo}
-All'utente amministrativo vengono abilitate le seguenti funzionalità:
+Poiché agli utenti amministrativi è delegata la gestione di tutto il sistema di trasporto, sono gli utenti con il maggior numero di funzionalità disponibili.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\textwidth]{app/NavbarAmministratore}
+  \caption{Barra di navigazione per gli Amministrativi}
+\end{figure}
 \begin{itemize}
-    \item Gestione Dipendenti: nel lato sinistro è possibile assegnare ad un utente registrato un nuovo ruolo, mentre nel lato sinistro è possibile declassare un dipendente a utente classico.
-    \item Gestione Fermate: nel lato sinistro è possibile aggiungere una fermata, compilando i dati nelle caselle e premendo su Aggiungi Fermata. Nel lato destro è possibile rimuovere una fermata selezionandola dal menù a tendina.
-    \item Gestione Tratte: nel lato sinistro è possibile aggiungere una tratta selezionando dai menu a tendina le fermate di partenza e arrivo e inserendo il tempo di percorrenza. Se la fermata di partenza è uguale a quella di arrivo, viene impedita l'aggiunta. Nel lato destro è possibile rimuovere una tratta.
-    \item Inserimento linea: nel lato sinistro è possibile inserire i dati di una linea, mentre sul lato destro è possibile aggiungere le sue tratte. Per eliminare una tratta inserita si deve premere su \textit{Elimina ultima tratta}, sul lato sinistro. Inserite compilati i dati di una linea e aggiunte le tratte, si potrà aggiungere la linea con il pulsante \textit{Aggiungi linea}. Da notare che mano a mano che si aggiungono le tratte, il menù a tendina suggerisce solo quelle che sono compatibili con la tratta precedente (stessa fermata di partenza della fermata di arrivo della tratta precedente)
-    \item Gestione tragitti: nel lato sinistro è possibile aggiungere una nuova tratta alla fine della linea selezionando le due da un menu a tendina. Nel lato destro è possibile rimuovere l'ultima tratta assegnata a una linea.
-    \item Gestione orari linee: nel lato sinistro è possibile aggiungere un orario di partenza settimanale ad una linea. Va selezionata la linea, l'ora di partenza e uno o più giorni di validità. Se vengoono selezionati più giorni, questi vengono tutti aggiunti all'orario. Nel lato destro è possibile data una linea, eliminare un orario.
-    \item Inserimento attuazione corsa: qui si può aggiungere una corsa al sistema, specificando il giorno, la linea, l'orario di partenza, il mezzo e l'autista. Gli orari di partenza si devono scegliere da una lista di orari predefiniti e sono filtrati in base al giorno settimanale, quindi viene rispettano il vincolo che un'attuazione corsa deve essere effettuata in coerenza all'orario della linea.
-    \item Manutenzioni: in questa scheda sarà possibile gestire le manutenzioni di mezzi e linee; la scheda si presenta con uno scroll pane dal quale potremmo scegliere tra mezzi e linee. Una volta scelto si creerà una pagina, che sarà uguale per entrambe, con a sinistra (pannello blu) la possibilià di aggiungere manutenzioni, mentre a destra (pannello rosso) la possibilità di rimuovere le manutenzioni. Per aggiungere le manutenzioni verranno richiesti vari dati: la linea (o il mezzo), la data di inizio e fine, un nome, una descrizione e, se il lavoro è stato svolto da un'azienda esterna, la partita iva.
-    \item Inserimento variazione di servizio: data una manuntenzione relativa a una linea è possibile aggiungere una linea sostitutiva. La manuntenzione e la linea da sostituire devono essere aggiunte nelle loro schede. Le linee da sostituire possono essere solo straordinarie.
-    \item Gestione hub: nel lato sinistro è possibile aggiungere un hub mobilità. Eventualmente si può anche aggiungere una fermata tra quelle presenti nel menu a tendina. In rimozione hub si possono rimuovere degli hub già inseriti nel sistema.
-    \item Associazione Hub-Contenuto: nel lato sinistro è possibile associare a un hub un contenuto (macchine elettriche, bici scooter, ecc...) e il numero di posti massimi relativi ad esso. Gli hub devono essere già inseriti nel sistema in \textit{Gestione hub}. Nel lato destro è possibile rimuovere un'associazione.
-    \item Assegna controllore: qui si può assegnare un controllore presente nel sistema a un'attruazione presente nel sistema. Si selezionano da un menu a tendina.
-    \item Statistiche: in questa scheda sono presenti diverse statistiche riguardanti il sistema. Si seleziona il tipo di statistica da visualizzare in un menu a tendina e si preme \textit{OK} per ricevere il risultato. Per alcune operazioni è necessario aggiungere ulteriori informazioni: si devono compilare i campi e premere il relativo pulsante per ottenere il risultato.
-    \item Profilo: in questa scheda potremmo visualizzare i dati relativi al nostro account come: nome, cognome, documento, codice fiscale (se presente), email, username, telefono e il livello (utente, autista, controllore o amministrativo).
+    \item \textbf{Gestione Dipendenti}: nel lato sinistro è possibile assegnare agli \texttt{Utente base} il ruolo di un dipendente, mentre nel lato destro è possibile declassare un dipendente a un utente base.
+    \item \textbf{Gestione Fermate}: nel lato sinistro è possibile aggiungere una fermata, compilando i dati nelle caselle e premendo su Aggiungi Fermata. Nel lato destro è possibile rimuovere una fermata selezionandola dal menù a tendina.
+    \item \textbf{Gestione Tratte}: nel lato sinistro è possibile aggiungere una tratta selezionando dai menu a tendina le fermate di partenza e arrivo e inserendo il tempo di percorrenza. Se la fermata di partenza è uguale a quella di arrivo, viene impedita l'aggiunta. Nel lato destro è possibile rimuovere una tratta.
+    \item \textbf{Inserimento linea}: nel lato sinistro è possibile inserire i dati di una linea, mentre sul lato destro è possibile comporne il tragitto aggiungendo varie tratte (che devono già essere state inserite tramite l'apposita funzione). Per eliminare una tratta inserita si deve premere su \textit{Elimina ultima tratta}, sul lato sinistro. Compilati i dati di una linea e inserite le tratte, si potrà aggiungere la linea con il pulsante \textit{Aggiungi linea}. Da notare che mano a mano che si aggiungono le tratte, il menù a tendina suggerisce solo quelle che sono compatibili con la tratta precedente (fermata di partenza coincidente con la fermata di arrivo della tratta precedente).
+    \item \textbf{Gestione tragitti}: nel lato sinistro è possibile aggiungere una tratta alla fine della linea selezionandola dal menù a tendina. Nel lato destro è possibile rimuovere l'ultima tratta assegnata a una linea.
+    \item \textbf{Gestione orari linee}: nel lato sinistro è possibile aggiungere un orario di partenza settimanale ad una linea. Vanno selezionati la linea, l'ora di partenza e uno o più giorni di validità. Nel caso vengano spuntati più giorni, questi vengono tutti aggiunti all'orario con la medesima ora di partenza. Nel lato destro, data una linea, è possibile eliminarne un orario.
+    \item \textbf{Inserimento attuazione corsa}: viene registrata l'effettiva attuazione di una corsa, specificando il giorno, la linea, l'orario di partenza, il mezzo e l'autista. Con questa funzionalità, viene automaticamente aggiunta la linea all'\textbf{orario di lavoro} di un \texttt{Autista}. Data la presenza di vari vincoli da rispettare, l'inserimento è guidato. Va inizialmente scelta la data di interesse, così che saranno proposte solo le linee attive e che hanno un orario disponibile per quel giorno. Una volta scelta la linea, è possibile scegliere l'orario desiderato e il mezzo che dovrà svolgere la corsa. Infine viene assegnato il turno di lavoro a un certo autista.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{app/AttuazioneCorsa}
+\end{figure}
+    \item \textbf{Manutenzioni}: in questa scheda sarà possibile gestire le manutenzioni di mezzi e linee ordinarie; si presenta con un menù a tendina dal quale effettuare la scelta mezzi / linee. Una volta scelto si aprirà una pagina, che sarà uguale per entrambe, con a sinistra (pannello blu) la possibilià di aggiungere manutenzioni, mentre a destra (pannello rosso) la possibilità di rimuovere le manutenzioni. Per aggiungere le manutenzioni verranno richiesti vari dati: la linea (o il mezzo), la data di inizio e fine, un nome, una descrizione e, se il lavoro è stato svolto da un'azienda esterna, la partita iva.
+    \item \textbf{Inserimento variazione di servizio}: data una manuntenzione relativa a una linea è possibile aggiungere una linea sostitutiva. La manuntenzione e la linea da sostituire devono essere già state aggiunte nelle loro schede. Le linee sostitute possono essere solo straordinarie.
+    \item \textbf{Gestione hub}: nel lato sinistro è possibile aggiungere un hub mobilità. Eventualmente si può anche aggiungere una fermata tra quelle presenti nel menu a tendina. In rimozione hub si possono rimuovere degli hub già inseriti nel sistema.
+    \item \textbf{Associazione Hub-Contenuto}: nel lato sinistro è possibile associare a un hub un contenuto (macchine elettriche, bici scooter, ecc...) e il numero di posti massimi relativi ad esso. Gli hub devono essere già inseriti nel sistema in \textit{Gestione hub}. Nel lato destro è possibile rimuovere un'associazione.
+    \item \textbf{Assegna controllore}: viene effettuata l'assegnazione di una corsa a un \texttt{Controllore}, componendo così il suo \textbf{orario di lavoro}.
+    \item \textbf{Statistiche}: in questa scheda sono presenti diverse statistiche riguardanti il sistema. Si seleziona il tipo di statistica da visualizzare in un menu a tendina e si preme \textit{OK} per ricevere il risultato. Per alcune operazioni è necessario aggiungere ulteriori informazioni: si devono compilare i campi e premere il relativo pulsante per ottenere la statistica.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{app/Statistiche}
+  \caption{Lista delle statistiche disponibili}
+\end{figure}
 \end{itemize}
-\section{Controllore}
 
 \section{Autista}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\textwidth]{app/NavbarAutista}
+  \caption{Barra di navigazione per gli Autisti}
+\end{figure}
 \begin{itemize}
-    \item Linee: in questa scheda si possono vedere tutte le linee della nostra compagnia, in particolare: il codice della linea, il mezzo che la effettuerà, la fermata di partenza e arrivo, il tempo di percorrenza (in minuti) e nell'ultimo slot è presente un bottone che se cliccato ci porterà alla scheda Orari dove potremmo visualizzare gli orari della linea.
-    \item Orari:  troveremo in alto uno scroll pane dal quale potremmo selezionare la linea di nostro interesse, poi basterà cliccare il tasto "OK" per visualizzare nella zona sottostante la tabella con gli orari della linea selezionata; la tabella presenta nel primo slot le fermate che compongono la linea (in ordine), negli slot successivi troveremo i giorni della settimana seguiti dagli orari delle fermate.
-    \item Hub: qui possiamo vedere tutti gli hub e le loro caratteristiche come: codice identificativo, il nome, l'indirizzo, latitudine e longitudine, il nome della fermata a cui sono adiacenti, tipo di contenuto e i posti disponibili.
-    \item Lavoro: l'autista potrà visualizzare il proprio orario di lavoro, la tabella sarà organizzata in modo da avere nel primo slot la data, poi il codice della linea, l'orario di partenza e arrivo della linea che gli è stata assegnata, il mezzo e un tasto con il quale potrà visualizzare gli orari e le fermate della linea.
-    \item Profilo: in questa scheda potremmo visualizzare i dati relativi al nostro account come: nome, cognome, documento, codice fiscale (se presente), email, username, telefono e il livello (utente, autista, controllore o amministrativo).
+    \item \textbf{Lavoro}: in questa pagina l'autista può visualizzare il proprio orario di lavoro. La tabella è organizzata in modo da avere nella prima colonna la data, seguita da il codice della linea, l'orario di partenza e arrivo della linea che gli è stata assegnata, il mezzo e un tasto con il quale potrà visualizzare gli orari e le fermate della linea. Gli orari visualizzati sono quelli inseriti dagli utenti \texttt{Amministrativi} nell'\texttt{Attuazione corsa}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{app/LavoroAutista}
+  \caption{Orario di lavoro di un Autista}
+\end{figure}
 \end{itemize}
 
-\section{Utente}
+\section{Controllore}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\textwidth]{app/NavbarControllore}
+  \caption{Barra di navigazione per i Controllori}
+\end{figure}
 \begin{itemize}
-    \item Linee: in questa scheda si possono vedere tutte le linee della nostra compagnia, in particolare: il codice della linea, il mezzo che la effettuerà, la fermata di partenza e arrivo, il tempo di percorrenza (in minuti) e nell'ultimo slot è presente un bottone che se cliccato ci porterà alla scheda Orari dove potremmo visualizzare gli orari della linea.
-    \item Orari:  troveremo in alto uno scroll pane dal quale potremmo selezionare la linea di nostro interesse, poi basterà cliccare il tasto "OK" per visualizzare nella zona sottostante la tabella con gli orari della linea selezionata; la tabella presenta nel primo slot le fermate che compongono la linea (in ordine), negli slot successivi troveremo i giorni della settimana seguiti dagli orari delle fermate.
-    \item Biglietti: troveremo nella parte alta uno scroll pane dal quale potremmo selezionare se vogliamo acquistare o validare un biglietto. Nel caso dell'acquisto avremo un'altro scroll pane dal quale potremmo scegliere la durata del biglietto, sotto troveremo due tasti: acquista e visualizza tariffe.\\ Invece nella pagina di convalida troveremo due scroll pane: in uno dovremmo scegliere il biglietto che vogliamo convalidare, nell'altro la linea sulla quale vogliamo convalidare il nostro biglietto.
-    \item Abbonamenti: in questa pagina abbiamo il primo scroll pane dove si potrà scegliere la durata del nostro abbonamento, subito sotto dovremmo scegliere la data di inizio validità dell'abbonamento,
-    poi troveremo due bottoni: acquista e visualizza tariffe.
-    \item Hub: qui possiamo vedere tutti gli hub e le loro caratteristiche come: codice identificativo, il nome, l'indirizzo, latitudine e longitudine, il nome della fermata a cui sono adiacenti, tipo di contenuto e i posti disponibili.
-    \item Profilo: in questa scheda potremmo visualizzare i dati relativi al nostro account come: nome, cognome, documento, codice fiscale (se presente), email, username, telefono e il livello (utente, autista, controllore o amministrativo).
+    \item \textbf{Lavoro}: vengono visualizzate tutte le linee su cui il controllore dovrà eseguire i controlli. Gli orari visualizzati sono quelli aggiunti dagli \texttt{Amministrativi} nell'apposita scheda \texttt{Assegna controllore}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{app/LavoroControllore}
+  \caption{Orario di lavoro di un Controllore}
+\end{figure}
+    \item \textbf{Inserimento Multa}: nel pannello di destra il controllore puà emettere una multa per una persona. Nel caso la persona non sia già registrata nel sistema, il controllore può inserirne i dati nel pannello di sinistra.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{app/InserimentoMulta}
+  \caption{Pannello per l'emissione di una multa}
+\end{figure}
+\end{itemize}
+
+
+\section{Utente}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\textwidth]{app/NavbarUtente}
+  \caption{Barra di navigazione per gli utenti base}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Biglietti}: nella parte superiore è presente un menù a tendina per selezionare se vogliamo acquistare o convalidare un biglietto. Nel caso dell'acquisto avremo un'altro menù dal quale potremo scegliere la durata del biglietto, un pulsante per confermare l'acquisto e uno per visualizzare le tariffe.\\ Nella pagina di convalida troveremo invece due menù: uno per segliere il codice del biglietto che vogliamo convalidare, nell'altro la corsa sulla quale vogliamo convalidare il nostro biglietto.
+    \item \textbf{Abbonamenti}: in questa pagina abbiamo il primo menù per scegliere la durata del nostro abbonamento, subito sotto dovremmo scegliere la data di inizio validità dell'abbonamento, poi troveremo due bottoni: acquista e visualizza tariffe.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{app/AcquistoAbbonamenti}
+  \caption{Pannello per l'acquisto di un abbonamento}
+\end{figure}
 \end{itemize}
 
 \end{document}
