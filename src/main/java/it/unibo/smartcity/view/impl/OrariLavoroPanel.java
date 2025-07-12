@@ -19,7 +19,7 @@ class OrariLavoroPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private JScrollPane tableArea;
-    private final static String[] columnNames = {"Data", "Linea", "Ora Partenza", "Ora Arrivo", "Mezzo", "Visualizza"};
+    private final static String[] columnNames = {"Data", "Linea", "Ora Partenza", "Ora Arrivo", "Mezzo", "Orario"};
     private final Controller controller;
 
     public OrariLavoroPanel(final Controller controller) {

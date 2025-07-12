@@ -147,16 +147,26 @@ public class SwingView implements View {
         this.tabs.put("Assoc. Hub-Contenuto", new AssocContenutoToHubPanel(controller));
         this.tabs.put("Ins. Multa", new InsertMultaPanel(controller));
         this.tabs.put("Statistiche", new StatisticsPanel(controller));
-        this.tabs.put("Variazioni di servizio", new VariazioniServizioPanel(controller));
+        this.tabs.put("Variazioni di Servizio", new VariazioniServizioPanel(controller));
         this.tabs.put("Assegna Controllore", new InsertControlloPanel(controller));
         this.tabs.put("Biglietti", new TicketManagerPanel(controller));
         this.tabs.put("Abbonamenti", new AbbonamentiPanel(controller));
 
-        this.tabsForUserLevel.put(UserLevel.NOT_LOGGED, List.of("Linee", "Orari", "Hub", "Variazioni di servizio", "Login", "Registrati"));
-        this.tabsForUserLevel.put(UserLevel.ADMIN, List.of("Linee", "Orari", "Hub", "Gest. Dipendenti", "Gest. Fermate", "Gest. Tratte", "Ins. Linea", "Gest. Tragitti", "Gest. Orari Linee", "Ins. Attua. Corsa", "Manutenzioni", "Ins. Var. Servizio", "Gest. Hub", "Assoc. Hub-Contenuto", "Assegna Controllore", "Statistiche", "Profilo"));
-        this.tabsForUserLevel.put(UserLevel.USER, List.of("Linee", "Orari", "Biglietti", "Abbonamenti", "Hub", "Profilo"));
-        this.tabsForUserLevel.put(UserLevel.DRIVER, List.of("Linee", "Orari", "Hub","Lavoro", "Profilo"));
-        this.tabsForUserLevel.put(UserLevel.CONTROLLER, List.of("Linee", "Orari", "Hub","Lavoro", "Ins. Multa", "Profilo"));
+        this.tabsForUserLevel.put(
+            UserLevel.NOT_LOGGED,
+            List.of("Linee", "Orari", "Hub", "Variazioni di Servizio", "Login", "Registrati"));
+        this.tabsForUserLevel.put(
+            UserLevel.ADMIN,
+            List.of("Linee", "Orari", "Hub", "Variazioni di Servizio", "Gest. Dipendenti", "Gest. Fermate", "Gest. Tratte", "Ins. Linea", "Gest. Tragitti", "Gest. Orari Linee", "Ins. Attua. Corsa", "Manutenzioni", "Ins. Var. Servizio", "Gest. Hub", "Assoc. Hub-Contenuto", "Assegna Controllore", "Statistiche", "Profilo"));
+        this.tabsForUserLevel.put(
+            UserLevel.USER,
+            List.of("Linee", "Orari", "Hub", "Variazioni di Servizio", "Biglietti", "Abbonamenti", "Profilo"));
+        this.tabsForUserLevel.put(
+            UserLevel.DRIVER,
+            List.of("Linee", "Orari", "Hub", "Variazioni di Servizio","Lavoro", "Profilo"));
+        this.tabsForUserLevel.put(
+            UserLevel.CONTROLLER,
+            List.of("Linee", "Orari", "Hub", "Variazioni di Servizio","Lavoro", "Ins. Multa", "Profilo"));
     }
 
     private void setTabPane(UserLevel userLevel) {
@@ -235,7 +245,7 @@ public class SwingView implements View {
                     case "Statistiche":
                         controller.updateManutGravose();
                         break;
-                    case "Variazioni di servizio":
+                    case "Variazioni di Servizio":
                         controller.updateOrdinaryLines();
                         controller.updateLinesList();
                         break;
@@ -409,7 +419,7 @@ public class SwingView implements View {
 
     @Override
     public void updateVariazioniServizio(Set<ListVariazioniServizi> list) {
-        ((VariazioniServizioPanel)this.tabs.get("Variazioni di servizio")).updateVariazioniServizio(list.stream().toList());
+        ((VariazioniServizioPanel)this.tabs.get("Variazioni di Servizio")).updateVariazioniServizio(list.stream().toList());
     }
 
     @Override
@@ -468,7 +478,7 @@ public class SwingView implements View {
 
     @Override
     public void updateOrdinaryLines(List<Linea> list) {
-        ((VariazioniServizioPanel)this.tabs.get("Variazioni di servizio")).updateLinee(list);
+        ((VariazioniServizioPanel)this.tabs.get("Variazioni di Servizio")).updateLinee(list);
     }
 
     @Override

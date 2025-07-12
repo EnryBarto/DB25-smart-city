@@ -33,7 +33,7 @@ class TicketManagerPanel extends JPanel{
 
 
     private static final long serialVersionUID = 1L;
-    private static final String[] columnTariffe = {"nome", "durata", "prezzo"};
+    private static final String[] columnTariffe = {"Nome", "Durata [min]", "Prezzo"};
     private static final List<String> options = List.of(
         "acquisto biglietti",
         "convalida biglietti"

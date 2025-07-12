@@ -67,9 +67,9 @@ public class TariffaBigliettoImpl implements TariffaBiglietto {
         return Printer.stringify(
             "Tariffa Biglietti",
             List.of(
-                Printer.field("nome", this.nome),
-                Printer.field("durata", this.durata),
-                Printer.field("prezzo", this.prezzo)
+                Printer.field("Nome", this.nome),
+                Printer.field("Durata [min]", this.durata),
+                Printer.field("Prezzo", this.prezzo)
             )
         );
     }

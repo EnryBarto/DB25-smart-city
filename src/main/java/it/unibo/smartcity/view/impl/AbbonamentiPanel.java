@@ -27,7 +27,7 @@ import raven.datetime.DatePicker;
 
 class AbbonamentiPanel extends JPanel {
 
-    static private final String[] columnTariffe = { "Nome", "Durata", "Prezzo" };
+    static private final String[] columnTariffe = { "Nome", "Durata [giorni]", "Prezzo" };
     private final JPanel buyPanel = new JPanel();
     private final Controller controller;
     private JComboBox<Integer> tariffeList = new JComboBox<>();

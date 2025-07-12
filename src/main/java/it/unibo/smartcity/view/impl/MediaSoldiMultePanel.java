@@ -9,7 +9,7 @@ import it.unibo.smartcity.data.MediaSoldiMulte;
 
 class MediaSoldiMultePanel extends JPanel {
     private final static String[] columnNames = {
-        "Media di soldi speri in multe",
+        "Media di soldi spesi in multe",
     };
     private JScrollPane tableArea;
 
