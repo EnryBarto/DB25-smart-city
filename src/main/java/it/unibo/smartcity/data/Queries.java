@@ -158,8 +158,8 @@ public final class Queries {
     HAVING COUNT(DISTINCT ac.codice_corsa) = (SELECT COUNT(DISTINCT ac1.codice_corsa)    # conto attuazioni corsa
                 FROM LINEE l1 JOIN ORARI_LINEE ol1 ON (l1.codice_linea = ol1.codice_linea)
                 JOIN ATTUAZIONI_CORSE ac1 ON (ol1.codice_orario = ac1.codice_orario)
-                JOIN controlli c ON (c.codice_corsa = ac1.codice_corsa)
-                JOIN multe m ON (m.codice_corsa = ac1.codice_corsa)
+                JOIN CONTROLLI c ON (c.codice_corsa = ac1.codice_corsa)
+                JOIN MULTE m ON (m.codice_corsa = ac1.codice_corsa)
                 WHERE l1.codice_linea = l.codice_linea
                 GROUP BY ac1.data
                 HAVING COUNT(DISTINCT m.codice_multa) <= 10 AND COUNT(DISTINCT c.username) > 5);
