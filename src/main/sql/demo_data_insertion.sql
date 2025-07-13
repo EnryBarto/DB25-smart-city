@@ -16,16 +16,17 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `abbonamenti`
+-- Dumping data for table `ABBONAMENTI`
 --
 
 LOCK TABLES `ABBONAMENTI` WRITE;
 /*!40000 ALTER TABLE `ABBONAMENTI` DISABLE KEYS */;
+INSERT INTO `ABBONAMENTI` VALUES ('2025-07-07',1,'2025-07-07',183,'Utente1'),('2025-07-14',2,'2025-07-07',183,'Utente1');
 /*!40000 ALTER TABLE `ABBONAMENTI` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `attuazioni_corse`
+-- Dumping data for table `ATTUAZIONI_CORSE`
 --
 
 LOCK TABLES `ATTUAZIONI_CORSE` WRITE;
@@ -35,7 +36,7 @@ INSERT INTO `ATTUAZIONI_CORSE` VALUES (5,'2025-07-03',4,'METRO000','Autista1'),(
 UNLOCK TABLES;
 
 --
--- Dumping data for table `aziende`
+-- Dumping data for table `AZIENDE`
 --
 
 LOCK TABLES `AZIENDE` WRITE;
@@ -45,17 +46,17 @@ INSERT INTO `AZIENDE` VALUES ('30732476298','Serao, Malacarne e Gasperi s.r.l.',
 UNLOCK TABLES;
 
 --
--- Dumping data for table `biglietti`
+-- Dumping data for table `BIGLIETTI`
 --
 
 LOCK TABLES `BIGLIETTI` WRITE;
 /*!40000 ALTER TABLE `BIGLIETTI` DISABLE KEYS */;
-INSERT INTO `BIGLIETTI` VALUES (10,'2025-07-03',90,'Utente1');
+INSERT INTO `BIGLIETTI` VALUES (10,'2025-07-03',90,'Utente1'),(11,'2025-07-07',1440,'Utente1');
 /*!40000 ALTER TABLE `BIGLIETTI` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `causali_multe`
+-- Dumping data for table `CAUSALI_MULTE`
 --
 
 LOCK TABLES `CAUSALI_MULTE` WRITE;
@@ -65,7 +66,7 @@ INSERT INTO `CAUSALI_MULTE` VALUES (1,'Mancanza titolo di viaggio',20.00,500.00)
 UNLOCK TABLES;
 
 --
--- Dumping data for table `contenuti`
+-- Dumping data for table `CONTENUTI`
 --
 
 LOCK TABLES `CONTENUTI` WRITE;
@@ -75,7 +76,7 @@ INSERT INTO `CONTENUTI` VALUES (1,1,30,30),(1,2,25,25),(2,2,20,20),(2,3,7,7),(2,
 UNLOCK TABLES;
 
 --
--- Dumping data for table `contenuti_hub`
+-- Dumping data for table `CONTENUTI_HUB`
 --
 
 LOCK TABLES `CONTENUTI_HUB` WRITE;
@@ -85,17 +86,17 @@ INSERT INTO `CONTENUTI_HUB` VALUES (1,'Monopattini'),(2,'Bici'),(3,'Macchine ele
 UNLOCK TABLES;
 
 --
--- Dumping data for table `controlli`
+-- Dumping data for table `CONTROLLI`
 --
 
 LOCK TABLES `CONTROLLI` WRITE;
 /*!40000 ALTER TABLE `CONTROLLI` DISABLE KEYS */;
-INSERT INTO `CONTROLLI` VALUES ('Controllore1',5),('Controllore1',6),('Controllore2',8),('Controllore2',10),('Controllore2',11),('Controllore2',12),('Controllore1',15);
+INSERT INTO `CONTROLLI` VALUES ('Controllore1',5),('Controllore2',5),('Controllore3',5),('Controllore4',5),('Controllore5',5),('Controllore6',5),('Controllore1',6),('Controllore2',8),('Controllore2',10),('Controllore2',11),('Controllore2',12),('Controllore1',15);
 /*!40000 ALTER TABLE `CONTROLLI` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `convalide`
+-- Dumping data for table `CONVALIDE`
 --
 
 LOCK TABLES `CONVALIDE` WRITE;
@@ -105,17 +106,17 @@ INSERT INTO `CONVALIDE` VALUES (10,'2025-07-03 23:39:14',5);
 UNLOCK TABLES;
 
 --
--- Dumping data for table `dipendenti`
+-- Dumping data for table `DIPENDENTI`
 --
 
 LOCK TABLES `DIPENDENTI` WRITE;
 /*!40000 ALTER TABLE `DIPENDENTI` DISABLE KEYS */;
-INSERT INTO `DIPENDENTI` VALUES ('admin','amministrativo'),('Autista1','autista'),('Autista2','autista'),('Controllore1','controllore'),('Controllore2','controllore');
+INSERT INTO `DIPENDENTI` VALUES ('admin','amministrativo'),('Autista1','autista'),('Autista2','autista'),('Controllore1','controllore'),('Controllore2','controllore'),('Controllore3','controllore'),('Controllore4','controllore'),('Controllore5','controllore'),('Controllore6','controllore');
 /*!40000 ALTER TABLE `DIPENDENTI` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `fermate`
+-- Dumping data for table `FERMATE`
 --
 
 LOCK TABLES `FERMATE` WRITE;
@@ -125,7 +126,7 @@ INSERT INTO `FERMATE` VALUES (1,'San Bartolo','Via San Bartolo','Terre Roveresch
 UNLOCK TABLES;
 
 --
--- Dumping data for table `hub_mobilita`
+-- Dumping data for table `HUB_MOBILITA`
 --
 
 LOCK TABLES `HUB_MOBILITA` WRITE;
@@ -135,7 +136,7 @@ INSERT INTO `HUB_MOBILITA` VALUES (1,'12.9091025','43.6921713','Hub Acli','Via S
 UNLOCK TABLES;
 
 --
--- Dumping data for table `linee`
+-- Dumping data for table `LINEE`
 --
 
 LOCK TABLES `LINEE` WRITE;
@@ -145,7 +146,7 @@ INSERT INTO `LINEE` VALUES ('15A',43,NULL,NULL,1,1),('15R',43,NULL,NULL,1,1),('2
 UNLOCK TABLES;
 
 --
--- Dumping data for table `manutenzioni_linee`
+-- Dumping data for table `MANUTENZIONI_LINEE`
 --
 
 LOCK TABLES `MANUTENZIONI_LINEE` WRITE;
@@ -155,7 +156,7 @@ INSERT INTO `MANUTENZIONI_LINEE` VALUES ('26A','2025-07-04','2025-07-19','Manute
 UNLOCK TABLES;
 
 --
--- Dumping data for table `manutenzioni_mezzi`
+-- Dumping data for table `MANUTENZIONI_MEZZI`
 --
 
 LOCK TABLES `MANUTENZIONI_MEZZI` WRITE;
@@ -165,7 +166,7 @@ INSERT INTO `MANUTENZIONI_MEZZI` VALUES ('METRO001','2025-07-04','2025-07-10','M
 UNLOCK TABLES;
 
 --
--- Dumping data for table `mezzi`
+-- Dumping data for table `MEZZI`
 --
 
 LOCK TABLES `MEZZI` WRITE;
@@ -175,17 +176,17 @@ INSERT INTO `MEZZI` VALUES ('BUS000',1),('BUS001',1),('BUS002',1),('TRENO000',2)
 UNLOCK TABLES;
 
 --
--- Dumping data for table `multe`
+-- Dumping data for table `MULTE`
 --
 
 LOCK TABLES `MULTE` WRITE;
 /*!40000 ALTER TABLE `MULTE` DISABLE KEYS */;
-INSERT INTO `MULTE` VALUES (4,'2025-07-03 23:29:54',27.60,NULL,1,5,'Amm91332AA','Controllore1');
+INSERT INTO `MULTE` VALUES (14,'2025-07-13 15:12:04',55.60,NULL,1,5,'USER001','Controllore1'),(15,'2025-07-13 15:18:36',78.90,NULL,2,5,'USER002','Controllore2');
 /*!40000 ALTER TABLE `MULTE` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `orari_linee`
+-- Dumping data for table `ORARI_LINEE`
 --
 
 LOCK TABLES `ORARI_LINEE` WRITE;
@@ -195,17 +196,17 @@ INSERT INTO `ORARI_LINEE` VALUES (50,'06:55','Giovedì','15A'),(47,'06:55','Lune
 UNLOCK TABLES;
 
 --
--- Dumping data for table `persone`
+-- Dumping data for table `PERSONE`
 --
 
 LOCK TABLES `PERSONE` WRITE;
 /*!40000 ALTER TABLE `PERSONE` DISABLE KEYS */;
-INSERT INTO `PERSONE` VALUES ('admin','admin','Amm91332AA',NULL),('Autista','Primo','AUT001',NULL),('Autista','Secondo','AUT002',NULL),('Controllore','Primo','CONT001',NULL),('Controllore','Secondo','CONT002',NULL),('Rossi','Mario','USER001',NULL),('Verdi','Luigi','USER002',NULL);
+INSERT INTO `PERSONE` VALUES ('admin','admin','Amm91332AA',NULL),('Autista','Primo','AUT001',NULL),('Autista','Secondo','AUT002',NULL),('Controllore','Primo','CONT001',NULL),('Controllore','Secondo','CONT002',NULL),('Controllore','Terzo','CONT003',NULL),('Controllore','Quarto','CONT004',NULL),('Controllore','Quinto','CONT005',NULL),('Controllore','Sesto','CONT006',NULL),('Rossi','Mario','USER001',NULL),('Verdi','Luigi','USER002',NULL);
 /*!40000 ALTER TABLE `PERSONE` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `sostituzioni`
+-- Dumping data for table `SOSTITUZIONI`
 --
 
 LOCK TABLES `SOSTITUZIONI` WRITE;
@@ -215,7 +216,7 @@ INSERT INTO `SOSTITUZIONI` VALUES ('2025-07-04','26A','26STR/A');
 UNLOCK TABLES;
 
 --
--- Dumping data for table `tariffe_abbonamenti`
+-- Dumping data for table `TARIFFE_ABBONAMENTI`
 --
 
 LOCK TABLES `TARIFFE_ABBONAMENTI` WRITE;
@@ -225,7 +226,7 @@ INSERT INTO `TARIFFE_ABBONAMENTI` VALUES ('Mensile',31,39.50),('Semestrale',183,
 UNLOCK TABLES;
 
 --
--- Dumping data for table `tariffe_biglietti`
+-- Dumping data for table `TARIFFE_BIGLIETTI`
 --
 
 LOCK TABLES `TARIFFE_BIGLIETTI` WRITE;
@@ -235,7 +236,7 @@ INSERT INTO `TARIFFE_BIGLIETTI` VALUES ('90min',90,2.20),('Giornaliero',1440,7.6
 UNLOCK TABLES;
 
 --
--- Dumping data for table `tipologie_mezzi`
+-- Dumping data for table `TIPOLOGIE_MEZZI`
 --
 
 LOCK TABLES `TIPOLOGIE_MEZZI` WRITE;
@@ -245,7 +246,7 @@ INSERT INTO `TIPOLOGIE_MEZZI` VALUES (1,'Autobus'),(2,'Treno'),(3,'Tram'),(4,'Me
 UNLOCK TABLES;
 
 --
--- Dumping data for table `tragitti`
+-- Dumping data for table `TRAGITTI`
 --
 
 LOCK TABLES `TRAGITTI` WRITE;
@@ -255,7 +256,7 @@ INSERT INTO `TRAGITTI` VALUES (11,12,'15A',1),(12,13,'15A',2),(13,14,'15A',3),(1
 UNLOCK TABLES;
 
 --
--- Dumping data for table `tratte`
+-- Dumping data for table `TRATTE`
 --
 
 LOCK TABLES `TRATTE` WRITE;
@@ -265,12 +266,12 @@ INSERT INTO `TRATTE` VALUES (2,1,2),(3,1,3),(1,2,3),(4,2,4),(8,2,32),(13,2,25),(
 UNLOCK TABLES;
 
 --
--- Dumping data for table `utenti`
+-- Dumping data for table `UTENTI`
 --
 
 LOCK TABLES `UTENTI` WRITE;
 /*!40000 ALTER TABLE `UTENTI` DISABLE KEYS */;
-INSERT INTO `UTENTI` VALUES ('admin','Amm91332AA','admin@smartcity.it','123456789','$2a$10$u43PXOBQkSbOwUtbrNeot./Qk1qAf0EAnNT5KDwYgBEnuxtTk8J5q'),('Autista1','AUT001','autista1@smartcity.it','321654987','$2a$10$TGAuH/Re1jzHa3NHdwykpu60fMKc2Ghy4Vmbor/Nsh4b/KdZT8i42'),('Autista2','AUT002','autista2@smartcity.it','984984615','$2a$10$BU1gZmInantLswAm20IgWeTuHoRLPDrd6Y5PMPJi21U4WvYJi88i.'),('Controllore1','CONT001','controllore1@smartcity.it','984950656','$2a$10$zUus5ZzuXwp79NUr4KZw4.hejUoQGfpvpZFQUGLlIsFiHAV1Sm0G2'),('Controllore2','CONT002','controllore2@smartcity.it','29842899','$2a$10$VdyFKvVTqXyu7w1LHgmAveP5XNfvrMSGODEW/1rYoPaRDtxLjfBHq'),('Utente1','USER001','mario@smartcity.it','9871654655','$2a$10$GyKtq8CYLJE8ZcQUNqsH3OanopqfsnI.ZK9O3v5WI1fpooMYdsPB.'),('Utente2','USER002','utente2@smartcity.it','658498465','$2a$10$fQllAz5PXB.v9jQc1rhd.eKFxQYDFGCfgPnYOjjGa3wbRKM.V9GtS');
+INSERT INTO `UTENTI` VALUES ('admin','Amm91332AA','admin@smartcity.it','123456789','$2a$10$u43PXOBQkSbOwUtbrNeot./Qk1qAf0EAnNT5KDwYgBEnuxtTk8J5q'),('Autista1','AUT001','autista1@smartcity.it','321654987','$2a$10$TGAuH/Re1jzHa3NHdwykpu60fMKc2Ghy4Vmbor/Nsh4b/KdZT8i42'),('Autista2','AUT002','autista2@smartcity.it','984984615','$2a$10$BU1gZmInantLswAm20IgWeTuHoRLPDrd6Y5PMPJi21U4WvYJi88i.'),('Controllore1','CONT001','controllore1@smartcity.it','984950656','$2a$10$zUus5ZzuXwp79NUr4KZw4.hejUoQGfpvpZFQUGLlIsFiHAV1Sm0G2'),('Controllore2','CONT002','controllore2@smartcity.it','29842899','$2a$10$VdyFKvVTqXyu7w1LHgmAveP5XNfvrMSGODEW/1rYoPaRDtxLjfBHq'),('Controllore3','CONT003','controllore3@smartcity.it','48924454','$2a$10$zUus5ZzuXwp79NUr4KZw4.hejUoQGfpvpZFQUGLlIsFiHAV1Sm0G2'),('Controllore4','CONT004','controllore4@smartcity.it','6465151651','$2a$10$zUus5ZzuXwp79NUr4KZw4.hejUoQGfpvpZFQUGLlIsFiHAV1Sm0G2'),('Controllore5','CONT005','controllore5@smartcity.it','9428449984','$2a$10$zUus5ZzuXwp79NUr4KZw4.hejUoQGfpvpZFQUGLlIsFiHAV1Sm0G2'),('Controllore6','CONT006','controllore6@smartcity.it','8984194981','$2a$10$zUus5ZzuXwp79NUr4KZw4.hejUoQGfpvpZFQUGLlIsFiHAV1Sm0G2'),('Utente1','USER001','mario@smartcity.it','9871654655','$2a$10$GyKtq8CYLJE8ZcQUNqsH3OanopqfsnI.ZK9O3v5WI1fpooMYdsPB.'),('Utente2','USER002','utente2@smartcity.it','658498465','$2a$10$fQllAz5PXB.v9jQc1rhd.eKFxQYDFGCfgPnYOjjGa3wbRKM.V9GtS');
 /*!40000 ALTER TABLE `UTENTI` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -283,4 +284,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-04  9:31:29
+-- Dump completed on 2025-07-13 15:28:30

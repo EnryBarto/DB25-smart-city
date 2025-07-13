@@ -38,7 +38,7 @@ class StatisticsPanel extends JPanel {
         "Aziende senza manutenzioni nell'ultimo mese",
         "Manutenzioni dato un mezzo",
         "Linee con più multe",
-        "Linee con < di 5 controlli e più di 10 multe al giorno",
+        "Linee con > 5 controlli e <= 10 multe al giorno",
         "Media dei soldi spesi in multe per persona",
         "Linea con più hub mobilità lungo il percorso",
         "Incassi per titolo di viaggio in periodo definito",
@@ -83,7 +83,7 @@ class StatisticsPanel extends JPanel {
                 case "Linee con più multe" -> {
                     this.showPanel(lineePiuMultePanel);
                 }
-                case "Linee con < di 5 controlli e più di 10 multe al giorno" -> {
+                case "Linee con > 5 controlli e <= 10 multe al giorno" -> {
                     this.showPanel(lineeMulteControlli);
                     controller.updateStatistics();
                 }
