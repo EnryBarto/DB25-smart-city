@@ -17,23 +17,24 @@ public final class Queries {
     ;""";
 
     // OPERAZIONE 2
-    public static final String LIST_FERMATE_UNA_LINEA =
+    public static final String LIST_TRATTE_PER_LINEA =
     """
-        SELECT t.codice_linea, t.arrivo_codice_fermata, t.partenza_codice_fermata,
-            t.ordine, f.nome, f.indirizzo_via, f.indirizzo_civico, f.indirizzo_comune, f.indirizzo_cap, tr.tempo_percorrenza
+        SELECT t.arrivo_codice_fermata, t.partenza_codice_fermata, t.ordine, tr.tempo_percorrenza, f_par.*, f_arr.*
         FROM TRAGITTI t
-        JOIN TRATTE tr ON t.partenza_codice_fermata = tr.partenza_codice_fermata AND t.arrivo_codice_fermata = tr.arrivo_codice_fermata
-        JOIN FERMATE f ON t.arrivo_codice_fermata = f.codice_fermata
-        WHERE t.codice_linea = ?
+        JOIN TRATTE tr ON (tr.arrivo_codice_fermata = t.arrivo_codice_fermata AND tr.partenza_codice_fermata = t.partenza_codice_fermata)
+        JOIN FERMATE f_par ON f_par.codice_fermata = tr.partenza_codice_fermata
+        JOIN FERMATE f_arr ON f_arr.codice_fermata = tr.arrivo_codice_fermata
+		WHERE t.codice_linea = ?
+        ORDER BY t.ordine ASC
+        ;
     """;
 
     // OPERAZIONE 2 BIS
     public static final String LIST_ORARI_UNA_LINEA =
     """
-        SELECT ol.codice_orario, ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale, ac.data
-        FROM ORARI_LINEE ol
-        JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
-        WHERE ol.codice_linea = ?
+        SELECT *
+        FROM ORARI_LINEE
+        WHERE codice_linea = ?
     """;
 
     // OPERAZIONE 3
@@ -295,6 +296,17 @@ public final class Queries {
         FROM ABBONAMENTI;
         """;
 
+    public static final String LIST_FERMATE_UNA_LINEA =
+    """
+        SELECT t.codice_linea, t.arrivo_codice_fermata, t.partenza_codice_fermata,
+            t.ordine, f.nome, f.indirizzo_via, f.indirizzo_civico, f.indirizzo_comune, f.indirizzo_cap, tr.tempo_percorrenza
+        FROM TRAGITTI t
+        JOIN TRATTE tr ON t.partenza_codice_fermata = tr.partenza_codice_fermata AND t.arrivo_codice_fermata = tr.arrivo_codice_fermata
+        JOIN FERMATE f ON t.arrivo_codice_fermata = f.codice_fermata
+        WHERE t.codice_linea = ?
+    """;
+
+
     public static final String LIST_ATTUAZIONI_CORSE =
     """
         SELECT *
@@ -484,18 +496,6 @@ public final class Queries {
         WHERE (L.attiva IS TRUE OR (? BETWEEN L.inizio_validita AND L.fine_validita))
         ORDER BY L.codice_linea
     ;""";
-
-    public static final String LIST_TRATTE_PER_LINEA =
-    """
-        SELECT t.arrivo_codice_fermata, t.partenza_codice_fermata, t.ordine, tr.tempo_percorrenza, f_par.*, f_arr.*
-        FROM TRAGITTI t
-        JOIN TRATTE tr ON (tr.arrivo_codice_fermata = t.arrivo_codice_fermata AND tr.partenza_codice_fermata = t.partenza_codice_fermata)
-        JOIN FERMATE f_par ON f_par.codice_fermata = tr.partenza_codice_fermata
-        JOIN FERMATE f_arr ON f_arr.codice_fermata = tr.arrivo_codice_fermata
-		WHERE t.codice_linea = ?
-        ORDER BY t.ordine ASC
-        ;
-    """;
 
     public static final String LIST_MEZZI_ATTIVI_PER_LINEA =
     """

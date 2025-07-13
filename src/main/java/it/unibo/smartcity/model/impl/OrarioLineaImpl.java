@@ -100,7 +100,7 @@ public class OrarioLineaImpl implements OrarioLinea {
         }
 
         public static List<OrarioLinea> listByCodiceLinea(Connection connection, String codLinea) {
-            var query = "SELECT * FROM ORARI_LINEE WHERE codice_linea = ? ORDER BY ora_partenza";
+            var query = Queries.LIST_ORARI_UNA_LINEA;
             var orari = new LinkedList<OrarioLinea>();
             try (
                 var statement = DAOUtils.prepare(connection, query, codLinea);
