@@ -105,7 +105,7 @@ A seguito dell’intervista è stata prodotta la seguente descrizione delle spec
 
 \textit{Sarà disponibile una piattaforma online, nella quale si potranno visualizzare le diverse linee e le fermate che i mezzi effettuano con i relativi orari, nonché la disponibilità di posti liberi nelle aree di bikesharing e nelle colonnine elettriche. È anche prevista la registrazione di utenti “cittadini”, che potranno acquistare biglietti e abbonamenti. }
 
-\textit{Un unico biglietto vale per tutti i mezzi di trasporto, e si vuole memorizzarne la durata, la data di convalida, la data di acquisto ed il titolare nel caso venga acquistato online: infatti un biglietto potrà anche essere acquistato da un fornitore fisico (ad esempio le tabaccherie della città). Sono presenti diverse tipologie di biglietti che differiscono in base alla durata dalla convalida e al prezzo. Gli abbonamenti sono biglietti che hanno una durata superiore ad un giorno.}
+\textit{Un unico biglietto vale per tutti i mezzi di trasporto, e si vuole memorizzarne la durata, la data di convalida, la data di acquisto ed il titolare nel caso venga acquistato online: infatti un biglietto potrà anche essere acquistato da un fornitore fisico (ad esempio le tabaccherie della città). Sono presenti diverse tipologie di biglietti che differiscono in base alla durata dalla convalida e al prezzo. Gli abbonamenti sono biglietti che hanno una durata superiore a cinque giorni.}
 
 \textit{Si richiede anche la gestione dei dipendenti. In particolare, dovranno essere gestiti diversi autisti a cui verranno assegnati diversi mezzi in diversi slot orari. Sono inoltre presenti i controllori: in certi orari dovranno controllare diverse linee e saranno in grado di emettere multe. Gli orari e le linee da controllare vengono stabilite dal gestore delle linee di trasporto: ad esempio verranno prese in particolare considerazione quelle dove non ci sono molti incassi, ovvero dove è ipotizzabile una maggior evasione tariffaria, generando ingenti perdite economiche. Infine, l’amministratore del sistema potrà registrarsi in un portale specifico nel quale potrà gestire autisti, controllori e le linee. Inoltre, avrà la possibilità di visualizzare diverse statistiche riguardanti il sistema di trasporto, con enfasi particolare nei ricavi dei biglietti e nel tasso di evasione.}
 
@@ -125,7 +125,8 @@ Si è quindi resa necessaria un’ulteriore intervista per comprendere meglio il
 \paragraph{D:}
 “Come devono essere gestiti i biglietti, dal loro acquisto fino alla convalida?”
 \\ {\bf R:} “I biglietti possono essere acquistati tramite il sito web, le biglietterie fisiche (sia dell’azienda sia da altri venditori autorizzati) e ticketmachine.
-Ogni mezzo sarà dotato di una obliteratrice che, comunicando con il sistema informativo, alla lettura di un biglietto (tramite codice a barre stampato sul biglietto fisico o letto dal proprio dispositivo) ne controlla la validità e in caso affermativo lo registra come convalidato.”
+Ogni mezzo sarà dotato di una obliteratrice che, comunicando con il sistema informativo, alla lettura di un biglietto (tramite codice a barre stampato sul biglietto fisico o letto dal proprio dispositivo) ne controlla la validità e in caso affermativo lo registra come convalidato. \\
+Le obliteratrici disporranno inoltre di un display per mostrare il codice della corsa, così che gli utenti saranno anche in grado di convalidare il proprio biglietto dall'area personale dell'applicativo inserendo questo codice.”
 
 \paragraph{D:}
 “Cosa deve essere mostrato riguardo agli spazi per la mobilità sostenibile?”
@@ -149,13 +150,13 @@ Per rendere meglio fruibile la descrizione, abbiamo deciso di rimuovere eventual
 \hline
 Mezzi di TPL & Mezzi di trasporto \\
 Spazi riservati per il carsharing, … & Hub mobilità \\
-Biglietti, Abbonamenti & Titolo di Viaggio \\
-Gestore delle linee & Amministratore di Sistema \\
+Biglietti, Abbonamenti & Titoli di Viaggio \\
+Gestore delle linee & Amministrativo \\
 \hline
 \end{tabular}
 \end{table}
 
-A seguito dell’intervista aggiuntiva è stata redatta la seguente descrizione del dominio in linguaggio naturale. Ambiguità e informazioni ridondanti sono state eliminate per garantire una miglior fruizione della descrizione:
+A seguito dell’intervista aggiuntiva è stata redatta la seguente descrizione del dominio in linguaggio naturale. Ambiguità e informazioni ridondanti sono state eliminate per garantire una miglior fruizione della descrizione; abbiamo inoltre sottolineato i concetti principali che ci saranno utili per la prossima fase di progettazione concettuale.
 \\ \\
 Le città di Vergineto, Urbania e San Giovanni in Marignano si sono accordate per avviare il progetto “Smart mobility 2030”, e richiedono un software per la gestione Smart e integrata del trasporto pubblico urbano ed extraurbano.
 
@@ -167,9 +168,9 @@ Dovranno essere gestiti degli \underline{\texttt{hub mobilità}}, riservati per 
 
 Sarà disponibile una piattaforma online, nella quale si potranno visualizzare le diverse linee e le fermate che i mezzi effettuano con i relativi orari, nonché la disponibilità di posti liberi negli hub mobilità. È anche prevista la registrazione di \underline{\texttt{utenti cittadini}}, che potranno \underline{\texttt{acquistare}} \underline{\texttt{titoli di viaggio}}, che si dividono in \underline{\texttt{biglietti}} e \underline{\texttt{abbonamenti}}.
 
-Un unico titolo di viaggio vale per tutti i mezzi di trasporto e vuole memorizzarne la durata, la data di convalida, la data di acquisto e l’utente cittadino associato nel caso sia un \underline{\texttt{biglietto digitale}}. Sono presenti diverse \underline{\texttt{tipologie}} di titoli di viaggio che differiscono in base alla durata dalla convalida e al prezzo. Gli abbonamenti sono biglietti che hanno una durata superiore ad un giorno. I biglietti possono essere acquistati anche in biglietterie fisiche e ticketmachine. Ogni mezzo di trasporto sarà dotato di una obliteratrice che, comunicando con il sistema informativo, alla lettura di un biglietto ne controlla la validità, e in caso affermativo, lo registra come \underline{\texttt{convalidato}}.
+Un unico titolo di viaggio vale per tutti i mezzi di trasporto e si vuole memorizzarne la durata, la data di convalida, la data di acquisto e l’utente cittadino associato nel caso sia un \underline{\texttt{biglietto digitale}}. Sono presenti diverse \underline{\texttt{tipologie}} di titoli di viaggio che differiscono in base alla durata dalla convalida e al prezzo. Gli abbonamenti sono biglietti che hanno una durata superiore a cinque giorni. I biglietti possono essere acquistati anche in biglietterie fisiche e ticketmachine. Ogni mezzo di trasporto sarà dotato di una obliteratrice che, comunicando con il sistema informativo, alla lettura di un biglietto ne controlla la validità, e in caso affermativo, lo registra come \underline{\texttt{convalidato}}.
 
-Si richiede anche la gestione dei \underline{\texttt{dipendenti}}. Essi si dividono in \underline{\texttt{Autisti}}, \underline{\texttt{Controllori}} e \underline{\texttt{Amministratori di sistema}}. Agli Autisti a verranno assegnati diversi mezzi di trasposto in slot orari diversi. I controllori dovranno controllare diverse linee negli slot orari assegnati, e saranno in grado di emettere \underline{\texttt{multe}}.  A ogni \underline{\texttt{causale della multa}} corrisponde un certo importo base e uno massimo. Il controllore potrà assegnare un importo alla multa tra questi due valori. Gli orari e le linee da controllare vengono stabilite dall’amministratore di sistema. Infine, l’amministratore del sistema potrà registrarsi in un portale specifico nel quale potrà gestire autisti, controllori e le linee. Inoltre, avrà la possibilità di visualizzare diverse statistiche riguardanti il sistema di trasporto, con enfasi particolare nei ricavi dei titoli di viaggio e nel tasso di evasione.
+Si richiede anche la gestione dei \underline{\texttt{dipendenti}}. Essi si dividono in \underline{\texttt{Autisti}}, \underline{\texttt{Controllori}} e \underline{\texttt{Amministrativi}}. Agli Autisti verranno assegnati diversi mezzi di trasposto in slot orari diversi. I controllori dovranno controllare diverse linee negli slot orari assegnati, e saranno in grado di emettere \underline{\texttt{multe}}.  A ogni \underline{\texttt{causale della multa}} corrisponde un certo importo base e uno massimo. Il controllore potrà assegnare un importo alla multa tra questi due valori. Gli orari e le linee da controllare vengono stabilite dagli amministrativi; questi ultimi loggandosi nel portale potranno gestire autisti, controllori e le linee. Infine, avranno la possibilità di visualizzare diverse statistiche riguardanti il sistema di trasporto, con enfasi particolare nei ricavi dei titoli di viaggio e nel tasso di evasione.
 
 Dovranno essere gestiti i lavori di \underline{\texttt{manutenzione}}, che possono coinvolgere \underline{\texttt{linee}} e \underline{\texttt{mezzi di trasporto}}, per cui saranno specificati gli eventuali \underline{\texttt{enti privati}} che li svolgeranno. Per le manutenzioni sarà richiesto di specificare una data di inizio e fine lavori, ed eventuali \underline{\texttt{variazioni di servizio}} che coinvolgono linee dovranno essere visualizzate al pubblico.
 
@@ -242,8 +243,9 @@ In questa sezione discuteremo i vari vincoli inespressi dal nostro schema concet
 
 \chapter{Progettazione Logica}
 \section{Stima del volume dei dati}
-Per poter gestire al meglio il carico di lavoro della base di dati, insieme al committente si è creata una stima del volume dei dati per entità e associazioni che il database dovrà gestire, di cui se ne riportano i numeri nella Tabella \ref{table:volumeDati}.
+Per poter gestire al meglio il carico di lavoro della base di dati, insieme al committente si è creata una stima del volume dei dati per entità e associazioni che il database dovrà gestire, di cui se ne riportano i valori nella Tabella \ref{table:volumeDati}.
 La stima è valida per un carico di lavoro di circa 6 mesi.
+Abbiamo considerato un bacino d'utenza di circa 20.000 persone.
 
 \begin{longtable}{|p{7.5cm}|r|c|}
 \caption{Stima del volume dei dati}
@@ -378,47 +380,47 @@ Riportiamo in Tabella \ref{table:operazioni} le principali operazioni che sarann
 \textbf{\#} & \textbf{Operazione} & \textbf{Op / 7gg} & \textbf{Tipo Utente} \\
 \hline
 \endhead
-1*  & \hyperref[op1]{Visualizzazione di tutte le linee attive} & 4.000 & Tutti **** \\
+1*  & \hyperref[op1]{Visualizzazione di tutte le linee attive} & 4.000 & Tutti \\
 \hline
-2 & \hyperref[op2]{Visualizzazione fermate e orari di una linea} & 3.500 & Tutti **** \\
+2 & \hyperref[op2]{Visualizzazione fermate e orari di una linea} & 3.500 & Tutti \\
 \hline
 3 & \hyperref[op3]{Visualizzazione degli hub mobilità} & 500 & Tutti \\
 \hline
-4* & \hyperref[op4]{Visualizzazione orario e mezzo assegnato} & 150 & Autista ***** \\
+4* & \hyperref[op4]{Visualizzazione orario e mezzo assegnato} & 150 & Autista \\
 \hline
-5* & \hyperref[op5]{Visualizzazione orario e linee assegnate} & 100 & Controllore ***** \\
+5* & \hyperref[op5]{Visualizzazione orario e linee assegnate} & 100 & Controllore \\
 \hline
-6 & \hyperref[op6]{Estrazione delle linee con più convalide nell'ultimo mese} & 3 & Amministratore *****  \\
+6 & \hyperref[op6]{Estrazione delle linee con più convalide nell'ultimo mese} & 3 & Amministrativo  \\
 \hline
-7 & \hyperref[op7]{Estrazione delle manuntenzioni che coinvolgono un determinato mezzo} & 5 & Amministratore \\
+7 & \hyperref[op7]{Estrazione delle manuntenzioni che coinvolgono un determinato mezzo} & 5 & Amministrativo \\
 \hline
-8 & \hyperref[op8]{Estrazione delle manuntenzioni ed eventuali linee sostitutive che coinvolgono una linea} & 5 & Amministratore ***** \\
+8 & \hyperref[op8]{Estrazione delle manuntenzioni ed eventuali linee sostitutive che coinvolgono una linea} & 5 & Amministrativo \\
 \hline
-9 & \hyperref[op9]{Visualizzazione incassi dati dalle convalide per una linea} & 10 & Amministratore **** \\
+9 & \hyperref[op9]{Visualizzazione incassi dati dalle convalide per una linea} & 10 & Amministrativo \\
 \hline
-10 & \hyperref[op10]{Estrazione degli incassi per tipo di titolo in periodo definito} & 5 & Amministratore \\
+10 & \hyperref[op10]{Estrazione degli incassi per tipo di titolo in periodo definito} & 5 & Amministrativo \\
 \hline
-11 & \hyperref[op11]{Estrazione delle linee con più multe in periodo definito} & 2 & Amministratore ***** \\
+11 & \hyperref[op11]{Estrazione delle linee con più multe in periodo definito} & 2 & Amministrativo \\
 \hline
-12 & \hyperref[op12]{Estrazione delle 5 linee con manutenzioni più gravose (in termini linee sostitutive e durata)} & 2 & Amministratore *****  \\
+12 & \hyperref[op12]{Estrazione delle 5 linee con manutenzioni più gravose (in termini linee sostitutive e durata)} & 2 & Amministrativo  \\
 \hline
-13 & \hyperref[op13]{Estrazione delle linee con \textgreater 5 controlli/giorno e \textless = 10 multe/giorno} & 3 & Amministratore  \\
+13 & \hyperref[op13]{Estrazione delle linee con \textgreater 5 controlli/giorno e \textless = 10 multe/giorno} & 3 & Amministrativo  \\
 \hline
-14* & \hyperref[op14]{Visualizzazione delle linee con il maggior tempo di percorrenza} & 2 & Amministratore ***** \\
+14* & \hyperref[op14]{Visualizzazione delle linee con il maggior tempo di percorrenza} & 2 & Amministrativo \\
 \hline
-15 & \hyperref[op15]{Estrazione della linea con più hub mobilità lungo il percorso} & 3 & Amministratore ***** \\
+15 & \hyperref[op15]{Estrazione della linea con più hub mobilità lungo il percorso} & 3 & Amministrativo \\
 \hline
-16 & \hyperref[op16]{Media di soldi spesi in multe per persona} & 2 & Amministratore \\
+16 & \hyperref[op16]{Media di soldi spesi in multe per persona} & 2 & Amministrativo \\
 \hline
-17 & \hyperref[op17]{Visualizzazione delle aziende che non hanno effettuato nessuna manutenzione nell'ultimo mese} & 4 & Amministratore \\
+17 & \hyperref[op17]{Visualizzazione delle aziende che non hanno effettuato nessuna manutenzione nell'ultimo mese} & 4 & Amministrativo \\
 \hline
-18 & \hyperref[op18]{Visualizzazione delle fermate in cui è presente un hub mobilità contenente tutti i tipi di servizi green} & 1 & Amministratore \\
+18 & \hyperref[op18]{Visualizzazione delle fermate in cui è presente un hub mobilità contenente tutti i tipi di servizi green} & 1 & Amministrativo \\
 \hline
-19* & \hyperref[op19]{Inserimento di una variazione di servizio} & 1 & Amministratore ***** \\
+19* & \hyperref[op19]{Inserimento di una variazione di servizio} & 1 & Amministrativo \\
 \hline
-20* & \hyperref[op20]{Aggiunta di una tratta a una linea esistente} & 1 & Amministratore ***** \\
+20* & \hyperref[op20]{Aggiunta di una tratta a una linea esistente} & 1 & Amministrativo \\
 \hline
-21* & \hyperref[op21]{Creazione di una nuova linea} & 1 & Amministratore ***** \\
+21* & \hyperref[op21]{Creazione di una nuova linea} & 1 & Amministrativo \\
 \hline
 \end{longtable}
 
@@ -1175,15 +1177,15 @@ Indichiamo con:
     \hline
     MANUTENZIONE & E & 50 & L \\
     \hline
-    AZIENDA & E & x & L \\
+    AZIENDA & E & 5 & L \\
     \hline
     \multicolumn{4}{c}{\textbf{Totale}} \\
-    \multicolumn{4}{c}{${A_{lettura}}$ = 50 + x, ${A_{scrittura}}$ = 0} \\
+    \multicolumn{4}{c}{${A_{lettura}}$ = 55, ${A_{scrittura}}$ = 0} \\
     \hline
     \end{tabular}
     \end{table}
     \begin{center}
-    ${C_{tot} = {O_{settimana}}\cdot {A_{lettura}} = 200 + 4x}$
+    ${C_{tot} = {O_{settimana}}\cdot {A_{lettura}} = 220}$
     \end{center}
 
   % -------------------------------------------------------------------------------------------------------------------------------------------
@@ -1478,37 +1480,37 @@ Nella seguente tabella proponiamo un riepilogo delle operazioni analizzate, con 
 \hline
 5* & \hyperref[op5]{Visualizzazione orario e linee assegnate} & 252.200 & Controllore \\
 \hline
-6 & \hyperref[op6]{Estrazione delle linee con più convalide nell'ultimo mese} & 850.005 & Amministratore  \\
+6 & \hyperref[op6]{Estrazione delle linee con più convalide nell'ultimo mese} & 850.005 & Amministrativo  \\
 \hline
-7 & \hyperref[op7]{Estrazione delle manuntenzioni che coinvolgono un determinato mezzo} & 35 & Amministratore \\
+7 & \hyperref[op7]{Estrazione delle manuntenzioni che coinvolgono un determinato mezzo} & 35 & Amministrativo \\
 \hline
-8 & \hyperref[op8]{Estrazione delle manuntenzioni ed eventuali linee sostitutive che coinvolgono una linea} & 205 & Amministratore \\
+8 & \hyperref[op8]{Estrazione delle manuntenzioni ed eventuali linee sostitutive che coinvolgono una linea} & 205 & Amministrativo \\
 \hline
-9 & \hyperref[op9]{Visualizzazione incassi dati dalle convalide per una linea} & 8.150 & Amministratore \\
+9 & \hyperref[op9]{Visualizzazione incassi dati dalle convalide per una linea} & 8.150 & Amministrativo \\
 \hline
-10 & \hyperref[op10]{Estrazione degli incassi per tipo di titolo in periodo definito} & 250.005 & Amministratore \\
+10 & \hyperref[op10]{Estrazione degli incassi per tipo di titolo in periodo definito} & 250.005 & Amministrativo \\
 \hline
-11 & \hyperref[op11]{Estrazione delle linee con più multe in periodo definito} & 503.700 & Amministratore \\
+11 & \hyperref[op11]{Estrazione delle linee con più multe in periodo definito} & 503.700 & Amministrativo \\
 \hline
-12 & \hyperref[op12]{Estrazione delle 5 linee con manutenzioni più gravose (in termini linee sostitutive e durata)} & 100 & Amministratore  \\
+12 & \hyperref[op12]{Estrazione delle 5 linee con manutenzioni più gravose (in termini linee sostitutive e durata)} & 100 & Amministrativo  \\
 \hline
-13 & \hyperref[op13]{Estrazione delle linee con \textgreater 5 controlli/giorno e \textless = 10 multe/giorno} & 755.100 & Amministratore  \\
+13 & \hyperref[op13]{Estrazione delle linee con \textgreater 5 controlli/giorno e \textless = 10 multe/giorno} & 755.100 & Amministrativo  \\
 \hline
-14* & \hyperref[op14]{Visualizzazione delle linee con il maggior tempo di percorrenza} & 150 & Amministratore  \\
+14* & \hyperref[op14]{Visualizzazione delle linee con il maggior tempo di percorrenza} & 150 & Amministrativo  \\
 \hline
-15 & \hyperref[op15]{Estrazione della linea con più hub mobilità lungo il percorso} & 9.570 & Amministratore \\
+15 & \hyperref[op15]{Estrazione della linea con più hub mobilità lungo il percorso} & 9.570 & Amministrativo \\
 \hline
-16 & \hyperref[op16]{Media di soldi spesi in multe per persona} & 20.000 & Amministratore \\
+16 & \hyperref[op16]{Media di soldi spesi in multe per persona} & 20.000 & Amministrativo \\
 \hline
-17 & \hyperref[op17]{Visualizzazione delle aziende che non hanno effettuato nessuna manutenzione nell'ultimo mese} & 4XXX & Amministratore \\
+17 & \hyperref[op17]{Visualizzazione delle aziende che non hanno effettuato nessuna manutenzione nell'ultimo mese} & 220 & Amministrativo \\
 \hline
-18 & \hyperref[op18]{Visualizzazione delle fermate in cui è presente un hub mobilità contenente tutti i tipi di servizi green} & 1.129 & Amministratore \\
+18 & \hyperref[op18]{Visualizzazione delle fermate in cui è presente un hub mobilità contenente tutti i tipi di servizi green} & 1.129 & Amministrativo \\
 \hline
-19* & \hyperref[op19]{Inserimento di una variazione di servizio} & 7 & Amministratore \\
+19* & \hyperref[op19]{Inserimento di una variazione di servizio} & 7 & Amministrativo \\
 \hline
-20* & \hyperref[op20]{Aggiunta di una tratta a una linea esistente} & 28 & Amministratore \\
+20* & \hyperref[op20]{Aggiunta di una tratta a una linea esistente} & 28 & Amministrativo \\
 \hline
-21* & \hyperref[op21]{Creazione di una nuova linea} & 61 & Amministratore \\
+21* & \hyperref[op21]{Creazione di una nuova linea} & 61 & Amministrativo \\
 \hline
 \end{longtable}
 
@@ -1517,7 +1519,7 @@ Ora che abbiamo deciso quali attributi dovranno rimanere nella base di dati, non
 Procediamo quindi per step successivi fino ad arrivare a uno schema logico equivalente allo schema ER.
 
 \subsection{Rimozione attributi multivalore}
-L'unico attributo multivalore nel nostro schema è presente nell'entità \texttt{AZIENDA}, nello specifico l'\texttt{indirizzo}.
+Gli unici attributi multivalore nel nostro schema sono gli \texttt{indirizzi}, e sono presenti nelle entità \texttt{AZIENDA}, \texttt{FERMATA} e \texttt{HUB MOBILITÀ}.
 Aggiungiamo quindi il prefisso \texttt{indirizzo\textunderscore} a ogni suo componente per poi decomporlo in attributi singoli.
 
 \subsection{Rimozione gerarchie}
@@ -1781,7 +1783,7 @@ END //
 DELIMITER ;
 \end{lstlisting}
 
-\section{Trigger}
+\section{Trigger}\label{section:trigger}
 Per rendere automatica la gestione della ridondanza dell'attributo \texttt{attiva}, ogni volta che viene effettuata un'operazione che modifica la tabella \texttt{MANUTENZIONI{\textunderscore}LINEE} viene richiamata la stored procedure per aggiornare l'attributo della linea modificata sfruttando dei trigger. Questo permette agli utilizzatori del database di gestire le manutenzioni senza preoccuparsi di tenere aggiornato l'attributo \texttt{attiva}. \\
 \begin{lstlisting}[style=sqlstyle]
 DELIMITER //
@@ -1820,7 +1822,7 @@ DO
 \end{lstlisting}
 
 \section{Traduzione delle operazioni in query SQL}
-Nelle query potrebbero apparire dei simboli \texttt{?}: questo perché abbiamo utilizzato i prepared statement per poter adattare le clausole where ai filtri imposti dagli utenti.
+Nelle query potrebbero apparire dei simboli \texttt{?}: questo perché abbiamo utilizzato i prepared statement per poter adattare le clausole \texttt{WHERE} ai filtri imposti dagli utenti.
 
 \begin{enumerate}[label=\textbf{\arabic*)}]
 
@@ -1832,25 +1834,25 @@ FROM VW_LINEE_ATTIVE_OGGI;
 \end{lstlisting}
 
 \item \textbf{Visualizzazione fermate e orari di una linea} \\
-Questa operazione è stata divisa in 2 parti dato che sulla UI non mostreremo mai tutte le fermate con i relativi orari di ogni linea; ma mostreremo tutte le linee poi l'utente potrà visualizzare le fermate e gli orari della linea desiderata.
-\begin{lstlisting}[style=sqlstyle, caption=Query for Fermate Details by Linea]
-SELECT t.codice_linea, t.arrivo_codice_fermata, t.partenza_codice_fermata, t.ordine, f.nome, f.indirizzo_via, f.indirizzo_civico, f.indirizzo_comune, f.indirizzo_cap, tr.tempo_percorrenza
+Questa operazione è stata divisa in 2 parti: la prima parte serve per ricavare il tragitto di una linea, la seconda per estrarre tutti gli orari di partenza della linea. Così potremo comporre l'orario sommando tutti i tempi di percorrenza dei tragitti a ogni orario di partenza.
+\begin{lstlisting}[style=sqlstyle, caption=Query per ricavare i tragitti di una linea dato il codice]
+SELECT t.arrivo_codice_fermata, t.partenza_codice_fermata, t.ordine, tr.tempo_percorrenza, f_par.*, f_arr.*
 FROM TRAGITTI t
-JOIN TRATTE tr ON t.partenza_codice_fermata = tr.partenza_codice_fermata
-AND t.arrivo_codice_fermata = tr.arrivo_codice_fermata
-JOIN FERMATE f ON t.arrivo_codice_fermata = f.codice_fermata
+JOIN TRATTE tr ON (tr.arrivo_codice_fermata = t.arrivo_codice_fermata AND tr.partenza_codice_fermata = t.partenza_codice_fermata)
+JOIN FERMATE f_par ON f_par.codice_fermata = tr.partenza_codice_fermata
+JOIN FERMATE f_arr ON f_arr.codice_fermata = tr.arrivo_codice_fermata
 WHERE t.codice_linea = ?
+ORDER BY t.ordine ASC;
 \end{lstlisting}
 
-\begin{lstlisting}[style=sqlstyle, caption=Query for Orari Linee with Attuazioni Corse]
-SELECT ol.codice_orario, ol.codice_linea, ol.orario_partenza, ol.giorno_settimanale, ac.data
-FROM ORARI_LINEE ol
-JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
-WHERE ol.codice_linea = ?
+\begin{lstlisting}[style=sqlstyle, caption=Query per ricavare tutti gli orari di una linea dato il codice]
+SELECT *
+FROM ORARI_LINEE
+WHERE codice_linea = ?;
 \end{lstlisting}
 
 \item \textbf{Visualizzazione degli hub mobilità} \\
-\begin{lstlisting}[style=sqlstyle, caption=Query for Hub Mobilità with Contenuti and Fermate]
+\begin{lstlisting}[style=sqlstyle]
 SELECT h.codice_hub, h.nome nome_hub, h.indirizzo_via, h.indirizzo_civico, h.indirizzo_comune, h.indirizzo_cap, h.longitudine, h.latitudine, h.codice_fermata, f.nome nome_fermata, ch.descrizione tipo_contenuto, c.posti_disponibili
 FROM HUB_MOBILITA h LEFT JOIN FERMATE f on (h.codice_fermata = f.codice_fermata)
 JOIN CONTENUTI c ON (c.codice_hub = h.codice_hub)
@@ -1860,7 +1862,7 @@ ORDER BY h.codice_hub;
 
 \item \textbf{Visualizzazione orario e linee assegnate agli autisti} \\
 Con questa operazione andiamo a visualizzare l'orario di lavoro di un autista e il mezzo che gli è stato assegnato per le linee che dovrà percorrere. Le ore effettive di lavoro potranno essere visualizzare tramite il tempo di percorrenza delle linee che dovrà percorrere.
-\begin{lstlisting}[style=sqlstyle, caption=Query for Corse Attuate by User]
+\begin{lstlisting}[style=sqlstyle]
 SELECT ol.codice_linea, ol.ora_partenza, ol.giorno_settimanale, ol.codice_orario, ac.data,l.tempo_percorrenza, ac.n_immatricolazione
 FROM ORARI_LINEE ol
 JOIN ATTUAZIONI_CORSE ac ON ol.codice_orario = ac.codice_orario
@@ -1882,7 +1884,7 @@ ORDER BY A.data, O.ora_partenza;
 
 \item \textbf{Estrazione delle linee con più convalide nell’ultimo mese} \\
 Con questa operazione andremo ad estrarre il numero di convalide per linea in ordine decrescente.
-\begin{lstlisting}[style=sqlstyle, caption=Query for Number of Validations per Linea]
+\begin{lstlisting}[style=sqlstyle]
 SELECT COUNT(*) AS numero_convalide
 FROM LINEE l
 JOIN ORARI_LINEE ol ON l.codice_linea = ol.codice_linea
@@ -1899,7 +1901,7 @@ FROM MANUTENZIONI_MEZZI mm
 WHERE mm.n_immatricolazione = ?
 \end{lstlisting}
 
-\item \textbf{Estrazione delle manuntenzioni ed eventuali linee sostitutive che coinvolgono una linea (Variazioni di servizio)*} \\
+\item \textbf{Estrazione delle manuntenzioni ed eventuali linee sostitutive che coinvolgono una linea (Variazioni di servizio)} \\
 \begin{lstlisting}[style=sqlstyle, caption=Query for Linee in Manutenzione and Their Sostituzioni]
 SELECT l.codice_linea codice_linea_in_manutenzione, m.data_inizio, m.data_fine, m.nome, m.descrizione, a.p_iva, a.email, a.telefono, a.ragione_sociale, ls.codice_linea codice_linea_sostituta
 FROM LINEE l JOIN MANUTENZIONI_LINEE m ON (m.codice_linea = l.codice_linea)
@@ -1931,7 +1933,7 @@ WHERE B.durata = ? AND (DATE(C.data_ora) BETWEEN ? AND ?);
 \end{lstlisting}
 
 \item \textbf{Estrazione delle linee con più multe in periodo definito} \\
-\begin{lstlisting}[style=sqlstyle, caption=Query for Number of Fines per Linea Between Two Dates]
+\begin{lstlisting}[style=sqlstyle]
 SELECT l.codice_linea, COUNT(*) numero_multe
 FROM LINEE l, ORARI_LINEE ol, ATTUAZIONI_CORSE ac, MULTE m
 WHERE l.codice_linea = ol.codice_linea
@@ -1949,7 +1951,7 @@ Dobbiamo visualizzare le linee con le manutenzioni più gravose; la gravità ver
 	        \item +5 pti ogni linea straordinaria dovuta alla manutenzione
 	        \item +1 pto ogni 3 giorni di lavoro sulla  linea.
 	    \end{itemize}
-\begin{lstlisting}[style=sqlstyle, caption=Query for Duration of Maintenance and Substitute Lines Count]
+\begin{lstlisting}[style=sqlstyle]
 SELECT ml.codice_linea, ml.nome, DATEDIFF(ml.data_fine, ml.data_inizio) AS durata_lavoro, COUNT(*) AS num_linee_sostitutive
 FROM MANUTENZIONI_LINEE ml
 JOIN SOSTITUZIONI s ON ml.codice_linea = s.sost_manut_codice_linea
@@ -1964,7 +1966,7 @@ La query è stata divisa in 2 subquery:
   \item Nella query di mezzo vengono contate quante sono le attuazioni corsa effettuate nei giorni che rispettano la condizione
 \end{itemize}
 Alla fine vengono contate le attuazioni corsa totali di una linea e vengono confrontate con il numero di attuazioni corsa contate dalla subquery di mezzo. Se sono lo stesso numero (ovvero tutte le attuazioni corsa rispettano la condizione) allora la linea viene visualizzata.
-\begin{lstlisting}[style=sqlstyle, caption=Query to Find Lines Matching Fine/Control Conditions on All Trips]
+\begin{lstlisting}[style=sqlstyle]
 SELECT DISTINCT l.codice_linea
 FROM LINEE l JOIN ORARI_LINEE ol ON (l.codice_linea = ol.codice_linea)
 JOIN ATTUAZIONI_CORSE ac ON (ol.codice_orario = ac.codice_orario)
@@ -1982,7 +1984,7 @@ HAVING COUNT(DISTINCT ac.codice_corsa) = (SELECT COUNT(DISTINCT ac1.codice_corsa
 \end{lstlisting}
 
 \item \textbf{Visualizzazione delle linee con il maggior tempo di percorrenza} \\
-\begin{lstlisting}[style=sqlstyle, caption=Query for Line with Maximum Tempo Percorrenza]
+\begin{lstlisting}[style=sqlstyle]
 SELECT codice_linea, tempo_percorrenza
 FROM LINEE
 ORDER BY tempo_percorrenza DESC
@@ -2010,14 +2012,14 @@ LIMIT 1;
 
 \item \textbf{Media di soldi spesi in multe per persona} \\
 In questa operazione vengono considerate tutte le persone presenti nel sistema.
-\begin{lstlisting}[style=sqlstyle, caption=Query for Average Fine Amount Grouped by Documento]
+\begin{lstlisting}[style=sqlstyle]
 SELECT AVG(COALESCE(m.importo, 0)) AS media_soldi
     FROM PERSONE p
     LEFT JOIN MULTE m ON p.documento = m.documento
 \end{lstlisting}
 
 \item \textbf{Visualizzazione delle aziende che non hanno effettuato nessuna manutenzione nell’ultimo mese} \\
-\begin{lstlisting}[style=sqlstyle, caption=Query for Companies Without Maintenance in Last Month]
+\begin{lstlisting}[style=sqlstyle]
 SELECT a.*
 FROM AZIENDE a
 WHERE NOT EXISTS (
@@ -2052,13 +2054,12 @@ WHERE H.codice_hub IN
 \end{lstlisting}
 
 \item \textbf{Inserimento di una variazione di servizio} \\
-Avendo l'attributo ridondante \texttt{attiva}, dopo aver inserito la variazione di servizio, questo va modificato. Avendo creato la stored procedure apposita useremo questa.
-\begin{lstlisting}[style=sqlstyle, caption=Insert into SOSTITUZIONI and Update LINEE status]
+In seguito all'aggiunta di una manutenzione bisognerebbe aggiornare l'attributo \texttt{attiva} su \texttt{LINEA}. Nel nostro caso non è però necessario grazie all'automatismo introdotto dal trigger (vedi \cref{section:trigger}).
+\begin{lstlisting}[style=sqlstyle]
 INSERT INTO MANUTENZIONI_LINEE (codice_linea, data_inizio, data_fine, nome, descrizione, p_iva)
 VALUES (?, ?, ?, ?, ?, ?);
 INSERT INTO SOSTITUZIONI (sost_manut_data_inizio, sost_manut_codice_linea, codice_linea)
 VALUES (?, ?, ?);
-aggiorna_attivazione_linee();
 \end{lstlisting}
 
 \item \textbf{Aggiunta di una tratta a una linea esistente} \\
@@ -2101,8 +2102,35 @@ WHERE codice_linea = ?;
 
 \chapter{Progettazione dell'Applicazione}
 L'applicazione è stata creata in \textbf{Java 21}, utilizzando la libreria Swing per la GUI. Tramite la libreria \textbf{JDBC}, l'app interagisce con la base di dati (descritta dettagliatamente nel \cref{chapter:db}) basata sul DBMS \textbf{MySQL}.
+
 Per migliorare l'interfaccia grafica abbiamo usufruito del look and feel offerto dalla libreria FlatLaf\footnote{Link alla libreria: \url{https://www.formdev.com/flatlaf/}}, e dei date/time picker offerti dalla librearia Swing Datetime Picker\footnote{Link alla libreria: \url{https://github.com/DJ-Raven/swing-datetime-picker}}, importati attraverso Gradle.
 
+L'app si basa sul patttern MVC, in cui il controller si occupa di tenere attiva la connessione con il DBMS. In particolare le query vengono effettuate tramite DAO inseriti nelle classi del model. Abbiamo usufruito delle classi \texttt{DAOUtils} e \texttt{DAOException} presentateci nelle esercitazioni a lezione.
+
+\subsection{Creazione del DB}
+Per la creazione del DB e di tutte le funzionalità aggiuntive (viste, stored procedures, ecc...) abbiamo messo a disposizione un unico file chiamato \texttt{creazione\_db.sql}. Dopo aver creato il DB è necessario inserire alcuni dati di base, utilizzando il file \texttt{required\_data\_insertion.sql}. Quest'ultimo contiene anche un account amministrativo di credenziali User: \texttt{admin} e Password: \texttt{admin}. Nel caso invece si voglia provare l'app con i dati di prova, vedi \cref{section:demo}.
+
+\subsection{Demo}\label{section:demo}
+Per fornire una demo dell'applicativo, oltre al file sql per la creazione del database, abbiamo creato un altro file contenente vari dati di prova. Una volta terminata la creazione del DB, invece di effettuare l'inserimento dei dati contenuti in \texttt{required\_data\_insertion.sql} (quindi ad installazione pulita), inserire i dati contenuti nel file \texttt{demo\_data\_insertion.sql}. Il file contiene anche vari account per ogni livello di utente, di cui riportiamo username e password nella \cref{table:demo_accounts}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Livello} & \textbf{Username} & \textbf{Password} \\
+\hline
+Amministrativo & admin & admin \\
+Utente base & Utente1 & Utente1 \\
+Utente base & Utente2 & Utente2 \\
+Autista & Autista1 & Autista1 \\
+Autista & Autista2 & Autista2 \\
+Controllore & Controllore1 & Controllore1 \\
+Controllore & Controllore2 & Controllore2 \\
+\hline
+\end{tabular}
+\caption{Account di demo}
+\label{table:demo_accounts}
+\end{table}
 
 \section{Gestione utenti}
 In seguito all'analisi dei requisiti sono stati individuati i seguenti livelli utente: \texttt{Utente base}, \texttt{Amministratore}, \texttt{Autista} e \texttt{Controllore}. \\
