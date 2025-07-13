@@ -9,7 +9,7 @@ Passi per eseguire l'applicativo:
 - Creare il DB utilizzando il file creazione_db.sql .
 - Se si vuole un'installazione pulita inserire i dati di base utilizzando il file required_data_insertion.sql .
     Se invece si vogliono utilizzare i dati di demo, caricare solo il file demo_data_insertion.sql .
-- Avviare l'app tramite il jar smart-city-all.jar presente nella radice della cartella.
+- Avviare l'app tramite il jar smart-city.jar presente nella radice della cartella.
     Poiché è stato utilizzato gradle, è possibile eseguire il progetto anche utilizzando il comando ./gradlew run .
 - A ogni avvio verranno richiesti i parametri di connesione al DB (indirizzo e porta del server, nome DB, utente e password).
 - Nel caso si fosse optato per l'installazione pulita (quindi utilizzando il file required_data_insertion.sql), è possibile loggarsi con un account Amministrativo utilizzando Utente: admin Password: admin
