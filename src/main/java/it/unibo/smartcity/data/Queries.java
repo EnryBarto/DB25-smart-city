@@ -96,7 +96,7 @@ public final class Queries {
         SELECT l.codice_linea codice_linea_in_manutenzione, m.data_inizio, m.data_fine, m.nome, m.descrizione, a.p_iva, a.email, a.telefono, a.ragione_sociale, ls.codice_linea codice_linea_sostituta
         FROM LINEE l JOIN MANUTENZIONI_LINEE m ON (m.codice_linea = l.codice_linea)
         LEFT JOIN AZIENDE a ON (m.p_iva = a.p_iva)
-        JOIN SOSTITUZIONI s ON (m.codice_linea = s.sost_manut_codice_linea AND m.data_inizio = s.sost_manut_data_inizio)
+        LEFT JOIN SOSTITUZIONI s ON (m.codice_linea = s.sost_manut_codice_linea AND m.data_inizio = s.sost_manut_data_inizio)
         JOIN LINEE ls ON (ls.codice_linea = s.codice_linea)
         WHERE l.codice_linea = ?;
     """;
