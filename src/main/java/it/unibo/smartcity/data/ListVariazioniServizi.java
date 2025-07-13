@@ -31,6 +31,12 @@ public record ListVariazioniServizi(ManutenzioneLinea manutenzione, Optional<Azi
                 var rs = statement.executeQuery()
             ) {
                 while (rs.next()) {
+                    final Set<String> var_query;
+                    if (rs.getString("codice_linea_sostituta") == null) {
+                        var_query = Set.of();
+                    } else {
+                        var_query = Set.of(rs.getString("codice_linea_sostituta"));
+                    }
                     final var manutenzione = new ListVariazioniServizi(new ManutenzioneLineaImpl(
                                 rs.getString("codice_linea_in_manutenzione"),
                                 rs.getDate("data_inizio"),
@@ -47,7 +53,7 @@ public record ListVariazioniServizi(ManutenzioneLinea manutenzione, Optional<Azi
                                 1,
                                 rs.getString("telefono"),
                                 rs.getString("email"))),
-                        Set.of(rs.getString("codice_linea_sostituta")));
+                        var_query);
                     if (variazioni.stream()
                         .noneMatch(v ->
                             v.manutenzione.getCodiceLinea().equals(manutenzione.manutenzione().getCodiceLinea())
